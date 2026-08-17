@@ -81,11 +81,13 @@ def render_text(text, height_in, dpi, color=(0, 0, 0, 255)):
 
 
 def find_text_override(temple_dir, color):
-    """Evan's manual location-text file, if present: '*location text*{color}*.svg/.png'."""
+    """Evan's manual location-text file, if present: '*location text*{color}*.svg/.png'.
+    Files carrying '(auto)' are the generator's own renders, never overrides."""
     temple_dir = Path(temple_dir)
     for ext in ("svg", "png"):
         hits = sorted(temple_dir.glob(f"*location text*{color}*.{ext}")) + \
                sorted(temple_dir.glob(f"*Location Text*{color.title()}*.{ext}"))
+        hits = [h for h in hits if "(auto)" not in h.name]
         if hits:
             return hits[0]
     return None

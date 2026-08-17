@@ -131,20 +131,23 @@ def png_bytes(img):
     return buf.getvalue()
 
 
+TEXT_RENDER_PX = 600  # fixed tall render; every profile downscales, so text stays crisp
+
+
 def location_text_images(temple_name, manifest, garment_cfg):
-    """Evan's override files win; otherwise render with Alata and save the
-    result into the temple folder so it is inspectable and reusable."""
+    """Evan's override files win; otherwise render with Alata at a fixed
+    generous resolution, always fresh, and save '(auto)' copies into the
+    temple folder for inspection. '(auto)' files are never read back as
+    input, so a stale render can't outlive a manifest edit."""
     folder = TEMPLES_DIR / temple_name
-    height_in = layout.location_text_height(garment_cfg)
     out = {}
     for color in ("black", "white"):
         override = layout.find_text_override(folder, color)
         if override:
             out[color] = (load_art(override), override.name, True)
             continue
-        img = layout.render_text(manifest["location_line"], height_in,
-                                 garment_cfg["print_area"]["dpi"], COLORS[color])
-        name = f"{temple_name} location text {color}.png"
+        img = layout.render_text(manifest["location_line"], TEXT_RENDER_PX / 300, 300, COLORS[color])
+        name = f"{temple_name} location text {color} (auto).png"
         img.save(folder / name)
         out[color] = (img, name, False)
     return out
@@ -235,6 +238,8 @@ def check_title_collision(intended, all_titles, ignore_ids_titles=()):
             problems.append(f"exact duplicate: {t!r}")
         elif t.startswith("Copy of ") or "TEMPLATE" in t.upper():
             continue
+        elif t == f"{intended} - With Date" or intended == f"{t} - With Date":
+            continue  # established, description-skill-safe suffix pattern (Provo, Logan, Cody)
         elif intended in t or t in intended:
             problems.append(f"nests with existing: {t!r}")
     return problems
@@ -311,6 +316,12 @@ def generate_one(c, temple_name, garment_id, args):
     # 2. title collision pre-check (skipped in test mode, which suffixes the title)
     if not args.test_suffix and not args.duplicate_id and not args.fixture:
         problems = check_title_collision(title, all_titles, ignore_ids_titles=(duplicate["title"],))
+        if problems and args.replace:
+            exact_only = all(p.startswith("exact duplicate") for p in problems)
+            if exact_only:
+                print(f"  --replace: creating alongside the existing product; retire the old one "
+                      f"when publishing this draft")
+                problems = []
         if problems:
             raise SystemExit(f"Title collision for {title!r}:\n  " + "\n  ".join(problems))
 
@@ -349,6 +360,9 @@ def main():
     ap.add_argument("--fixture", help="Path to a saved product JSON to use as the duplicate (offline test)")
     ap.add_argument("--scaffold-only", action="store_true",
                     help="Only create the manifest (from temples.json) and exit")
+    ap.add_argument("--replace", action="store_true",
+                    help="Permit an exact-title duplicate: the new draft replaces a live product, "
+                         "which must be retired when the draft is published")
     args = ap.parse_args()
 
     if args.scaffold_only:
@@ -369,11 +383,16 @@ def main():
             errors.append({"garment": gid, "error": str(e)})
             print(f"  ERROR [{gid}]: {e}")
 
-    status = {"generated_at": datetime.now().isoformat(timespec="seconds"),
-              "results": results, "errors": errors}
     if not args.dry_run and not args.fixture:
-        (TEMPLES_DIR / args.temple / "status.json").write_text(json.dumps(status, indent=2))
-        print(f"status.json written to the {args.temple} folder")
+        status_path = TEMPLES_DIR / args.temple / "status.json"
+        status = json.loads(status_path.read_text()) if status_path.exists() else {"results": [], "errors": []}
+        # merge by garment so runs for different garments never clobber each other
+        keep = {r["garment"] for r in results}
+        status["results"] = [r for r in status.get("results", []) if r.get("garment") not in keep] + results
+        status["errors"] = errors
+        status["generated_at"] = datetime.now().isoformat(timespec="seconds")
+        status_path.write_text(json.dumps(status, indent=2))
+        print(f"status.json updated in the {args.temple} folder")
     if errors:
         sys.exit(1)
 
