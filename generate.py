@@ -1,9 +1,12 @@
 """Temple product generator: the duplicate-then-edit pipeline.
 
 Flow per temple per garment (see docs/decisions.md for why):
-  1. Evan duplicates the garment's TEMPLATE product in the Printify UI. The
-     duplicate carries mockup selections, personalization config, shipping.
-  2. This script claims a duplicate (title "Copy of {template_title}"),
+  1. Evan duplicates ANY suitable product of that garment in the Printify UI.
+     The duplicate carries the API-invisible settings: mockup selections,
+     personalization config (With Date sources only), shipping. The design on
+     it does not matter; it is replaced wholesale.
+  2. This script claims an unclaimed "Copy of ..." duplicate matching the
+     garment's blueprint/provider (With Date copies go to the dated line),
      uploads the temple's art and rendered assets, computes the layout, and
      PUTs the design swap plus the real title onto it.
   3. Text layers cannot survive any API write; location text and the divider
@@ -185,8 +188,13 @@ def upload_assets(c, temple_name, manifest, garment_cfg, dry_run):
     return uploads, texts["black"][0]
 
 
-def find_duplicate(c, template_title):
-    """Find exactly one unclaimed 'Copy of {template_title}' product."""
+def find_duplicate(c, garment_cfg):
+    """Find unclaimed 'Copy of ...' products usable for this garment. Any
+    duplicate of the right blueprint/provider works (Evan: 'it doesn't matter
+    which one I duplicate'); the design is replaced wholesale. The one
+    discriminator is 'With Date': only those duplicates carry the
+    personalization config, so they are reserved for the dated line.
+    Front-logo copies are ignored (test products)."""
     items, page = [], 1
     while True:
         resp = c.list_products(page=page)
@@ -198,7 +206,20 @@ def find_duplicate(c, template_title):
         if last is None or page >= last:
             break
         page += 1
-    dupes = [p for p in items if p["title"].strip() == f"Copy of {template_title}"]
+    dated_garment = "dated" in garment_cfg["layout_profile"]
+    dupes = []
+    for p in items:
+        title = p["title"].strip()
+        if not title.lower().startswith("copy of"):
+            continue
+        if p.get("blueprint_id") != garment_cfg["blueprint_id"] or \
+           p.get("print_provider_id") != garment_cfg["print_provider_id"]:
+            continue
+        if "front logo" in title.lower():
+            continue
+        if ("with date" in title.lower()) != dated_garment:
+            continue
+        dupes.append(p)
     return dupes, [p["title"] for p in items]
 
 
@@ -276,18 +297,16 @@ def generate_one(c, temple_name, garment_id, args):
         all_titles = []
         print(f"  using fixture duplicate {duplicate['id']} ({duplicate['title']!r})")
     else:
-        template_title = garment_cfg.get("template_title")
-        if not template_title:
-            raise SystemExit(f"garments/{garment_id}.json has no template_title; add it once the "
-                             f"TEMPLATE product exists in Printify.")
-        dupes, all_titles = find_duplicate(c, template_title)
+        dupes, all_titles = find_duplicate(c, garment_cfg)
         if not dupes:
-            raise SystemExit(f"No 'Copy of {template_title}' found in the shop. Duplicate the "
-                             f"template in the Printify UI first.")
-        if len(dupes) > 1:
-            raise SystemExit(f"{len(dupes)} unclaimed duplicates of {template_title!r} found; "
-                             f"pass --duplicate-id to disambiguate.")
+            kind = "a With Date product" if "dated" in garment_cfg["layout_profile"] else \
+                   f"any {garment_cfg['display_name']} product (not With Date, not front logo)"
+            raise SystemExit(f"No usable 'Copy of ...' duplicate for {garment_id} in the shop. "
+                             f"Duplicate {kind} in the Printify UI first.")
         duplicate = c.get_product(dupes[0]["id"])
+        if len(dupes) > 1:
+            print(f"  {len(dupes)} unclaimed duplicates available; claiming {duplicate['title']!r} "
+                  f"({duplicate['id']})")
 
     # 2. title collision pre-check (skipped in test mode, which suffixes the title)
     if not args.test_suffix and not args.duplicate_id and not args.fixture:
