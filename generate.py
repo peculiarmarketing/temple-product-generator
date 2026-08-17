@@ -49,10 +49,58 @@ TARGET_ART_PX = 4096
 COLORS = {"black": (0, 0, 0, 255), "white": (255, 255, 255, 255)}
 
 
+def detect_art_files(folder):
+    """Find the black and white temple SVGs in a folder root (never in
+    subfolders, never the location text files)."""
+    art = {}
+    for color in ("black", "white"):
+        hits = [p for p in folder.glob("*.svg")
+                if color in p.name.lower() and "location text" not in p.name.lower()]
+        if len(hits) != 1:
+            raise SystemExit(f"Expected exactly one {color} SVG in {folder}, found "
+                             f"{[p.name for p in hits] or 'none'}. Fix the folder or write a manifest.")
+        art[color] = hits[0].name
+    return art
+
+
+def scaffold_manifest(temple_name):
+    """Build a manifest automatically from temples.json plus the folder's
+    art files. New temples need only a folder with two SVGs, provided the
+    dataset has a VERIFIED location for them."""
+    dataset = json.loads((PROJECT_ROOT / "temples.json").read_text())
+    dataset.pop("_comment", None)
+    entry = dataset.get(temple_name)
+    if entry is None:
+        raise SystemExit(
+            f"{temple_name!r} has no manifest and is not in temples.json. Add it: look up the "
+            f"temple's PHYSICAL city (churchofjesuschristtemples.org), add an entry with "
+            f"verified=true, and re-run. Note the physical city can differ from the name "
+            f"(Washington D.C. Temple prints KENSINGTON, MARYLAND).")
+    if not entry.get("verified"):
+        raise SystemExit(
+            f"{temple_name!r} is in temples.json but unverified ({entry['location_line']!r}). "
+            f"Verify the physical location against churchofjesuschristtemples.org, set "
+            f"verified=true, and re-run. Do not guess.")
+    folder = TEMPLES_DIR / temple_name
+    manifest = {
+        "slug": temple_name.lower().replace(" ", "-").replace(".", ""),
+        "official_name": entry["official_name"],
+        "location_line": entry["location_line"],
+        "place_tokens": {"default": temple_name},
+        "art": detect_art_files(folder),
+        "garments": ["cc1717"],
+        "scaffolded": True,
+    }
+    (folder / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print(f"scaffolded manifest for {temple_name}: {entry['location_line']} "
+          f"({manifest['art']['black']} / {manifest['art']['white']})")
+    return manifest
+
+
 def load_manifest(temple_name):
     path = TEMPLES_DIR / temple_name / "manifest.json"
     if not path.exists():
-        raise SystemExit(f"No manifest at {path}. Create it first (schema in generate.py docstring).")
+        return scaffold_manifest(temple_name)
     m = json.loads(path.read_text())
     for color in ("black", "white"):
         art = TEMPLES_DIR / temple_name / m["art"][color]
@@ -280,7 +328,13 @@ def main():
     ap.add_argument("--test-suffix", help='e.g. " GENERATOR TEST": skips collision abort, marks title')
     ap.add_argument("--duplicate-id", help="Explicit product id to edit instead of searching")
     ap.add_argument("--fixture", help="Path to a saved product JSON to use as the duplicate (offline test)")
+    ap.add_argument("--scaffold-only", action="store_true",
+                    help="Only create the manifest (from temples.json) and exit")
     args = ap.parse_args()
+
+    if args.scaffold_only:
+        load_manifest(args.temple)
+        return
 
     c = None if (args.dry_run and args.fixture) else PrintifyClient(*load_config())
     manifest = load_manifest(args.temple)
