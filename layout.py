@@ -242,6 +242,20 @@ def render_divider(garment_cfg, color=(0, 0, 0, 255), dpi=300):
     return Image.new("RGBA", (w, h), color)
 
 
+def render_art_card(svg_path, size=2048, coverage=0.86):
+    """Product-gallery close-up: the black line art centered on a clean white
+    square. Centered by ink, not frame, so square-padded and trimmed SVGs
+    come out identical."""
+    img = rasterize_svg(svg_path, size + 512)
+    ink = img.crop(img.getchannel("A").getbbox())
+    target = round(size * coverage)
+    scale = target / max(ink.size)
+    ink = ink.resize((max(1, round(ink.width * scale)), max(1, round(ink.height * scale))), Image.LANCZOS)
+    card = Image.new("RGB", (size, size), (255, 255, 255))
+    card.paste(ink, ((size - ink.width) // 2, (size - ink.height) // 2), ink)
+    return card
+
+
 def compute_stack(temple_art, garment_cfg, text_img, logo_aspect, logo_override=None):
     """Main entry: returns the layer list for one temple on one garment.
     text_img is the location-text image (auto-rendered or Evan's override);
