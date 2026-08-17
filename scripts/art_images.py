@@ -52,25 +52,28 @@ def temples_with_manifests():
     return sorted(p.parent.name for p in TEMPLES_DIR.glob("*/manifest.json"))
 
 
-def push(temple):
-    from shopify_client import ShopifyClient, ShopifyError
-    c = ShopifyClient()
+def push(temple, catalog=None, client=None):
+    """catalog is the one-pass {title: {id, alts}} map from
+    ShopifyClient.all_products_with_media(), fetched once per run."""
+    from shopify_client import ShopifyClient
+    c = client or ShopifyClient()
+    if catalog is None:
+        catalog = c.all_products_with_media()
     status_path = TEMPLES_DIR / temple / "status.json"
     if not status_path.exists():
-        print(f"{temple}: no generated products, skipping")
         return
     titles = [r["title"] for r in json.loads(status_path.read_text()).get("results", []) if r.get("title")]
-    png = override_path(temple) or (card_path(temple) if card_path(temple).exists() else make(temple))
+    png = None
     for title in titles:
-        product = c.find_product_by_title(title)
+        product = catalog.get(title)
         if product is None:
             print(f"  {title!r}: not on Shopify yet (unpublished), waiting")
             continue
-        if any((m.get("alt") or "").startswith(ALT_MARKER) for m in product["media"]["nodes"]):
-            print(f"  {title!r}: art image already present")
-            continue
-        alt = f"{ALT_MARKER} - {temple}"
-        media_id = c.upload_media_image(product["id"], png, alt)
+        if any(a.startswith(ALT_MARKER) for a in product["alts"]):
+            continue  # already has its card
+        if png is None:
+            png = override_path(temple) or (card_path(temple) if card_path(temple).exists() else make(temple))
+        media_id = c.upload_media_image(product["id"], png, f"{ALT_MARKER} - {temple}")
         c.move_media_to_position(product["id"], media_id, 1)  # gallery position 2
         print(f"  {title!r}: art image uploaded and moved to position 2")
 
@@ -84,8 +87,16 @@ def main():
     targets = temples_with_manifests() if args.all else [args.temple] if args.temple else None
     if not targets:
         raise SystemExit("Pass --temple NAME or --all")
+    if args.command == "make":
+        for t in targets:
+            make(t)
+        return
+    from shopify_client import ShopifyClient
+    client = ShopifyClient()
+    catalog = client.all_products_with_media()
+    print(f"catalog snapshot: {len(catalog)} products")
     for t in targets:
-        make(t) if args.command == "make" else push(t)
+        push(t, catalog=catalog, client=client)
 
 
 if __name__ == "__main__":

@@ -36,6 +36,24 @@ class ShopifyClient:
             raise ShopifyError(str(data.get("errors") or r.text)[:800])
         return data["data"]
 
+    def all_products_with_media(self):
+        """One paginated pass over the catalog: {exact title: {id, media_alts}}.
+        Scales as O(catalog/25) queries instead of one query per product."""
+        out, cursor = {}, None
+        while True:
+            data = self.gql("""
+              query($after: String) { products(first: 25, after: $after) {
+                pageInfo { hasNextPage endCursor }
+                nodes { id title media(first: 20) { nodes { alt } } } } }""",
+                {"after": cursor})
+            block = data["products"]
+            for p in block["nodes"]:
+                out[p["title"].strip()] = {"id": p["id"],
+                                           "alts": [m.get("alt") or "" for m in p["media"]["nodes"]]}
+            if not block["pageInfo"]["hasNextPage"]:
+                return out
+            cursor = block["pageInfo"]["endCursor"]
+
     def find_product_by_title(self, title):
         data = self.gql("""
           query($q: String!) { products(first: 5, query: $q) {
