@@ -191,13 +191,14 @@ def upload_assets(c, temple_name, manifest, garment_cfg, dry_run):
     return uploads, texts["black"][0]
 
 
-def find_duplicate(c, garment_cfg):
-    """Find unclaimed 'Copy of ...' products usable for this garment. Any
-    duplicate of the right blueprint/provider works (Evan: 'it doesn't matter
-    which one I duplicate'); the design is replaced wholesale. The one
-    discriminator is 'With Date': only those duplicates carry the
-    personalization config, so they are reserved for the dated line.
-    Front-logo copies are ignored (test products)."""
+_PRODUCTS_CACHE = None
+
+
+def fetch_all_products(c, refresh=False):
+    """One product list per run; generated titles are appended by callers."""
+    global _PRODUCTS_CACHE
+    if _PRODUCTS_CACHE is not None and not refresh:
+        return _PRODUCTS_CACHE
     items, page = [], 1
     while True:
         resp = c.list_products(page=page)
@@ -209,6 +210,18 @@ def find_duplicate(c, garment_cfg):
         if last is None or page >= last:
             break
         page += 1
+    _PRODUCTS_CACHE = items
+    return items
+
+
+def find_duplicate(c, garment_cfg):
+    """Find unclaimed 'Copy of ...' products usable for this garment. Any
+    duplicate of the right blueprint/provider works (Evan: 'it doesn't matter
+    which one I duplicate'); the design is replaced wholesale. The one
+    discriminator is 'With Date': only those duplicates carry the
+    personalization config, so they are reserved for the dated line.
+    Front-logo copies are ignored (test products)."""
+    items = fetch_all_products(c)
     dated_garment = "dated" in garment_cfg["layout_profile"]
     dupes = []
     for p in items:
@@ -293,8 +306,17 @@ def generate_one(c, temple_name, garment_id, args):
     title = garment_cfg["naming"]["title"].format(place=place) + (args.test_suffix or "")
     print(f"[{garment_id}] {temple_name} -> {title!r}")
 
-    # 1. find the duplicate to edit
-    if args.duplicate_id:
+    # 1. find the product to edit
+    if getattr(args, "in_place", False):
+        # Backfill path: regenerate the design onto the EXISTING live product,
+        # keeping its title, Shopify URL, mockups, and settings.
+        matches = [p for p in fetch_all_products(c) if p["title"].strip() == title]
+        if len(matches) != 1:
+            raise SystemExit(f"--in-place needs exactly one product titled {title!r}; "
+                             f"found {len(matches)}.")
+        duplicate = c.get_product(matches[0]["id"])
+        all_titles = []
+    elif args.duplicate_id:
         duplicate = c.get_product(args.duplicate_id)
         all_titles = []
     elif args.fixture:
@@ -343,6 +365,11 @@ def generate_one(c, temple_name, garment_id, args):
     # 4. the swap
     c.update_product(duplicate["id"], body)
     after = c.get_product(duplicate["id"])
+    if _PRODUCTS_CACHE is not None:
+        _PRODUCTS_CACHE[:] = [p for p in _PRODUCTS_CACHE if p["id"] != duplicate["id"]] + \
+                             [{"id": after["id"], "title": after["title"],
+                               "blueprint_id": after["blueprint_id"],
+                               "print_provider_id": after["print_provider_id"]}]
     n_groups = len(after["print_areas"])
     print(f"  PUT ok: {after['title']!r}, {n_groups} groups")
     if "dated" in garment_cfg["layout_profile"]:
@@ -350,9 +377,93 @@ def generate_one(c, temple_name, garment_id, args):
     return {"garment": garment_id, "product_id": duplicate["id"], "title": after["title"]}
 
 
+def write_status(temple_name, results, errors):
+    status_path = TEMPLES_DIR / temple_name / "status.json"
+    status = json.loads(status_path.read_text()) if status_path.exists() else {"results": [], "errors": []}
+    keep = {r["garment"] for r in results}
+    status["results"] = [r for r in status.get("results", []) if r.get("garment") not in keep] + results
+    status["errors"] = errors
+    status["generated_at"] = datetime.now().isoformat(timespec="seconds")
+    status_path.write_text(json.dumps(status, indent=2))
+
+
+def all_garment_ids():
+    return sorted(p.stem for p in (PROJECT_ROOT / "garments").glob("*.json"))
+
+
+def sweep(c, args):
+    """Morning-run behavior: walk every temple folder, figure out what is
+    missing, generate what has a duplicate waiting, and report the rest.
+    A garment is satisfied when a product with its intended title already
+    exists in the shop (hand-built or generated)."""
+    existing_titles = {p["title"].strip() for p in fetch_all_products(c)}
+    rows, generated = [], 0
+    for folder in sorted(TEMPLES_DIR.iterdir()):
+        if not folder.is_dir() or folder.name.startswith((".", "1.")):
+            continue
+        temple = folder.name
+        try:
+            detect_art_files(folder)
+        except SystemExit:
+            rows.append((temple, "-", "NO ART YET"))
+            continue
+        try:
+            manifest = load_manifest(temple)
+        except SystemExit as e:
+            rows.append((temple, "-", f"NEEDS LOCATION VERIFICATION"))
+            continue
+        listed = manifest.get("garments", "all")
+        garment_ids = all_garment_ids() if listed == "all" else listed
+        results, errors = [], []
+        for gid in garment_ids:
+            cfg = json.loads((PROJECT_ROOT / "garments" / f"{gid}.json").read_text())
+            place = manifest["place_tokens"].get(gid, manifest["place_tokens"]["default"])
+            intended = cfg["naming"]["title"].format(place=place)
+            if intended in existing_titles:
+                rows.append((temple, gid, "exists"))
+                continue
+            if args.report_only:
+                rows.append((temple, gid, "PENDING"))
+                continue
+            try:
+                r = generate_one(c, temple, gid, args)
+                results.append(r)
+                existing_titles.add(intended)
+                generated += 1
+                rows.append((temple, gid, "GENERATED"))
+            except SystemExit as e:
+                msg = str(e)
+                if "No usable 'Copy of" in msg:
+                    rows.append((temple, gid, "WAITING FOR DUPLICATE"))
+                else:
+                    errors.append({"garment": gid, "error": msg})
+                    rows.append((temple, gid, f"ERROR: {msg[:60]}"))
+        if results or errors:
+            write_status(temple, results, errors)
+    print()
+    print(f"{'Temple':<20} {'Garment':<14} State")
+    for t, g, s in rows:
+        if s != "exists" or args.verbose:
+            print(f"{t:<20} {g:<14} {s}")
+    n_exists = sum(1 for r in rows if r[2] == "exists")
+    print(f"\n{n_exists} satisfied, {generated} generated, "
+          f"{sum(1 for r in rows if 'WAITING' in r[2])} waiting for duplicates, "
+          f"{sum(1 for r in rows if r[2] in ('PENDING',))} pending, "
+          f"{sum(1 for r in rows if 'ERROR' in r[2])} errors, "
+          f"{sum(1 for r in rows if r[2] == 'NO ART YET')} folders without art")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--temple", required=True, help="Temple folder name, e.g. 'Logan'")
+    ap.add_argument("--temple", help="Temple folder name, e.g. 'Logan'")
+    ap.add_argument("--sweep", action="store_true",
+                    help="Walk all temple folders: generate what has duplicates waiting, report the rest")
+    ap.add_argument("--report-only", action="store_true",
+                    help="With --sweep: coverage report only, no API writes")
+    ap.add_argument("--in-place", dest="in_place", action="store_true",
+                    help="Backfill: PUT the design onto the EXISTING product with the intended title "
+                         "(preserves Shopify URL and settings; publish manually afterward)")
+    ap.add_argument("--verbose", action="store_true", help="With --sweep: also list satisfied rows")
     ap.add_argument("--garments", help="Comma-separated garment ids; default: manifest's list")
     ap.add_argument("--dry-run", action="store_true", help="No API writes; save the would-be body")
     ap.add_argument("--test-suffix", help='e.g. " GENERATOR TEST": skips collision abort, marks title')
@@ -368,6 +479,12 @@ def main():
     if args.scaffold_only:
         load_manifest(args.temple)
         return
+
+    if args.sweep:
+        sweep(PrintifyClient(*load_config()), args)
+        return
+    if not args.temple:
+        raise SystemExit("Pass --temple NAME, or --sweep for all temples.")
 
     c = None if (args.dry_run and args.fixture) else PrintifyClient(*load_config())
     manifest = load_manifest(args.temple)
@@ -391,14 +508,7 @@ def main():
             print(f"  ERROR [{gid}]: {e}")
 
     if not args.dry_run and not args.fixture:
-        status_path = TEMPLES_DIR / args.temple / "status.json"
-        status = json.loads(status_path.read_text()) if status_path.exists() else {"results": [], "errors": []}
-        # merge by garment so runs for different garments never clobber each other
-        keep = {r["garment"] for r in results}
-        status["results"] = [r for r in status.get("results", []) if r.get("garment") not in keep] + results
-        status["errors"] = errors
-        status["generated_at"] = datetime.now().isoformat(timespec="seconds")
-        status_path.write_text(json.dumps(status, indent=2))
+        write_status(args.temple, results, errors)
         print(f"status.json updated in the {args.temple} folder")
     if errors:
         sys.exit(1)
