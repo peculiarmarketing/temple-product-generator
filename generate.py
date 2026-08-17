@@ -66,6 +66,19 @@ def detect_art_files(folder):
     return art
 
 
+def ensure_art_files(folder, temple_name):
+    """SVG pair, tracing it from the source PNG if needed. The trace only
+    stands if it passes the tracer skill's health checks."""
+    try:
+        return detect_art_files(folder)
+    except SystemExit:
+        from trace_art import find_source_png, trace_temple
+        if find_source_png(folder, temple_name) is None:
+            raise
+        trace_temple(folder, temple_name)
+        return detect_art_files(folder)
+
+
 def scaffold_manifest(temple_name):
     """Build a manifest automatically from temples.json plus the folder's
     art files. New temples need only a folder with two SVGs, provided the
@@ -90,7 +103,7 @@ def scaffold_manifest(temple_name):
         "official_name": entry["official_name"],
         "location_line": entry["location_line"],
         "place_tokens": {"default": temple_name},
-        "art": detect_art_files(folder),
+        "art": ensure_art_files(folder, temple_name),
         "garments": "all",
         "scaffolded": True,
     }
@@ -424,9 +437,14 @@ def sweep(c, args):
             continue
         temple = folder.name
         try:
-            detect_art_files(folder)
-        except SystemExit:
-            rows.append((temple, "-", "NO ART YET"))
+            if args.report_only:
+                detect_art_files(folder)
+            else:
+                ensure_art_files(folder, temple)
+        except SystemExit as e:
+            state = "NO ART YET" if "no source PNG" in str(e) or "Expected exactly one" in str(e) \
+                else f"TRACE FAILED: {str(e)[:70]}"
+            rows.append((temple, "-", state))
             continue
         try:
             manifest = load_manifest(temple)
