@@ -54,6 +54,22 @@ class ShopifyClient:
                 return out
             cursor = block["pageInfo"]["endCursor"]
 
+    def all_products_summary(self):
+        """One paginated pass over the catalog: [{title, handle, status,
+        publishedAt}, ...]. A list, not a dict, so duplicate titles stay visible."""
+        out, cursor = [], None
+        while True:
+            data = self.gql("""
+              query($after: String) { products(first: 100, after: $after) {
+                pageInfo { hasNextPage endCursor }
+                nodes { title handle status publishedAt } } }""",
+                {"after": cursor})
+            block = data["products"]
+            out.extend(block["nodes"])
+            if not block["pageInfo"]["hasNextPage"]:
+                return out
+            cursor = block["pageInfo"]["endCursor"]
+
     def find_product_by_title(self, title):
         data = self.gql("""
           query($q: String!) { products(first: 5, query: $q) {
