@@ -26,13 +26,13 @@
   "divider": {
     "cx_in": 7.49,
     "cy_in": 11.739,
-    "w_in": 2.0,
+    "w_in": 1.5,
     "h_in": 0.04,
     "top_in": 11.719,
     "bottom_in": 11.759,
     "x": 0.5,
     "y": 0.691,
-    "scale": 0.134
+    "scale": 0.1
   },
   "date_zone": {
     "cx_in": 7.49,

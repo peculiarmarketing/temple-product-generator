@@ -10,7 +10,7 @@
   "dated": {
     "location_text_height_in": 0.38,
     "gap_text_to_divider_in": 0.2,
-    "divider_width_in": 3.0,
+    "divider_width_in": 2.0,
     "divider_height_in": 0.04,
     "gap_divider_to_date_in": 0.13,
     "date_zone_width_in": 7.0,

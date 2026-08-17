@@ -34,8 +34,16 @@ def find_temple_svg(temple_name, color="black"):
     return hits[0]
 
 
-def build_preview(temple_name, location_text, garment_id):
+def build_preview(temple_name, location_text, garment_id, spacing_overrides=None, suffix=""):
     garment_cfg = json.loads((PROJECT_ROOT / "garments" / f"{garment_id}.json").read_text())
+    if spacing_overrides:
+        merged = garment_cfg.get("spacing_overrides") or {}
+        for k, v in spacing_overrides.items():
+            if isinstance(v, dict):
+                merged.setdefault(k, {}).update(v)
+            else:
+                merged[k] = v
+        garment_cfg["spacing_overrides"] = merged
     svg_path = find_temple_svg(temple_name)
     temple = TempleArt(svg_path)
     logo_img = load_art(LOGO_BLACK)
@@ -81,7 +89,7 @@ def build_preview(temple_name, location_text, garment_id):
             paste(sample, {**layer, "w_in": natural_w_in})
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    out = OUT_DIR / f"{temple_name.lower().replace(' ', '-')}_{garment_id}.png"
+    out = OUT_DIR / f"{temple_name.lower().replace(' ', '-')}_{garment_id}{suffix}.png"
     canvas.convert("RGB").save(out)
     geo = {l["key"]: {k: (round(v, 3) if isinstance(v, (int, float)) else v)
                       for k, v in l.items() if k.endswith("_in") or k in ("x", "y", "scale", "corner")}
@@ -96,5 +104,8 @@ if __name__ == "__main__":
     ap.add_argument("--temple", required=True)
     ap.add_argument("--location", required=True, help='e.g. "LOGAN, UTAH"')
     ap.add_argument("--garment", default="cc1717")
+    ap.add_argument("--override", help='JSON spacing overrides, e.g. \'{"dated": {"divider_width_in": 2.0}}\'')
+    ap.add_argument("--suffix", default="", help="output filename suffix for variant renders")
     a = ap.parse_args()
-    build_preview(a.temple, a.location, a.garment)
+    build_preview(a.temple, a.location, a.garment,
+                  spacing_overrides=json.loads(a.override) if a.override else None, suffix=a.suffix)

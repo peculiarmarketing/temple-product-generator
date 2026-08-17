@@ -6,8 +6,8 @@ Generates Peculiar People temple products on Printify from templates, one produc
 
 | Phase | State |
 |---|---|
-| 1. Prove the API round-trip | Done, gate report in artifacts/phase1/findings.md, awaiting Evan's gate review |
-| 2. Layout math | Not started |
+| 1. Prove the API round-trip | Done, gate passed. Report: artifacts/phase1/findings.md |
+| 2. Layout math | Done, gate passed 17 Aug 2026. Previews: artifacts/phase2-previews/. Decisions: docs/decisions.md |
 | 3. Templates and generator | Not started |
 | 4. Skill and scheduled event | Not started |
 | 5. Backfill and QA | Not started |
