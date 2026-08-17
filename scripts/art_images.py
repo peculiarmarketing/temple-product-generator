@@ -52,30 +52,66 @@ def temples_with_manifests():
     return sorted(p.parent.name for p in TEMPLES_DIR.glob("*/manifest.json"))
 
 
-def push(temple, catalog=None, client=None):
-    """catalog is the one-pass {title: {id, alts}} map from
-    ShopifyClient.all_products_with_media(), fetched once per run."""
+EXCLUDE_MARKERS = ("copy of", "template", "generator test", "api test")
+
+
+def temple_tokens():
+    """{token: temple folder}. Tokens are folder names plus every manifest
+    place token, matched longest-first so Provo City Center beats Provo."""
+    tokens = {}
+    for mf in TEMPLES_DIR.glob("*/manifest.json"):
+        temple = mf.parent.name
+        m = json.loads(mf.read_text())
+        for tok in {temple, *m.get("place_tokens", {}).values()}:
+            tokens[tok] = temple
+    return tokens
+
+
+def match_temple(title, tokens):
+    """Longest place token whose 'Token ...' prefix fits a temple-product
+    title. 'Salt Lake City Temple Tee' matches Salt Lake; 'Provo City Center
+    Temple Tee' matches Provo City Center, not Provo."""
+    t = title.strip()
+    if any(x in t.lower() for x in EXCLUDE_MARKERS) or " Temple" not in t:
+        return None
+    for tok in sorted(tokens, key=len, reverse=True):
+        if t.startswith(tok + " "):
+            return tokens[tok]
+    return None
+
+
+def push_catalog(only_temple=None):
+    """Card every temple product on Shopify that is missing one. Scope per
+    Evan's rule: ANY temple product, hand-built or generated. Idempotent via
+    the alt marker; excludes copies, templates, and test titles."""
     from shopify_client import ShopifyClient
-    c = client or ShopifyClient()
-    if catalog is None:
-        catalog = c.all_products_with_media()
-    status_path = TEMPLES_DIR / temple / "status.json"
-    if not status_path.exists():
-        return
-    titles = [r["title"] for r in json.loads(status_path.read_text()).get("results", []) if r.get("title")]
-    png = None
-    for title in titles:
-        product = catalog.get(title)
-        if product is None:
-            print(f"  {title!r}: not on Shopify yet (unpublished), waiting")
+    c = ShopifyClient()
+    catalog = c.all_products_with_media()
+    tokens = temple_tokens()
+    plan, skipped = [], []
+    for title, product in sorted(catalog.items()):
+        temple = match_temple(title, tokens)
+        if temple is None:
+            if " Temple" in title and not any(x in title.lower() for x in EXCLUDE_MARKERS):
+                skipped.append(title)
+            continue
+        if only_temple and temple != only_temple:
             continue
         if any(a.startswith(ALT_MARKER) for a in product["alts"]):
-            continue  # already has its card
-        if png is None:
-            png = override_path(temple) or (card_path(temple) if card_path(temple).exists() else make(temple))
-        media_id = c.upload_media_image(product["id"], png, f"{ALT_MARKER} - {temple}")
+            continue
+        plan.append((title, product, temple))
+    print(f"catalog: {len(catalog)} products; {len(plan)} missing cards; "
+          f"{len(skipped)} unmatched temple-like titles")
+    for title in skipped:
+        print(f"  UNMATCHED (no card): {title!r}")
+    cards = {}
+    for title, product, temple in plan:
+        if temple not in cards:
+            cards[temple] = override_path(temple) or \
+                (card_path(temple) if card_path(temple).exists() else make(temple))
+        media_id = c.upload_media_image(product["id"], cards[temple], f"{ALT_MARKER} - {temple}")
         c.move_media_to_position(product["id"], media_id, 1)  # gallery position 2
-        print(f"  {title!r}: art image uploaded and moved to position 2")
+        print(f"  {title!r} <- {temple} card, position 2")
 
 
 def main():
@@ -91,12 +127,7 @@ def main():
         for t in targets:
             make(t)
         return
-    from shopify_client import ShopifyClient
-    client = ShopifyClient()
-    catalog = client.all_products_with_media()
-    print(f"catalog snapshot: {len(catalog)} products")
-    for t in targets:
-        push(t, catalog=catalog, client=client)
+    push_catalog(only_temple=None if args.all else args.temple)
 
 
 if __name__ == "__main__":
