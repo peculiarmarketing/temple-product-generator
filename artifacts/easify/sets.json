@@ -1,0 +1,9 @@
+{
+  "_comment": "Maps garment lines to Easify option sets. Sets are located in option-sets.csv by option_set_title; set ids live in the CSV only. A set listed here but absent from the CSV is created on the next sync, cloned structurally from clone_from.",
+  "sets": [
+    { "garment": "cc1717", "set_title": "Tee", "option_name": "Temple Tee" },
+    { "garment": "cc1566", "set_title": "Sweatshirt", "option_name": "Temple Sweatshirt" },
+    { "garment": "cc1567", "set_title": "Hoodie", "option_name": "Temple Hoodie" },
+    { "garment": "cc1717-dated", "set_title": "Tee - With Date", "option_name": "Temple Tee - With Date", "clone_from": "Tee" }
+  ]
+}
