@@ -55,6 +55,39 @@ def _run_tracer(png_path, out_dir, extra_flags):
     return r.stdout
 
 
+SPECK_CUTOFF_FRAC = 0.005  # paths smaller than 0.5% of the drawing's longest side are dots
+
+
+def strip_specks(black_svg, white_svg):
+    """Remove speck paths: shadow-haze artifacts that binarization turns into
+    isolated dots. A speck is a path whose whole extent is tiny relative to
+    the drawing; real linework is long, so its paths are always large. The
+    same indices are removed from both variants (shared geometry)."""
+    import re
+    b_txt = black_svg.read_text()
+    paths = re.findall(r"<path[^>]*/?>(?:</path>)?", b_txt)
+    vb = re.search(r'viewBox="([\d. -]+)"', b_txt)
+    vw, vh = (float(x) for x in vb.group(1).split()[2:4])
+    cutoff = max(vw, vh) * SPECK_CUTOFF_FRAC
+    drop = set()
+    for i, p in enumerate(paths):
+        d = re.search(r'd="([^"]+)"', p)
+        tf = re.search(r"translate\(([\d. ,-]+)\)", p)
+        nums = [float(x) for x in re.findall(r"-?\d+\.?\d*", d.group(1))]
+        xs, ys = nums[0::2], nums[1::2]
+        if xs and (max(xs) - min(xs)) < cutoff and (max(ys) - min(ys)) < cutoff:
+            drop.add(i)
+    if not drop:
+        return 0
+    for svg in (black_svg, white_svg):
+        txt = svg.read_text()
+        found = re.findall(r"<path[^>]*/?>(?:</path>)?", txt)
+        for i in sorted(drop, reverse=True):
+            txt = txt.replace(found[i], "", 1)
+        svg.write_text(txt)
+    return len(drop)
+
+
 def _rasterize(svg_path, width=None, height=None):
     kw = {}
     if width:
@@ -134,6 +167,9 @@ def trace_temple(folder, temple):
         shutil.copyfile(source, staged)
         print(f"  tracing {source.name} (production pass)")
         _run_tracer(staged, folder, STANDARD_FLAGS)
+        removed = strip_specks(folder / f"{temple} black.svg", folder / f"{temple} white.svg")
+        if removed:
+            print(f"  speck filter: removed {removed} shadow-haze dots")
         print(f"  tracing {source.name} (QC pass, untrimmed)")
         _run_tracer(staged, td, ["--drop-label", "--only", "black"])
         problems, metrics = verify_trace(folder, temple, source, Path(td) / f"{temple} black.svg")
