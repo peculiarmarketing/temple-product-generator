@@ -22,4 +22,10 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
 - **Dress rehearsal passed.** Generated Logan Temple Tee (from a UI duplicate of the live product) matched the hand-built one in the editor with all mockups preserved and high-resolution art. Evan approved.
 - **Publishing stays manual for now.** The generator produces complete unpublished drafts; Evan clicks publish in Printify. Automated publish (with the 200-per-30-minutes throttle) is deferred to backfill planning.
 - **Personalization-optional is parked.** Folding With Date into base would need a design that looks right with and without the date line; Evan is not designing that now.
+## 17 August 2026 (Phases 4 and 5 closed)
+
+- **Recurring runs are manual.** No scheduled task. Evan triggers the sweep in a session ("run the sweep"); the project skill handles it. Rationale: generation depends on duplicates Evan makes by hand and publishing is manual, so a schedule saves only the typing.
+- **No catalog backfill.** Evan decided the existing hand-built products stay as they are. `--in-place` remains available as a tool for one-off regeneration if ever wanted, but there is no backfill campaign, which also retires the publish-throttle concern.
+- **Catalog gaps found by the first coverage report:** seven missing With Date tees (Nauvoo, Provo City Center, Salt Lake, San Diego, Saratoga Springs, St. George, Washington DC). Evan is making seven With Date duplicates; one sweep fills all seven.
+
 - **No designated template products; any duplicate works.** Evan clarified his "templates" are Printify editor design-templates (saved layer arrangements), which the generator replaces entirely. What the pipeline needs from a duplicate is only the API-invisible settings, and any product of the right garment carries them. The generator claims any unclaimed "Copy of ..." product matching the garment's blueprint and provider; "With Date" copies are reserved for the dated line (personalization config); "front logo" copies are ignored (tests). Evan's editor design-templates become unnecessary for generated products.

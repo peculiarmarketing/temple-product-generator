@@ -8,9 +8,9 @@ Generates Peculiar People temple products on Printify from templates, one produc
 |---|---|
 | 1. Prove the API round-trip | Done, gate passed. Report: artifacts/phase1/findings.md |
 | 2. Layout math | Done, gate passed 17 Aug 2026. Previews: artifacts/phase2-previews/. Decisions: docs/decisions.md |
-| 3. Templates and generator | Not started |
-| 4. Skill and scheduled event | Not started |
-| 5. Backfill and QA | Not started |
+| 3. Templates and generator | Done, gate passed (Logan rehearsal; San Antonio full set generated) |
+| 4. Skill and manual trigger | Done. Project skill in ../.claude/skills/; no schedule by Evan's choice |
+| 5. Backfill | Closed: Evan decided no backfill. --in-place available for one-offs |
 
 ## Setup
 
