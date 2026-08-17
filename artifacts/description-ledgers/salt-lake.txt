@@ -1,0 +1,44 @@
+SOURCE LEDGER - Salt Lake Temple
+
+VERIFIED
+[T1] Site designated July 28, 1847 by Brigham Young; groundbreaking Feb 14, 1853 (Young presided, Kimball dedicated site); cornerstones April 6, 1853 - newsroom backgrounder, thechurchnews.com, churchofjesuschrist.org history topics
+[T1] Dedicated April 6, 1893 by Wilford Woodruff, 31 sessions through April 24, twice daily plus children's sessions - churchofjesuschrist.org history topics
+[T1] Walls 9 ft to 6 ft; ~119x181 ft; 253,000+ sq ft, largest temple; spire 210 ft, 222.5 ft with 12.5-ft statue; Dallin sculptor; copper with 22k gold leaf; counterweight lets statue sway - newsroom backgrounder, thechurchnews.com
+[T1] Brigham Young "endure through the Millennium" quote cited to Deseret News, Oct 14, 1863, p. 97 - churchofjesuschrist.org (Apr 2020 general conference citation)
+[T1] Foundation defects removed/replaced, ~5-year delay; wagon hauling then 1870s railroad; Angell architect, J.D.C. Young completed after 1887 (steel frame, electricity, steam heat, elevators) - churchofjesuschrist.org, thechurchnews.com
+[T1] Capstone April 6, 1892, ~40,000 present; Lorenzo Snow led the first Hosanna Shout in its current form; Moroni placed same ceremony; interior finished in one year - thechurchnews.com, churchofjesuschrist.org
+[T1] Lorenzo Snow first temple president until Sept 1898 - churchofjesuschrist.org manual
+[T1] ~5,000 invited mostly non-member guests toured April 5, 1893 - Liahona 2025, newsroom
+[T1] Symbolism: earthstones (~3.5 tons), moonstones in phases from Orson Pratt's sketches, 52-point sunstones, Big Dipper on west tower, clasped hands, all-seeing eye, cloudstones - thechurchnews.com 1993 centennial, Ensign 1978
+[T1] Masonry precision: south wall within 1/8 inch of north over 181 ft - Ensign 1978
+[T1] Renovation announced April 19, 2019 (Nelson); closed Dec 29, 2019; base isolation; north entry pavilions, skylit grand hall - newsroom
+[T1] March 18, 2020 M5.7 earthquake dropped the trumpet; statue+capstone (~5,000 lbs) craned off May 18, 2020; refurbished statue returned April 2, 2024; 1892 time capsule opened 2020 - newsroom, thechurchnews.com
+[T1] March 2021: five instruction rooms (150 seats each), single-room film endowment replacing live sessions, ten added sealing rooms ("total of 23"), second baptistry - thechurchnews.com, newsroom
+[T1] Completion projected end of 2026; open house announced Feb 14, 2025, runs April 5 - Oct 1, 2027; tickets from Sept 1, 2026; NO REDEDICATION DATE ANNOUNCED as of Aug 17, 2026 - newsroom, thechurchnews.com
+[T2] Quartz monzonite from Little Cottonwood Canyon; 4th dedicated temple in operation; 10 acres; 4,335 ft elevation; 1962-63 closure; 1966 annex - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Earthquake date - Mar 13 (T2 extraction) vs Mar 18 (T1 x2); T1 won
+Statue height - 14 ft (T2) vs 12.5 ft (T1 x2); T1 won
+Statue movement - "immovable" (T2) vs "sways slightly" (T1); T1 won
+Exterior material - T1 says "granite", T2 specifies quartz monzonite; precise geological term shipped (all agree on Little Cottonwood)
+Sealing rooms - 23 announced (T1) vs 22 (T2 current); T1 shipped as "announced total", flagged
+Wall taper - 6 ft (current backgrounder) vs 5 ft (Ensign 1978); current won
+Floor area - 253,000+ (T1) vs 382,207 (T2 post-renovation listing); T1 shipped, T2 held for recheck
+Session count - "31 to 41" (almanac hedge) vs 31 (history topics); definite figure won
+Capstone crowd - 30,000-60,000 range; conservative 40,000 shipped
+
+VOLATILE (re-check before reprint)
+Open house dates (Apr 5 - Oct 1, 2027) - scheduled future event
+Rededication date - none announced as of Aug 17, 2026; an unsourced "June 13, 2027" is circulating, DO NOT USE without Newsroom confirmation
+Completion projection (end of 2026) - already shifted once
+Post-renovation room counts and floor area - verify against official post-open-house fact sheets
+All "closed for renovation" status language - must be rewritten when the temple reopens
+
+OMITTED (myths and unsourceables, per the known-myths file)
+East doors "sealed until the Second Coming" - folklore; even the standard correction is shaky (Church News 2019 reports wedding parties used the east doors before the 1960s), so only sourced entrance facts shipped
+"45 years 8 months 9 days longest construction" - unsourceable; 40-year span shipped
+Hollow pillars foreseeing elevators - myth; only J.D.C. Young's elevators shipped
+"31 sessions over 18 days" - arithmetic error
+Tabernacle organ waterwheel, secret tunnel network - legends
+75,000 dedication attendance, "first standing Moroni", "only temple dedicated by Woodruff", saturn/star stone counts, Snow set-apart date, 1858 army burial story - insufficient or conflicting sourcing

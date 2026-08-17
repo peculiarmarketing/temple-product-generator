@@ -1,0 +1,43 @@
+SOURCE LEDGER - San Diego California Temple
+
+VERIFIED
+[T1] Announced April 7, 1984 by Gordon B. Hinckley (then counselor) - thechurchnews.com
+[T1] Groundbreaking Feb 27, 1988; Benson turned first sod; Monson dedicated site - thechurchnews.com
+[T1] Dedicated April 25-30, 1993, 23 sessions by Presidents Hinckley and Monson; 49,273 attended; 45th operating temple - thechurchnews.com 1993
+[T1] First president Floyd L. Packard, matron Alice E. Packard - thechurchnews.com 1993
+[T1] 1993 open house Feb 20 - Apr 3, ~720,000 visitors vs 620,000 expected - newsroom, thechurchnews.com
+[T1] 7.2 acres near La Jolla beside I-5; 169 ft; 58,005 sq ft; four stories; steel/precast/marblecrete - newsroom, thechurchnews.com
+[T1] Ten spires; Church in 2026 described the configuration as unlike any other of its temples - newsroom
+[T1] Eight-pointed-star atrium (two squares offset 45 degrees) with garden - thechurchnews.com, newsroom
+[T1] Marble chips blown into plaster; Church historian Spencer McBride's Kirtland stucco comparison - newsroom
+[T1] Two-level celestial room, four chandeliers, satin gold and Asfour crystal, gold/tan art glass - thechurchnews.com
+[T1] Closed July 31, 2023; renovation scope; cafeteria converted to 85-seat wedding waiting room - newsroom, thechurchnews.com
+[T1] 2026 open house June 18 - July 11; rededication scheduled Aug 23, 2026 - thechurchnews.com
+[T1] 1993 district ~80,000 members/21 stakes + northern Mexico; current ~50,000 members - thechurchnews.com, newsroom
+[T1] Third temple in California; Press Club Headliner of the Year 1993; PRSA Silver Anvil - thechurchnews.com
+[T2] Architects William S. Lewis Jr. (design), Dennis Hyndman (project), Shelly Hyndman (interior); Moroni installed Dec 23, 1991 east spire; 4 instruction/6 sealing/baptistry - churchofjesuschristtemples.org
+[T3x3] Local landmark coverage (Fox 5 "castle-like building" explainer, Union-Tribune "most recognizable landmarks", architects' firm) - fox5sandiego.com, pressdemocrat.com syndication, hyndman-hyndman.com
+
+CONFLICTS RESOLVED
+Floor area - 72,000 (older Newsroom/Church News) vs 58,005 (almanac, 2026 reopening coverage, T2); 58,005 shipped, flagged volatile
+Dedication officiators - split sessions reported inconsistently (13/10 vs 13/11); both officiators named, split omitted
+Closure date - last operating day Jul 29 vs formal closure Jul 31, 2023; Jul 31 shipped
+Rededication time - 10 a.m. vs 11 a.m. across T1; time omitted
+1993 attendance - 730,000 (UT) vs 720,000 (Church sources); T1 720,000 shipped
+Height/acreage - architects' 190 ft/8 acres vs Church 169 ft/7.2 acres; Church figures shipped
+
+VOLATILE (re-check before reprint)
+REDEDICATION SCHEDULED AUG 23, 2026, SIX DAYS AFTER VERIFICATION. Update the Renovated row to past tense with officiator once it occurs.
+Sealing room count - newsroom says two rooms were combined in renovation; T2 still lists six; re-verify after rededication fact sheets
+Floor area 58,005 vs 72,000 - watch for restated official figure
+District ~50,000 - boundaries change
+
+OMITTED
+Hyndmans' Catholic background and Las Vegas open house story - T2-echo only
+Lewis fasting/"squares on his mind"/10,000-star claims - blog-only, round number, devotional origin claim
+Firm name (Deems Lewis McKinley vs variants) - conflicting T3
+Combined sealing room change - contradicts T2 count; dropped pending restatement
+Contractor - not published in T1/T2
+"Most striking buildings" listicle claim - could not seat three independent sources
+Hinckley dedicatory prayer quote - cut to keep one short quotation per entry
+Twelve oxen - not confirmed for this temple
