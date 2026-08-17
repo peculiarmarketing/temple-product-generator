@@ -126,16 +126,50 @@ def cmd_fetch(args):
             print(f"  group {i} ({len(g['variant_ids'])} variants) {ph['position']}: {names}")
 
 
+def strip_text_layers(body):
+    for area in body["print_areas"]:
+        for ph in area["placeholders"]:
+            ph["images"] = [l for l in ph["images"] if l.get("type") != "text/svg"]
+        area["placeholders"] = [ph for ph in area["placeholders"] if ph["images"]]
+    return body
+
+
 def cmd_create_test(args):
     c = client()
     reference = load("reference_product.json")
     body = writable_product_body(reference)
     body["title"] = f"{reference['title']} API TEST"
+    if args.drop_text:
+        body = strip_text_layers(body)
     save("post_body.json", body)
     created = c.create_product(body)
     save("create_response.json", created)
     (ART / "test_product_id.txt").write_text(str(created["id"]))
     print(f"created test product {created['id']}: {created['title']}")
+
+
+def cmd_put_text_test(args):
+    # POST rejects text layers (code 8253). Does PUT accept them on an
+    # existing product? The answer decides the generator's flow.
+    c = client()
+    test_id = (ART / "test_product_id.txt").read_text().strip()
+    reference = load("reference_product.json")
+    full = writable_product_body(reference)
+    try:
+        result = c.update_product(test_id, {"print_areas": full["print_areas"]})
+    except PrintifyError as e:
+        save("put_text_response.json", {"accepted": False, "status": e.status, "body": e.body[:2000]})
+        print(f"PUT REJECTED: HTTP {e.status}\n{e.body[:500]}")
+        return
+    save("put_text_response.json", result)
+    after = c.get_product(test_id)
+    save("created_product_after_put.json", after)
+    texts = [im for area in after["print_areas"] for ph in area["placeholders"]
+             for im in ph["images"] if im.get("type") == "text/svg"]
+    print(f"PUT accepted. Text layers now on product: {len(texts)}")
+    for t in texts[:3]:
+        print(f"  {t.get('input_text')!r} font={t.get('font_family')} size={t.get('font_size')} "
+              f"color={t.get('font_color')} align={t.get('text_align')}")
 
 
 def match_group(posted_area, returned_areas):
@@ -305,7 +339,10 @@ def main():
     p = sub.add_parser("fetch")
     p.add_argument("--product-id", required=True)
     p.set_defaults(fn=cmd_fetch)
-    sub.add_parser("create-test").set_defaults(fn=cmd_create_test)
+    p = sub.add_parser("create-test")
+    p.add_argument("--drop-text", action="store_true")
+    p.set_defaults(fn=cmd_create_test)
+    sub.add_parser("put-text-test").set_defaults(fn=cmd_put_text_test)
     sub.add_parser("verify").set_defaults(fn=cmd_verify)
     p = sub.add_parser("upload-test")
     p.add_argument("--svg")

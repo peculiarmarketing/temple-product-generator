@@ -6,6 +6,7 @@ that first calls them.
 """
 
 import time
+import uuid
 from pathlib import Path
 
 import requests
@@ -28,7 +29,10 @@ WRITABLE_PRODUCT_KEYS = (
 )
 WRITABLE_VARIANT_KEYS = ("id", "price", "is_enabled")
 WRITABLE_IMAGE_LAYER_KEYS = ("id", "x", "y", "scale", "angle")
-WRITABLE_TEXT_LAYER_KEYS = WRITABLE_IMAGE_LAYER_KEYS + (
+# No "id" on text layers: their GET ids are layer instance UUIDs, not media
+# library images, and POST validates every images[].id against the library
+# (rejects with code 8253 "Provided images do not exist").
+WRITABLE_TEXT_LAYER_KEYS = ("x", "y", "scale", "angle") + (
     "type",
     "font_family",
     "font_size",
@@ -98,6 +102,9 @@ class PrintifyClient:
     def create_product(self, body):
         return self._request("POST", f"/shops/{self.shop_id}/products.json", json=body)
 
+    def update_product(self, product_id, body):
+        return self._request("PUT", f"/shops/{self.shop_id}/products/{product_id}.json", json=body)
+
     def delete_product(self, product_id):
         return self._request("DELETE", f"/shops/{self.shop_id}/products/{product_id}.json")
 
@@ -123,11 +130,21 @@ def writable_product_body(product_json):
         if "background" in area:
             clean["background"] = area["background"]
         for ph in area.get("placeholders", []):
+            if not ph.get("images"):
+                # GET includes every available position, even unused ones with an
+                # empty images array; POST rejects those as "field is required".
+                continue
             layers = []
             for layer in ph.get("images", []):
                 is_text = layer.get("type") == "text/svg"
                 keys = WRITABLE_TEXT_LAYER_KEYS if is_text else WRITABLE_IMAGE_LAYER_KEYS
-                layers.append({k: layer[k] for k in keys if k in layer})
+                clean_layer = {k: layer[k] for k in keys if k in layer}
+                if is_text:
+                    # id is required on text layers but must be a fresh UUID:
+                    # reusing a GET response's text layer id fails the media
+                    # library existence check (code 8253).
+                    clean_layer["id"] = str(uuid.uuid4())
+                layers.append(clean_layer)
             clean["placeholders"].append({"position": ph["position"], "images": layers})
         areas.append(clean)
     body["print_areas"] = areas
