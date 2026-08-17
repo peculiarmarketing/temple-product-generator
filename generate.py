@@ -365,10 +365,17 @@ def generate_one(c, temple_name, garment_id, args):
     uploads, text_img = upload_assets(c, temple_name, manifest, garment_cfg, args.dry_run)
     temple = TempleArt(TEMPLES_DIR / temple_name / manifest["art"]["black"])
     logo_img = load_art(LOGO_FILES["black"])
-    layers = layout.compute_stack(temple, garment_cfg, text_img, logo_img.height / logo_img.width)
+    layers = layout.compute_stack(temple, garment_cfg, text_img, logo_img.height / logo_img.width,
+                                  logo_override=manifest.get("dated_logo"))
     areas = build_print_areas(duplicate, layers, uploads, garment_cfg)
 
-    body = {"title": title, "print_areas": areas, "description": fixed_description(garment_cfg)}
+    # Full description when the temple's researched facts exist; fixed
+    # sections alone otherwise. Keeps regeneration idempotent.
+    description = fixed_description(garment_cfg)
+    facts_path = TEMPLES_DIR / temple_name / "temple-facts.html"
+    if description and facts_path.exists():
+        description = description + "\n\n" + facts_path.read_text().strip()
+    body = {"title": title, "print_areas": areas, "description": description}
     if args.dry_run:
         out = PROJECT_ROOT / "artifacts" / "phase3" / f"dryrun_{temple_name.lower().replace(' ', '-')}_{garment_id}.json"
         out.parent.mkdir(parents=True, exist_ok=True)

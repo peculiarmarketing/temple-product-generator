@@ -124,32 +124,54 @@ def _place_temple(temple, sp, area_w_in, area_h_in, stack_below_in):
     return layer
 
 
-def _corner_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in):
-    """Pick the emptier top corner near the temple, per Evan: not flush to
-    any edge, close to the linework."""
+def _sky_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in, override=None):
+    """Place the logo in open sky near the temple: left, center (between
+    spire clusters), or right. A position is only used if the logo plus
+    padding fits entirely above the first ink in its column band, so the
+    logo can never overlap linework. Auto mode picks the fitting position
+    closest to the temple (the lowest); a manifest override
+    {"dated_logo": {"corner": "left"|"center"|"right", "gap_above_ink_in": x}}
+    forces the choice."""
     d = sp["dated"]
+    override = override or {}
     logo_w_in = sp["logo_width_in"]
     logo_h_in = logo_w_in * logo_aspect
-    results = {}
-    for side, xfrac in (("left", d["logo_corner_x_fraction"]), ("right", 1 - d["logo_corner_x_fraction"])):
+    gap = override.get("gap_above_ink_in", d["logo_gap_above_ink_in"])
+    pad_in = 0.25
+    mh, mw = temple.mask.shape
+    px_x = mw / temple_layer["w_in"]
+    px_y = mh / temple_layer["h_in"]
+
+    def evaluate(xfrac):
         cx_in = area_w_in * xfrac
-        # column band of the logo footprint plus padding, in temple-mask pixels
-        mask_w = temple.mask.shape[1]
-        px_per_in = mask_w / temple_layer["w_in"]
-        band_l_in = cx_in - logo_w_in / 2 - 0.25 - (temple_layer["cx_in"] - temple_layer["w_in"] / 2)
-        band_r_in = band_l_in + logo_w_in + 0.5
-        l = max(0, int(band_l_in * px_per_in))
-        r = min(mask_w, int(band_r_in * px_per_in))
+        l_in = cx_in - logo_w_in / 2 - pad_in - (temple_layer["cx_in"] - temple_layer["w_in"] / 2)
+        r_in = l_in + logo_w_in + 2 * pad_in
+        l, r = max(0, int(l_in * px_x)), min(mw, int(r_in * px_x))
         band = temple.mask[:, l:r] if r > l else temple.mask[:, 0:1]
         rows = np.where(band.any(axis=1))[0]
         first_ink_row = rows[0] if len(rows) else band.shape[0]
-        first_ink_in = temple_layer["top_in"] + first_ink_row / (temple.mask.shape[0] / temple_layer["h_in"])
-        ink_amount = band.sum()
-        results[side] = (first_ink_in, ink_amount, cx_in)
-    side = min(results, key=lambda s: results[s][1])
-    first_ink_in, _, cx_in = results[side]
-    bottom_in = first_ink_in - d["logo_gap_above_ink_in"]
-    top_in = max(d["logo_min_top_in"], bottom_in - logo_h_in)
+        first_ink_in = temple_layer["top_in"] + first_ink_row / px_y
+        bottom_in = first_ink_in - gap
+        return cx_in, bottom_in - logo_h_in, bottom_in
+
+    positions = {"left": d["logo_corner_x_fraction"], "center": 0.5,
+                 "right": 1 - d["logo_corner_x_fraction"]}
+    if override.get("corner") in positions:
+        side = override["corner"]
+        cx_in, top_in, bottom_in = evaluate(positions[side])
+        # honor the explicit choice; never clamp downward into ink
+    else:
+        fitting = {}
+        for side, xfrac in positions.items():
+            cx_in, top_in, bottom_in = evaluate(xfrac)
+            if top_in >= d["logo_min_top_in"]:
+                fitting[side] = (cx_in, top_in, bottom_in)
+        if fitting:
+            side = max(fitting, key=lambda s: fitting[s][1])  # lowest fit = nearest temple
+            cx_in, top_in, bottom_in = fitting[side]
+        else:
+            side = "center"  # nothing fits comfortably; center high beats overlapping
+            cx_in, top_in, bottom_in = evaluate(0.5)
     return _layer("logo", cx_in, top_in + logo_h_in / 2, logo_w_in, logo_h_in, area_w_in, area_h_in), side
 
 
@@ -172,10 +194,11 @@ def back_stack(temple, garment_cfg, sp, logo_aspect, text_aspect):
     return [temple_layer, text_layer, logo_layer]
 
 
-def back_stack_dated(temple, garment_cfg, sp, logo_aspect, text_aspect):
+def back_stack_dated(temple, garment_cfg, sp, logo_aspect, text_aspect, logo_override=None):
     """With Date design: temple, small location text, divider, date zone,
-    logo floated in the emptier sky corner. The date zone is reserved space;
-    the actual personalization text layer is added by hand in Printify."""
+    logo floated in open sky (left, center, or right). The date zone is
+    reserved space; the personalization text layer is added by hand in
+    Printify."""
     area = garment_cfg["print_area"]
     area_w_in = area["width_px"] / area["dpi"]
     area_h_in = area["height_px"] / area["dpi"]
@@ -194,7 +217,8 @@ def back_stack_dated(temple, garment_cfg, sp, logo_aspect, text_aspect):
     y = divider["bottom_in"] + d["gap_divider_to_date_in"]
     date_zone = _layer("date_zone", area_w_in / 2, y + d["date_zone_height_in"] / 2,
                        d["date_zone_width_in"], d["date_zone_height_in"], area_w_in, area_h_in)
-    logo_layer, side = _corner_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in)
+    logo_layer, side = _sky_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in,
+                                 override=logo_override)
     logo_layer["corner"] = side
     return [temple_layer, text_layer, divider, date_zone, logo_layer]
 
@@ -218,11 +242,14 @@ def render_divider(garment_cfg, color=(0, 0, 0, 255), dpi=300):
     return Image.new("RGBA", (w, h), color)
 
 
-def compute_stack(temple_art, garment_cfg, text_img, logo_aspect):
+def compute_stack(temple_art, garment_cfg, text_img, logo_aspect, logo_override=None):
     """Main entry: returns the layer list for one temple on one garment.
     text_img is the location-text image (auto-rendered or Evan's override);
-    only its aspect ratio matters here."""
+    only its aspect ratio matters here. logo_override is the manifest's
+    optional dated_logo dict."""
     sp = load_spacing(garment_cfg)
     profile = PROFILES[garment_cfg["layout_profile"]]
     text_aspect = text_img.width / text_img.height
+    if "dated" in garment_cfg["layout_profile"]:
+        return profile(temple_art, garment_cfg, sp, logo_aspect, text_aspect, logo_override=logo_override)
     return profile(temple_art, garment_cfg, sp, logo_aspect, text_aspect)

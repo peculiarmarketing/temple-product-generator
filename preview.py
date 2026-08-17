@@ -52,7 +52,9 @@ def build_preview(temple_name, location_text, garment_id, spacing_overrides=None
     override = layout.find_text_override(TEMPLES_DIR / temple_name, "black")
     text_img = load_art(override) if override else \
         render_text(location_text, layout.location_text_height(garment_cfg), garment_cfg["print_area"]["dpi"])
-    layers = layout.compute_stack(temple, garment_cfg, text_img, logo_aspect)
+    manifest_path = TEMPLES_DIR / temple_name / "manifest.json"
+    logo_override = json.loads(manifest_path.read_text()).get("dated_logo") if manifest_path.exists() else None
+    layers = layout.compute_stack(temple, garment_cfg, text_img, logo_aspect, logo_override=logo_override)
 
     area = garment_cfg["print_area"]
     scale = PREVIEW_DPI / area["dpi"]
