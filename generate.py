@@ -214,6 +214,20 @@ def fetch_all_products(c, refresh=False):
     return items
 
 
+def fixed_description(garment_cfg):
+    """The garment's verbatim intro + size guide from the exported description
+    skill assets. Set at swap time so a published draft never carries the
+    donor temple's facts; the description event later replaces the whole
+    field with intro + size guide + verified temple facts."""
+    skill = garment_cfg.get("description_skill") or ""
+    skill = {"cc1717-dated": "cc1717-temple-description-builder"}.get(garment_cfg["garment_id"], skill)
+    assets = PROJECT_ROOT / "reference" / "skills" / skill / skill / "assets"
+    intro, guide = assets / "product-intro.html", assets / "size-guide.html"
+    if not (intro.exists() and guide.exists()):
+        return ""  # empty beats a wrong temple's history on a live page
+    return intro.read_text().strip() + "\n\n" + guide.read_text().strip()
+
+
 def find_duplicate(c, garment_cfg):
     """Find unclaimed 'Copy of ...' products usable for this garment. Any
     duplicate of the right blueprint/provider works (Evan: 'it doesn't matter
@@ -354,7 +368,7 @@ def generate_one(c, temple_name, garment_id, args):
     layers = layout.compute_stack(temple, garment_cfg, text_img, logo_img.height / logo_img.width)
     areas = build_print_areas(duplicate, layers, uploads, garment_cfg)
 
-    body = {"title": title, "print_areas": areas}
+    body = {"title": title, "print_areas": areas, "description": fixed_description(garment_cfg)}
     if args.dry_run:
         out = PROJECT_ROOT / "artifacts" / "phase3" / f"dryrun_{temple_name.lower().replace(' ', '-')}_{garment_id}.json"
         out.parent.mkdir(parents=True, exist_ok=True)
