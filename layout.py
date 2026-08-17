@@ -200,14 +200,27 @@ def back_stack_dated(temple, garment_cfg, sp, logo_aspect, text_aspect):
 PROFILES = {"back_stack": back_stack, "back_stack_dated": back_stack_dated}
 
 
-def compute_stack(temple_art, garment_cfg, location_text, logo_aspect):
-    """Main entry: returns the layer list for one temple on one garment."""
+def location_text_height(garment_cfg):
+    sp = load_spacing(garment_cfg)
+    return sp["dated"]["location_text_height_in"] if "dated" in garment_cfg["layout_profile"] \
+        else sp["location_text_height_in"]
+
+
+def render_divider(garment_cfg, color=(0, 0, 0, 255), dpi=300):
+    """Solid rule between location and date on dated products. Rendered rather
+    than reusing the shop's 1.png/2.png assets so length changes keep the
+    approved 0.04in thickness."""
+    sp = load_spacing(garment_cfg)["dated"]
+    w = max(1, round(sp["divider_width_in"] * dpi))
+    h = max(2, round(sp["divider_height_in"] * dpi))
+    return Image.new("RGBA", (w, h), color)
+
+
+def compute_stack(temple_art, garment_cfg, text_img, logo_aspect):
+    """Main entry: returns the layer list for one temple on one garment.
+    text_img is the location-text image (auto-rendered or Evan's override);
+    only its aspect ratio matters here."""
     sp = load_spacing(garment_cfg)
     profile = PROFILES[garment_cfg["layout_profile"]]
-    dpi = garment_cfg["print_area"]["dpi"]
-    text_h = sp["dated"]["location_text_height_in"] if "dated" in garment_cfg["layout_profile"] \
-        else sp["location_text_height_in"]
-    text_img = render_text(location_text, text_h, dpi)
     text_aspect = text_img.width / text_img.height
-    layers = profile(temple_art, garment_cfg, sp, logo_aspect, text_aspect)
-    return layers, text_img
+    return profile(temple_art, garment_cfg, sp, logo_aspect, text_aspect)
