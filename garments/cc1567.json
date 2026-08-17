@@ -1,0 +1,14 @@
+{
+  "garment_id": "cc1567",
+  "display_name": "Comfort Colors 1567 Hoodie",
+  "blueprint_id": 1298,
+  "print_provider_id": 29,
+  "product_type": "Hoodie",
+  "description_skill": "cc1567-temple-description-builder",
+  "template_product_id": null,
+  "print_area": { "position": "back", "width_px": 4200, "height_px": 5100, "dpi": 300 },
+  "layout_profile": "back_stack",
+  "personalized": false,
+  "naming": { "title": "{place} Temple Hoodie" },
+  "spacing_overrides": {}
+}

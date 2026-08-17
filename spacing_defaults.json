@@ -1,0 +1,22 @@
+{
+  "_comment": "Approved by Evan 17 Aug 2026 from measurements of the live catalog. Do not change casually; the Phase 2 gate reviewed previews built on these numbers. All values in inches on the print area.",
+  "top_margin_in": 0.6,
+  "temple_target_ink_width_in": 12.5,
+  "gap_ink_to_text_in": 0.2,
+  "location_text_height_in": 0.74,
+  "gap_text_to_logo_in": 0.3,
+  "logo_width_in": 3.0,
+  "bottom_margin_in": 2.5,
+  "dated": {
+    "location_text_height_in": 0.38,
+    "gap_text_to_divider_in": 0.2,
+    "divider_width_in": 3.0,
+    "divider_height_in": 0.04,
+    "gap_divider_to_date_in": 0.13,
+    "date_zone_width_in": 7.0,
+    "date_zone_height_in": 0.91,
+    "logo_corner_x_fraction": 0.25,
+    "logo_gap_above_ink_in": 0.35,
+    "logo_min_top_in": 0.35
+  }
+}
