@@ -99,6 +99,8 @@ def set_url(row, url):
         meta = json.loads(row["metadata_type"]) or {}
     except json.JSONDecodeError:
         meta = {}
+    if not isinstance(meta, dict):
+        meta = {}
     meta["url"] = url
     meta.setdefault("disabled", None)
     row["metadata_type"] = json.dumps(meta, separators=(",", ":"))
@@ -117,7 +119,7 @@ def live_temple_products(config, tokens):
     client = ShopifyClient()
     live = [p for p in client.all_products_summary()
             if p["status"] == "ACTIVE" and p["publishedAt"]]
-    expected, attention, matched = {}, [], set()
+    expected, conflicted, attention, matched = {}, {}, [], set()
     for spec in config:
         garment = spec["garment"]
         pattern = garment_title_pattern(garment)
@@ -128,15 +130,17 @@ def live_temple_products(config, tokens):
                 if p["title"].strip() == want:
                     per_temple.setdefault(temple, []).append((token, p["handle"]))
                     matched.add(want)
-        chosen = {}
+        chosen, clashes = {}, set()
         for temple, hits in sorted(per_temple.items()):
             if len(hits) > 1:
+                clashes.add(temple)
                 attention.append(
                     f"{garment}: {len(hits)} live products claim {temple} "
                     f"({', '.join(h for _, h in hits)}); skipped, fix on Shopify first")
                 continue
             chosen[temple] = hits[0]
         expected[garment] = chosen
+        conflicted[garment] = clashes
     unmatched = {}
     for p in live:
         t = p["title"].strip()
@@ -146,7 +150,7 @@ def live_temple_products(config, tokens):
     for t, n in sorted(unmatched.items()):
         attention.append(f"Live product with no dropdown slot: {t!r}"
                          + (f" (x{n})" if n > 1 else ""))
-    return expected, attention
+    return expected, conflicted, attention
 
 
 def new_value_row(template, label, url):
@@ -173,7 +177,7 @@ def new_value_row(template, label, url):
     return row
 
 
-def reconcile_set(title, rows, expected, tokens):
+def reconcile_set(title, rows, expected, tokens, conflicted=frozenset()):
     """Reconcile one existing set against {temple: (label, handle)}.
 
     Binding is by label first (the label says which temple the row means, so a
@@ -206,7 +210,7 @@ def reconcile_set(title, rows, expected, tokens):
             continue
         bound[temple] = row
         if temple not in expected:
-            stale.append(row)
+            stale.append((row, temple))
 
     for temple, row in bound.items():
         if temple not in expected:
@@ -215,6 +219,11 @@ def reconcile_set(title, rows, expected, tokens):
         url = STORE + handle
         old_label, old_url = row["option_value_label"], value_url(row)
         if old_label != label:
+            taken = {r["option_value_label"] for r in rows if r is not row}
+            if label in taken:
+                attention.append(f"{title}: cannot rename {old_label!r} to {label!r}, "
+                                 f"another row already has that label; left untouched")
+                continue
             row["option_value_label"] = label
             changes.append(f"Fixed label: {old_label} -> {label}")
         if old_url != url:
@@ -235,8 +244,13 @@ def reconcile_set(title, rows, expected, tokens):
         out_rows.insert(idx, new_row)
         changes.append(f"Added {label}: {handle}")
 
-    for row in stale:
-        attention.append(f"{title}: {row['option_value_label']!r} has no live product on Shopify; kept as is")
+    for row, temple in stale:
+        if temple in conflicted:
+            attention.append(f"{title}: {row['option_value_label']!r} kept as is "
+                             f"until the Shopify conflict above is resolved")
+        else:
+            attention.append(f"{title}: {row['option_value_label']!r} has no live product "
+                             f"on Shopify; kept as is")
 
     want = sorted(h for _, h in expected.values())
     have = parse_products(default_row["option_set_products"])
@@ -361,8 +375,12 @@ def cmd_sync(report_only):
     config = load_config()
     fieldnames, in_rows = load_canonical()
     in_sets = group_by_set(in_rows)
+    for title, rows in in_sets.items():
+        if len({r["option_set_products"] for r in rows}) != 1:
+            raise SystemExit(f"Canonical CSV is inconsistent: option_set_products differs "
+                             f"between rows of {title!r}. Reseed from a fresh Easify export first.")
     tokens = temple_tokens()
-    expected, attention = live_temple_products(config, tokens)
+    expected, conflicted, attention = live_temple_products(config, tokens)
     cfg_by_title = {s["set_title"]: s for s in config}
 
     set_order = list(dict.fromkeys(r["option_set_title"] for r in in_rows))
@@ -370,7 +388,15 @@ def cmd_sync(report_only):
     for title in set_order:
         if title in cfg_by_title:
             garment = cfg_by_title[title]["garment"]
-            new_rows, ch, att = reconcile_set(title, in_sets[title], expected[garment], tokens)
+            if not expected[garment] and len(in_sets[title]) > 1:
+                # A populated set losing every live product means a broken
+                # catalog read (wrong store, bad filter), not mass retirement.
+                raise SystemExit(
+                    f"Shopify returned no live {garment} products but the set {title!r} "
+                    f"has {len(in_sets[title]) - 1} temple options. Refusing to blank it; "
+                    f"check SHOPIFY_STORE_DOMAIN and the catalog before rerunning.")
+            new_rows, ch, att = reconcile_set(title, in_sets[title], expected[garment],
+                                              tokens, conflicted[garment])
             out_sets[title] = new_rows
             attention += att
             touched.add(title)
@@ -473,7 +499,7 @@ def cmd_reseed(export_path):
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    sub = ap.add_subparsers(dest="command")
+    sub = ap.add_subparsers(dest="command", required=True)
     sync = sub.add_parser("sync", help="reconcile the CSV with the live catalog")
     sync.add_argument("--report-only", action="store_true", help="print changes, write nothing")
     reseed = sub.add_parser("reseed", help="adopt a fresh Easify export as canonical")
@@ -482,7 +508,7 @@ def main():
     if args.command == "reseed":
         cmd_reseed(args.export)
     else:
-        cmd_sync(getattr(args, "report_only", False))
+        cmd_sync(args.report_only)
 
 
 if __name__ == "__main__":
