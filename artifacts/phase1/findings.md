@@ -62,6 +62,21 @@ Test product deleted, GET returns 404 (deletion.json). Test upload archived (see
 
 Temple folder and file naming in `../Temples/` is inconsistent: "Cody/Cody Wyoming Temple black.svg" vs "Logan/Logan black.svg" vs "St. George/St George black.svg", one file with a trailing space. The manifest schema must carry explicit art file names per temple and never derive them from the folder name. Also on record: the live title collisions now include "Copy of Nauvoo Temple Hoodie" alongside the known Provo and Nauvoo collisions, and the live catalog already contains a front-logo sweatshirt (nauvoo-temple-sweatshirt-front-logo), so the front-logo garment line is not hypothetical.
 
+## 10. Post-gate addendum: the resolution problem, diagnosed and fix proven
+
+Evan noticed the Provo art looked lower resolution than other designs. Investigation showed the problem is catalog-wide, not Provo-specific:
+
+- Every stored temple asset is a PNG rasterized by Printify at the SVG's declared pixel size, roughly 2048x2048 (San Antonio 1978).
+- The CC1717 back print area at size L and up is 4494x5097 px (300 DPI). At the standard temple scale of 0.8678, the art is stretched to about 3900 px wide, an effective 157 DPI on every product. Provo merely shows it first because its linework is fine hairlines while temples like Logan use thick strokes that mask the softness.
+
+**Fix, proven live:** the SVGs are vectors, so changing only the declared width/height attribute to 4096 makes Printify rasterize at 4096x4096. A test product ("Provo Temple Tee DPI TEST 4096", since deleted) built with attribute-bumped originals cleared Printify's low-resolution warning and reported high resolution. The source files on disk are never modified; the bump happens in memory at upload time.
+
+Consequences for the generator:
+- The generator sources art directly from the `Temples/{Name}/` folders (Evan confirmed this as the intended pipeline; the folder layout already matches the spec's Phase 4 convention). Manifests must name art files explicitly because folder file naming is inconsistent.
+- Upload step bumps declared SVG size so the stored raster meets or exceeds the print area's needs at the configured scale. Target: at least scale x largest-group print width (about 3900 px for CC1717 back), 4096 as the default.
+- The existing catalog's ~157 DPI assets are a backfill concern (Phase 5): re-upload bumped originals and swap asset ids per product. Parked until the Phase 3 mockup-preservation question is answered, because a design swap on a live product may disturb its mockup selections.
+- Two more API behaviors confirmed during this test: uploads dedup by content (identical bytes return the existing asset id, even across file names), and archived assets remain fully usable on new products (POST accepts them).
+
 ## Gate verdict
 
 The core bet of the plan holds: product structure, art assignment per colorway group, positions, and variants round-trip cleanly through the API, and product_type derives correctly. The plan's text layer contingency is triggered (render text as images). The genuinely new information is the read-only trio (mockups, personalization, shipping), which argues for testing the UI-duplicate-plus-API-update flow at the start of Phase 3.
