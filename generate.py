@@ -91,7 +91,7 @@ def scaffold_manifest(temple_name):
         "location_line": entry["location_line"],
         "place_tokens": {"default": temple_name},
         "art": detect_art_files(folder),
-        "garments": ["cc1717"],
+        "garments": "all",
         "scaffolded": True,
     }
     (folder / "manifest.json").write_text(json.dumps(manifest, indent=2))
@@ -371,9 +371,16 @@ def main():
 
     c = None if (args.dry_run and args.fixture) else PrintifyClient(*load_config())
     manifest = load_manifest(args.temple)
-    garment_ids = args.garments.split(",") if args.garments else manifest.get("garments", [])
+    listed = manifest.get("garments", "all")
+    if args.garments:
+        garment_ids = args.garments.split(",")
+    elif listed == "all":
+        # every garment config present; adding a config extends every temple
+        garment_ids = sorted(p.stem for p in (PROJECT_ROOT / "garments").glob("*.json"))
+    else:
+        garment_ids = listed
     if not garment_ids:
-        raise SystemExit("No garments requested and manifest lists none.")
+        raise SystemExit("No garments requested and none configured.")
 
     results, errors = [], []
     for gid in garment_ids:
