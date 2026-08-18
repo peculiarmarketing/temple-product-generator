@@ -47,6 +47,12 @@ def ensure_chrome(open_url=None):
     if cdp_alive():
         return
 
+    if not Path(CHROME_BINARY).exists():
+        raise RuntimeError(
+            f"Google Chrome not found at {CHROME_BINARY}. "
+            "Edit CHROME_BINARY in scripts/printify_login.py."
+        )
+
     PROFILE_DIR.parent.mkdir(exist_ok=True)
     cmd = [
         CHROME_BINARY,
@@ -76,6 +82,18 @@ def ensure_chrome(open_url=None):
     )
 
 
+def _page_logged_in(page):
+    """True when this page is inside the Printify app and shows no login form."""
+    url = page.url
+    if not url.startswith("https://printify.com/app") or "login" in url:
+        return False
+    try:
+        return not page.locator("input[type='password']").is_visible()
+    except Exception:
+        # Page navigating mid-check; treat as not logged in and poll again.
+        return False
+
+
 def login():
     """Open login URL in Chrome and wait for successful login.
 
@@ -88,7 +106,11 @@ def login():
     with variable delay (observed 8-12 seconds). The URL alone is not reliable for
     detecting logged-out state; the login form (input[type="password"]) is the signal.
     """
-    ensure_chrome(open_url=LOGIN_URL)
+    try:
+        ensure_chrome(open_url=LOGIN_URL)
+    except RuntimeError as e:
+        print(str(e))
+        return 1
     print("Log in inside the Chrome window that just opened. Waiting up to 5 minutes.")
 
     with sync_playwright() as p:
@@ -99,20 +121,7 @@ def login():
             while time.time() - start < 300:
                 for context in browser.contexts:
                     for page in context.pages:
-                        url = page.url
-                        if (
-                            url.startswith("https://printify.com/app")
-                            and "login" not in url
-                        ):
-                            # Guard against false positives during redirect: check that
-                            # the password input is not visible (indicates login page).
-                            try:
-                                page.locator("input[type='password']").is_visible(timeout=0)
-                                # If visible, still on login page; continue polling.
-                                continue
-                            except Exception:
-                                # Not visible; page is logged in.
-                                pass
+                        if _page_logged_in(page):
                             print("Logged in. Session lives in the dedicated Chrome profile; you can close the window or leave it open.")
                             return 0
                 time.sleep(2)
