@@ -145,17 +145,3 @@ def verify(product, cfg, dated, tolerance=0.005):
     if not personalisation.get("layers"):
         problems.append("personalisation layers empty (toggle did not stick)")
     return problems
-
-
-def resolve_divider_ids(client):
-    """Fallback divider matching when GET layers carry no name field:
-    resolve the divider upload ids by file name from the media library."""
-    ids, page = set(), 1
-    while True:
-        body = client._request("GET", f"/uploads.json?page={page}&limit=100")
-        for item in body.get("data", []):
-            if str(item.get("file_name", "")).lower().startswith("divider"):
-                ids.add(item["id"])
-        if not body.get("next_page_url"):
-            return ids
-        page += 1
