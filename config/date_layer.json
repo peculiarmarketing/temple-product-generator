@@ -1,0 +1,37 @@
+{
+  "_comment": "Canonical date-layer settings captured in the 18 Aug 2026 discovery session (docs/discovery/2026-08-date-layer-editor-notes.md). Values verified against API snapshots of Taylorsville (hand-built reference), San Antonio (generator-made), and Brigham City (added live during the session). No secrets in this file.",
+  "editor_url_template": "https://printify.com/app/editor/{product_id}",
+  "placeholder_text": "SEPTEMBER 25, 2024",
+  "font_family": "Alata",
+  "font_size_api": 200,
+  "box_width_in": 7.0,
+  "box_height_in": 0.91,
+  "expected_scale": 0.4673,
+  "font_color_light_groups": "#000000",
+  "font_color_dark_groups": "#ffffff",
+  "layer_name": "Text",
+  "text_align": "center",
+  "layer_creation": "personalize_panel",
+  "layer_flow": "default_group_once_then_each_dark_swatch",
+  "default_variant_note": "Editor opens on graphite (variant-specific design). Switch to a light swatch first to edit the default design, which propagates to all non-specific variants.",
+  "dark_group_detection": "group carries the white temple SVG asset (never keyed by colorway names)",
+  "dark_colorways_for_reference": ["Graphite", "Brick", "Moss", "True Navy"],
+  "position_anchor": "top_left_percent_of_print_area",
+  "position_left_pct_for_centered_7in": 26.64,
+  "personalization": {
+    "instructions": "Please add a date (accepted format: Month DD, YYYY)",
+    "personalisation_id": "text",
+    "strategy": "pstudio",
+    "prompt_entry": "remembered_by_printify",
+    "note": "The sales_channel_properties personalisation block rides the UI duplicate, but the editor requires the personalization text layer to be re-created per draft via the Personalize panel."
+  },
+  "selectors": {
+    "_comment": "Verified top-level controls from the live editor DOM. Panel-internal selectors (personalize panel button, swatches, width/height/position inputs) are finalized during the driver task's dry run.",
+    "back_side_button": {"kind": "role", "role": "button", "name": "Back side"},
+    "personalize_button": {"kind": "role", "role": "button", "name": "Personalize"},
+    "add_text_button": {"kind": "role", "role": "button", "name": "Add text"},
+    "save_button": {"kind": "role", "role": "button", "name": "Save product"},
+    "variants_panel_heading": {"kind": "text", "text": "Variants and layers"},
+    "login_form_marker": {"kind": "css", "css": "input[type='password']"}
+  }
+}
