@@ -20,7 +20,7 @@ API; the API cannot write text layers at all (settled Phase 1 finding).
 
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 from scripts.printify_login import CDP_URL, ensure_chrome
 
@@ -128,8 +128,21 @@ class EditorDriver:
         side only; open_product() already switches to the back side, where
         the personalization text layer lives. Verified live: the marker is
         present on the back side of Brigham City (which already has its
-        date layer) and absent on the front side of the same product."""
-        return self._sel("existing_text_layer_marker").count() > 0
+        date layer) and absent on the front side of the same product.
+
+        Uses a bounded wait rather than a bare count(): count() is a
+        synchronous snapshot with no auto-wait, so a slow panel render
+        right after switch_to_back_side()'s click could transiently read 0
+        on a product that does have a date layer. In apply(), a false
+        False here would add a duplicate layer, exactly what this guard
+        exists to prevent, so absence is only concluded after giving the
+        DOM up to 5 seconds to settle.
+        """
+        try:
+            self._sel("existing_text_layer_marker").first.wait_for(state="attached", timeout=5000)
+            return True
+        except PlaywrightTimeout:
+            return False
 
     def _select_group(self, group):
         """Select the variant group to edit by clicking its color swatch in
