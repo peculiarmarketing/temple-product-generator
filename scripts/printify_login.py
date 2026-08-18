@@ -82,10 +82,14 @@ def ensure_chrome(open_url=None):
     )
 
 
+def _url_looks_logged_in(url):
+    """True when url is inside the Printify app and is not the login page."""
+    return url.startswith("https://printify.com/app") and "login" not in url
+
+
 def _page_logged_in(page):
     """True when this page is inside the Printify app and shows no login form."""
-    url = page.url
-    if not url.startswith("https://printify.com/app") or "login" in url:
+    if not _url_looks_logged_in(page.url):
         return False
     try:
         return not page.locator("input[type='password']").is_visible()
@@ -113,23 +117,42 @@ def login():
         return 1
     print("Log in inside the Chrome window that just opened. Waiting up to 5 minutes.")
 
+    # Cross-origin navigations during login (login page, Cloudflare challenge, back
+    # into the app) make Chrome swap the tab's renderer process and CDP target. A
+    # long-lived CDP connection's page list goes stale and stops reflecting the live
+    # tab, so poll Chrome's own /json endpoint (which always reflects live targets)
+    # for a candidate URL first, then open a short-lived connection to confirm it.
     with sync_playwright() as p:
-        browser = None
-        try:
-            browser = p.chromium.connect_over_cdp(CDP_URL)
-            start = time.time()
-            while time.time() - start < 300:
-                for context in browser.contexts:
-                    for page in context.pages:
-                        if _page_logged_in(page):
-                            print("Logged in. Session lives in the dedicated Chrome profile; you can close the window or leave it open.")
-                            return 0
+        start = time.time()
+        while time.time() - start < 300:
+            try:
+                targets = requests.get(f"{CDP_URL}/json", timeout=2).json()
+            except Exception:
                 time.sleep(2)
-            print("Login not completed within 5 minutes. Re-run scripts/printify_login.py to try again.")
-            return 1
-        finally:
-            if browser:
-                browser.close()
+                continue
+
+            candidate = any(
+                target.get("type") == "page" and _url_looks_logged_in(target.get("url", ""))
+                for target in targets
+            )
+
+            if candidate:
+                browser = None
+                try:
+                    browser = p.chromium.connect_over_cdp(CDP_URL)
+                    for context in browser.contexts:
+                        for page in context.pages:
+                            if _page_logged_in(page):
+                                print("Logged in. Session lives in the dedicated Chrome profile; you can close the window or leave it open.")
+                                return 0
+                finally:
+                    if browser:
+                        browser.close()
+
+            time.sleep(2)
+
+    print("Login not completed within 5 minutes. Re-run scripts/printify_login.py to try again.")
+    return 1
 
 
 def check():
