@@ -1,0 +1,143 @@
+"""Publish eligible Printify drafts to the Shopify store via the API.
+
+  python scripts/publish_drafts.py --report-only   # list what would publish and why
+  python scripts/publish_drafts.py                 # publish everything eligible
+  python scripts/publish_drafts.py --only "Brigham City Temple Tee"
+
+Auto-publishes never-published products EXCEPT personalizable ones (the
+With Date line): Evan re-adds the date text layer by hand, so those keep
+the manual publish flow. Safety gates: a draft must carry the temple-facts
+description section (proof the pipeline finished it) and Economy shipping
+(inherited from its UI duplicate; read-only via API so it can only be
+verified, not set). Publish settings the API cannot touch (mockup choices,
+variant visibility, shipping options) ride the duplicate, so what the donor
+product had is what goes live.
+"""
+
+import argparse
+import sys
+import time
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from printify_client import PrintifyClient, PrintifyError, load_config
+
+PUBLISH_FLAGS = {
+    "title": True,
+    "description": True,
+    "images": True,
+    "variants": True,
+    "tags": True,
+    "keyFeatures": True,
+    "shipping_template": True,
+}
+
+POLL_INTERVAL_S = 5
+POLL_TIMEOUT_S = 240
+
+
+def eligibility(product):
+    """(ok, reason) for auto-publishing one product dict from the API."""
+    title = product.get("title", "")
+    if product.get("external"):
+        return False, "already published"
+    if product.get("is_locked"):
+        return False, "locked, a publish is already in progress"
+    if title.startswith("Copy of"):
+        return False, "unclaimed duplicate"
+    if "(front logo)" in title.lower():
+        return False, "test product"
+    if "With Date" in title:
+        return False, "dated product, Evan publishes by hand"
+    personalisation = (product.get("sales_channel_properties") or {}).get("personalisation") or {}
+    if personalisation.get("layers"):
+        return False, "personalizable, Evan publishes by hand"
+    if 'class="temple-facts"' not in (product.get("description") or ""):
+        return False, "description has no temple facts section yet"
+    if not product.get("is_economy_shipping_enabled"):
+        return False, "economy shipping is off, fix the duplicate source in the Printify UI"
+    return True, "eligible"
+
+
+def all_products(client):
+    products, page = [], 1
+    while True:
+        data = client._request("GET", f"/shops/{client.shop_id}/products.json?limit=50&page={page}")
+        products.extend(data["data"])
+        if not data.get("next_page_url"):
+            break
+        page += 1
+    return products
+
+
+def publish_one(client, product):
+    pid = product["id"]
+    client._request("POST", f"/shops/{client.shop_id}/products/{pid}/publish.json", json=PUBLISH_FLAGS)
+    deadline = time.time() + POLL_TIMEOUT_S
+    while time.time() < deadline:
+        time.sleep(POLL_INTERVAL_S)
+        fresh = client._request("GET", f"/shops/{client.shop_id}/products/{pid}.json")
+        external = fresh.get("external")
+        if external and not fresh.get("is_locked"):
+            return external
+    return None
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--report-only", action="store_true", help="list candidates, publish nothing")
+    parser.add_argument("--only", help="restrict to products whose title contains this text")
+    args = parser.parse_args()
+
+    token, shop_id = load_config()
+    client = PrintifyClient(token, shop_id)
+
+    unpublished = [p for p in all_products(client) if not p.get("external")]
+    if args.only:
+        unpublished = [p for p in unpublished if args.only.lower() in p["title"].lower()]
+    if not unpublished:
+        print("No unpublished drafts found.")
+        return
+
+    to_publish = []
+    for summary in unpublished:
+        # The list endpoint trims some fields; judge from the full product.
+        product = client._request("GET", f"/shops/{client.shop_id}/products/{summary['id']}.json")
+        ok, reason = eligibility(product)
+        marker = "PUBLISH" if ok else "skip"
+        print(f"{marker:7}  {product['title']}  ({reason})")
+        if ok:
+            to_publish.append(product)
+
+    if args.report_only:
+        print(f"\nReport only. {len(to_publish)} draft(s) would be published.")
+        return
+    if not to_publish:
+        print("\nNothing eligible to publish.")
+        return
+
+    failures = 0
+    for product in to_publish:
+        print(f"\nPublishing {product['title']} ...")
+        try:
+            external = publish_one(client, product)
+        except PrintifyError as err:
+            print(f"  FAILED: {err}")
+            failures += 1
+            continue
+        if external:
+            print(f"  Live on Shopify: handle {external.get('handle')} (id {external.get('id')})")
+        else:
+            print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but has not "
+                  "confirmed it. Check the product in Printify before retrying.")
+            failures += 1
+
+    if failures:
+        sys.exit(f"\n{failures} publish(es) did not complete.")
+    print(f"\nDone. {len(to_publish)} product(s) published.")
+
+
+if __name__ == "__main__":
+    main()
