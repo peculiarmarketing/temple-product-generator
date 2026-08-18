@@ -155,42 +155,62 @@ class EditorDriver:
         dot shown on some swatches is a pure CSS decoration; it is not
         exposed as a distinguishing accessible attribute (every swatch's
         accessibility subtree is structurally identical whether or not it
-        has a dot). So, per the discovery notes' documented fallback, dark
-        swatches are identified by matching accessible names against
-        config["dark_colorways_for_reference"] rather than by reading the
-        dot directly. Confirmed this list's order matches the on-screen dot
-        order for Brigham City (Graphite, Brick, Moss, True Navy).
+        has a dot).
 
-        group["index"] selects which of the four dark colorways to click
-        when group["dark"] is true (0 = dark_colorways_for_reference[0],
-        and so on). When group["dark"] is false, index is ignored: the
-        light/default group is reached by clicking whichever on-screen
-        swatch's name is not in dark_colorways_for_reference (the editor
-        opens on a dark variant-specific design, so this is what switches
-        to the shared default design; any non-dark swatch reaches the same
-        default design, per the discovery notes).
+        group["colorway"] names the exact accessible name of the dark
+        swatch to click, resolved by
+        scripts/add_date_layer.py:group_colorway() from the product's live
+        color option and the group's first variant id. An earlier version
+        of this method picked the dark swatch by position in
+        config["dark_colorways_for_reference"] (group["index"]); that
+        misclicked whenever a product's dark-group count or order did not
+        line up with that fixed four-entry list (confirmed: the standard
+        five-group product has four dark groups at global indices 1..4,
+        one past the list's end, causing both wrong clicks and an
+        eventual IndexError). dark_colorways_for_reference remains in
+        config as documentation of the reference product's dark colorway
+        names; it is no longer used to resolve which swatch a given dark
+        group maps to.
 
-        Verified live end to end on Brigham City: clicking dark index 0
-        selected Graphite (panel showed "Revert Graphite to default
-        design"), clicking the light path switched away from any
-        variant-specific design (the "Currently editing variant specific
-        design" status disappeared), and clicking dark index 3 reselected
-        True Navy. No layer was added or changed during this check; only
-        the currently-viewed design switched, the same as clicking "Back
-        side" does.
+        When group["dark"] is false, the light/default group is reached
+        exactly as before: by clicking whichever on-screen swatch's name
+        is not in dark_colorways_for_reference (the editor opens on a dark
+        variant-specific design, so this is what switches to the shared
+        default design; any non-dark swatch reaches the same default
+        design, per the discovery notes).
+
+        Verified live end to end on Brigham City (index-based, prior
+        version): clicking dark index 0 selected Graphite (panel showed
+        "Revert Graphite to default design"), clicking the light path
+        switched away from any variant-specific design (the "Currently
+        editing variant specific design" status disappeared), and clicking
+        dark index 3 reselected True Navy. No layer was added or changed
+        during that check; only the currently-viewed design switched, the
+        same as clicking "Back side" does. Re-verified live against the
+        colorway-name path in the Task 6b fix: see task-6-report.md for
+        the transition log.
         """
         dark_names = self.cfg["dark_colorways_for_reference"]
-        if group.get("dark"):
-            name = dark_names[group["index"]]
-            self.page.get_by_role("button", name=name, exact=True).click()
-            return
-        swatches = self._sel("variant_swatch_group")
-        for i in range(swatches.count()):
-            candidate = swatches.nth(i)
-            if candidate.get_attribute("aria-label") not in dark_names:
-                candidate.click()
-                return
-        raise RuntimeError("no light (non-variant-specific) swatch found")
+        if not group.get("dark"):
+            swatches = self._sel("variant_swatch_group")
+            for i in range(swatches.count()):
+                candidate = swatches.nth(i)
+                if candidate.get_attribute("aria-label") not in dark_names:
+                    candidate.click()
+                    return
+            raise RuntimeError("no light (non-variant-specific) swatch found")
+
+        colorway = group.get("colorway")
+        if colorway is None:
+            raise RuntimeError(
+                "dark group has no resolved colorway (product's color "
+                "option or variant options did not match); cannot pick a "
+                "swatch"
+            )
+        button = self.page.get_by_role("button", name=colorway, exact=True)
+        if button.count() == 0:
+            raise RuntimeError(f"no swatch found for colorway {colorway!r}")
+        button.click()
 
     def add_date_layer_to_current_group(self, dark):
         """Add the personalization text layer to the currently selected
@@ -243,6 +263,15 @@ class EditorDriver:
     def apply(self, product_id, plan):
         """Full recorded flow for one product: the default/light group
         first with black text, then each dark swatch with white text.
+
+        plan["groups"] entries are {"dark": bool, "colorway": str | None},
+        built by scripts/add_date_layer.py:build_plan(). _select_group()
+        resolves each dark entry's swatch by matching "colorway" to a
+        button's accessible name, not by position in a fixed reference
+        list; a per-group RuntimeError from an unresolved or missing
+        colorway propagates out of apply() and is treated as a per-product
+        failure by main()'s caller.
+
         Never called during Task 5a; the first real caller is Task 6 or a
         human-supervised 5b run.
         """

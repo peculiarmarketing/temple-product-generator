@@ -157,6 +157,40 @@ def all_products(client):
         page += 1
 
 
+def group_colorway(product, group):
+    """Resolve a print_areas group's colorway title (e.g. "Graphite") from
+    the product's color option and the group's first variant.
+
+    Read-only on its inputs. Returns None if anything needed is missing:
+    no color option, no variant_ids, or the variant/value can't be found.
+    This replaces the earlier scheme of clicking swatches by position in
+    a fixed reference list, which misclicked whenever a product's dark
+    group count or order did not match that list.
+    """
+    options = product.get("options") or []
+    color_option = next((o for o in options if o.get("type") == "color"), None)
+    if color_option is None:
+        color_option = next(
+            (o for o in options if str(o.get("name", "")).lower() == "colors"), None
+        )
+    if color_option is None:
+        return None
+    color_values = {v["id"]: v.get("title") for v in color_option.get("values", [])}
+
+    variant_ids = group.get("variant_ids") or []
+    if not variant_ids:
+        return None
+    variant = next(
+        (v for v in product.get("variants", []) if v.get("id") == variant_ids[0]), None
+    )
+    if variant is None:
+        return None
+    for opt_id in variant.get("options", []):
+        if opt_id in color_values:
+            return color_values[opt_id]
+    return None
+
+
 def build_plan(product, dated):
     """Compute the browser plan for one gated product. Uses the first group's
     divider (all groups share the same generated geometry)."""
@@ -166,8 +200,8 @@ def build_plan(product, dated):
     # print_areas order puts the default/light group first (group 0), which
     # satisfies the driver's documented light-before-dark contract.
     groups = [
-        {"index": i, "dark": group_is_dark(p)}
-        for i, (_, p) in enumerate(iter_back_placeholders(product))
+        {"dark": group_is_dark(ph), "colorway": group_colorway(product, grp)}
+        for grp, ph in iter_back_placeholders(product)
     ]
     return {"left_pct": left_pct, "top_pct": top_pct, "groups": groups}
 
@@ -214,16 +248,16 @@ def main():
     try:
         with EditorDriver(cfg) as driver:
             for product in todo:
-                plan = build_plan(product, dated)
                 try:
+                    plan = build_plan(product, dated)
                     driver.apply(product["id"], plan)
+                    fresh = client._request("GET", f"/shops/{shop_id}/products/{product['id']}.json")
+                    problems = verify(fresh, cfg, dated)
                 except LoggedOut:
                     raise
                 except Exception as e:  # noqa: BLE001 - report and continue the batch
                     failed.append((product["title"], str(e)))
                     continue
-                fresh = client._request("GET", f"/shops/{shop_id}/products/{product['id']}.json")
-                problems = verify(fresh, cfg, dated)
                 (done if not problems else failed).append(
                     (product["title"], "verified" if not problems else "; ".join(problems))
                 )

@@ -147,3 +147,52 @@ problems = verify(no_personalization, CFG, DATED_SPACING)
 assert any("personalisation layers empty" in p for p in problems), problems
 
 print("all tests passed")
+
+from scripts.add_date_layer import build_plan, group_colorway
+
+
+def colorway_option():
+    return {
+        "name": "Colors",
+        "type": "color",
+        "values": [
+            {"id": 100, "title": "Graphite"},
+            {"id": 200, "title": "White"},
+        ],
+    }
+
+
+def colorway_variant(variant_id, color_value_id, size_value_id=999):
+    return {"id": variant_id, "options": [color_value_id, size_value_id]}
+
+
+# group_colorway: a color option mapping two variants to two colorway titles,
+# plus a group whose variant id is not in product["variants"] at all.
+colorway_fixture = {
+    "options": [colorway_option()],
+    "variants": [colorway_variant(10, 100), colorway_variant(20, 200)],
+}
+assert group_colorway(colorway_fixture, {"variant_ids": [10]}) == "Graphite"
+assert group_colorway(colorway_fixture, {"variant_ids": [20]}) == "White"
+assert group_colorway(colorway_fixture, {"variant_ids": [999999]}) is None
+assert group_colorway({"options": [], "variants": []}, {"variant_ids": [10]}) is None
+
+# build_plan: groups carry exactly {"dark", "colorway"}, no "index". Light
+# group (divider "black") maps to variant 20 / "White"; dark group (divider
+# "white") maps to variant 10 / "Graphite".
+colorway_product = dated_product(
+    layers_per_group=[[divider_layer("black")], [divider_layer("white")]],
+    options=[colorway_option()],
+    variants=[colorway_variant(20, 200), colorway_variant(10, 100)],
+)
+colorway_product["print_areas"][0]["variant_ids"] = [20]
+colorway_product["print_areas"][1]["variant_ids"] = [10]
+
+plan = build_plan(colorway_product, DATED_SPACING)
+assert len(plan["groups"]) == 2, plan["groups"]
+for g in plan["groups"]:
+    assert set(g.keys()) == {"dark", "colorway"}, g
+assert plan["groups"][0] == {"dark": False, "colorway": "White"}, plan["groups"][0]
+assert plan["groups"][1] == {"dark": True, "colorway": "Graphite"}, plan["groups"][1]
+
+print("all group-contract tests passed")
