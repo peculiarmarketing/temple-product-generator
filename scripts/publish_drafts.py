@@ -52,11 +52,14 @@ def eligibility(product):
         return False, "unclaimed duplicate"
     if "(front logo)" in title.lower():
         return False, "test product"
-    if "With Date" in title:
-        return False, "dated product, Evan publishes by hand"
     personalisation = (product.get("sales_channel_properties") or {}).get("personalisation") or {}
-    if personalisation.get("layers"):
-        return False, "personalizable, Evan publishes by hand"
+    if " - With Date" in title or personalisation.get("layers"):
+        # Lazy import: module-top import would be circular, since
+        # add_date_layer imports load_config from this module.
+        from scripts.add_date_layer import verify, load_layer_config, load_dated_spacing
+        problems = verify(product, load_layer_config(), load_dated_spacing())
+        if problems:
+            return False, f"dated draft failed date-layer verification: {problems[0]}"
     if 'class="temple-facts"' not in (product.get("description") or ""):
         return False, "description has no temple facts section yet"
     if not product.get("is_economy_shipping_enabled"):

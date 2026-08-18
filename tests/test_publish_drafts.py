@@ -9,6 +9,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scripts.publish_drafts import eligibility
+from scripts.add_date_layer import load_layer_config, load_dated_spacing
+
+CFG = load_layer_config()
+DATED = load_dated_spacing()
 
 
 def base_product(**overrides):
@@ -24,6 +28,26 @@ def base_product(**overrides):
     return p
 
 
+def divider_layer(color="white", y=0.685):
+    return {"id": "img123", "name": f"divider {color} 2in.png", "x": 0.5, "y": y, "scale": 0.1335, "angle": 0}
+
+
+def text_layer(y=0.7206, text=None):
+    return {
+        "id": "uuid-1", "type": "text/plain", "input_text": text if text is not None else CFG["placeholder_text"],
+        "font_family": "Alata", "font_color": "#FFFFFF",
+        "x": 0.5, "y": y, "scale": 0.4, "angle": 0,
+    }
+
+
+def dated_print_areas(layers_per_group):
+    """One back placeholder group per images list, mirroring test_add_date_layer.py's dated_product shape."""
+    return [
+        {"variant_ids": [i], "placeholders": [{"position": "back", "images": layers}]}
+        for i, layers in enumerate(layers_per_group)
+    ]
+
+
 def check(name, product, want_ok, want_reason_part):
     ok, reason = eligibility(product)
     assert ok == want_ok, f"{name}: expected ok={want_ok}, got {ok} ({reason})"
@@ -35,16 +59,49 @@ check("already published", base_product(external={"id": "1", "handle": "x"}), Fa
 check("locked", base_product(is_locked=True), False, "locked")
 check("unclaimed duplicate", base_product(title="Copy of Logan Temple Tee"), False, "unclaimed duplicate")
 check("front logo test product", base_product(title="Nauvoo Temple Tee (front logo)"), False, "test product")
-check("dated by title", base_product(title="Logan Temple Tee - With Date"), False, "dated")
+check("dated by title", base_product(title="Logan Temple Tee - With Date"), False, "date-layer verification")
 check(
     "personalizable by layers",
     base_product(
         sales_channel_properties={
             "personalisation": {"layers": [{"personalisation_id": "text"}], "strategy": "pstudio"}
-        }
+        },
+        # No date text layer actually placed yet, so verification must fail
+        # rather than let this through on the personalisation toggle alone.
+        print_areas=dated_print_areas([[divider_layer("white")]]),
     ),
     False,
-    "personalizable",
+    "date-layer verification",
+)
+check(
+    "dated with fully verified layers",
+    base_product(
+        title="Logan Temple Tee - With Date",
+        sales_channel_properties={
+            "personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "text"}]}
+        },
+        print_areas=dated_print_areas([
+            [divider_layer("white"), text_layer()],
+            [divider_layer("black"), text_layer()],
+        ]),
+    ),
+    True,
+    "eligible",
+)
+check(
+    "dated with one group missing its text layer",
+    base_product(
+        title="Logan Temple Tee - With Date",
+        sales_channel_properties={
+            "personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "text"}]}
+        },
+        print_areas=dated_print_areas([
+            [divider_layer("white"), text_layer()],
+            [divider_layer("black")],
+        ]),
+    ),
+    False,
+    "date-layer verification",
 )
 check("missing facts section", base_product(description="just an intro"), False, "temple facts")
 check("no description at all", base_product(description=None), False, "temple facts")
