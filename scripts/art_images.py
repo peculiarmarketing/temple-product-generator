@@ -89,7 +89,8 @@ def push_catalog(only_temple=None):
     catalog = c.all_products_with_media()
     tokens = temple_tokens()
     plan, skipped = [], []
-    for title, product in sorted(catalog.items()):
+    for product in sorted(catalog, key=lambda p: (p["title"], p["id"])):
+        title = product["title"]
         temple = match_temple(title, tokens)
         if temple is None:
             if " Temple" in title and not any(x in title.lower() for x in EXCLUDE_MARKERS):

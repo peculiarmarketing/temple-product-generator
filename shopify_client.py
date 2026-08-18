@@ -37,9 +37,12 @@ class ShopifyClient:
         return data["data"]
 
     def all_products_with_media(self):
-        """One paginated pass over the catalog: {exact title: {id, media_alts}}.
+        """One paginated pass over the catalog: [{id, title, alts}, ...].
+        A list, not a dict, so duplicate titles stay visible: two live products
+        can share a title, and keying by it drops one of them entirely, which
+        no caller can detect or recover from.
         Scales as O(catalog/25) queries instead of one query per product."""
-        out, cursor = {}, None
+        out, cursor = [], None
         while True:
             data = self.gql("""
               query($after: String) { products(first: 25, after: $after) {
@@ -48,8 +51,8 @@ class ShopifyClient:
                 {"after": cursor})
             block = data["products"]
             for p in block["nodes"]:
-                out[p["title"].strip()] = {"id": p["id"],
-                                           "alts": [m.get("alt") or "" for m in p["media"]["nodes"]]}
+                out.append({"id": p["id"], "title": p["title"].strip(),
+                            "alts": [m.get("alt") or "" for m in p["media"]["nodes"]]})
             if not block["pageInfo"]["hasNextPage"]:
                 return out
             cursor = block["pageInfo"]["endCursor"]
