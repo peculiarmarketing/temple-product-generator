@@ -146,6 +146,11 @@ no_personalization = dated_product(layers_per_group=[[divider_layer("white"), te
 problems = verify(no_personalization, CFG, DATED_SPACING)
 assert any("personalisation layers empty" in p for p in problems), problems
 
+no_backs = dated_product(layers_per_group=[])
+no_backs["sales_channel_properties"] = {"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}}
+problems = verify(no_backs, CFG, DATED_SPACING)
+assert any("no back placeholders" in p for p in problems), problems
+
 print("all tests passed")
 
 from scripts.add_date_layer import build_plan, group_colorway

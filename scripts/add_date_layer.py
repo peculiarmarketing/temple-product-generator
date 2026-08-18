@@ -122,7 +122,12 @@ def verify(product, cfg, dated, tolerance=0.005):
     """
     problems = []
     _, h_in = area_inches()
-    for group, ph in iter_back_placeholders(product):
+    # A dated product with no back print areas must never verify clean.
+    backs = list(iter_back_placeholders(product))
+    if not backs:
+        problems.append("no back placeholders found")
+        return problems
+    for group, ph in backs:
         texts = [l for l in ph.get("images", []) if is_text_layer(l)]
         label = f"group variants {group.get('variant_ids', [])[:1]}"
         if len(texts) != 1:
