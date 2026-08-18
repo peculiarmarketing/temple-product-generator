@@ -15,7 +15,12 @@
   "layer_flow": "default_group_once_then_each_dark_swatch",
   "default_variant_note": "Editor opens on graphite (variant-specific design). Switch to a light swatch first to edit the default design, which propagates to all non-specific variants.",
   "dark_group_detection": "group carries the white temple SVG asset (never keyed by colorway names)",
-  "dark_colorways_for_reference": ["Graphite", "Brick", "Moss", "True Navy"],
+  "dark_colorways_for_reference": [
+    "Graphite",
+    "Brick",
+    "Moss",
+    "True Navy"
+  ],
   "position_anchor": "top_left_percent_of_print_area",
   "position_left_pct_for_centered_7in": 26.64,
   "personalization": {
@@ -27,13 +32,58 @@
   },
   "selectors": {
     "_comment": "Verified top-level controls from the live editor DOM. Panel-internal selectors (personalize panel button, swatches, width/height/position inputs) are finalized during the driver task's dry run.",
-    "back_side_button": {"kind": "role", "role": "button", "name": "Back side"},
-    "personalize_button": {"kind": "role", "role": "button", "name": "Personalize"},
-    "personalize_panel_heading": {"kind": "text", "text": "Buyer personalization"},
-    "add_personalizable_text_button": {"kind": "role", "role": "button", "name": "Add personalizable text"},
-    "add_text_button": {"kind": "role", "role": "button", "name": "Add text"},
-    "save_button": {"kind": "role", "role": "button", "name": "Save product"},
-    "variants_panel_heading": {"kind": "text", "text": "Variants and layers"},
-    "login_form_marker": {"kind": "css", "css": "input[type='password']"}
-  }
+    "back_side_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Back side"
+    },
+    "personalize_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Personalize"
+    },
+    "personalize_panel_heading": {
+      "kind": "text",
+      "text": "Buyer personalization"
+    },
+    "add_personalizable_text_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Add personalizable text"
+    },
+    "add_text_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Add text"
+    },
+    "save_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Save product"
+    },
+    "variants_panel_heading": {
+      "kind": "text",
+      "text": "Variants and layers"
+    },
+    "login_form_marker": {
+      "kind": "css",
+      "css": "input[type='password']"
+    },
+    "layer_toolbar_position_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Position"
+    },
+    "layer_toolbar_font_dropdown": {
+      "kind": "text",
+      "text": "Alata",
+      "note": "font family dropdown in the selected-layer top toolbar; exact selector finalized in driver dry run"
+    },
+    "layer_toolbar_color_hex_input": {
+      "kind": "css",
+      "css": "input",
+      "note": "hex field inside the color picker opened from the toolbar color control; finalized in driver dry run"
+    }
+  },
+  "font_size_editor": "Auto"
 }

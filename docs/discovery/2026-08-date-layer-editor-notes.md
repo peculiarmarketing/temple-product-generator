@@ -56,6 +56,16 @@ targets and stale a long-lived connection's page list; poll the
 9. press the down arrow once; that one step gives the standard gap between
    divider and date text.
 
+Where the controls live: clicking "Add personalizable text" creates the
+layer; font and color are NOT in that panel. Selecting the layer opens a
+floating top toolbar containing: a "Position" button (opens the
+width/height/rotate/position panel used in steps 4-5 and the calibration),
+the font family dropdown (set to Alata), a font size dropdown reading
+"Auto" (size is never set by hand; the typed box dimensions drive the
+rendered scale), bold/italic, text alignment, the font color control
+(opens a picker with a hex input field where the driver types 000000 or
+ffffff), duplicate, and delete.
+
 Step 8-9 mechanics, measured live (Brigham City, second session pass): the
 snap aligns the box top with the divider's TOP edge (Position top 78.93%).
 One down-arrow press moves a layer exactly 1.00% of the print-area height
