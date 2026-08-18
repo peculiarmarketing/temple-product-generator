@@ -43,8 +43,9 @@
       "name": "Personalize"
     },
     "personalize_panel_heading": {
-      "kind": "text",
-      "text": "Buyer personalization"
+      "kind": "role",
+      "role": "heading",
+      "name": "Buyer personalization"
     },
     "add_personalizable_text_button": {
       "kind": "role",
@@ -62,8 +63,9 @@
       "name": "Save product"
     },
     "variants_panel_heading": {
-      "kind": "text",
-      "text": "Variants and layers"
+      "kind": "role",
+      "role": "heading",
+      "name": "Variants and layers"
     },
     "login_form_marker": {
       "kind": "css",
@@ -81,8 +83,8 @@
     },
     "layer_toolbar_color_hex_input": {
       "kind": "css",
-      "css": "input",
-      "note": "hex field inside the color picker opened from the toolbar color control. Still deferred: could not identify layer_toolbar_color_button precisely enough to open the picker (see that entry), and per the task instructions the picker must not be opened read-only anyway, since opening it risks changing the current color. Confirm in 5b."
+      "css": "[data-testid='colorHexInput'] input",
+      "note": "Verified live during the Task 6c supervised run: the hex field is the native <input> nested inside the <pfy-input data-testid=\"colorHexInput\"> wrapper in the open color-picker popup. The prior bare \"input\" selector matched every input on the page (20 during this check) and would fail Playwright's strict mode on any fill(); scoped by data-testid it matches exactly one. Fill with the color minus its leading '#' (the '#' is a separate UI prefix glyph, not part of the field's own value), then Enter confirms it. The popup does not auto-close afterward (same as the font dropdown), so the driver presses Escape next."
     },
     "info_modal": {
       "kind": "role",
@@ -111,8 +113,8 @@
     },
     "layer_toolbar_color_button": {
       "kind": "css",
-      "css": "button[aria-label*='olor']",
-      "note": "still deferred. Verified the toolbar's icon-only button group order (Position, font combobox, size combobox, bold [disabled for Alata], italic [disabled for Alata], text-align, an unnamed icon button, Duplicate, Delete) and confirmed the color control is that one unnamed button between text-align and Duplicate, but it and the text-align button both lack aria-label/title and use inconsistent icon markup, so no CSS attribute reliably distinguishes it from its neighbor. The value above is an unverified guess. Per the task instructions this control must not be clicked read-only anyway (risks changing the current color); finalize its selector and confirm it opens a color picker with a hex field in 5b, using a throwaway or already-dark-colored layer so a wrong click is inconsequential."
+      "css": "pfd-text-color-dropdown button",
+      "note": "Verified live during the Task 6c supervised run (the deferred 5b confirmation): the toolbar's color control is the sole <button> inside the <pfd-text-color-dropdown> custom element (identified by its own pfytooltip=\"Font color\" attribute, tooltip text 'Font color'). The real native <button> carries no aria-label at all; a non-standard \"arialabel\" attribute lives only on the wrapping <pfy-button> custom element and is never projected onto the actual button, which is why the prior aria-label-based guess matched zero elements. Clicking it opens a <pfd-color-picker> popup with a hex field; see layer_toolbar_color_hex_input."
     },
     "width_input": {
       "kind": "css",

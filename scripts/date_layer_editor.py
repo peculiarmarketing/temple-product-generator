@@ -212,6 +212,29 @@ class EditorDriver:
             raise RuntimeError(f"no swatch found for colorway {colorway!r}")
         button.click()
 
+    def _select_font(self, font_family):
+        """Pick a font from the font dropdown's list, which the caller has
+        already opened.
+
+        Verified live during the Task 6c supervised run: each font row's
+        name is not a text node. It is exposed only as the alt text of a
+        lazy-loaded preview <img> (e.g. alt="Alata", data-testid="Alata")
+        inside an accordion-style button; the visible <span class="label">
+        beside it is always empty. get_by_text(font_family) therefore
+        never matches, which is what timed out the first live attempt
+        this round. The dropdown's own Search field filters the font
+        list (several hundred KB of markup unfiltered) down to the
+        matching entries; a plain click() on the filtered result relies
+        on Playwright's normal click auto-wait to absorb the filter's
+        debounce, no manual sleep needed. Selecting a font does
+        not close the dropdown by itself, so this presses Escape after,
+        matching the same pattern needed for the color picker below.
+        """
+        listbox = self.page.get_by_role("listbox").first
+        listbox.locator("input[placeholder='Search']").first.fill(font_family)
+        listbox.locator(f"button:has(img[alt='{font_family}'])").first.click()
+        self.page.keyboard.press("Escape")
+
     def add_date_layer_to_current_group(self, dark):
         """Add the personalization text layer to the currently selected
         variant group and style it. Uses "Add personalizable text" (not
@@ -224,11 +247,12 @@ class EditorDriver:
         self._sel("add_personalizable_text_button").click()
         self._sel("text_input").fill(cfg["placeholder_text"])
         self._sel("layer_toolbar_font_dropdown").first.click()
-        self.page.get_by_text(cfg["font_family"], exact=True).click()
+        self._select_font(cfg["font_family"])
         color = cfg["font_color_dark_groups"] if dark else cfg["font_color_light_groups"]
         self._sel("layer_toolbar_color_button").click()
         self._sel("layer_toolbar_color_hex_input").fill(color.lstrip("#"))
         self.page.keyboard.press("Enter")
+        self.page.keyboard.press("Escape")
 
     def position_layer(self, left_pct, top_pct):
         """Type the box dimensions and the top-left position directly.
