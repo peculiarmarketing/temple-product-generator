@@ -146,6 +146,20 @@ def verify(product, cfg, dated, tolerance=0.005):
             problems.append(
                 f"{label}: text y {t.get('y')} not within tolerance of {want_y:.4f}"
             )
+        if t.get("font_family") != cfg["font_family"]:
+            problems.append(f"{label}: font is {t.get('font_family')!r}")
+        want_color = cfg["font_color_dark_groups"] if group_is_dark(ph) else cfg["font_color_light_groups"]
+        got_color = str(t.get("font_color", ""))
+        if got_color.lower() != want_color.lower():
+            problems.append(f"{label}: font color {got_color} not {want_color}")
+        if abs(t.get("x", -1) - 0.5) > tolerance:
+            problems.append(
+                f"{label}: text x {t.get('x')} not within tolerance of 0.5000"
+            )
+        if abs(t.get("scale", -1) - cfg["expected_scale"]) > tolerance:
+            problems.append(
+                f"{label}: text scale {t.get('scale')} not within tolerance of {cfg['expected_scale']:.4f}"
+            )
     personalisation = (product.get("sales_channel_properties") or {}).get("personalisation") or {}
     if not personalisation.get("layers"):
         problems.append("personalisation layers empty (toggle did not stick)")

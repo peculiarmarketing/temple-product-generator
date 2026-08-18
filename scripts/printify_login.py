@@ -171,6 +171,9 @@ def login():
                             if _page_logged_in(page):
                                 print("Logged in. Session lives in the dedicated Chrome profile; you can close the window or leave it open.")
                                 return 0
+                except Exception:
+                    # Target churn during login navigations can break a single attach; keep polling.
+                    pass
                 finally:
                     if browser:
                         browser.close()
@@ -222,7 +225,13 @@ def check():
                 print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
                 return 1
             except PlaywrightTimeout:
-                # Login form did not appear within 20 seconds; treat as logged in.
+                # Login form did not appear within 20 seconds; treat as logged in,
+                # unless the page never actually reached the app (network/navigation
+                # failure landing on about:blank would otherwise look "valid" too).
+                if not page.url.startswith("https://printify.com/app"):
+                    page.close()
+                    print("Could not reach Printify (network or navigation failure). Session state unknown.")
+                    return 1
                 page.close()
                 print("Session is valid.")
                 return 0

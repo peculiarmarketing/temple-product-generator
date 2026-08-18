@@ -31,11 +31,11 @@ def divider_layer(color="white", y=0.685):
     return {"id": "img123", "name": f"divider {color} 2in.png", "x": 0.5, "y": y, "scale": 0.1335, "angle": 0}
 
 
-def text_layer(y=0.7206, text=None):
+def text_layer(y=0.7206, text=None, color="#FFFFFF"):
     return {
         "id": "uuid-1", "type": "text/plain", "input_text": text if text is not None else CFG["placeholder_text"],
-        "font_family": "Alata", "font_color": "#FFFFFF",
-        "x": 0.5, "y": y, "scale": 0.4, "angle": 0,
+        "font_family": "Alata", "font_color": color,
+        "x": 0.5, "y": y, "scale": CFG["expected_scale"], "angle": 0,
     }
 
 
@@ -81,7 +81,7 @@ check(
         },
         print_areas=dated_print_areas([
             [divider_layer("white"), text_layer()],
-            [divider_layer("black"), text_layer()],
+            [divider_layer("black"), text_layer(color="#000000")],
         ]),
     ),
     True,

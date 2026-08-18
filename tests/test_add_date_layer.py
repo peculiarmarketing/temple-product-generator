@@ -64,11 +64,11 @@ def divider_layer(color="white", y=0.685):
     return {"id": "img123", "name": f"divider {color} 2in.png", "x": 0.5, "y": y, "scale": 0.1335, "angle": 0}
 
 
-def text_layer(y=0.7206, text="June 14, 2026"):
+def text_layer(y=0.7206, text="June 14, 2026", color="#FFFFFF", scale=0.4673, font_family="Alata"):
     return {
         "id": "uuid-1", "type": "text/plain", "input_text": text,
-        "font_family": "Alata", "font_color": "#FFFFFF",
-        "x": 0.5, "y": y, "scale": 0.4, "angle": 0,
+        "font_family": font_family, "font_color": color,
+        "x": 0.5, "y": y, "scale": scale, "angle": 0,
     }
 
 
@@ -101,6 +101,7 @@ check_gate("not dated", dated_product(title="Logan Temple Tee"), False, "not a W
 check_gate("unclaimed duplicate", dated_product(title="Copy of Logan Temple Tee - With Date"), False, "unclaimed duplicate")
 check_gate("already published", dated_product(external={"id": "1"}), False, "already published")
 check_gate("locked", dated_product(is_locked=True), False, "locked")
+check_gate("no back print area", dated_product(layers_per_group=[]), False, "no back print area")
 check_gate("no divider", dated_product(layers_per_group=[[]]), False, "divider layer not found")
 check_gate(
     "layer already present",
@@ -115,7 +116,13 @@ assert find_divider({"position": "back", "images": [divider_layer("black")]})["n
 assert group_is_dark({"position": "back", "images": [divider_layer("white")]})
 assert not group_is_dark({"position": "back", "images": [divider_layer("black")]})
 
-CFG = {"placeholder_text": "June 14, 2026"}
+CFG = {
+    "placeholder_text": "June 14, 2026",
+    "font_family": "Alata",
+    "font_color_light_groups": "#000000",
+    "font_color_dark_groups": "#ffffff",
+    "expected_scale": 0.4673,
+}
 DATED_SPACING = DATED
 
 good = dated_product(
@@ -150,6 +157,27 @@ no_backs = dated_product(layers_per_group=[])
 no_backs["sales_channel_properties"] = {"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}}
 problems = verify(no_backs, CFG, DATED_SPACING)
 assert any("no back placeholders" in p for p in problems), problems
+
+wrong_color = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer(color="#000000")]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+problems = verify(wrong_color, CFG, DATED_SPACING)
+assert any("color" in p for p in problems), problems
+
+wrong_scale = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer(scale=0.5)]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+problems = verify(wrong_scale, CFG, DATED_SPACING)
+assert any("scale" in p for p in problems), problems
+
+wrong_font = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer(font_family="Arial")]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+problems = verify(wrong_font, CFG, DATED_SPACING)
+assert any("font is" in p for p in problems), problems
 
 print("all tests passed")
 
