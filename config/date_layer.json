@@ -31,7 +31,7 @@
     "note": "The sales_channel_properties personalisation block rides the UI duplicate, but the editor requires the personalization text layer to be re-created per draft via the Personalize panel."
   },
   "selectors": {
-    "_comment": "Verified top-level controls from the live editor DOM. Panel-internal selectors (personalize panel button, swatches, width/height/position inputs) are finalized during the driver task's dry run.",
+    "_comment": "Top-level controls verified against the live editor DOM in the 18 Aug discovery session. Panel-internal, swatch, and position-panel selectors below were meant to be finalized during Task 5a's dry run, but that dry run could not reach the editor DOM at all: Playwright's connect_over_cdp() failed against the running Chrome with CDP error 'Browser.setDownloadBehavior: Browser context management is not supported' (Chrome rejects browser-context-management CDP calls unless launched with --enable-automation, which ensure_chrome() omits on purpose to dodge Printify's Cloudflare fingerprint check). See task-5-report.md for the full mechanism and evidence. Every selector below marked with a 'note' is an unverified best-effort placeholder pending a working connection in 5b; none were confirmed against a real DOM this session.",
     "back_side_button": {
       "kind": "role",
       "role": "button",
@@ -82,7 +82,54 @@
     "layer_toolbar_color_hex_input": {
       "kind": "css",
       "css": "input",
-      "note": "hex field inside the color picker opened from the toolbar color control; finalized in driver dry run"
+      "note": "hex field inside the color picker opened from the toolbar color control. Not verified: the dry run could not reach the DOM (see selectors._comment), and the task instructions also say not to open the color picker read-only even if the DOM were reachable, since opening it risks changing the current color. Confirm in 5b."
+    },
+    "info_modal_close_button": {
+      "kind": "role",
+      "role": "button",
+      "name": "Close",
+      "note": "closes the 'Important product information' modal that can cover the editor on open. Name guessed from the discovery notes' description ('close button, plus a Hide this info in the future checkbox'); not verified against the live DOM. Confirm in 5b."
+    },
+    "existing_text_layer_marker": {
+      "kind": "text",
+      "text": "Text",
+      "exact": true,
+      "note": "meant to detect the personalizable text layer (named 'Text' per the discovery notes) via the canvas chip or layers-list entry, for has_text_layer()'s idempotency guard. Not verified: a bare exact-text match risks false positives if other UI elements also read exactly 'Text'. Confirm a more specific, scoped selector in 5b (e.g. within a layers-list container)."
+    },
+    "variant_swatch_group": {
+      "kind": "css",
+      "css": "[aria-label]",
+      "note": "meant to select the ordered list of color swatches in the 'Variants and layers' panel, so _select_group() can click swatches.nth(group['index']). This is a placeholder, not a verified selector; the dry run could not reach the DOM. In 5b: open that panel, inspect the swatch row markup, and replace this with a selector scoped to just the swatch buttons in their displayed order. The discovery notes also describe a 'blue dot' marker on variant-specific (dark) swatches as an alternative way to detect darkness directly from the DOM instead of trusting the caller-supplied index; worth checking if index-order clicking proves unreliable."
+    },
+    "text_input": {
+      "kind": "css",
+      "css": "textarea",
+      "note": "meant to type the placeholder date text into the newly created personalization layer. The discovery notes mention a character counter (18/1024) on this layer, which implies a real fillable input/textarea rather than pure canvas rendering, but the exact element was not located (dry run could not reach the DOM). Confirm in 5b."
+    },
+    "layer_toolbar_color_button": {
+      "kind": "css",
+      "css": "button[aria-label*='olor']",
+      "note": "meant to open the color picker from the selected layer's floating toolbar (before typing into layer_toolbar_color_hex_input). Not verified, and per the task instructions this control should not be clicked read-only even once reachable, since opening the picker risks changing the current color. Confirm in 5b."
+    },
+    "width_input": {
+      "kind": "label",
+      "label": "Width",
+      "note": "Position panel field. Label text guessed from the discovery notes ('Width 7 in'); not verified against the live DOM. Confirm exact label text in 5b."
+    },
+    "height_input": {
+      "kind": "label",
+      "label": "Height",
+      "note": "Position panel field. Label text guessed from the discovery notes ('Height 0.91 in'); not verified. Confirm in 5b."
+    },
+    "position_left_input": {
+      "kind": "label",
+      "label": "Position left",
+      "note": "Position panel field. Label text guessed from the discovery notes ('Position left 26.64 %'); not verified. Confirm exact label text in 5b (may be 'Left' rather than 'Position left')."
+    },
+    "position_top_input": {
+      "kind": "label",
+      "label": "Position top",
+      "note": "Position panel field. Label text guessed from the discovery notes ('Position top 80.05 %'); not verified. Confirm exact label text in 5b (may be 'Top' rather than 'Position top')."
     }
   },
   "font_size_editor": "Auto"
