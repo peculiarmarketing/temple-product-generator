@@ -21,7 +21,7 @@ import requests
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-PROFILE_DIR = PROJECT_ROOT / ".playwright" / "chrome-profile"
+PROFILE_DIR = PROJECT_ROOT / ".playwright.nosync" / "chrome-profile"
 CHROME_BINARY = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 DEBUG_PORT = 9222
 CDP_URL = f"http://localhost:{DEBUG_PORT}"

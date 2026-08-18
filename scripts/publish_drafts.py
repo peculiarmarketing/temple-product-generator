@@ -4,14 +4,14 @@
   python scripts/publish_drafts.py                 # publish everything eligible
   python scripts/publish_drafts.py --only "Brigham City Temple Tee"
 
-Auto-publishes never-published products EXCEPT personalizable ones (the
-With Date line): Evan re-adds the date text layer by hand, so those keep
-the manual publish flow. Safety gates: a draft must carry the temple-facts
-description section (proof the pipeline finished it) and Economy shipping
-(inherited from its UI duplicate; read-only via API so it can only be
-verified, not set). Publish settings the API cannot touch (mockup choices,
-variant visibility, shipping options) ride the duplicate, so what the donor
-product had is what goes live.
+Auto-publishes never-published products, including personalizable ones (the
+With Date line) once their date-layer verification passes (see
+scripts/add_date_layer.py); unverified dated drafts stay held. Safety gates:
+a draft must carry the temple-facts description section (proof the pipeline
+finished it) and Economy shipping (inherited from its UI duplicate;
+read-only via API so it can only be verified, not set). Publish settings
+the API cannot touch (mockup choices, variant visibility, shipping options)
+ride the duplicate, so what the donor product had is what goes live.
 """
 
 import argparse
@@ -54,8 +54,8 @@ def eligibility(product):
         return False, "test product"
     personalisation = (product.get("sales_channel_properties") or {}).get("personalisation") or {}
     if " - With Date" in title or personalisation.get("layers"):
-        # Lazy import: module-top import would be circular, since
-        # add_date_layer imports load_config from this module.
+        # Lazy import keeps this module import-light and avoids coupling
+        # at import time.
         from scripts.add_date_layer import verify, load_layer_config, load_dated_spacing
         problems = verify(product, load_layer_config(), load_dated_spacing())
         if problems:

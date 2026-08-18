@@ -31,3 +31,9 @@ Put the Printify Personal Access Token in `.env` (see the placeholder comments i
 Reserved at project root for later phases (do not create early): `layout.py`, `preview.py`, `generate.py`, `garments/`, `spacing_defaults.json`. Temple manifests will live in the existing `../Temples/{Name}/` folders.
 
 The venv is named `.venv.nosync` so iCloud Drive does not sync interpreter files. If it is ever lost, recreate it from `requirements.txt`.
+
+## End-of-run sequence
+
+1. Run the sweep or a targeted generate (`generate.py --sweep` or `--temple ...`) to produce drafts.
+2. (Optional) `scripts/add_date_layer.py` adds date layers to With Date drafts via the browser; skipping it means adding layers by hand as before.
+3. `scripts/publish_drafts.py` publishes base drafts and verified dated drafts; economy-off drafts are held until Evan flips Economy on in the Printify UI.

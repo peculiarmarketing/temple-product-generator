@@ -9,10 +9,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from scripts.publish_drafts import eligibility
-from scripts.add_date_layer import load_layer_config, load_dated_spacing
+from scripts.add_date_layer import load_layer_config
 
 CFG = load_layer_config()
-DATED = load_dated_spacing()
 
 
 def base_product(**overrides):

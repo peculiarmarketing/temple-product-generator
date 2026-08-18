@@ -10,7 +10,7 @@ Printify editor redesign means a repair session against this document.
 Playwright-launched browsers fail Printify's Cloudflare Turnstile login
 challenge regardless of human input (automation fingerprint). The session
 therefore lives in a real Google Chrome with a dedicated profile
-(`.playwright/chrome-profile/`, gitignored) started with
+(`.playwright.nosync/chrome-profile/`, gitignored) started with
 `--remote-debugging-port=9222`. Evan logs in there once by hand; scripts
 attach with `connect_over_cdp`. Managed by `scripts/printify_login.py`.
 Caution for long-running connections: cross-origin navigations swap CDP
