@@ -145,3 +145,101 @@ def verify(product, cfg, dated, tolerance=0.005):
     if not personalisation.get("layers"):
         problems.append("personalisation layers empty (toggle did not stick)")
     return problems
+
+
+def all_products(client):
+    page = 1
+    while True:
+        body = client._request("GET", f"/shops/{client.shop_id}/products.json?page={page}&limit=50")
+        yield from body.get("data", [])
+        if not body.get("next_page_url"):
+            return
+        page += 1
+
+
+def build_plan(product, dated):
+    """Compute the browser plan for one gated product. Uses the first group's
+    divider (all groups share the same generated geometry)."""
+    _, ph = next(iter_back_placeholders(product))
+    zone = date_zone_from_divider(find_divider(ph)["y"], dated)
+    left_pct, top_pct = editor_percent(zone)
+    # print_areas order puts the default/light group first (group 0), which
+    # satisfies the driver's documented light-before-dark contract.
+    groups = [
+        {"index": i, "dark": group_is_dark(p)}
+        for i, (_, p) in enumerate(iter_back_placeholders(product))
+    ]
+    return {"left_pct": left_pct, "top_pct": top_pct, "groups": groups}
+
+
+def main():
+    import argparse
+
+    from printify_client import PrintifyClient
+    from scripts.publish_drafts import load_config
+    from scripts.date_layer_editor import EditorDriver, LoggedOut
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--report-only", action="store_true", help="list candidates, change nothing")
+    parser.add_argument("--product-id", help="run on this product only (still gated)")
+    args = parser.parse_args()
+
+    token, shop_id = load_config()
+    client = PrintifyClient(token, shop_id)
+    cfg = load_layer_config()
+    dated = load_dated_spacing()
+
+    if args.product_id:
+        summaries = [{"id": args.product_id}]
+    else:
+        summaries = [
+            s for s in all_products(client)
+            if " - With Date" in (s.get("title") or "") and not s.get("external")
+        ]
+
+    todo = []
+    for summary in summaries:
+        product = client._request("GET", f"/shops/{shop_id}/products/{summary['id']}.json")
+        ok, reason = gate(product)
+        marker = "ADD" if ok else "skip"
+        print(f"{marker:5}  {product['title']}  ({reason})")
+        if ok:
+            todo.append(product)
+
+    if args.report_only or not todo:
+        print(f"\n{len(todo)} draft(s) need a date layer." + (" Report only." if args.report_only else ""))
+        return
+
+    done, failed = [], []
+    try:
+        with EditorDriver(cfg) as driver:
+            for product in todo:
+                plan = build_plan(product, dated)
+                try:
+                    driver.apply(product["id"], plan)
+                except LoggedOut:
+                    raise
+                except Exception as e:  # noqa: BLE001 - report and continue the batch
+                    failed.append((product["title"], str(e)))
+                    continue
+                fresh = client._request("GET", f"/shops/{shop_id}/products/{product['id']}.json")
+                problems = verify(fresh, cfg, dated)
+                (done if not problems else failed).append(
+                    (product["title"], "verified" if not problems else "; ".join(problems))
+                )
+    except LoggedOut:
+        print("\nSession expired. Run: ./.venv.nosync/bin/python scripts/printify_login.py")
+        return
+
+    print("\nSummary:")
+    for title, note in done:
+        print(f"  OK    {title}  ({note})")
+    for title, note in failed:
+        print(f"  FAIL  {title}  ({note})")
+    if failed:
+        print("\nFailed drafts are untouched or fixable in the editor; the manual flow always works.")
+    print("Review and publish in Printify by hand, as always. This script never publishes.")
+
+
+if __name__ == "__main__":
+    main()
