@@ -1072,3 +1072,55 @@ The gate closes on the next real sweep: Evan duplicates, sweeps, runs `add_date_
 - Spec coverage: Phase 0 = Task 2, Phase 1 = Task 1 plus the Task 5 precondition (two-day session check), Phase 2 = Task 5, Phase 3 = Task 6. Position computation = Task 3 (divider GET plus spacing constants; sidecar fallback not needed since GET exposes what we need, and the uploads fallback in Task 4 covers the divider-name risk). Settings capture = Task 2. Reversibility: no existing code files modified, additive lines only, hard scope in `gate()`, in-editor guard in `has_text_layer()`, publish gate untouched. Security: session gitignored, credentials typed by Evan only, `LoggedOut` never attempts login.
 - Task ordering vs spec: Task 1 (login tooling) runs before the discovery session because discovery drives the editor through the saved Playwright session, so the captured selectors match the exact browser the script will use. The spec's gates still close in order (Phase 0 gate in Task 2, Phase 1 gate closes at Task 5's precondition).
 - Known unknowns are quarantined: everything selector- and flow-shaped resolves in Task 2 and is consumed as config plus notes, never guessed silently. Two driver methods are explicitly finished inside Task 5 Step 1 from the notes, and the step forbids committing an unfinished driver.
+
+---
+
+## Amendment (18 Aug 2026, evening): Tasks 7 and 8
+
+Authorized by Evan in chat after the Phase 2 gate: (a) the automation should
+turn Economy shipping ON via the UI, because new drafts default to off and
+the API field is read-only; (b) publish_drafts.py shall accept With Date
+drafts that pass all existing gates plus a clean date-layer verification,
+reversing the standing never-publish-dated rule. The reversibility section's
+zero-edit rule is amended accordingly: publish_drafts.py and its test file
+may now change, minimally and gated as below.
+
+### Task 7: Economy shipping toggle automation
+
+**Files:**
+- Modify: `scripts/date_layer_editor.py` (new method), `config/date_layer.json` (new selectors), `scripts/add_date_layer.py` (CLI wiring)
+
+Blocked on: Evan telling us where the Economy toggle lives in the Printify
+UI, then a short read-only discovery probe of that location. Design: a
+driver method `enable_economy(product_id)` that navigates to the recorded
+location, checks current state, flips the toggle ON only when off, saves if
+that location requires saving, and confirms via API GET
+(`is_economy_shipping_enabled` true) with a bounded retry for propagation.
+CLI wiring: after apply() verifies clean, if the fresh GET shows economy
+off, call enable_economy and re-verify; report "economy enabled" or a
+warning in the summary. Never touches any other setting. Gate: one live
+supervised flip on a draft Evan names.
+
+### Task 8: Publish gate accepts verified dated drafts
+
+**Files:**
+- Modify: `scripts/publish_drafts.py` (eligibility only), `tests/test_publish_drafts.py`
+
+**Interfaces:**
+- Consumes: `verify`, `load_layer_config`, `load_dated_spacing`, `iter_back_placeholders`, `is_text_layer` from `scripts/add_date_layer` via LAZY import inside `eligibility()` (module-top import would be circular: add_date_layer imports load_config from publish_drafts).
+
+Design: in `eligibility()`, replace the two flat rejections ("dated" by
+title, "personalizable by layers") with: when a product is dated by title
+or personalizable by layers, run the full date-layer verification
+(`verify(product, load_layer_config(), load_dated_spacing())`); empty
+problems means the product continues through the remaining gates unchanged
+(facts section, economy, locked, Copy of, published); otherwise reject with
+reason "dated draft failed date-layer verification: <first problem>".
+Every other gate stays byte-identical. Tests: update the two existing dated
+cases (fixtures without text layers now expect the new reason), add a
+passing dated fixture (5-group print_areas with complete, correctly
+positioned text layers reusing the tests/test_add_date_layer.py fixture
+shapes) and a one-group-missing failing fixture. The test file still runs
+standalone and prints its existing pass line. TDD, plain assert style,
+commit per repo convention. Note: the economy gate already skips
+economy-off drafts, which is correct; Task 7 closes that loop.
