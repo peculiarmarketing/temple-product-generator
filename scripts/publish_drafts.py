@@ -19,6 +19,9 @@ import sys
 import time
 from pathlib import Path
 
+import requests
+from dotenv import dotenv_values
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -72,7 +75,24 @@ def all_products(client):
     return products
 
 
-def publish_one(client, product):
+def shopify_find(shopify, title):
+    """Exact-title lookup on Shopify. Returns the product dict or None."""
+    domain, token = shopify
+    resp = requests.get(
+        f"https://{domain}/admin/api/2024-01/products.json",
+        params={"title": title},
+        headers={"X-Shopify-Access-Token": token},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    hits = [p for p in resp.json()["products"] if p["title"] == title]
+    return hits[0] if hits else None
+
+
+def publish_one(client, product, shopify=None):
+    """POST the publish, then confirm it landed. Printify's own external field
+    can lag the actual Shopify push by many minutes (measured 18 Aug 2026), so
+    Shopify itself is checked as the authoritative signal when creds exist."""
     pid = product["id"]
     client._request("POST", f"/shops/{client.shop_id}/products/{pid}/publish.json", json=PUBLISH_FLAGS)
     deadline = time.time() + POLL_TIMEOUT_S
@@ -80,8 +100,12 @@ def publish_one(client, product):
         time.sleep(POLL_INTERVAL_S)
         fresh = client._request("GET", f"/shops/{client.shop_id}/products/{pid}.json")
         external = fresh.get("external")
-        if external and not fresh.get("is_locked"):
-            return external
+        if external:
+            return {"handle": external.get("handle"), "via": "printify"}
+        if shopify:
+            live = shopify_find(shopify, product["title"])
+            if live and live.get("status") == "active":
+                return {"handle": live.get("handle"), "via": "shopify"}
     return None
 
 
@@ -93,6 +117,11 @@ def main():
 
     token, shop_id = load_config()
     client = PrintifyClient(token, shop_id)
+
+    env = dotenv_values(PROJECT_ROOT / ".env")
+    shopify = None
+    if env.get("SHOPIFY_STORE_DOMAIN") and env.get("SHOPIFY_ADMIN_TOKEN"):
+        shopify = (env["SHOPIFY_STORE_DOMAIN"], env["SHOPIFY_ADMIN_TOKEN"])
 
     unpublished = [p for p in all_products(client) if not p.get("external")]
     if args.only:
@@ -122,16 +151,17 @@ def main():
     for product in to_publish:
         print(f"\nPublishing {product['title']} ...")
         try:
-            external = publish_one(client, product)
+            result = publish_one(client, product, shopify=shopify)
         except PrintifyError as err:
             print(f"  FAILED: {err}")
             failures += 1
             continue
-        if external:
-            print(f"  Live on Shopify: handle {external.get('handle')} (id {external.get('id')})")
+        if result:
+            note = "" if result["via"] == "printify" else " (Printify still syncing its own status)"
+            print(f"  Live on Shopify: {result['handle']}{note}")
         else:
-            print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but has not "
-                  "confirmed it. Check the product in Printify before retrying.")
+            print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but neither "
+                  "Printify nor Shopify confirms it yet. Check the product in Printify before retrying.")
             failures += 1
 
     if failures:
