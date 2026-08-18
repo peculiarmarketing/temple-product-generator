@@ -31,7 +31,7 @@
     "note": "The sales_channel_properties personalisation block rides the UI duplicate, but the editor requires the personalization text layer to be re-created per draft via the Personalize panel."
   },
   "selectors": {
-    "_comment": "Top-level controls verified against the live editor DOM in the 18 Aug discovery session. Panel-internal, swatch, and position-panel selectors below were meant to be finalized during Task 5a's dry run, but that dry run could not reach the editor DOM at all: Playwright's connect_over_cdp() failed against the running Chrome with CDP error 'Browser.setDownloadBehavior: Browser context management is not supported' (Chrome rejects browser-context-management CDP calls unless launched with --enable-automation, which ensure_chrome() omits on purpose to dodge Printify's Cloudflare fingerprint check). See task-5-report.md for the full mechanism and evidence. Every selector below marked with a 'note' is an unverified best-effort placeholder pending a working connection in 5b; none were confirmed against a real DOM this session.",
+    "_comment": "Top-level controls verified against the live editor DOM in the 18 Aug discovery session. Panel-internal, swatch, and position-panel selectors below were re-verified live against the Brigham City draft (6a84639bd5ded88aa1075c8c) once the CDP connection blocker (see task-5-report.md) was fixed in scripts/printify_login.py. Every selector still marked with a 'note' is a deferred placeholder; everything else in this section was read directly from the live DOM this session (outerHTML dumps and/or successful read-only interaction), not guessed from prose.",
     "back_side_button": {
       "kind": "role",
       "role": "button",
@@ -75,61 +75,64 @@
       "name": "Position"
     },
     "layer_toolbar_font_dropdown": {
-      "kind": "text",
-      "text": "Alata",
-      "note": "font family dropdown in the selected-layer top toolbar; exact selector finalized in driver dry run"
+      "kind": "role",
+      "role": "combobox",
+      "note": "verified live: this is the first of three role=combobox elements in the selected-layer toolbar (font family, font size, zoom %), in that DOM order; the driver takes .first. No name filter because the accessible name is the current value ('Alata'), not a stable label."
     },
     "layer_toolbar_color_hex_input": {
       "kind": "css",
       "css": "input",
-      "note": "hex field inside the color picker opened from the toolbar color control. Not verified: the dry run could not reach the DOM (see selectors._comment), and the task instructions also say not to open the color picker read-only even if the DOM were reachable, since opening it risks changing the current color. Confirm in 5b."
+      "note": "hex field inside the color picker opened from the toolbar color control. Still deferred: could not identify layer_toolbar_color_button precisely enough to open the picker (see that entry), and per the task instructions the picker must not be opened read-only anyway, since opening it risks changing the current color. Confirm in 5b."
+    },
+    "info_modal": {
+      "kind": "role",
+      "role": "dialog",
+      "note": "verified live: role=dialog wraps the whole 'Important product information' modal. Used only to check visibility before trying to close it."
     },
     "info_modal_close_button": {
-      "kind": "role",
-      "role": "button",
-      "name": "Close",
-      "note": "closes the 'Important product information' modal that can cover the editor on open. Name guessed from the discovery notes' description ('close button, plus a Hide this info in the future checkbox'); not verified against the live DOM. Confirm in 5b."
+      "kind": "css",
+      "css": "[role='dialog'] button",
+      "note": "verified live by clicking it: the modal's close (X) button is the first <button> inside the dialog, before any other content. It carries no accessible name (icon-only, aria-hidden icon), so role/name lookup does not work; the driver takes .first."
     },
     "existing_text_layer_marker": {
-      "kind": "text",
-      "text": "Text",
-      "exact": true,
-      "note": "meant to detect the personalizable text layer (named 'Text' per the discovery notes) via the canvas chip or layers-list entry, for has_text_layer()'s idempotency guard. Not verified: a bare exact-text match risks false positives if other UI elements also read exactly 'Text'. Confirm a more specific, scoped selector in 5b (e.g. within a layers-list container)."
+      "kind": "css",
+      "css": "[data-analyticsid='textboxLayerPreview']",
+      "note": "verified live on Brigham City: present exactly once on the back side (which already has its date layer) and absent on the front side of the same product. This is the layers-list entry's own marker attribute, not a text match, so it does not depend on the layer being named 'Text' or on font name."
     },
     "variant_swatch_group": {
       "kind": "css",
-      "css": "[aria-label]",
-      "note": "meant to select the ordered list of color swatches in the 'Variants and layers' panel, so _select_group() can click swatches.nth(group['index']). This is a placeholder, not a verified selector; the dry run could not reach the DOM. In 5b: open that panel, inspect the swatch row markup, and replace this with a selector scoped to just the swatch buttons in their displayed order. The discovery notes also describe a 'blue dot' marker on variant-specific (dark) swatches as an alternative way to detect darkness directly from the DOM instead of trusting the caller-supplied index; worth checking if index-order clicking proves unreliable."
+      "css": "button[data-testid='colorChipButton']",
+      "note": "verified live: every color swatch in the 'Variants and layers' panel is a <button data-testid=\"colorChipButton\" aria-label=\"<ColorName>\">, confirmed for all 8 of Brigham City's colorways (Graphite, Brick, Ivory, Khaki, Moss, Ice Blue, True Navy, Orchid). Used by _select_group() only for the light-group path (iterates these and clicks the first whose aria-label is not in dark_colorways_for_reference); dark groups are clicked directly by role+name instead. The blue 'variant-specific design' dot is a pure CSS decoration with no distinguishing DOM attribute (every swatch's markup is structurally identical whether or not it shows a dot), so darkness cannot be read from this selector alone; see dark_colorways_for_reference and _select_group()'s docstring. _select_group() itself was exercised end to end this session (clicked Graphite, then a light swatch, then True Navy) and confirmed correct via the panel's 'Revert <name> to default design' text and the 'Currently editing variant specific design' status appearing/disappearing as expected."
     },
     "text_input": {
       "kind": "css",
-      "css": "textarea",
-      "note": "meant to type the placeholder date text into the newly created personalization layer. The discovery notes mention a character counter (18/1024) on this layer, which implies a real fillable input/textarea rather than pure canvas rendering, but the exact element was not located (dry run could not reach the DOM). Confirm in 5b."
+      "css": "[data-analyticsid='textboxLayerPreview'] textarea",
+      "note": "verified live: reads back the exact placeholder value ('SEPTEMBER 25, 2024') on Brigham City's existing layer. Scoped to the layer's own container because an unrelated second, empty <textarea> exists elsewhere on the page; an unscoped 'textarea' selector picks up both and .first is not reliably the right one."
     },
     "layer_toolbar_color_button": {
       "kind": "css",
       "css": "button[aria-label*='olor']",
-      "note": "meant to open the color picker from the selected layer's floating toolbar (before typing into layer_toolbar_color_hex_input). Not verified, and per the task instructions this control should not be clicked read-only even once reachable, since opening the picker risks changing the current color. Confirm in 5b."
+      "note": "still deferred. Verified the toolbar's icon-only button group order (Position, font combobox, size combobox, bold [disabled for Alata], italic [disabled for Alata], text-align, an unnamed icon button, Duplicate, Delete) and confirmed the color control is that one unnamed button between text-align and Duplicate, but it and the text-align button both lack aria-label/title and use inconsistent icon markup, so no CSS attribute reliably distinguishes it from its neighbor. The value above is an unverified guess. Per the task instructions this control must not be clicked read-only anyway (risks changing the current color); finalize its selector and confirm it opens a color picker with a hex field in 5b, using a throwaway or already-dark-colored layer so a wrong click is inconsequential."
     },
     "width_input": {
-      "kind": "label",
-      "label": "Width",
-      "note": "Position panel field. Label text guessed from the discovery notes ('Width 7 in'); not verified against the live DOM. Confirm exact label text in 5b."
+      "kind": "css",
+      "css": "[data-testid='widthInput'] input",
+      "note": "verified live: reads back 7 on Brigham City's existing layer, matching config box_width_in and the discovery notes' calibration. Not a <label>-associated field (the visible 'Width' text is not programmatically linked), so get_by_label does not work here; use the data-testid instead."
     },
     "height_input": {
-      "kind": "label",
-      "label": "Height",
-      "note": "Position panel field. Label text guessed from the discovery notes ('Height 0.91 in'); not verified. Confirm in 5b."
+      "kind": "css",
+      "css": "[data-testid='heightInput'] input",
+      "note": "verified live: reads back 0.91, matching config box_height_in."
     },
     "position_left_input": {
-      "kind": "label",
-      "label": "Position left",
-      "note": "Position panel field. Label text guessed from the discovery notes ('Position left 26.64 %'); not verified. Confirm exact label text in 5b (may be 'Left' rather than 'Position left')."
+      "kind": "css",
+      "css": "[data-testid='positionLeftInput'] input",
+      "note": "verified live: reads back 26.64, matching position_left_pct_for_centered_7in and the discovery notes' calibration exactly."
     },
     "position_top_input": {
-      "kind": "label",
-      "label": "Position top",
-      "note": "Position panel field. Label text guessed from the discovery notes ('Position top 80.05 %'); not verified. Confirm exact label text in 5b (may be 'Top' rather than 'Position top')."
+      "kind": "css",
+      "css": "[data-testid='positionTopInput'] input",
+      "note": "verified live: reads back 79.93 on Brigham City's existing layer (the discovery notes recorded 80.05% for an earlier pass on the same product before a later one-down-arrow nudge; both are within the 0.005 verify tolerance)."
     }
   },
   "font_size_editor": "Auto"

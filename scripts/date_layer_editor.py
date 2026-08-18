@@ -37,7 +37,9 @@ class LoggedOut(Exception):
 
 def _locator(page, sel):
     if sel["kind"] == "role":
-        return page.get_by_role(sel["role"], name=sel["name"])
+        if "name" in sel:
+            return page.get_by_role(sel["role"], name=sel["name"], exact=sel.get("exact", False))
+        return page.get_by_role(sel["role"])
     if sel["kind"] == "label":
         return page.get_by_label(sel["label"])
     if sel["kind"] == "text":
@@ -69,16 +71,12 @@ class EditorDriver:
         except Exception as exc:
             self._pw.stop()
             raise RuntimeError(
-                "Could not attach to the running Chrome over CDP. If the "
-                "underlying error mentions 'Browser context management is "
-                "not supported', that is a known Chrome/Playwright limitation "
-                "triggered because ensure_chrome() launches Chrome without "
-                "--enable-automation (done on purpose, to avoid Printify's "
-                "Cloudflare automation fingerprint check). See "
-                ".superpowers/sdd/2026-08-18-date-layer-automation/"
-                "task-5-report.md for the full mechanism; it is not a login "
-                "or selector problem and re-running printify_login.py will "
-                "not fix it."
+                "Could not attach to the running Chrome over CDP. This "
+                "used to happen every time (see task-5-report.md for the "
+                "history), but ensure_chrome() now creates a page target "
+                "before returning, which fixed it. If it still fails, "
+                "something else is wrong; do not add --enable-automation "
+                "or any other fingerprint-affecting flag to work around it."
             ) from exc
         self._context = (
             self._browser.contexts[0]
@@ -106,10 +104,10 @@ class EditorDriver:
     def _close_info_modal_if_present(self):
         """Close the "Important product information" modal that can cover
         the editor on open. No-op if it is not showing."""
-        close_button = self._sel("info_modal_close_button")
+        dialog = self._sel("info_modal")
         try:
-            if close_button.first.is_visible(timeout=3000):
-                close_button.first.click()
+            if dialog.is_visible(timeout=3000):
+                self._sel("info_modal_close_button").first.click()
         except Exception:
             pass
 
@@ -119,30 +117,67 @@ class EditorDriver:
         self._assert_logged_in()
         self._sel("variants_panel_heading").wait_for(timeout=30_000)
         self._close_info_modal_if_present()
+        self.switch_to_back_side()
 
     def switch_to_back_side(self):
         self._sel("back_side_button").click()
 
     def has_text_layer(self):
         """In-editor idempotency guard, independent of the API-side gate in
-        scripts/add_date_layer.py (gate()). See config note on
-        existing_text_layer_marker for verification status."""
+        scripts/add_date_layer.py (gate()). Checks the currently viewed
+        side only; open_product() already switches to the back side, where
+        the personalization text layer lives. Verified live: the marker is
+        present on the back side of Brigham City (which already has its
+        date layer) and absent on the front side of the same product."""
         return self._sel("existing_text_layer_marker").count() > 0
 
     def _select_group(self, group):
         """Select the variant group to edit by clicking its color swatch in
-        the "Variants and layers" panel, at the position given by
-        group["index"].
+        the "Variants and layers" panel.
 
-        Swatch order is assumed to match the product's print_areas array
-        order (group 0 is the default/light design, groups 1-4 are the four
-        variant-specific dark designs), which is how the plan's "index"
-        values are produced upstream. See config note on
-        variant_swatch_group for verification status and for the discovery
-        notes' alternative "blue dot" marker approach.
+        Verified live against Brigham City: each swatch is a button whose
+        accessible name is the exact colorway name (e.g. "Graphite"), with
+        no visible text, confirmed via aria-label in the DOM
+        (data-testid="colorChipButton"). The blue "variant-specific design"
+        dot shown on some swatches is a pure CSS decoration; it is not
+        exposed as a distinguishing accessible attribute (every swatch's
+        accessibility subtree is structurally identical whether or not it
+        has a dot). So, per the discovery notes' documented fallback, dark
+        swatches are identified by matching accessible names against
+        config["dark_colorways_for_reference"] rather than by reading the
+        dot directly. Confirmed this list's order matches the on-screen dot
+        order for Brigham City (Graphite, Brick, Moss, True Navy).
+
+        group["index"] selects which of the four dark colorways to click
+        when group["dark"] is true (0 = dark_colorways_for_reference[0],
+        and so on). When group["dark"] is false, index is ignored: the
+        light/default group is reached by clicking whichever on-screen
+        swatch's name is not in dark_colorways_for_reference (the editor
+        opens on a dark variant-specific design, so this is what switches
+        to the shared default design; any non-dark swatch reaches the same
+        default design, per the discovery notes).
+
+        Verified live end to end on Brigham City: clicking dark index 0
+        selected Graphite (panel showed "Revert Graphite to default
+        design"), clicking the light path switched away from any
+        variant-specific design (the "Currently editing variant specific
+        design" status disappeared), and clicking dark index 3 reselected
+        True Navy. No layer was added or changed during this check; only
+        the currently-viewed design switched, the same as clicking "Back
+        side" does.
         """
+        dark_names = self.cfg["dark_colorways_for_reference"]
+        if group.get("dark"):
+            name = dark_names[group["index"]]
+            self.page.get_by_role("button", name=name, exact=True).click()
+            return
         swatches = self._sel("variant_swatch_group")
-        swatches.nth(group["index"]).click()
+        for i in range(swatches.count()):
+            candidate = swatches.nth(i)
+            if candidate.get_attribute("aria-label") not in dark_names:
+                candidate.click()
+                return
+        raise RuntimeError("no light (non-variant-specific) swatch found")
 
     def add_date_layer_to_current_group(self, dark):
         """Add the personalization text layer to the currently selected
@@ -155,7 +190,7 @@ class EditorDriver:
         self._sel("personalize_panel_heading").wait_for(timeout=10_000)
         self._sel("add_personalizable_text_button").click()
         self._sel("text_input").fill(cfg["placeholder_text"])
-        self._sel("layer_toolbar_font_dropdown").click()
+        self._sel("layer_toolbar_font_dropdown").first.click()
         self.page.get_by_text(cfg["font_family"], exact=True).click()
         color = cfg["font_color_dark_groups"] if dark else cfg["font_color_light_groups"]
         self._sel("layer_toolbar_color_button").click()
@@ -170,6 +205,15 @@ class EditorDriver:
         mouse-snap centering result (calibrated digit for digit against the
         Brigham City draft). Typing both values is simpler and more
         deterministic than reproducing the snap-and-nudge by mouse.
+
+        Verified live: selecting an existing text layer shows the Width,
+        Height, Position left, and Position top fields immediately, without
+        needing to click the toolbar's "Position" button first (clicking it
+        twice on an already-selected layer did not hide or show anything).
+        The click is kept here anyway, matching the discovery notes'
+        description of the flow for a layer that was *just created* rather
+        than one that already existed; confirm in 5b whether it is truly a
+        no-op right after add_date_layer_to_current_group(), too.
         """
         cfg = self.cfg
         self._sel("layer_toolbar_position_button").click()
@@ -190,7 +234,6 @@ class EditorDriver:
         human-supervised 5b run.
         """
         self.open_product(product_id)
-        self.switch_to_back_side()
         if self.has_text_layer():
             return
         for group in plan["groups"]:

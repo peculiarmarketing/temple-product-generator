@@ -38,6 +38,30 @@ def cdp_alive():
         return False
 
 
+def _ensure_page_target():
+    """Make sure at least one page target exists on the CDP endpoint.
+
+    Mechanism: if the human closes the dedicated Chrome's window, Chrome
+    keeps running windowless on macOS. cdp_alive() still reports true, but
+    http://localhost:9222/json then lists zero "page" targets. With no page
+    there is no browser context for Playwright to attach to, so
+    connect_over_cdp's handshake fails with "Browser context management is
+    not supported" even though the CDP endpoint itself is reachable.
+    Creating one page target restores a context. PUT, not GET: Chrome's
+    /json/new endpoint requires PUT.
+    """
+    try:
+        targets = requests.get(f"{CDP_URL}/json", timeout=2).json()
+    except Exception:
+        return
+    if any(target.get("type") == "page" for target in targets):
+        return
+    try:
+        requests.put(f"{CDP_URL}/json/new?about:blank", timeout=2)
+    except Exception:
+        pass
+
+
 def ensure_chrome(open_url=None):
     """Ensure Chrome is running and reachable over CDP.
 
@@ -45,6 +69,7 @@ def ensure_chrome(open_url=None):
     If open_url is given, pass it as a URL to open in the new window.
     """
     if cdp_alive():
+        _ensure_page_target()
         return
 
     if not Path(CHROME_BINARY).exists():
@@ -73,6 +98,7 @@ def ensure_chrome(open_url=None):
     start = time.time()
     while time.time() - start < 15:
         if cdp_alive():
+            _ensure_page_target()
             return
         time.sleep(0.5)
 
