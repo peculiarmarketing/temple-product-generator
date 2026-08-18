@@ -50,3 +50,100 @@ close(x_norm, 0.5, tol=0.001)
 close(y_norm, 12.2432 / 16.99, tol=0.001)
 
 print("all math tests passed")
+
+from scripts.add_date_layer import (
+    gate,
+    verify,
+    find_divider,
+    group_is_dark,
+    is_text_layer,
+)
+
+
+def divider_layer(color="white", y=0.685):
+    return {"id": "img123", "name": f"divider {color} 2in.png", "x": 0.5, "y": y, "scale": 0.1335, "angle": 0}
+
+
+def text_layer(y=0.7206, text="June 14, 2026"):
+    return {
+        "id": "uuid-1", "type": "text/plain", "input_text": text,
+        "font_family": "Alata", "font_color": "#FFFFFF",
+        "x": 0.5, "y": y, "scale": 0.4, "angle": 0,
+    }
+
+
+def dated_product(layers_per_group=None, **overrides):
+    if layers_per_group is None:
+        layers_per_group = [[divider_layer("white")], [divider_layer("black")]]
+    p = {
+        "id": "prod1",
+        "title": "Logan Temple Tee - With Date",
+        "external": None,
+        "is_locked": False,
+        "sales_channel_properties": {"personalisation": {"strategy": "pstudio"}},
+        "print_areas": [
+            {"variant_ids": [1, 2], "placeholders": [{"position": "back", "images": layers}]}
+            for layers in layers_per_group
+        ],
+    }
+    p.update(overrides)
+    return p
+
+
+def check_gate(name, product, want_ok, want_reason_part):
+    ok, reason = gate(product)
+    assert ok == want_ok, f"{name}: expected ok={want_ok}, got {ok} ({reason})"
+    assert want_reason_part in reason, f"{name}: expected '{want_reason_part}' in '{reason}'"
+
+
+check_gate("clean candidate", dated_product(), True, "needs date layer")
+check_gate("not dated", dated_product(title="Logan Temple Tee"), False, "not a With Date")
+check_gate("unclaimed duplicate", dated_product(title="Copy of Logan Temple Tee - With Date"), False, "unclaimed duplicate")
+check_gate("already published", dated_product(external={"id": "1"}), False, "already published")
+check_gate("locked", dated_product(is_locked=True), False, "locked")
+check_gate("no divider", dated_product(layers_per_group=[[]]), False, "divider layer not found")
+check_gate(
+    "layer already present",
+    dated_product(layers_per_group=[[divider_layer("white"), text_layer()]]),
+    False,
+    "date layer already present",
+)
+
+assert is_text_layer(text_layer())
+assert not is_text_layer(divider_layer())
+assert find_divider({"position": "back", "images": [divider_layer("black")]})["name"] == "divider black 2in.png"
+assert group_is_dark({"position": "back", "images": [divider_layer("white")]})
+assert not group_is_dark({"position": "back", "images": [divider_layer("black")]})
+
+CFG = {"placeholder_text": "June 14, 2026"}
+DATED_SPACING = DATED
+
+good = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer()]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+assert verify(good, CFG, DATED_SPACING) == [], f"expected clean verify, got {verify(good, CFG, DATED_SPACING)}"
+
+missing_layer = dated_product(layers_per_group=[[divider_layer("white")]])
+problems = verify(missing_layer, CFG, DATED_SPACING)
+assert any("expected 1 text layer" in p for p in problems), problems
+
+wrong_text = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer(text="wrong words")]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+problems = verify(wrong_text, CFG, DATED_SPACING)
+assert any("placeholder text" in p for p in problems), problems
+
+drifted = dated_product(
+    layers_per_group=[[divider_layer("white"), text_layer(y=0.80)]],
+    sales_channel_properties={"personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "t"}]}},
+)
+problems = verify(drifted, CFG, DATED_SPACING)
+assert any("not within tolerance" in p for p in problems), problems
+
+no_personalization = dated_product(layers_per_group=[[divider_layer("white"), text_layer()]])
+problems = verify(no_personalization, CFG, DATED_SPACING)
+assert any("personalisation layers empty" in p for p in problems), problems
+
+print("all tests passed")
