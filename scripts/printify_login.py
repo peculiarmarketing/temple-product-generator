@@ -18,7 +18,7 @@ import time
 from pathlib import Path
 
 import requests
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = PROJECT_ROOT / ".playwright" / "chrome-profile"
@@ -80,8 +80,13 @@ def login():
     """Open login URL in Chrome and wait for successful login.
 
     The human logs in inside the Chrome window. This script monitors for the
-    logged-in state (URL starts with https://printify.com/app and does not
-    contain "login"). Does not automate any interaction; human does all input.
+    logged-in state by checking that the URL starts with https://printify.com/app,
+    does not contain "login", and the password input field is not visible.
+    Does not automate any interaction; human does all input.
+
+    Note: unauthenticated visits to /app/store/products redirect to /app/auth/login
+    with variable delay (observed 8-12 seconds). The URL alone is not reliable for
+    detecting logged-out state; the login form (input[type="password"]) is the signal.
     """
     ensure_chrome(open_url=LOGIN_URL)
     print("Log in inside the Chrome window that just opened. Waiting up to 5 minutes.")
@@ -99,6 +104,15 @@ def login():
                             url.startswith("https://printify.com/app")
                             and "login" not in url
                         ):
+                            # Guard against false positives during redirect: check that
+                            # the password input is not visible (indicates login page).
+                            try:
+                                page.locator("input[type='password']").is_visible(timeout=0)
+                                # If visible, still on login page; continue polling.
+                                continue
+                            except Exception:
+                                # Not visible; page is logged in.
+                                pass
                             print("Logged in. Session lives in the dedicated Chrome profile; you can close the window or leave it open.")
                             return 0
                 time.sleep(2)
@@ -113,6 +127,10 @@ def check():
     """Verify the session is still valid.
 
     Attach to Chrome, open a test page to the app, and check if logged in.
+
+    Note: unauthenticated visits to /app/store/products redirect to /app/auth/login
+    with variable delay (observed 8-12 seconds). The URL alone is not reliable for
+    detecting logged-out state; the login form (input[type="password"]) is the signal.
     """
     try:
         ensure_chrome()
@@ -128,19 +146,28 @@ def check():
             page = context.new_page()
             try:
                 page.goto(APP_URL, wait_until="domcontentloaded", timeout=30000)
-                page.wait_for_url("**", timeout=10000)
             except Exception:
                 pass
-            url = page.url
-            page.close()
-            if (
-                url.startswith("https://printify.com/app")
-                and "login" not in url
-            ):
+
+            # Fast path: if already redirected to auth/login, definitely logged out.
+            if "auth/login" in page.url:
+                page.close()
+                print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
+                return 1
+
+            # Otherwise, wait up to 20 seconds for the login form to appear.
+            # If it does, user is logged out. If the wait times out, assume logged in.
+            try:
+                page.locator("input[type='password']").wait_for(state="visible", timeout=20000)
+                # Login form appeared; definitely logged out.
+                page.close()
+                print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
+                return 1
+            except PlaywrightTimeout:
+                # Login form did not appear within 20 seconds; treat as logged in.
+                page.close()
                 print("Session is valid.")
                 return 0
-            print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
-            return 1
         finally:
             if browser:
                 browser.close()
