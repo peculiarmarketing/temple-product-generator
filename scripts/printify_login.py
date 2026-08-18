@@ -15,7 +15,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SESSION_FILE = PROJECT_ROOT / ".playwright" / "printify-session.json"
@@ -35,14 +35,20 @@ def login():
         page = context.new_page()
         page.goto(LOGIN_URL)
         print("Log in inside the browser window. Waiting up to 5 minutes.")
-        page.wait_for_url(
-            lambda url: url.startswith("https://printify.com/app") and "login" not in url,
-            timeout=300_000,
-        )
+        try:
+            page.wait_for_url(
+                lambda url: url.startswith("https://printify.com/app") and "login" not in url,
+                timeout=300_000,
+            )
+        except PlaywrightTimeout:
+            browser.close()
+            print("Login not completed within 5 minutes. Re-run scripts/printify_login.py to try again.")
+            return 1
         page.wait_for_load_state("networkidle")
         context.storage_state(path=str(SESSION_FILE))
         browser.close()
     print(f"Session saved to {SESSION_FILE.relative_to(PROJECT_ROOT)}")
+    return 0
 
 
 def check():
@@ -67,7 +73,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="verify the saved session still works")
     args = parser.parse_args()
-    sys.exit(check() if args.check else login() or 0)
+    sys.exit(check() if args.check else login())
 
 
 if __name__ == "__main__":
