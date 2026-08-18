@@ -56,6 +56,15 @@ targets and stale a long-lived connection's page list; poll the
 9. press the down arrow once; that one step gives the standard gap between
    divider and date text.
 
+Step 8-9 mechanics, measured live (Brigham City, second session pass): the
+snap aligns the box top with the divider's TOP edge (Position top 78.93%).
+One down-arrow press moves a layer exactly 1.00% of the print-area height
+(0.17 in), landing at 79.93%, which leaves a 0.13 in gap below the
+divider's bottom edge: exactly gap_divider_to_date_in from
+spacing_defaults.json, and digit-identical to the formula's output. The
+panel is titled "Buyer personalization"; the button is "Add personalizable
+text". The text field shows a character counter (18/1024) on this layer.
+
 Group flow: do a light colorway first with black font; that sets the default
 design, which propagates to all non-specific variants. Then click each dark
 swatch (variant-specific design) and repeat with white font. Five layer

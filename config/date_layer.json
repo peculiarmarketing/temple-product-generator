@@ -29,6 +29,8 @@
     "_comment": "Verified top-level controls from the live editor DOM. Panel-internal selectors (personalize panel button, swatches, width/height/position inputs) are finalized during the driver task's dry run.",
     "back_side_button": {"kind": "role", "role": "button", "name": "Back side"},
     "personalize_button": {"kind": "role", "role": "button", "name": "Personalize"},
+    "personalize_panel_heading": {"kind": "text", "text": "Buyer personalization"},
+    "add_personalizable_text_button": {"kind": "role", "role": "button", "name": "Add personalizable text"},
     "add_text_button": {"kind": "role", "role": "button", "name": "Add text"},
     "save_button": {"kind": "role", "role": "button", "name": "Save product"},
     "variants_panel_heading": {"kind": "text", "text": "Variants and layers"},
