@@ -16,7 +16,7 @@
   "Washington DC": { "official_name": "Washington D.C. Temple", "location_line": "KENSINGTON, MARYLAND", "verified": true },
   "Billings": { "official_name": "Billings Montana Temple", "location_line": "BILLINGS, MONTANA", "verified": false },
   "Bountiful": { "official_name": "Bountiful Utah Temple", "location_line": "BOUNTIFUL, UTAH", "verified": false },
-  "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": false },
+  "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": true },
   "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": false },
   "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": false },
   "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": false },
