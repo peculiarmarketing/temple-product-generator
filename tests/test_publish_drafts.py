@@ -104,7 +104,7 @@ check(
 )
 check("missing facts section", base_product(description="just an intro"), False, "temple facts")
 check("no description at all", base_product(description=None), False, "temple facts")
-check("economy off", base_product(is_economy_shipping_enabled=False), False, "economy")
+check("economy off still publishes", base_product(is_economy_shipping_enabled=False), True, "eligible")
 check("scp missing entirely", base_product(sales_channel_properties=None), True, "eligible")
 
 print("all tests passed")

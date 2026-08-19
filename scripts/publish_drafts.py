@@ -6,12 +6,14 @@
 
 Auto-publishes never-published products, including personalizable ones (the
 With Date line) once their date-layer verification passes (see
-scripts/add_date_layer.py); unverified dated drafts stay held. Safety gates:
+scripts/add_date_layer.py); unverified dated drafts stay held. Safety gate:
 a draft must carry the temple-facts description section (proof the pipeline
-finished it) and Economy shipping (inherited from its UI duplicate;
-read-only via API so it can only be verified, not set). Publish settings
-the API cannot touch (mockup choices, variant visibility, shipping options)
-ride the duplicate, so what the donor product had is what goes live.
+finished it). Economy shipping is NOT a gate (Evan's 19 Aug 2026 decision):
+new drafts default it off and the API field is read-only, so drafts publish
+regardless and the run output notes any product going live without Economy
+for Evan to flip in the UI whenever. Publish settings the API cannot touch
+(mockup choices, variant visibility, shipping options) ride the duplicate,
+so what the donor product had is what goes live.
 """
 
 import argparse
@@ -62,8 +64,6 @@ def eligibility(product):
             return False, f"dated draft failed date-layer verification: {problems[0]}"
     if 'class="temple-facts"' not in (product.get("description") or ""):
         return False, "description has no temple facts section yet"
-    if not product.get("is_economy_shipping_enabled"):
-        return False, "economy shipping is off, fix the duplicate source in the Printify UI"
     return True, "eligible"
 
 
@@ -138,6 +138,8 @@ def main():
         # The list endpoint trims some fields; judge from the full product.
         product = client._request("GET", f"/shops/{client.shop_id}/products/{summary['id']}.json")
         ok, reason = eligibility(product)
+        if ok and not product.get("is_economy_shipping_enabled"):
+            reason = "eligible, note: economy shipping is off (flip in Printify UI whenever)"
         marker = "PUBLISH" if ok else "skip"
         print(f"{marker:7}  {product['title']}  ({reason})")
         if ok:
