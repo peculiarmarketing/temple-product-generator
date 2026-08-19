@@ -15,14 +15,14 @@
   "Taylorsville": { "official_name": "Taylorsville Utah Temple", "location_line": "TAYLORSVILLE, UTAH", "verified": true },
   "Washington DC": { "official_name": "Washington D.C. Temple", "location_line": "KENSINGTON, MARYLAND", "verified": true },
   "Billings": { "official_name": "Billings Montana Temple", "location_line": "BILLINGS, MONTANA", "verified": false },
-  "Bountiful": { "official_name": "Bountiful Utah Temple", "location_line": "BOUNTIFUL, UTAH", "verified": false },
+  "Bountiful": { "official_name": "Bountiful Utah Temple", "location_line": "BOUNTIFUL, UTAH", "verified": true },
   "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": true },
   "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": false },
   "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": true },
   "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": false },
   "Lehi": { "official_name": "Lehi Utah Temple", "location_line": "LEHI, UTAH", "verified": false },
   "Price": { "official_name": "Price Utah Temple", "location_line": "PRICE, UTAH", "verified": false },
-  "Smithfield": { "official_name": "Smithfield Utah Temple", "location_line": "SMITHFIELD, UTAH", "verified": false },
+  "Smithfield": { "official_name": "Smithfield Utah Temple", "location_line": "SMITHFIELD, UTAH", "verified": true },
   "Spanish Fork": { "official_name": "Spanish Fork Utah Temple", "location_line": "SPANISH FORK, UTAH", "verified": false },
   "West Jordan": { "official_name": "West Jordan Utah Temple", "location_line": "WEST JORDAN, UTAH", "verified": false }
 }

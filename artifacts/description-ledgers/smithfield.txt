@@ -1,0 +1,36 @@
+SOURCE LEDGER - Smithfield Utah Temple
+Researched 19 August 2026. Undedicated temple; special-case field set (Status row, no temple number, no Rededicated or Changes Over Time). First president IS included in the Status row because the calling was announced March 2026, ahead of dedication; the special-case rule to omit the row assumed no one had been called yet.
+
+VERIFIED
+[T1] Announced April 4, 2021, by President Russell M. Nelson during the 191st Annual General Conference, one of 20 temples announced that day - thechurchnews.com almanac (smithfield-utah)
+[T1] Groundbreaking June 18, 2022; Elder Quentin L. Cook presided and dedicated the site, Elder Gary E. Stevenson conducting; both Cache Valley natives and Utah State University graduates; ~600 attended in person, broadcast to the district's 13 stakes - thechurchnews.com 2022-06-18 groundbreaking article, newsroom.churchofjesuschrist.org groundbreaking article
+[T1] Cook quotes "always feels like home to me. It is among the most beautiful places on earth" and site prayer "a beacon light for the communities it serves", gratitude "for those who have gone before us" - thechurchnews.com 2022-06-18, newsroom groundbreaking article
+[T1] Site farmed by the LaMont Poulsen family for over 160 years - thechurchnews.com 2022-06-18
+[T1] Three stories, ~81,000 sq ft, 13.3 acres at 800 West and 100 North - newsroom groundbreaking article, thechurchnews.com
+[T1] Exterior rendering (released November 24, 2021): columns of arched windows, arched entryways, tall domed cupola near the front, smaller dome at the opposite end - newsroom rendering release via thechurchnews.com almanac
+[T1] Second temple in Cache County after Logan (1884); seven miles from the Logan Utah Temple - thechurchnews.com 2022-06-18, almanac
+[T1] Cache County second-highest Latter-day Saint concentration in Utah at 64% - thechurchnews.com 2022-06-18
+[T1] Floor area matches Lindon Utah Temple (81,000 sq ft) - thechurchnews.com almanac
+[T1] Michael Lee Staheli and Linda Ann Gardner Staheli of the Smithfield Utah North Stake called as first president and matron, announced March 26, 2026 - thechurchnews.com 2026-03-26
+[T2] Elevation 4,506 feet; four instruction rooms, four sealing rooms, two baptistries - churchofjesuschristtemples.org
+[T2] Status as of August 2026: major construction complete, interior finishing underway, furnishings arriving since spring 2026; no open house or dedication dates announced - churchofjesuschristtemples.org news timeline
+[T2] Milestones: main dome June 2024, rear cupola August 2024, exterior stone substantially complete late 2024 - churchofjesuschristtemples.org news timeline
+
+CONFLICTS RESOLVED
+"Two attached end towers" (T2 spec field) vs T1 rendering language (cupola near front, smaller dome at rear) - the same T2 field was wrong for Ephraim (see ephraim.txt), so the fragment uses only the T1 rendering description and says "two domes" without asserting tower structure
+Utah temple ordinal - T2 says "27th temple built in Utah", newsroom said 27 in operation/construction/announced at groundbreaking; counts differ by framing and drift constantly, so the Cache County ordinal is used instead
+
+VOLATILE (re-check before reprint)
+Entire Status row - open house and dedication dates will be announced; convert tenses at dedication
+Temple Number row - dedicated-temple number gets fixed at dedication; add it then
+"Second-highest concentration at 64%" - census-derived, could shift in future reporting
+Symbolism & Design - thin by necessity; interior details, art glass, and materials publish at media day; re-research then
+After open house closes - add attendance figure from Newsroom
+After dedication - convert Status row, name dedicating officer, add dedicated number
+
+OMITTED
+"27th temple built in Utah" - construction-order ordinal, T2 only, shifts before dedication; county ordinal used instead
+Temple district stake count as a district claim - 13 stakes shipped only as broadcast context for the groundbreaking; final district determined at dedication per special-cases rule
+Architect/firm - not published in any tiered source; row omitted
+Exterior stone type - "stone cladding" appears in T2 timeline but the specific stone is unpublished; omitted rather than guessed
+Angel Moroni statue - no tiered source mentions one; per known-myths rule, never assert one without confirmation, so no mention either way

@@ -175,6 +175,10 @@ def trace_temple(folder, temple):
         problems, metrics = verify_trace(folder, temple, source, Path(td) / f"{temple} black.svg")
     print(f"  trace metrics: {metrics}")
     if problems:
+        # a failed trace must not leave SVGs behind: detect_art_files would
+        # accept them next run and the health-check gate would never re-fire
+        for color in ("black", "white"):
+            (folder / f"{temple} {color}.svg").unlink(missing_ok=True)
         raise SystemExit(f"{temple}: trace failed verification: " + "; ".join(problems))
     print(f"  trace verified; check composite saved as '{temple} trace check (auto).png'")
     return metrics
