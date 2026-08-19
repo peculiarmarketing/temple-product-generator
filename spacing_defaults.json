@@ -1,8 +1,8 @@
 {
-  "_comment": "Approved by Evan 17 Aug 2026 from measurements of the live catalog. Do not change casually; the Phase 2 gate reviewed previews built on these numbers. All values in inches on the print area.",
+  "_comment": "Approved by Evan 17 Aug 2026 from measurements of the live catalog. Do not change casually; the Phase 2 gate reviewed previews built on these numbers. All values in inches on the print area. Amendment: gap_ink_to_text_in raised 0.2 to 0.5 per Evan, 19 Aug 2026.",
   "top_margin_in": 0.6,
   "temple_target_ink_width_in": 12.5,
-  "gap_ink_to_text_in": 0.2,
+  "gap_ink_to_text_in": 0.5,
   "location_text_height_in": 0.74,
   "gap_text_to_logo_in": 0.3,
   "logo_width_in": 3.0,
