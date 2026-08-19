@@ -18,7 +18,7 @@
   "Bountiful": { "official_name": "Bountiful Utah Temple", "location_line": "BOUNTIFUL, UTAH", "verified": false },
   "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": true },
   "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": false },
-  "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": false },
+  "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": true },
   "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": false },
   "Lehi": { "official_name": "Lehi Utah Temple", "location_line": "LEHI, UTAH", "verified": false },
   "Price": { "official_name": "Price Utah Temple", "location_line": "PRICE, UTAH", "verified": false },

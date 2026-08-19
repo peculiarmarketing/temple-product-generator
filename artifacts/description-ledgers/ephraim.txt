@@ -1,0 +1,36 @@
+SOURCE LEDGER - Ephraim Utah Temple
+Researched 19 August 2026. Undedicated temple; special-case field set (Status row, no temple number, no first president, no Rededicated or Changes Over Time).
+
+VERIFIED
+[T1] Announced May 1, 2021, by President Russell M. Nelson in a prerecorded message at a press conference in the Manti Tabernacle, alongside revised Manti renovation plans - thechurchnews.com almanac (ephraim-utah)
+[T1] Nelson said shortly after April 2021 general conference he received "very clear instruction" that Manti's pioneer craftsmanship be preserved and a new temple built in Ephraim - thechurchnews.com almanac, thechurchnews.com 2026-04-20 dedication article
+[T1] Groundbreaking August 27, 2022; President Nelson presided, with Sister Wendy Nelson, Elder Walter F. Gonzalez, Elder Kevin R. Duncan; Gov. Spencer J. Cox participated; surprise appearance - newsroom.churchofjesuschrist.org groundbreaking article, thechurchnews.com 2022-08-27
+[T1] Quotes "We are deeply grateful for our ancestors..." and "My dear mother was born in Ephraim... My father was born in Manti"; three of four grandparents born in Ephraim; all eight great-grandparents lived there, converts from England, Denmark, Norway, Sweden - newsroom groundbreaking article
+[T1] Three stories, ~39,000 sq ft, 9.16 acres at 200 North and 400 East - newsroom groundbreaking article
+[T1] Exterior: large arched windows, arched entry, multilevel octagonal tower (four arched windows on base, eight on tower), domed cupola - thechurchnews.com almanac
+[T1] Media day August 31, 2026; invited guests September 1; public open house September 2-19, 2026, excluding Sundays - newsroom (ephraim-utah-and-springfield-missouri article), thechurchnews.com 2026-04-20
+[T1] Dedication scheduled October 11, 2026, Elder Ronald A. Rasband, single 10 a.m. session, broadcast to district units, 2 p.m. rebroadcast - thechurchnews.com 2026-04-20, newsroom
+[T1] Second temple in Sanpete County after Manti (1888) - thechurchnews.com almanac
+[T1] Saints entered Sanpete Valley fall 1849; Ephraim settled 1854, primarily Scandinavian immigrants; first stake in valley 1877; Ephraim is Sanpete County's largest population center, home of Snow College - newsroom groundbreaking article, thechurchnews.com 2026-04-20
+[T1] Shares October 11, 2026 dedication date with Miraflores Guatemala City Guatemala Temple - thechurchnews.com 2026-04-20
+[T2] Elevation 5,567 feet; four instruction rooms seating 30 each, three sealing rooms, one baptistry - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Story count - churchofjesuschristtemples.org page fetch returned "two stories, two attached end towers"; two T1 sources (newsroom groundbreaking, Church News almanac) say three stories with a central octagonal tower; T1 wins, printed three stories
+Address ordering - "400 East 200 North" (T2) vs "200 North and 400 East" (T1); same intersection, printed the intersection without a street number
+
+VOLATILE (re-check before reprint)
+Entire Status row - open house and dedication dates could shift; convert tenses after October 11, 2026
+Temple Number row - dedicated-temple number gets fixed at dedication; add it then
+Presiding officer - Rasband assignment is announced but could change before October
+Symbolism & Design - thin by necessity; interior details, art glass, and materials publish at media day August 31, 2026; re-research then
+After open house closes - add attendance figure from Newsroom
+After dedication - add first temple president, convert Status row, add dedicated number
+
+OMITTED
+"27th temple built in Utah" - T2 only, construction-order ordinal can shift before dedication; Sanpete County ordinal used instead
+"Will serve over 31,000 members across three counties" - T1 at groundbreaking, but temple district is provisional until dedication per special-cases rule
+"Both temples within Manti High School boundaries" - single T2 fetch, oddly framed, could not corroborate
+"By 1870 settler population 6,700, majority Danish" - appeared only in search snippet, could not pin to a page; settlement facts kept to what the groundbreaking article states
+Architect/firm - not published in any tiered source yet; row omitted
+Exterior stone type - not published; omitted rather than guessed
