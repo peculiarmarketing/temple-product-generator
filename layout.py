@@ -125,24 +125,27 @@ def _place_temple(temple, sp, area_w_in, area_h_in, stack_below_in):
 
 
 def _sky_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in, override=None):
-    """Place the logo in open sky near the temple: left, center (between
-    spire clusters), or right. A position is only used if the logo plus
-    padding fits entirely above the first ink in its column band, so the
-    logo can never overlap linework. Auto mode picks the fitting position
-    closest to the temple (the lowest); a manifest override
+    """Place the logo in open sky near the temple, preferring the sides.
+    Left and right are tried at the full gap, compressing down to the
+    minimum gap when the top margin forces it; center is used only when
+    neither side can hold the minimum gap above the ink in its column
+    band (Evan's rule, 19 Aug 2026). The logo can never overlap linework:
+    its bottom always sits at least the minimum gap above the band's
+    first ink. A manifest override
     {"dated_logo": {"corner": "left"|"center"|"right", "gap_above_ink_in": x}}
-    forces the choice."""
+    forces the choice and gap unclamped."""
     d = sp["dated"]
     override = override or {}
     logo_w_in = sp["logo_width_in"]
     logo_h_in = logo_w_in * logo_aspect
     gap = override.get("gap_above_ink_in", d["logo_gap_above_ink_in"])
+    min_gap = d.get("logo_min_gap_above_ink_in", gap)
     pad_in = 0.25
     mh, mw = temple.mask.shape
     px_x = mw / temple_layer["w_in"]
     px_y = mh / temple_layer["h_in"]
 
-    def evaluate(xfrac):
+    def band_first_ink(xfrac):
         cx_in = area_w_in * xfrac
         l_in = cx_in - logo_w_in / 2 - pad_in - (temple_layer["cx_in"] - temple_layer["w_in"] / 2)
         r_in = l_in + logo_w_in + 2 * pad_in
@@ -150,28 +153,42 @@ def _sky_logo(temple, temple_layer, sp, logo_aspect, area_w_in, area_h_in, overr
         band = temple.mask[:, l:r] if r > l else temple.mask[:, 0:1]
         rows = np.where(band.any(axis=1))[0]
         first_ink_row = rows[0] if len(rows) else band.shape[0]
-        first_ink_in = temple_layer["top_in"] + first_ink_row / px_y
-        bottom_in = first_ink_in - gap
+        return cx_in, temple_layer["top_in"] + first_ink_row / px_y
+
+    def place(xfrac, use_gap):
+        cx_in, first_ink_in = band_first_ink(xfrac)
+        bottom_in = first_ink_in - use_gap
         return cx_in, bottom_in - logo_h_in, bottom_in
+
+    def best_fit(xfrac):
+        """Largest gap in [min_gap, gap] whose logo top clears the top
+        margin, or None if even min_gap cannot."""
+        _, first_ink_in = band_first_ink(xfrac)
+        achievable = first_ink_in - d["logo_min_top_in"] - logo_h_in
+        if achievable < min_gap:
+            return None
+        return place(xfrac, min(gap, achievable))
 
     positions = {"left": d["logo_corner_x_fraction"], "center": 0.5,
                  "right": 1 - d["logo_corner_x_fraction"]}
     if override.get("corner") in positions:
         side = override["corner"]
-        cx_in, top_in, bottom_in = evaluate(positions[side])
+        cx_in, top_in, bottom_in = place(positions[side], gap)
         # honor the explicit choice; never clamp downward into ink
     else:
-        fitting = {}
-        for side, xfrac in positions.items():
-            cx_in, top_in, bottom_in = evaluate(xfrac)
-            if top_in >= d["logo_min_top_in"]:
-                fitting[side] = (cx_in, top_in, bottom_in)
+        fitting = {s: r for s in ("left", "right")
+                   if (r := best_fit(positions[s])) is not None}
         if fitting:
             side = max(fitting, key=lambda s: fitting[s][1])  # lowest fit = nearest temple
             cx_in, top_in, bottom_in = fitting[side]
         else:
-            side = "center"  # nothing fits comfortably; center high beats overlapping
-            cx_in, top_in, bottom_in = evaluate(0.5)
+            side = "center"
+            result = best_fit(0.5)
+            if result is None:
+                # even center cannot hold min_gap under the top margin;
+                # keep min_gap and let the logo ride high instead
+                result = place(0.5, min_gap)
+            cx_in, top_in, bottom_in = result
     return _layer("logo", cx_in, top_in + logo_h_in / 2, logo_w_in, logo_h_in, area_w_in, area_h_in), side
 
 

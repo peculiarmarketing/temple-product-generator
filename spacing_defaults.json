@@ -16,7 +16,8 @@
     "date_zone_width_in": 7.0,
     "date_zone_height_in": 0.91,
     "logo_corner_x_fraction": 0.25,
-    "logo_gap_above_ink_in": 0.35,
+    "logo_gap_above_ink_in": 1.0,
+    "logo_min_gap_above_ink_in": 0.5,
     "logo_min_top_in": 0.35
   }
 }
