@@ -156,9 +156,12 @@ def verify_trace(folder, temple, source_png, qc_black_svg):
     return problems, metrics
 
 
-def trace_temple(folder, temple):
+def trace_temple(folder, temple, accept_failed=False):
     """Full stage: find PNG, production trace into the folder, QC trace for
-    verification, verify. Returns metrics; raises SystemExit on any failure."""
+    verification, verify. Returns metrics; raises SystemExit on any failure.
+    accept_failed=True keeps a trace that fails the health checks (Evan's
+    explicit per-temple call, made after eyeballing the check composite);
+    the failures are printed loudly instead of raised."""
     source = find_source_png(folder, temple)
     if source is None:
         raise SystemExit(f"{temple}: no SVGs and no source PNG found")
@@ -175,6 +178,9 @@ def trace_temple(folder, temple):
         problems, metrics = verify_trace(folder, temple, source, Path(td) / f"{temple} black.svg")
     print(f"  trace metrics: {metrics}")
     if problems:
+        if accept_failed:
+            print(f"  TRACE ACCEPTED DESPITE FAILED CHECKS (explicit approval): " + "; ".join(problems))
+            return metrics
         # a failed trace must not leave SVGs behind: detect_art_files would
         # accept them next run and the health-check gate would never re-fire
         for color in ("black", "white"):

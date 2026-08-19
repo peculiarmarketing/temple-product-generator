@@ -1,0 +1,40 @@
+SOURCE LEDGER - Bountiful Utah Temple
+Researched 19 August 2026. Standard operating-temple field set. ART NOTE: the trace behind these products failed the tracer health checks (lost solid ink 1.4% vs 0.5% limit) and was accepted explicitly by Evan on 19 Aug 2026 after the check composite was provided; trace_art.py's accept_failed path records the acceptance in the run output.
+
+VERIFIED
+[T1] Announced February 2, 1990, First Presidency letter to Davis County leaders, "We have now determined to undertake the construction of a temple on this site", read at stake conferences February 18 - thechurchnews.com almanac (bountiful-utah)
+[T1] Site purchase for a possible temple announced May 28, 1988 - deseret.com 1990-03-03 via search corroboration of the almanac's letter framing (see CONFLICTS)
+[T1] Groundbreaking May 2, 1992, President Ezra Taft Benson presided, counselors Hinckley and Monson participated; ~7,500 on site, 2,500 by video - thechurchnews.com almanac
+[T1] Hinckley groundbreaking remark comparing the crowd to "the days of King Benjamin" - thechurchnews.com almanac
+[T1] Dedicated January 8-14, 1995, President Howard W. Hunter, 28 sessions; attended six, spoke in four, Apostles read the prayer in the rest - thechurchnews.com almanac
+[T1] Public open house November 5 - December 17, 1994; 870,361 visitors - thechurchnews.com almanac (T2 corroborates the visitor count and adds 45,000 volunteers)
+[T1] Architect of record Allen B. Erekson, project architect Keith Stepan, interior design manager Lawrence Wyss - thechurchnews.com 1994-11-12 interior article and 2010-02-23 overview
+[T1] Erekson quote "What we are trying to accomplish in the Bountiful Utah Temple is to have a level of elegance that doesn't distract from the Spirit" - thechurchnews.com 1994-11-12
+[T1] Bethel white granite quarried near Sharon, Vermont - thechurchnews.com 1994-11-12
+[T1] Art glass by Arthur Stern Studio, Oakland, California; Jacob's Ladder motif, beveled crystal refracting rainbow effects - thechurchnews.com 1994-11-12
+[T1] Exterior sun, moon, and star detailing referencing the three degrees of glory - thechurchnews.com 1994-11-12
+[T1] Interior tones deepen low and lighten as one ascends - thechurchnews.com 1994-11-12
+[T1] Site: 640 S. Bountiful Blvd, east bench foothills overlooking the Great Salt Lake, ~9 miles north of Salt Lake City - thechurchnews.com 2010-02-23
+[T1] 104,000 sq ft; 176 feet; single spire with angel Moroni; 47th dedicated temple, eighth in Utah, first in Davis County - thechurchnews.com almanac + 2010 overview, T2 concurring
+[T1+T2] 28 sessions drew 201,655, reported as the largest attendance at any temple dedication in Church history - thechurchnews.com 2010 overview, churchofjesuschristtemples.org
+[T2] Four instruction rooms, eight sealing rooms, one baptistry; elevation 5,160 ft - churchofjesuschristtemples.org (Church News 2010 concurs on room counts)
+[T2] First president Harold C. Yancey, 1994-1997 - churchofjesuschristtemples.org presidents page (Church News 2010 concurs)
+[T2] One of only two temples dedicated by President Hunter (the other Orlando Florida, October 1994); Hunter died March 3, 1995 - churchofjesuschristtemples.org; Hunter's nine-month presidency and death date are standard Church history
+[T2] Floor plan adapted for the Mount Timpanogos Utah Temple (dedicated 1996) - churchofjesuschristtemples.org
+[T2] Lightning struck the Moroni statue May 22, 2016; replacement set June 1, 2016 - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Announcement date - Church News 2010 overview says "announced May 28, 1988"; almanac and T2 say February 2, 1990. Both are real events: 1988 was the land purchase "for the possible construction of a temple" (Deseret News 1990-03-03 recounts the sequence), 1990 was the decision letter. Published both, labeled.
+Open house attendance - 870,361 (almanac, T2, precise count) vs "estimated 900,000 to 1.1 million" (Church News 2010). The precise official count wins; the 2010 estimate likely folds in unticketed visitors.
+Open house start - T2 says November 4, almanac says public opening November 5 with leadership tour November 4. T1 wins; printed November 5.
+Site acreage - 9 acres (T2, and the 1988 purchase description) vs 11 acres (Church News 2010). Unresolved two-way T1/T2 split; acreage omitted from the copy.
+
+VOLATILE (re-check before reprint)
+"Largest attendance at any temple dedication" - phrased as "reported as"; a future dedication could surpass it, and the claim's currency should be re-checked at reprint
+"47th operating temple / eighth in Utah / first in Davis County" - historical ordinals, stable, but Davis County gains a second temple when a future one is announced there; "first in Davis County" phrasing survives that
+
+OMITTED
+"Overcast skies parted, bathing the celestial room in celestial rays" during dedication - miraculous-account texture (known-myths general pattern); devotional framing outside the brand voice
+Site acreage - conflicting 9 vs 11 acres, see CONFLICTS
+Chandeliers by Schonbek (Czech Republic) - verified T1 but cut for space; the art glass and granite carry the craftsmanship story better
+Current temple president - operating-temple presidents rotate every ~3 years; only the first president ships
