@@ -24,5 +24,9 @@
   "Price": { "official_name": "Price Utah Temple", "location_line": "PRICE, UTAH", "verified": false },
   "Smithfield": { "official_name": "Smithfield Utah Temple", "location_line": "SMITHFIELD, UTAH", "verified": true },
   "Spanish Fork": { "official_name": "Spanish Fork Utah Temple", "location_line": "SPANISH FORK, UTAH", "verified": false },
-  "West Jordan": { "official_name": "West Jordan Utah Temple", "location_line": "WEST JORDAN, UTAH", "verified": false }
+  "West Jordan": { "official_name": "West Jordan Utah Temple", "location_line": "WEST JORDAN, UTAH", "verified": false },
+  "Manhatten": { "official_name": "Manhattan New York Temple", "location_line": "NEW YORK, NEW YORK", "verified": true },
+  "Mexico City": { "official_name": "Mexico City Mexico Temple", "location_line": "MEXICO CITY, MEXICO", "verified": true },
+  "Oakland": { "official_name": "Oakland California Temple", "location_line": "OAKLAND, CALIFORNIA", "verified": true },
+  "Rome": { "official_name": "Rome Italy Temple", "location_line": "ROME, ITALY", "verified": true }
 }

@@ -115,8 +115,12 @@ class EditorDriver:
         url = self.cfg["editor_url_template"].format(product_id=product_id)
         self.page.goto(url, wait_until="networkidle")
         self._assert_logged_in()
-        self._sel("variants_panel_heading").wait_for(timeout=30_000)
+        # The "Important product information" modal opens on top of the
+        # editor and suppresses the variants panel underneath it, so the
+        # panel heading never becomes visible while the modal is up.
+        # Dismiss first, then wait for the panel.
         self._close_info_modal_if_present()
+        self._sel("variants_panel_heading").wait_for(timeout=30_000)
         self.switch_to_back_side()
 
     def switch_to_back_side(self):
