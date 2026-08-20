@@ -111,15 +111,51 @@ class EditorDriver:
         except Exception:
             pass
 
+    def _dismiss_onboarding_if_present(self):
+        """Close the first-login onboarding prompt. Shown only on a browser
+        profile's first visit to the editor, so this is a no-op afterwards."""
+        try:
+            button = self._sel("onboarding_dismiss")
+            if button.first.is_visible(timeout=2000):
+                button.first.click()
+                self.page.wait_for_timeout(1000)
+        except Exception:
+            pass
+
+    def _open_edit_tools_panel(self):
+        """Open the "Variants and layers" panel if it is collapsed.
+
+        The panel is not open by default. Its toggle is the pencil-and-ruler
+        button at top right, which is icon-only and carries no accessible
+        name. Clicking it was observed to surface only its tooltip, so the
+        keyboard shortcut from that tooltip is the primary route and the
+        click is the fallback.
+        """
+        heading = self._sel("variants_panel_heading")
+        if heading.count() and heading.first.is_visible():
+            return
+        self.page.keyboard.press(self.cfg["selectors"]["edit_tools_shortcut"]["keys"])
+        self.page.wait_for_timeout(2000)
+        if heading.count() and heading.first.is_visible():
+            return
+        try:
+            self._sel("edit_tools_toggle").first.click()
+            self.page.wait_for_timeout(2000)
+        except Exception:
+            pass
+
     def open_product(self, product_id):
         url = self.cfg["editor_url_template"].format(product_id=product_id)
         self.page.goto(url, wait_until="networkidle")
         self._assert_logged_in()
-        # The "Important product information" modal opens on top of the
-        # editor and suppresses the variants panel underneath it, so the
-        # panel heading never becomes visible while the modal is up.
-        # Dismiss first, then wait for the panel.
+        # Two things sit between load and a usable editor. The "Important
+        # product information" modal opens over it, and the variants panel
+        # is collapsed behind its toggle. Neither is dismissed or opened by
+        # default, and while the modal is up the panel cannot be opened at
+        # all, so the order here matters.
+        self._dismiss_onboarding_if_present()
         self._close_info_modal_if_present()
+        self._open_edit_tools_panel()
         self._sel("variants_panel_heading").wait_for(timeout=30_000)
         self.switch_to_back_side()
 

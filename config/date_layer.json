@@ -135,6 +135,22 @@
       "kind": "css",
       "css": "[data-testid='positionTopInput'] input",
       "note": "verified live: reads back 79.93 on Brigham City's existing layer (the discovery notes recorded 80.05% for an earlier pass on the same product before a later one-down-arrow nudge; both are within the 0.005 verify tolerance)."
+    },
+    "edit_tools_toggle": {
+      "kind": "css",
+      "css": "button.icon-only-button:has-text(\"design_services\")",
+      "note": "verified live 19 Aug 2026: the pencil-and-ruler button at top right that opens the 'Variants and layers' panel. Icon-only with no aria-label, so role/name lookup returns nothing; matched on the Material Symbols ligature text instead. Clicking it surfaced only its tooltip in testing, so the driver presses its keyboard shortcut first and falls back to clicking this."
+    },
+    "edit_tools_shortcut": {
+      "kind": "keyboard",
+      "keys": "Shift+Meta+L",
+      "note": "verified live 19 Aug 2026: the shortcut printed in the Edit tools tooltip. Opens the panel reliably where the click did not."
+    },
+    "onboarding_dismiss": {
+      "kind": "role",
+      "role": "button",
+      "name": "Explore on my own",
+      "note": "first-login-only onboarding prompt over the editor (Evan, 19 Aug 2026). Absent once dismissed, so the driver treats it as optional."
     }
   },
   "font_size_editor": "Auto"
