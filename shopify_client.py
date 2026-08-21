@@ -6,6 +6,7 @@ Needs in .env:
 """
 
 import mimetypes
+import time
 from pathlib import Path
 
 import requests
@@ -111,14 +112,72 @@ class ShopifyClient:
             raise ShopifyError(str(errs))
         return created["productCreateMedia"]["media"][0]["id"]
 
-    def move_media_to_position(self, product_gid, media_id, position_index):
-        """0-based index; position 2 in the gallery = index 1."""
-        moves = [{"id": media_id, "newPosition": str(position_index)}]
+    def wait_for_media_ready(self, media_id, timeout_s=90):
+        """Block until Shopify finishes ingesting an image.
+
+        productCreateMedia returns while status is still UPLOADED/PROCESSING.
+        Reordering media that has not settled produces a nondeterministic final
+        order, which is how 22 art cards ended up at gallery position 1 instead
+        of 2 on 20 Aug 2026, displacing the garment mockup as the featured
+        image."""
+        deadline = time.time() + timeout_s
+        while time.time() < deadline:
+            data = self.gql("""
+              query($id: ID!) { node(id: $id) {
+                ... on MediaImage { id status } } }""", {"id": media_id})
+            status = (data.get("node") or {}).get("status")
+            if status == "READY":
+                return True
+            if status == "FAILED":
+                raise ShopifyError(f"media {media_id} failed to process")
+            time.sleep(2)
+        raise ShopifyError(f"media {media_id} not READY after {timeout_s}s")
+
+    def media_position(self, product_gid, media_id):
+        """Current 0-based index of one media item, or None if absent."""
         data = self.gql("""
-          mutation($id: ID!, $moves: [MoveInput!]!) {
-            productReorderMedia(id: $id, moves: $moves) {
-              mediaUserErrors { message } } }""",
-            {"id": product_gid, "moves": moves})
-        errs = data["productReorderMedia"]["mediaUserErrors"]
-        if errs:
-            raise ShopifyError(str(errs))
+          query($id: ID!) { product(id: $id) {
+            media(first: 50) { edges { node { ... on MediaImage { id } } } } } }""",
+            {"id": product_gid})
+        ids = [e["node"].get("id") for e in data["product"]["media"]["edges"]]
+        return ids.index(media_id) if media_id in ids else None
+
+    def move_media_to_position(self, product_gid, media_id, position_index, attempts=3):
+        """0-based index; position 2 in the gallery = index 1.
+
+        productReorderMedia is asynchronous: it returns a job and an empty
+        mediaUserErrors as soon as the request is accepted, which is not the
+        same as the move having happened. Wait for the job, then confirm the
+        media actually sits where it should, and retry if it does not."""
+        self.wait_for_media_ready(media_id)
+        for attempt in range(1, attempts + 1):
+            if self.media_position(product_gid, media_id) == position_index:
+                return True
+            moves = [{"id": media_id, "newPosition": str(position_index)}]
+            data = self.gql("""
+              mutation($id: ID!, $moves: [MoveInput!]!) {
+                productReorderMedia(id: $id, moves: $moves) {
+                  job { id done }
+                  mediaUserErrors { message } } }""",
+                {"id": product_gid, "moves": moves})
+            errs = data["productReorderMedia"]["mediaUserErrors"]
+            if errs:
+                raise ShopifyError(str(errs))
+            job = data["productReorderMedia"].get("job") or {}
+            self._wait_for_job(job.get("id"))
+            if self.media_position(product_gid, media_id) == position_index:
+                return True
+            time.sleep(2 * attempt)
+        raise ShopifyError(
+            f"media {media_id} still at index {self.media_position(product_gid, media_id)} "
+            f"after {attempts} reorder attempts (wanted {position_index})")
+
+    def _wait_for_job(self, job_id, timeout_s=60):
+        if not job_id:
+            return
+        deadline = time.time() + timeout_s
+        while time.time() < deadline:
+            data = self.gql("query($id: ID!) { job(id: $id) { id done } }", {"id": job_id})
+            if (data.get("job") or {}).get("done"):
+                return
+            time.sleep(1)
