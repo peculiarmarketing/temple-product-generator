@@ -443,31 +443,38 @@ def sweep(c, args):
         listed = manifest.get("garments", "all")
         garment_ids = all_garment_ids() if listed == "all" else listed
         results, errors = [], []
-        for gid in garment_ids:
-            cfg = json.loads((PROJECT_ROOT / "garments" / f"{gid}.json").read_text())
-            place = manifest["place_tokens"].get(gid, manifest["place_tokens"]["default"])
-            intended = cfg["naming"]["title"].format(place=place)
-            if intended in existing_titles:
-                rows.append((temple, gid, "exists"))
-                continue
-            if args.report_only:
-                rows.append((temple, gid, "PENDING"))
-                continue
-            try:
-                r = generate_one(c, temple, gid, args)
-                results.append(r)
-                existing_titles.add(intended)
-                generated += 1
-                rows.append((temple, gid, "GENERATED"))
-            except SystemExit as e:
-                msg = str(e)
-                if "No usable 'Copy of" in msg:
-                    rows.append((temple, gid, "WAITING FOR DUPLICATE"))
-                else:
-                    errors.append({"garment": gid, "error": msg})
-                    rows.append((temple, gid, f"ERROR: {msg[:60]}"))
-        if results or errors:
-            write_status(temple, results, errors)
+        # try/finally, not a plain call after the loop: a transient API fault
+        # raises straight past the loop and used to take every product this
+        # temple had already generated with it. The products existed on
+        # Printify but status.json never recorded them, so the descriptions
+        # step silently skipped them on the next run.
+        try:
+            for gid in garment_ids:
+                cfg = json.loads((PROJECT_ROOT / "garments" / f"{gid}.json").read_text())
+                place = manifest["place_tokens"].get(gid, manifest["place_tokens"]["default"])
+                intended = cfg["naming"]["title"].format(place=place)
+                if intended in existing_titles:
+                    rows.append((temple, gid, "exists"))
+                    continue
+                if args.report_only:
+                    rows.append((temple, gid, "PENDING"))
+                    continue
+                try:
+                    r = generate_one(c, temple, gid, args)
+                    results.append(r)
+                    existing_titles.add(intended)
+                    generated += 1
+                    rows.append((temple, gid, "GENERATED"))
+                except SystemExit as e:
+                    msg = str(e)
+                    if "No usable 'Copy of" in msg:
+                        rows.append((temple, gid, "WAITING FOR DUPLICATE"))
+                    else:
+                        errors.append({"garment": gid, "error": msg})
+                        rows.append((temple, gid, f"ERROR: {msg[:60]}"))
+        finally:
+            if results or errors:
+                write_status(temple, results, errors)
     print()
     print(f"{'Temple':<20} {'Garment':<14} State")
     for t, g, s in rows:
@@ -528,16 +535,17 @@ def main():
         raise SystemExit("No garments requested and none configured.")
 
     results, errors = [], []
-    for gid in garment_ids:
-        try:
-            results.append(generate_one(c, args.temple, gid.strip(), args))
-        except (PrintifyError, SystemExit) as e:
-            errors.append({"garment": gid, "error": str(e)})
-            print(f"  ERROR [{gid}]: {e}")
-
-    if not args.dry_run and not args.fixture:
-        write_status(args.temple, results, errors)
-        print(f"status.json updated in the {args.temple} folder")
+    try:
+        for gid in garment_ids:
+            try:
+                results.append(generate_one(c, args.temple, gid.strip(), args))
+            except (PrintifyError, SystemExit) as e:
+                errors.append({"garment": gid, "error": str(e)})
+                print(f"  ERROR [{gid}]: {e}")
+    finally:
+        if not args.dry_run and not args.fixture and (results or errors):
+            write_status(args.temple, results, errors)
+            print(f"status.json updated in the {args.temple} folder")
     if errors:
         sys.exit(1)
 

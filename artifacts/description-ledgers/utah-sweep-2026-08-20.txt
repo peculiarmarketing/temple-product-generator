@@ -1,0 +1,227 @@
+# Description Source Ledgers - 8 Utah Temples, 32 Products - 20 August 2026
+
+Temples: Cedar City, Deseret Peak, Draper, Jordan River, Layton, Lindon,
+Monticello, Mount Timpanogos. Each ledger covers all four garments, which
+share one facts fragment.
+
+Batch-wide notes:
+- First Temple President omitted for the whole batch. Only Cedar City had one
+  sourced (John W. Yardley, T1), and the almanac marks it current as of the
+  2017 article rather than the first president, so it is volatile and it would
+  have been the only entry carrying the row.
+- Tier 2 (churchofjesuschristtemples.org) and Tier 1 disagree on floor area for
+  two temples. Tier 1 won in both cases per the hierarchy. Both figures recorded
+  below.
+- Three temples print a city that differs from the temple name. Each states the
+  reason in the Location row rather than leaving it to look like an error.
+
+================================================================
+SOURCE LEDGER - Cedar City Utah Temple
+
+VERIFIED
+[T1] Announced April 6, 2013, by President Thomas S. Monson, Saturday morning session - thechurchnews.com almanac
+[T1] Groundbreaking August 8, 2015, Elder L. Whitney Clayton presided - thechurchnews.com almanac
+[T1] Dedicated December 10, 2017, by President Henry B. Eyring - thechurchnews.com almanac
+[T1] 159th dedicated temple, 17th in Utah - thechurchnews.com almanac
+[T1] Floor area 39,802 sq ft - thechurchnews.com almanac
+[T1] Open house October 27 to November 18, 2017; about 187,000 attended - thechurchnews.com almanac
+[T1] Designed to resemble a pioneer-era temple, colors and textures of the period - thechurchnews.com almanac
+[T1] Two stained glass windows of the Savior donated by a Latter-day Saint art collector; eight paintings by local artists showing Bryce and Kolob canyons; local flowers and red cliffs in rugs, woodwork, paintings - thechurchnews.com almanac
+[T2] Architectural Nexus; beige precast concrete panels with gypsum fiber reinforced concrete sections; 160 ft 6 in; single attached end tower with angel Moroni - churchofjesuschristtemples.org
+[T2] Two instruction rooms, three sealing rooms, one baptistry - churchofjesuschristtemples.org
+[T2] Moroni statue set in place September 15, 2016 before a large crowd - churchofjesuschristtemples.org
+[T2] Physical city Cedar City, Utah (280 South Cove Dr) - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Floor area - T1 almanac 39,802 sq ft vs T2 42,657 sq ft. Tier 1 wins outright per the hierarchy. Published 39,802.
+
+VOLATILE (re-check before reprint)
+"159th dedicated temple" and "17th in Utah" - both fixed at dedication, but verify phrasing if the Church restates counts
+Open house attendance is an approximate published figure
+
+OMITTED
+First temple president (John W. Yardley) - T1 but flagged current as of article publication, not necessarily the first; batch consistency
+"First temple in Iron County" / "second in southern Utah" - drafted from inference, never sourced, cut before publishing
+
+================================================================
+SOURCE LEDGER - Deseret Peak Utah Temple
+
+VERIFIED
+[T1] 200th dedicated temple; 23rd in Utah; first in Tooele County - thechurchnews.com, newsroom.churchofjesuschrist.org
+[T1] Dedicated November 10, 2024, by President Russell M. Nelson, age 100 - thechurchnews.com, newsroom
+[T1] Announced April 2019 by President Nelson - thechurchnews.com
+[T1] Open house drew more than 130,000 - thechurchnews.com
+[T1] Located in Tooele Valley about 30 miles from Salt Lake City; named for Deseret Peak, the fourth most prominent peak in Utah - thechurchnews.com
+[T1] Church took until 2000 to dedicate its first 100 temples and 24 more years for the second 100 - thechurchnews.com
+[T2] Announcement date April 7, 2019 - churchofjesuschristtemples.org
+[T2] Groundbreaking May 15, 2021, Elder Brook P. Hales presided - churchofjesuschristtemples.org
+[T2] FFKR Architects; glass fiber reinforced concrete with dolomite aggregate from Tooele Valley; 71,998 sq ft; 182 ft 8 in; single attached central tower - churchofjesuschristtemples.org
+[T2] Four instruction rooms, four sealing rooms, one baptistry - churchofjesuschristtemples.org
+[T2] Open house September 26 to October 19, 2024; 130,911 visitors - churchofjesuschristtemples.org
+[T2] Native flora motifs: lupine, cliff rose, salt grass, grasses, across stone, millwork, rugs, paint, font railings, art glass; design draws on nearby historic tabernacles - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Open house attendance - T1 "more than 130,000" vs T2 precise 130,911. Not a real conflict; published the T1 rounded form.
+
+VOLATILE (re-check before reprint)
+"200th dedicated temple" - fixed at dedication and safe, but the surrounding pace-of-dedication framing dates quickly
+"Fourth most prominent peak in Utah" - a ranking, stable but worth a glance
+
+OMITTED
+Nothing material failed the hierarchy for this temple.
+
+================================================================
+SOURCE LEDGER - Draper Utah Temple
+
+VERIFIED
+[T1] FFKR Architects; Temple White Granite from China; bronze doors; 58,300 sq ft; 168 ft 8 in to the top of the Moroni statue - newsroom.churchofjesuschrist.org Draper facts
+[T1] Dedicated March 20 to 22, 2009 - newsroom Draper facts
+[T1] Open house January 15 to March 14, 2009, excluding Sundays - newsroom Draper facts
+[T1] Sego lily, Utah's state flower, in art glass by Tom Holdman and decorative painting - newsroom Draper facts
+[T1] Makore wood from the west coast of central Africa in doors, trim, paneling, cabinets; murals of mountain scenes by Utah and Colorado artists - newsroom Draper facts
+[T2] Announced October 2, 2004, by President Gordon B. Hinckley, Saturday morning session - churchofjesuschristtemples.org
+[T2] Groundbreaking and site dedication August 5, 2006, by President Hinckley - churchofjesuschristtemples.org
+[T2] Dedicated by President Thomas S. Monson; 129th dedicated temple - churchofjesuschristtemples.org
+[T2] Four instruction rooms (two-stage progressive), five sealing rooms, one baptistry; a sealing room seats up to 80 - churchofjesuschristtemples.org
+[T2] Open house attendance 684,721 - churchofjesuschristtemples.org
+[T2] Log Cabin quilt pattern in art glass; 221 exterior windows, 50 interior windows, 432 door panels, 35,420 hand-cut glass pieces; limestone from France; baptistry on downhill west side with floor-to-ceiling windows - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Height - T1 gives 50 ft 10 in for the building and 168 ft 8 in to the top of the statue; T2 gives 166 ft. Tier 1 wins. Published the 168 ft 8 in figure and labeled it as measured to the top of the statue, since an unlabeled height here reads as an error.
+Architect - T2 did not name one, T1 names FFKR Architects. Used T1.
+
+VOLATILE (re-check before reprint)
+Sealing room capacity of 80 - published as a plain capacity, with T2's "largest in Utah" superlative deliberately dropped
+
+OMITTED
+"The art glass windows miraculously survived a studio fire that destroyed the facility, with only one window partially damaged" [T2 only]. Searched Tier 1 specifically and found no Draper studio fire. The documented art-glass fire in Church sources is the Provo Tabernacle fire, where 80 windows survived but were not used in the Provo City Center Temple. This has the cross-contamination signature known-myths.md records for the St. George stone claim, plus the miraculous-construction texture that file warns against. Dropped entirely rather than hedged.
+
+================================================================
+SOURCE LEDGER - Jordan River Utah Temple
+
+VERIFIED
+[T1] First temple of the modern era built entirely with donated funds; by the May 1979 deadline members had raised 110 percent of the amount needed, ahead of schedule - newsroom.churchofjesuschrist.org historical background
+[T1] Groundbreaking June 9, 1979, President Spencer W. Kimball presided, about 10,000 attended - newsroom historical background
+[T1] Kimball wore a hard hat and used a front-end loader rather than a ceremonial shovel, in keeping with his counsel to lengthen our stride - newsroom historical background
+[T1] Dedicated November 16 to 20, 1981, by President Marion G. Romney, in 15 sessions - newsroom historical background
+[T2] Announced February 3, 1978, by President Spencer W. Kimball - churchofjesuschristtemples.org
+[T2] Rededicated May 20, 2018, by President Henry B. Eyring - churchofjesuschristtemples.org
+[T2] Cast stone with white marble chips; tower of cemlite, a fiberglass product, to reduce weight; 148,236 sq ft; 219 ft; single attached central spire with angel Moroni - churchofjesuschristtemples.org
+[T2] Six instruction rooms, sixteen sealing rooms, one baptistry; 20th dedicated temple - churchofjesuschristtemples.org
+[T2] Site gifted to the Church; renovation 2016 to 2018 with seismic upgrades, mechanical and electrical modernization, interior redesign - churchofjesuschristtemples.org
+[T2] Physical city South Jordan, Utah (10200 S Temple Drive) - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Dedicatory sessions - T2 says five sessions, T1 newsroom says 15. Tier 1 wins outright. Published 15.
+Groundbreaking equipment - T2 says a Caterpillar tractor, T1 says a front-end loader. Same moment, Tier 1 wording published.
+
+VOLATILE (re-check before reprint)
+Nothing time-sensitive beyond the usual temple counts, which are not used here
+
+OMITTED
+"One of the largest temple districts in the Church" - drafted, never sourced, cut
+"Among the largest temples the Church has built" - unsourced ranking, replaced with the plain floor area
+Renovation closure month (February 2016) - drafted from nothing, reduced to "closed in 2016" which T2 supports
+
+================================================================
+SOURCE LEDGER - Layton Utah Temple
+
+VERIFIED
+[T1] Tiffany Studios window "The Resurrection," circa 1915, at the entrance to the second-floor patron waiting area, purchased from a United Presbyterian church in Amenia, New York, before its 2015 demolition - thechurchnews.com media day coverage
+[T2] Announced April 1, 2018, by President Russell M. Nelson, Sunday afternoon session of the 188th Annual General Conference - churchofjesuschristtemples.org
+[T2] Groundbreaking May 23, 2020, held a week early without advance public notice due to COVID-19; Elder Craig C. Christensen presided, Elder Randy D. Funk offered the site dedicatory prayer; video released May 30, 2020, the originally scheduled date - churchofjesuschristtemples.org
+[T2] Dedicated June 16, 2024, by Elder David A. Bednar, two sessions - churchofjesuschristtemples.org
+[T2] 195th dedicated temple - churchofjesuschristtemples.org
+[T2] HNWL Architects, landscape by MGB+A; precast concrete panels over structural steel frame and cast-in-place shear walls; 93,539 sq ft; 215 ft; two attached end spires with angel Moroni - churchofjesuschristtemples.org
+[T2] Four instruction rooms, six sealing rooms, one baptistry - churchofjesuschristtemples.org
+[T2] Property acquired March 30, 2018, two days before the announcement - churchofjesuschristtemples.org
+[T2] Art Nouveau styling from Davis County agricultural heritage, the Garden Spot of Utah; abstracted fruit trees, flowers, seedlings, blossoms, leafy branches; art glass of stylized seedlings growing into fruit trees - churchofjesuschristtemples.org
+[T2] Seven original artworks; dedicated the same day as the Salta Argentina Temple - churchofjesuschristtemples.org
+[T2] Open house April 19 to June 1, 2024, excluding Sundays - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+None.
+
+VOLATILE (re-check before reprint)
+"195th dedicated temple" - fixed at dedication
+
+OMITTED
+Open house attendance - no figure found at T1 or T2; row left out rather than estimated
+
+================================================================
+SOURCE LEDGER - Lindon Utah Temple
+
+VERIFIED
+[T1] Dedicated May 3, 2026, by President Henry B. Eyring - newsroom.churchofjesuschrist.org, thechurchnews.com
+[T1] 216th dedicated temple, 25th in Utah, seventh in Utah County - thechurchnews.com
+[T1] Groundbreaking April 23, 2022 - thechurchnews.com
+[T1] More than 280,000 toured during the open house - thechurchnews.com
+[T2] Announced October 4, 2020, by President Russell M. Nelson - churchofjesuschristtemples.org
+[T2] Elder Kevin W. Pearson, president of the Utah Area, presided at the groundbreaking - churchofjesuschristtemples.org
+[T2] Natural White Moncini stone, quarried and fabricated by Campolonghi Italia of Italy; 83,140 sq ft; 224 ft; two attached end spires - churchofjesuschristtemples.org
+[T2] Four instruction rooms, four sealing rooms, two baptistries - churchofjesuschristtemples.org
+[T2] Open house March 12 to April 11, 2026 - churchofjesuschristtemples.org
+[T2] Linden flower and linden tree motifs in art glass, millwork carvings, interior stonework, railings, decorative paint; sheaves of wheat in a harvest basket for the agricultural heritage - churchofjesuschristtemples.org
+[T2] Site and landscape design by MHTN Architects of Salt Lake City - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Open house duration - T2 gives March 12 to April 11, 2026 (30 days), T1 describes it as four weeks. Not a substantive conflict; published T2's dates and T1's attendance.
+
+VOLATILE (re-check before reprint)
+"216th dedicated temple" and the Utah and Utah County ordinals - fixed at dedication but recent enough that restatements are possible
+This temple was dedicated three months before this research; expect more design detail to be published
+
+OMITTED
+Building architect - T2 credits MHTN only for site and landscape design, so the fragment says exactly that rather than naming them as building architect
+"Two baptistries, where most temples of its size have one" - unsourced comparison, cut
+
+================================================================
+SOURCE LEDGER - Monticello Utah Temple
+
+VERIFIED
+[T1] First of the small temples, a design President Gordon B. Hinckley announced in 1997 - thechurchnews.com
+[T1] Laundry, cafeteria and other non-ordinance space omitted from the plan, allowing smaller buildings and faster construction - thechurchnews.com
+[T1] Built from groundbreaking to dedication in just over eight months, faster than any temple built before it - thechurchnews.com
+[T1] Originally 7,000 sq ft, less than half the floor space of a typical meetinghouse - thechurchnews.com
+[T1] Announced October 4, 1997; groundbreaking November 17, 1997; dedicated July 26, 1998 by President Hinckley - thechurchnews.com
+[T1] Rededicated November 17, 2002 by President Hinckley after expansion from 7,000 to 11,225 sq ft, adding a second ordinance room and a second sealing room; temple president Lisle G. Adams quoted on the reason - churchofjesuschrist.org Ensign, February 2003
+[T1] The statue placed on the temple was white fiberglass and six feet tall, against the twelve-foot gold-leafed statues used previously - newsroom.churchofjesuschrist.org angel Moroni article
+[T2] Groundbreaking presided over by Elder Ben B. Banks; Turkish off-white marble; 66 ft; single attached spire; two instruction rooms, two sealing rooms, one baptistry; 53rd dedicated temple, eleventh in Utah - churchofjesuschristtemples.org
+[T2] The white statue was later replaced with a gold-leafed one - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Construction duration - T2 states "eight months and nine days, the fastest construction time"; T1 states "just over eight months" and frames the superlative as faster than any temple built before it. Tier 1 wins, and its time-bound phrasing is safer. The oddly precise T2 figure has the same texture as the discredited Salt Lake "45 years, 8 months, 9 days" claim in known-myths.md, so the day count was not published.
+
+VOLATILE (re-check before reprint)
+"Faster than any temple built before it" - written time-bound on purpose; a later temple could beat it
+"First of the small temples" - stable
+
+OMITTED
+The reason for the Moroni replacement, that the white statue was hard to see against a cloudy sky [T2 only]. Tier 1 confirms the white fiberglass statue but not the rationale. The replacement itself is published as a T2 fact; the causal explanation is not.
+Announcing authority for the October 4, 1997 announcement - neither tier named one explicitly, so the row states the date without attributing it
+
+================================================================
+SOURCE LEDGER - Mount Timpanogos Utah Temple
+
+VERIFIED
+[T1] Announced October 3, 1992, by President Gordon B. Hinckley, then First Counselor - thechurchnews.com almanac
+[T1] Groundbreaking October 9, 1993, President Hinckley presided and offered the dedicatory prayer - thechurchnews.com almanac
+[T1] Dedicated October 13 to 19, 1996, in 27 sessions; President Hinckley presided over and spoke in 11 - thechurchnews.com almanac
+[T1] Open house August 6 to September 21, 1996; 679,217 visitors - thechurchnews.com almanac
+[T1] 104,000 sq ft; 190 ft including the spire - thechurchnews.com almanac
+[T1] Floor plan adapted from the Bountiful Utah Temple, the two alike except for spires - thechurchnews.com almanac
+[T1] At the base of Mount Timpanogos in American Fork, Utah, on nearly 17 acres; ninth temple in Utah, second in Utah County - thechurchnews.com almanac
+[T1] Four ordinance rooms, eight sealing rooms, a baptistry - thechurchnews.com almanac
+[T2] 49th dedicated temple; sierra white granite with art glass windows and bronze doors; single attached central spire with angel Moroni - churchofjesuschristtemples.org
+[T2] About 12,000 attended the groundbreaking, where the Madrid Spain Temple location was announced - churchofjesuschristtemples.org
+[T2] Moroni statue placed July 17, 1995 before an estimated 20,000 spectators - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Floor area - T1 almanac 104,000 sq ft vs T2 107,240 sq ft. Tier 1 wins outright per the hierarchy. Published 104,000, noting T1's figure is a round number and T2's is precise; if a reprint wants the precise figure, re-verify against a current Tier 1 source first.
+
+VOLATILE (re-check before reprint)
+"49th dedicated temple," ninth in Utah, second in Utah County - fixed at dedication
+
+OMITTED
+Architect - not named by either tier, row left out
+"A crowd larger than many temple dedications" - unsourced comparison, cut and replaced with the plain figure
