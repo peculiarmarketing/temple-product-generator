@@ -17,7 +17,7 @@
   "Billings": { "official_name": "Billings Montana Temple", "location_line": "BILLINGS, MONTANA", "verified": false },
   "Bountiful": { "official_name": "Bountiful Utah Temple", "location_line": "BOUNTIFUL, UTAH", "verified": true },
   "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": true },
-  "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": false },
+  "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": true },
   "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": true },
   "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": false },
   "Lehi": { "official_name": "Lehi Utah Temple", "location_line": "LEHI, UTAH", "verified": false },
@@ -28,5 +28,12 @@
   "Manhatten": { "official_name": "Manhattan New York Temple", "location_line": "NEW YORK, NEW YORK", "verified": true },
   "Mexico City": { "official_name": "Mexico City Mexico Temple", "location_line": "MEXICO CITY, MEXICO", "verified": true },
   "Oakland": { "official_name": "Oakland California Temple", "location_line": "OAKLAND, CALIFORNIA", "verified": true },
-  "Rome": { "official_name": "Rome Italy Temple", "location_line": "ROME, ITALY", "verified": true }
+  "Rome": { "official_name": "Rome Italy Temple", "location_line": "ROME, ITALY", "verified": true },
+  "Deseret Peak": { "official_name": "Deseret Peak Utah Temple", "location_line": "TOOELE, UTAH", "verified": true },
+  "Draper": { "official_name": "Draper Utah Temple", "location_line": "DRAPER, UTAH", "verified": true },
+  "Jordan River": { "official_name": "Jordan River Utah Temple", "location_line": "SOUTH JORDAN, UTAH", "verified": true },
+  "Layton": { "official_name": "Layton Utah Temple", "location_line": "LAYTON, UTAH", "verified": true },
+  "Lindon": { "official_name": "Lindon Utah Temple", "location_line": "LINDON, UTAH", "verified": true },
+  "Monticello": { "official_name": "Monticello Utah Temple", "location_line": "MONTICELLO, UTAH", "verified": true },
+  "Mount Timpanogos": { "official_name": "Mount Timpanogos Utah Temple", "location_line": "AMERICAN FORK, UTAH", "verified": true }
 }

@@ -167,13 +167,8 @@ def verify(product, cfg, dated, tolerance=0.005):
 
 
 def all_products(client):
-    page = 1
-    while True:
-        body = client._request("GET", f"/shops/{client.shop_id}/products.json?page={page}&limit=50")
-        yield from body.get("data", [])
-        if not body.get("next_page_url"):
-            return
-        page += 1
+    # next_page_url goes null one page early on this shop, which hid 31 drafts.
+    yield from client.all_products()
 
 
 def group_colorway(product, group):

@@ -16,6 +16,10 @@ BASE_URL = "https://api.printify.com/v1"
 USER_AGENT = "peculiar-people-generator"
 PROJECT_ROOT = Path(__file__).resolve().parent
 
+# Transient-fault retry budget for replayable calls (see _request).
+TRANSIENT_ATTEMPTS = 4
+TRANSIENT_BACKOFF_S = 3
+
 # Writable keys per the spec (docs/temple-catalog-generator-plan.md, Phase 1).
 # POST/PUT product bodies may contain nothing outside these.
 WRITABLE_PRODUCT_KEYS = (
@@ -70,14 +74,48 @@ class PrintifyClient:
             }
         )
 
-    def _request(self, method, path, json=None, timeout=60, _retried=False):
-        resp = self.session.request(method, f"{BASE_URL}{path}", json=json, timeout=timeout)
+    def _is_replayable(self, method, path):
+        """Whether repeating this call cannot create a second thing. GET and
+        PUT are idempotent by definition (a PUT re-sends the same body to the
+        same product id). An image upload is safe to repeat because a replay
+        at worst leaves an unreferenced asset in the library; the generator
+        uses whichever id comes back. Everything else, notably product
+        creation and publish, is left alone: a replay there could duplicate a
+        product or a storefront listing."""
+        return method in ("GET", "PUT") or path.startswith("/uploads/")
+
+    def _request(self, method, path, json=None, timeout=60, _retried=False, _attempt=1):
+        # A whole sweep is dozens of calls; one transient fault used to kill
+        # the run mid-catalog. Observed in the 20 Aug 2026 sweep: an
+        # SSLV3_ALERT_BAD_RECORD_MAC on an upload and an HTTP 500 on a product
+        # PUT, both of which succeeded on a retry. Only replayable calls are
+        # retried, and attempts stay low because the account's error budget is
+        # 5% of requests.
+        try:
+            resp = self.session.request(method, f"{BASE_URL}{path}", json=json, timeout=timeout)
+        except (requests.exceptions.SSLError,
+                requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout) as e:
+            if _attempt >= TRANSIENT_ATTEMPTS or not self._is_replayable(method, path):
+                raise
+            time.sleep(TRANSIENT_BACKOFF_S * _attempt)
+            print(f"  transient {type(e).__name__} on {method} {path}; "
+                  f"retry {_attempt + 1} of {TRANSIENT_ATTEMPTS}")
+            return self._request(method, path, json=json, timeout=timeout,
+                                 _retried=_retried, _attempt=_attempt + 1)
         if resp.status_code == 429 and not _retried:
             # Retry exactly once. The account's error budget is 5% of requests;
             # aggressive retries can trip it.
             wait = int(resp.headers.get("Retry-After", 10))
             time.sleep(wait)
             return self._request(method, path, json=json, timeout=timeout, _retried=True)
+        if (resp.status_code >= 500 and _attempt < TRANSIENT_ATTEMPTS
+                and self._is_replayable(method, path)):
+            time.sleep(TRANSIENT_BACKOFF_S * _attempt)
+            print(f"  transient HTTP {resp.status_code} on {method} {path}; "
+                  f"retry {_attempt + 1} of {TRANSIENT_ATTEMPTS}")
+            return self._request(method, path, json=json, timeout=timeout,
+                                 _retried=_retried, _attempt=_attempt + 1)
         if not resp.ok:
             raise PrintifyError(
                 method,
@@ -95,6 +133,29 @@ class PrintifyClient:
 
     def list_products(self, page=1, limit=50):
         return self._request("GET", f"/shops/{self.shop_id}/products.json?page={page}&limit={limit}")
+
+    def all_products(self, limit=50, max_pages=100):
+        """Every product in the shop. Printify's pagination metadata is not
+        trustworthy: on a 123-product shop it reports total=91 and last_page=2
+        with next_page_url=null on page 2, while page 3 still returns real
+        products. Trusting either field truncates the catalog at 100 and makes
+        existing products look missing. The only reliable stop is an empty
+        page. Ids can repeat across pages when the underlying list shifts, so
+        dedupe while preserving order."""
+        items, seen, page = [], set(), 1
+        while page <= max_pages:
+            resp = self.list_products(page=page, limit=limit)
+            data = resp.get("data", resp) if isinstance(resp, dict) else resp
+            if not data:
+                break
+            for product in data:
+                if product["id"] not in seen:
+                    seen.add(product["id"])
+                    items.append(product)
+            page += 1
+        else:
+            raise SystemExit(f"Product listing did not terminate within {max_pages} pages.")
+        return items
 
     def get_product(self, product_id):
         return self._request("GET", f"/shops/{self.shop_id}/products/{product_id}.json")

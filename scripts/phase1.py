@@ -54,17 +54,7 @@ def cmd_shops(args):
 
 def cmd_list_candidates(args):
     c = client()
-    items, page = [], 1
-    while True:
-        resp = c.list_products(page=page)
-        data = resp.get("data", resp) if isinstance(resp, dict) else resp
-        if not data:
-            break
-        items.extend(data)
-        last = resp.get("last_page") if isinstance(resp, dict) else None
-        if last is None or page >= last:
-            break
-        page += 1
+    items = c.all_products()
     candidates = [
         {
             "id": p["id"],

@@ -212,19 +212,8 @@ def fetch_all_products(c, refresh=False):
     global _PRODUCTS_CACHE
     if _PRODUCTS_CACHE is not None and not refresh:
         return _PRODUCTS_CACHE
-    items, page = [], 1
-    while True:
-        resp = c.list_products(page=page)
-        data = resp.get("data", resp) if isinstance(resp, dict) else resp
-        if not data:
-            break
-        items.extend(data)
-        last = resp.get("last_page") if isinstance(resp, dict) else None
-        if last is None or page >= last:
-            break
-        page += 1
-    _PRODUCTS_CACHE = items
-    return items
+    _PRODUCTS_CACHE = c.all_products()
+    return _PRODUCTS_CACHE
 
 
 def fixed_description(garment_cfg):

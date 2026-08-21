@@ -68,14 +68,8 @@ def eligibility(product):
 
 
 def all_products(client):
-    products, page = [], 1
-    while True:
-        data = client._request("GET", f"/shops/{client.shop_id}/products.json?limit=50&page={page}")
-        products.extend(data["data"])
-        if not data.get("next_page_url"):
-            break
-        page += 1
-    return products
+    # next_page_url goes null one page early on this shop, which hid 31 drafts.
+    return client.all_products()
 
 
 def shopify_find(shopify, title):
