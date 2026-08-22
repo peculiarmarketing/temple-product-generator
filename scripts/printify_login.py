@@ -184,6 +184,13 @@ def login():
     return 1
 
 
+def _safe_close(page):
+    try:
+        page.close()
+    except Exception:
+        pass
+
+
 def check():
     """Verify the session is still valid.
 
@@ -192,6 +199,13 @@ def check():
     Note: unauthenticated visits to /app/store/products redirect to /app/auth/login
     with variable delay (observed 8-12 seconds). The URL alone is not reliable for
     detecting logged-out state; the login form (input[type="password"]) is the signal.
+
+    Cross-origin activity in the dedicated Chrome window (a stray navigation, the
+    human closing the tab) can swap the CDP target mid-wait, the same churn hazard
+    login() polls around (see its comment above). A closed target raises
+    TargetClosedError, not PlaywrightTimeout, so it needs its own retry on a fresh
+    connection rather than being left to crash with a traceback that, once main()
+    turns it into exit code 1, reads identically to a genuinely expired session.
     """
     try:
         ensure_chrome()
@@ -199,45 +213,57 @@ def check():
         print(str(e))
         return 1
 
+    attempts = 3
     with sync_playwright() as p:
-        browser = None
-        try:
-            browser = p.chromium.connect_over_cdp(CDP_URL)
-            context = browser.contexts[0] if browser.contexts else browser.new_context()
-            page = context.new_page()
+        for attempt in range(1, attempts + 1):
+            browser = None
             try:
-                page.goto(APP_URL, wait_until="domcontentloaded", timeout=30000)
-            except Exception:
-                pass
+                browser = p.chromium.connect_over_cdp(CDP_URL)
+                context = browser.contexts[0] if browser.contexts else browser.new_context()
+                page = context.new_page()
+                try:
+                    page.goto(APP_URL, wait_until="domcontentloaded", timeout=30000)
+                except Exception:
+                    pass
 
-            # Fast path: if already redirected to auth/login, definitely logged out.
-            if "auth/login" in page.url:
-                page.close()
-                print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
-                return 1
-
-            # Otherwise, wait up to 20 seconds for the login form to appear.
-            # If it does, user is logged out. If the wait times out, assume logged in.
-            try:
-                page.locator("input[type='password']").wait_for(state="visible", timeout=20000)
-                # Login form appeared; definitely logged out.
-                page.close()
-                print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
-                return 1
-            except PlaywrightTimeout:
-                # Login form did not appear within 20 seconds; treat as logged in,
-                # unless the page never actually reached the app (network/navigation
-                # failure landing on about:blank would otherwise look "valid" too).
-                if not page.url.startswith("https://printify.com/app"):
-                    page.close()
-                    print("Could not reach Printify (network or navigation failure). Session state unknown.")
+                # Fast path: if already redirected to auth/login, definitely logged out.
+                if "auth/login" in page.url:
+                    _safe_close(page)
+                    print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
                     return 1
-                page.close()
-                print("Session is valid.")
-                return 0
-        finally:
-            if browser:
-                browser.close()
+
+                # Otherwise, wait up to 20 seconds for the login form to appear.
+                # If it does, user is logged out. If the wait times out, assume logged in.
+                try:
+                    page.locator("input[type='password']").wait_for(state="visible", timeout=20000)
+                    # Login form appeared; definitely logged out.
+                    _safe_close(page)
+                    print("Session expired. Re-run scripts/printify_login.py (log in inside the Chrome window).")
+                    return 1
+                except PlaywrightTimeout:
+                    # Login form did not appear within 20 seconds; treat as logged in,
+                    # unless the page never actually reached the app (network/navigation
+                    # failure landing on about:blank would otherwise look "valid" too).
+                    if not page.url.startswith("https://printify.com/app"):
+                        _safe_close(page)
+                        print("Could not reach Printify (network or navigation failure). Session state unknown.")
+                        return 1
+                    _safe_close(page)
+                    print("Session is valid.")
+                    return 0
+            except Exception:
+                # Target closed mid-check; not a signal either way. Retry on a fresh
+                # connection instead of letting it surface as an uncaught crash.
+                if attempt == attempts:
+                    print("Could not verify session (Chrome tab kept closing mid-check). Session state unknown; try again.")
+                    return 1
+                time.sleep(1)
+            finally:
+                if browser:
+                    try:
+                        browser.close()
+                    except Exception:
+                        pass
 
 
 def main():
