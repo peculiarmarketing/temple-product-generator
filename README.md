@@ -15,7 +15,8 @@ Generates Peculiar People temple products on Printify from templates, one produc
 ## Setup
 
 ```
-~/.pyenv/versions/3.12.8/bin/python -m venv .venv.nosync
+uv python install 3.12.8
+uv venv --python 3.12.8 --seed .venv.nosync
 ./.venv.nosync/bin/pip install -r requirements.txt
 ```
 

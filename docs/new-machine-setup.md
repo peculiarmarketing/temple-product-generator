@@ -26,9 +26,24 @@ No output means everything is local. If filenames print, wait and re-run.
 
 ### 3.2 Install Python 3.12
 
-Pick one route.
+Pick one route. Route A is what the Mac mini used in August 2026 and is now the preferred one.
 
-**Route A, python.org installer (simplest):**
+**Route A, uv (fastest, and pins the exact patch version):**
+
+```bash
+brew install uv
+uv python install 3.12.8
+```
+
+Confirm it landed:
+
+```bash
+uv python find 3.12.8
+```
+
+Expected: a path under `~/.local/share/uv/python/cpython-3.12.8-...`. uv keeps its interpreters in its own directory, so this never collides with the system Python or with anything Homebrew installed. It is also the only route that gives you 3.12.8 exactly, matching `.python-version`.
+
+**Route B, python.org installer:**
 
 1. Go to https://www.python.org/downloads/ and download the latest **3.12.x** macOS installer (scroll past newer versions if needed).
 2. Run the installer with the defaults.
@@ -40,7 +55,7 @@ python3.12 --version
 
 Expected: `Python 3.12.x`.
 
-**Route B, Homebrew (if the machine already uses brew):**
+**Route C, Homebrew (if the machine already uses brew):**
 
 ```bash
 brew install python@3.12
@@ -57,6 +72,16 @@ If `python3.12` is not on your PATH after a brew install, use the full `$(brew -
 ### 3.3 Create the venv
 
 The venv must be named exactly `.venv.nosync` and sit in the repo root. The `.nosync` suffix is what tells iCloud to leave it alone; renaming it would push thousands of package files into iCloud sync.
+
+With uv (Route A):
+
+```bash
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && uv venv --python 3.12.8 --seed .venv.nosync
+```
+
+The `--seed` flag matters: it puts `pip` inside the venv. uv omits pip by default, and every command in these docs calls `./.venv.nosync/bin/pip` directly.
+
+With a python.org or Homebrew install (Routes B and C):
 
 ```bash
 cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && python3.12 -m venv .venv.nosync
@@ -90,74 +115,141 @@ cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude
 
 Expected: the normal coverage report. If it errors about a missing token, the `.env` file has not synced yet; check 3.1.
 
+### 3.6 The second repo
+
+`temple-ref-finder` is a separate repo in the same folder with its own venv, same
+Python, same naming rule. It needs no API keys.
+
+```bash
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-ref-finder" && uv venv --python 3.12.8 --seed .venv.nosync && ./.venv.nosync/bin/pip install -r requirements.txt
+```
+
+Verify:
+
+```bash
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-ref-finder" && ./.venv.nosync/bin/python scan.py
+```
+
+Expected: a queue report, or `Queue is empty` if nothing is sitting in `../Temples TO DO/`.
+
 ---
 
 ## Step 4: GitHub sign-in so git push works
 
-The repo's remote is `https://github.com/peculiarmarketing/temple-product-generator.git`, plain HTTPS. Pushing over HTTPS needs a credential stored on the machine, and credentials do not sync through iCloud, so each new Mac needs signing in once.
+Both repos (`temple-product-generator` and `temple-ref-finder`) use the SSH remote
+`git@github-peculiar:peculiarmarketing/{repo}.git`. `github-peculiar` is not a real
+hostname. It is an alias defined in `~/.ssh/config` that points at github.com and
+pins one specific key. That file is machine-local and does not sync through iCloud,
+so every new Mac needs it written once.
 
-Everything except `git push` works without this step. Do it whenever you want the machine to be able to push.
+Everything except `git push` and `git fetch` works without this step.
 
-**Rule that matters:** sign in as your PERSONAL GitHub account, the one with access to `peculiarmarketing`. Never the work account (edavis821), and never wire this repo to work credentials. This is the one thing to be careful about on a machine where you are also signed into work GitHub, so step 4.3 checks it explicitly.
+**Why the alias instead of plain HTTPS:** this Mac is also signed into the work
+GitHub account (`edavis821`), which has no access to `peculiarmarketing`. An HTTPS
+remote reaches for whatever global credential helper git finds, which is shared with
+work repos, so it is possible to authorize the wrong identity without noticing. The
+alias carries `IdentitiesOnly yes`, meaning ssh offers that one key and nothing else.
+Work credentials are structurally unable to reach these repos.
 
-**4.1 Install the GitHub CLI** if the machine does not have it:
-
-```bash
-brew install gh
-```
-
-**4.2 Sign in.** This stores a token in the macOS keychain and tells git to use it:
-
-```bash
-gh auth login --hostname github.com --git-protocol https --web
-```
-
-Answer the prompts: GitHub.com, HTTPS, yes to authenticate git with your GitHub credentials. It opens a browser with a one-time code. Sign into the PERSONAL account in that browser, not the work one. If the browser is already signed into work GitHub, sign out first or use a private window, otherwise you will authorize the wrong account without noticing.
-
-**4.3 Confirm which account you got.** Do not skip this; it is the whole safety check:
+**4.1 Generate a dedicated key** (no passphrase, so scripts never block on a prompt):
 
 ```bash
-gh auth status
+ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_peculiar -N "" -C "peculiar-$(hostname -s)"
 ```
 
-Expected: `Logged in to github.com account peculiarmarketing`. If it names `edavis821` or any other account, that is the work account and it must not be used here. Run `gh auth logout`, then redo 4.2 in a private browser window.
+**4.2 Write the alias** into `~/.ssh/config`:
 
-**4.4 Test the repo:**
+```bash
+printf 'Host github-peculiar\n    HostName github.com\n    User git\n    IdentityFile ~/.ssh/id_ed25519_peculiar\n    IdentitiesOnly yes\n' >> ~/.ssh/config && chmod 600 ~/.ssh/config
+```
+
+**4.3 Add the public key to GitHub.** Copy it:
+
+```bash
+pbcopy < ~/.ssh/id_ed25519_peculiar.pub
+```
+
+Then go to https://github.com/settings/keys while signed in as the PERSONAL account
+(the one with access to `peculiarmarketing`), click New SSH key, give it the machine's
+name as the title, and paste. Authentication key, not signing key.
+
+If the browser is signed into work GitHub, use a private window. Adding the key to the
+wrong account is the one mistake here that is quiet: the key is accepted, and the
+repos stay invisible.
+
+**4.4 Confirm which account the key landed on:**
+
+```bash
+ssh -T github-peculiar
+```
+
+Expected: `Hi peculiarmarketing! You've successfully authenticated, but GitHub does not
+provide shell access.` If it names any other account, the key went on the wrong one.
+Remove it there and redo 4.3.
+
+If it says `Permission denied (publickey)`, the key has not been added yet, or it was
+added to an account this alias is not reaching.
+
+**4.5 Test both repos:**
 
 ```bash
 cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && git fetch origin && git push --dry-run
 ```
 
-Expected: `Everything up-to-date` (or a quiet fetch). Any prompt for a username and password means 4.2 did not take.
-
-### If you would rather use SSH
-
-SSH works too and is slightly stronger about never reaching for work credentials, but it is more setup per machine and the remote would have to change. It is not the current arrangement. If you ever switch, the remote becomes `github-peculiar:peculiarmarketing/temple-product-generator.git`, where `github-peculiar` is an alias in `~/.ssh/config` pointing at github.com with a dedicated key and `IdentitiesOnly yes`. Set it with:
-
 ```bash
-git remote set-url origin github-peculiar:peculiarmarketing/temple-product-generator.git
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-ref-finder" && git fetch origin && git push --dry-run
 ```
 
-Do not do this halfway. A machine with an SSH key but an HTTPS remote will ignore the key entirely and ask for a password instead, which is exactly the confusing failure this section exists to prevent.
+Expected: `Everything up-to-date` from each.
+
+Commit identity (`user.name` and `user.email`) is stored per-repo in each `.git/config`,
+which does sync through iCloud, so there is nothing to set on a new machine.
+
+### If you would rather use HTTPS
+
+HTTPS works too and needs no key file, but it shares a credential helper with the work
+account, which is why it is no longer the arrangement here. If you switch, the remotes
+become `https://github.com/peculiarmarketing/{repo}.git`, and you sign in with
+`gh auth login --hostname github.com --git-protocol https --web` as the personal
+account, verifying with `gh auth status` that it does not say `edavis821`.
+
+Do not do this halfway. A machine with an SSH key but an HTTPS remote ignores the key
+entirely and asks for a password instead, and a machine with an HTTPS credential but an
+SSH remote fails with `Permission denied (publickey)`. Both failures point at the wrong
+cause, which is exactly what this section exists to prevent.
 
 ---
 
 ## Final checklist
 
-Run down this list; all four green means the machine is fully operational:
+Run down this list; all six green means the machine is fully operational:
 
 1. `./.venv.nosync/bin/python tests/test_publish_drafts.py` prints `all tests passed`
 2. `./.venv.nosync/bin/python generate.py --sweep --report-only` prints a coverage report
-3. `gh auth status` says `Logged in to github.com account peculiarmarketing`
-4. `git push --dry-run` in the repo says `Everything up-to-date`
+3. `./.venv.nosync/bin/python scripts/publish_drafts.py --report-only` runs without a token error
+4. In `temple-ref-finder`, `./.venv.nosync/bin/python scan.py` prints a queue report
+5. `ssh -T github-peculiar` says `Hi peculiarmarketing!`
+6. `git push --dry-run` in each repo says `Everything up-to-date`
+
+Two things stay unfinished until you do them by hand, because they need your sign-in:
+
+- **Printify browser login.** The date-layer automation drives your real Chrome through a
+  dedicated profile at `.playwright.nosync/chrome-profile`, which is machine-local. Run
+  `./.venv.nosync/bin/python scripts/printify_login.py` once and sign in; check it later
+  with `--check`. Nothing else in the pipeline needs it, so this can wait until the first
+  run that adds date layers.
+- **The GitHub public key**, step 4.3 above.
 
 ## Troubleshooting
 
 - **`xcrun: error: invalid active developer path`** the first time you run git: macOS needs its command line tools. Run `xcode-select --install`, accept the dialog, retry.
-- **git asks for a username and password on push**: HTTPS has no stored credential on this machine. GitHub stopped accepting account passwords here years ago, so typing yours will fail. Redo 4.2.
-- **Push is rejected, or the commit shows the wrong GitHub account**: you are signed in as the work account. Run `gh auth status` to see which one, then `gh auth logout` and redo 4.2 in a private browser window.
+- **`Permission denied (publickey)` on push or fetch**: the public key is not on the account that owns these repos. Run `ssh -T github-peculiar` to see who the key actually authenticates as, then redo 4.3 on the right account.
+- **`ssh: Could not resolve hostname github-peculiar`**: `~/.ssh/config` is missing the alias. Redo 4.2. This is the normal state on a brand new Mac, since that file does not sync.
+- **git asks for a username and password**: the remote is HTTPS but the machine is set up for SSH. Check with `git remote -v`; it should start with `git@github-peculiar:`. Fix with `git remote set-url origin git@github-peculiar:peculiarmarketing/{repo}.git`.
+- **Push is rejected, or the commit shows the wrong GitHub account**: check `git config --local user.email` in the repo. It should be the personal address. `gh auth status` naming `edavis821` is expected and harmless here, since the SSH alias does not consult gh at all.
 - **`FileNotFoundError` for something inside the project**: an iCloud placeholder. Redo 3.1.
-- **pip compiling or failing to build a package**: wrong Python version. The venv must be built from 3.12. Delete the venv folder (`rm -rf .venv.nosync`) and redo 3.3 with `python3.12`.
+- **pip compiling or failing to build a package**: wrong Python version. The venv must be built from 3.12. Check with `./.venv.nosync/bin/python -V`, then delete the venv folder (`rm -rf .venv.nosync`) and redo 3.3.
+- **`./.venv.nosync/bin/pip: No such file or directory`**: the venv was made with `uv venv` without `--seed`. uv leaves pip out by default. Delete the venv and redo 3.3 with the `--seed` flag.
 - **Two machines at once**: do not run the pipeline from two Macs at the same time. The repo's `.git` folder syncs through iCloud, and simultaneous runs can produce iCloud conflict copies inside it. One machine at a time is completely safe.
 
 Remember the Claude Code side is per-machine too: the permission allowlist syncs (it lives in `Claude Projects/.claude/settings.json`), but plugins like superpowers and Claude's accumulated memory do not. The pipeline works without them.
