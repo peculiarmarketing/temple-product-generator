@@ -50,6 +50,59 @@ LOGO_FILES = {"black": ASSETS_DIR / "Peculiar People Logo - Black.png",
               "white": ASSETS_DIR / "Peculiar People Logo - White.png"}
 TARGET_ART_PX = 4096
 COLORS = {"black": (0, 0, 0, 255), "white": (255, 255, 255, 255)}
+GARMENTS_DIR = PROJECT_ROOT / "garments"
+CATALOG_CONFIG = PROJECT_ROOT / "config" / "catalog.json"
+
+# Titles carry the temple in parentheses ("Essential Temple Tee (Logan)"),
+# except the parent temple's, which carry the bare garment line. Anything
+# reading a title back has to cope with both shapes.
+PLACE_SUFFIX_RE = re.compile(r"\(([^()]+)\)\s*$")
+DATED_MARKERS = ("with date", "personalizable date")
+ONE_OFF_MARKER = "limited edition"
+
+
+def load_catalog_config():
+    return json.loads(CATALOG_CONFIG.read_text())
+
+
+def parent_temple():
+    """The temple whose products are the storefront's parent listings: bare
+    garment titles, left ACTIVE on Shopify while every other temple's product
+    is UNLISTED and reached from the parent page's Easify Temple dropdown."""
+    return load_catalog_config()["parent_temple"]
+
+
+def load_garment_config(garment_id):
+    return json.loads((GARMENTS_DIR / f"{garment_id}.json").read_text())
+
+
+def build_title(garment_cfg, temple_name, place):
+    """The one place a product title is composed. The parent temple gets the
+    bare garment title; every other temple gets the parenthesized place."""
+    if temple_name == parent_temple():
+        return garment_cfg["naming"]["title_parent"]
+    return garment_cfg["naming"]["title"].format(place=place)
+
+
+def parent_titles():
+    """Every garment's bare parent title, for reading a title back to a temple."""
+    return {load_garment_config(p.stem)["naming"]["title_parent"]
+            for p in GARMENTS_DIR.glob("*.json")}
+
+
+def title_is_dated(title):
+    """True for the personalizable line. Matches the current wording and the
+    retired ' - With Date' suffix, because Printify duplicates and older
+    products carry both."""
+    t = (title or "").lower()
+    return any(marker in t for marker in DATED_MARKERS)
+
+
+def title_is_one_off(title):
+    """Limited Edition products are Evan's hand-built one-offs (front-logo
+    designs, the Nauvoo limited run). The pipeline never claims one as a
+    duplicate, never auto-publishes one, and never gives one a dropdown row."""
+    return ONE_OFF_MARKER in (title or "").lower()
 
 
 def detect_art_files(folder):
@@ -218,25 +271,34 @@ def fetch_all_products(c, refresh=False):
 
 def fixed_description(garment_cfg):
     """The garment's verbatim intro + size guide from the exported description
-    skill assets. Set at swap time so a published draft never carries the
-    donor temple's facts; the description event later replaces the whole
-    field with intro + size guide + verified temple facts."""
+    skill assets, behind an optional garment-specific block (the dated line's
+    Personalization section). Set at swap time so a published draft never
+    carries the donor temple's facts; the description event later replaces the
+    whole field with these fixed sections plus verified temple facts."""
     skill = garment_cfg.get("description_skill") or ""
-    skill = {"cc1717-dated": "cc1717-temple-description-builder"}.get(garment_cfg["garment_id"], skill)
     assets = PROJECT_ROOT / "reference" / "skills" / skill / skill / "assets"
     intro, guide = assets / "product-intro.html", assets / "size-guide.html"
     if not (intro.exists() and guide.exists()):
         return ""  # empty beats a wrong temple's history on a live page
-    return intro.read_text().strip() + "\n\n" + guide.read_text().strip()
+    parts = []
+    prefix = garment_cfg.get("description_prefix")
+    if prefix:
+        prefix_path = PROJECT_ROOT / prefix
+        if not prefix_path.exists():
+            raise SystemExit(f"{garment_cfg['garment_id']}: description_prefix "
+                             f"{prefix} is missing; refusing to write a partial description.")
+        parts.append(prefix_path.read_text().strip())
+    parts += [intro.read_text().strip(), guide.read_text().strip()]
+    return "\n\n".join(parts)
 
 
 def find_duplicate(c, garment_cfg):
     """Find unclaimed 'Copy of ...' products usable for this garment. Any
     duplicate of the right blueprint/provider works (Evan: 'it doesn't matter
     which one I duplicate'); the design is replaced wholesale. The one
-    discriminator is 'With Date': only those duplicates carry the
-    personalization config, so they are reserved for the dated line.
-    Front-logo copies are ignored (test products)."""
+    discriminator is the dated line: only those duplicates carry the
+    personalization config, so they are reserved for it.
+    Limited Edition copies are ignored (Evan's hand-built one-offs)."""
     items = fetch_all_products(c)
     dated_garment = "dated" in garment_cfg["layout_profile"]
     dupes = []
@@ -247,30 +309,29 @@ def find_duplicate(c, garment_cfg):
         if p.get("blueprint_id") != garment_cfg["blueprint_id"] or \
            p.get("print_provider_id") != garment_cfg["print_provider_id"]:
             continue
-        if "front logo" in title.lower():
+        if title_is_one_off(title):
             continue
-        if ("with date" in title.lower()) != dated_garment:
+        if title_is_dated(title) != dated_garment:
             continue
         dupes.append(p)
     return dupes, [p["title"] for p in items]
 
 
 def check_title_collision(intended, all_titles, ignore_ids_titles=()):
-    """The description skills resolve on exact title and hard-stop on
-    ambiguity. Refuse to create a title that collides or nests with an
-    existing one (Provo vs Provo City Center; Nauvoo vs Limited Edition)."""
+    """Refuse to create a title that already exists. Exact match is the whole
+    check now: the place token is parenthesized and sits at the end, so
+    'Essential Temple Tee (Provo)' can no longer nest inside 'Essential Temple
+    Tee (Provo City Center)' the way the old prefix titles did. The parent
+    temple's bare title is a prefix of every child title by design, which is
+    exactly what the retired nesting rule would have flagged 117 times."""
     problems = []
     for t in all_titles:
         if t in ignore_ids_titles:
             continue
+        if t.startswith("Copy of ") or "TEMPLATE" in t.upper() or title_is_one_off(t):
+            continue
         if t == intended:
             problems.append(f"exact duplicate: {t!r}")
-        elif t.startswith("Copy of ") or "TEMPLATE" in t.upper():
-            continue
-        elif t == f"{intended} - With Date" or intended == f"{t} - With Date":
-            continue  # established, description-skill-safe suffix pattern (Provo, Logan, Cody)
-        elif intended in t or t in intended:
-            problems.append(f"nests with existing: {t!r}")
     return problems
 
 
@@ -316,10 +377,10 @@ def build_print_areas(duplicate, layers, uploads, garment_cfg):
 
 
 def generate_one(c, temple_name, garment_id, args):
-    garment_cfg = json.loads((PROJECT_ROOT / "garments" / f"{garment_id}.json").read_text())
+    garment_cfg = load_garment_config(garment_id)
     manifest = load_manifest(temple_name)
     place = manifest["place_tokens"].get(garment_id, manifest["place_tokens"]["default"])
-    title = garment_cfg["naming"]["title"].format(place=place) + (args.test_suffix or "")
+    title = build_title(garment_cfg, temple_name, place) + (args.test_suffix or "")
     print(f"[{garment_id}] {temple_name} -> {title!r}")
 
     # 1. find the product to edit
@@ -342,8 +403,8 @@ def generate_one(c, temple_name, garment_id, args):
     else:
         dupes, all_titles = find_duplicate(c, garment_cfg)
         if not dupes:
-            kind = "a With Date product" if "dated" in garment_cfg["layout_profile"] else \
-                   f"any {garment_cfg['display_name']} product (not With Date, not front logo)"
+            kind = "a personalizable date product" if "dated" in garment_cfg["layout_profile"] else \
+                   f"any {garment_cfg['display_name']} product (not dated, not Limited Edition)"
             raise SystemExit(f"No usable 'Copy of ...' duplicate for {garment_id} in the shop. "
                              f"Duplicate {kind} in the Printify UI first.")
         duplicate = c.get_product(dupes[0]["id"])
@@ -450,9 +511,9 @@ def sweep(c, args):
         # step silently skipped them on the next run.
         try:
             for gid in garment_ids:
-                cfg = json.loads((PROJECT_ROOT / "garments" / f"{gid}.json").read_text())
+                cfg = load_garment_config(gid)
                 place = manifest["place_tokens"].get(gid, manifest["place_tokens"]["default"])
-                intended = cfg["naming"]["title"].format(place=place)
+                intended = build_title(cfg, temple, place)
                 if intended in existing_titles:
                     rows.append((temple, gid, "exists"))
                     continue

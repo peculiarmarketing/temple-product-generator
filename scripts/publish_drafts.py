@@ -27,7 +27,11 @@ from dotenv import dotenv_values
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from generate import title_is_dated, title_is_one_off
 from printify_client import PrintifyClient, PrintifyError, load_config
+from scripts.default_variant import ensure_default, garments_by_blueprint
+from scripts.shopify_fixups import fix_published_product
+from shopify_client import ShopifyClient
 
 PUBLISH_FLAGS = {
     "title": True,
@@ -52,10 +56,10 @@ def eligibility(product):
         return False, "locked, a publish is already in progress"
     if title.startswith("Copy of"):
         return False, "unclaimed duplicate"
-    if "(front logo)" in title.lower():
-        return False, "test product"
+    if title_is_one_off(title):
+        return False, "Limited Edition one-off, Evan publishes these by hand"
     personalisation = (product.get("sales_channel_properties") or {}).get("personalisation") or {}
-    if " - With Date" in title or personalisation.get("layers"):
+    if title_is_dated(title) or personalisation.get("layers"):
         # Lazy import keeps this module import-light and avoids coupling
         # at import time.
         from scripts.add_date_layer import verify, load_layer_config, load_dated_spacing
@@ -65,6 +69,49 @@ def eligibility(product):
     if 'class="temple-facts"' not in (product.get("description") or ""):
         return False, "description has no temple facts section yet"
     return True, "eligible"
+
+
+def wanted_colorway(product):
+    """The default colorway this product's garment declares, or None.
+
+    Keyed the same way as scripts/default_variant.py: blueprint plus whether
+    the title is the dated line."""
+    key = (product.get("blueprint_id"), title_is_dated(product.get("title") or ""))
+    spec = garments_by_blueprint().get(key)
+    return spec[1] if spec else None
+
+
+def default_variant_note(product):
+    """What is wrong with this product's default variant, or None.
+
+    A donor duplicate carries its own default, so a fresh draft routinely
+    lands on the wrong colorway. Reported before the publish, then fixed
+    after it (fix_default_variant), because is_default is writable."""
+    colorway = wanted_colorway(product)
+    if colorway is None:
+        return None
+    default = next((v for v in product.get("variants", []) if v.get("is_default")), None)
+    if default is None:
+        return f"no default variant set; will set {colorway}"
+    current = (default.get("title") or "").split("/")[0].strip()
+    if current == colorway:
+        return None
+    return f"default variant is {current!r}, not {colorway!r}; will be set on publish"
+
+
+def fix_default_variant(client, product):
+    """Put the default variant on the garment's declared colorway. Reported,
+    never fatal: the product is already live and the script is re-runnable."""
+    colorway = wanted_colorway(product)
+    if colorway is None:
+        return
+    try:
+        note = ensure_default(client, product, colorway)
+        if note:
+            print(f"  Default variant: {note}")
+    except Exception as err:
+        print(f"  DEFAULT VARIANT FAILED ({err}); re-run "
+              f"scripts/default_variant.py --only {product['title']!r}")
 
 
 def all_products(client):
@@ -106,6 +153,27 @@ def publish_one(client, product, shopify=None):
     return None
 
 
+def apply_fixups(handle, title):
+    """Shopify-side corrections a Printify publish cannot make: unlist the
+    child listings, and rename the hoodie's mislabeled True Navy colorway.
+    See scripts/shopify_fixups.py. A failure here is reported, never fatal:
+    the product is already live and the fixups are re-runnable."""
+    try:
+        client = ShopifyClient()
+        live = client.find_product_by_handle(handle)
+        if not live:
+            print(f"  fixups skipped: no Shopify product with handle {handle!r}")
+            return
+        actions = fix_published_product(client, live["id"], title, live.get("productType"))
+        print(f"  Shopify fixups: {', '.join(actions)}" if actions
+              else "  Shopify fixups: nothing needed")
+    except SystemExit as err:          # missing Shopify creds
+        print(f"  fixups skipped: {err}")
+    except Exception as err:
+        print(f"  FIXUPS FAILED ({err}); re-run "
+              f"scripts/shopify_fixups.py all --handle {handle}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-only", action="store_true", help="list candidates, publish nothing")
@@ -136,6 +204,9 @@ def main():
             reason = "eligible, note: economy shipping is off (flip in Printify UI whenever)"
         marker = "PUBLISH" if ok else "skip"
         print(f"{marker:7}  {product['title']}  ({reason})")
+        variant_note = default_variant_note(product)
+        if variant_note:
+            print(f"         note: {variant_note}")
         if ok:
             to_publish.append(product)
 
@@ -158,6 +229,8 @@ def main():
         if result:
             note = "" if result["via"] == "printify" else " (Printify still syncing its own status)"
             print(f"  Live on Shopify: {result['handle']}{note}")
+            fix_default_variant(client, product)
+            apply_fixups(result["handle"], product["title"])
         else:
             print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but neither "
                   "Printify nor Shopify confirms it yet. Check the product in Printify before retrying.")

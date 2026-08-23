@@ -7,8 +7,12 @@
   "description_skill": "cc1566-temple-description-builder",
   "template_product_id": null,
   "print_area": { "position": "back", "width_px": 4494, "height_px": 5100, "dpi": 300 },
+  "storefront_first_color": "True Navy",
   "layout_profile": "back_stack",
   "personalized": false,
-  "naming": { "title": "{place} Temple Sweatshirt" },
+  "naming": {
+    "title": "Classic Temple Crew Sweatshirt ({place})",
+    "title_parent": "Classic Temple Crew Sweatshirt"
+  },
   "spacing_overrides": {}
 }

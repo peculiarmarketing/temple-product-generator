@@ -34,11 +34,11 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from art_images import EXCLUDE_MARKERS, temple_tokens
+from generate import build_title, load_garment_config
 from shopify_client import ShopifyClient
 
 CANONICAL = PROJECT_ROOT / "artifacts" / "easify" / "option-sets.csv"
 SETS_CONFIG = PROJECT_ROOT / "artifacts" / "easify" / "sets.json"
-GARMENTS_DIR = PROJECT_ROOT / "garments"
 STORE = "https://peculiarpeopleco.com/products/"
 BROWSE_LABEL = "Browse other temples"
 PLACEHOLDER_SET_ID_BASE = 900001
@@ -72,11 +72,6 @@ def group_by_set(rows):
     for row in rows:
         grouped.setdefault(row["option_set_title"], []).append(row)
     return grouped
-
-
-def garment_title_pattern(garment_id):
-    cfg = json.loads((GARMENTS_DIR / f"{garment_id}.json").read_text())
-    return cfg["naming"]["title"]
 
 
 def parse_products(cell):
@@ -113,19 +108,25 @@ def handle_of(url):
 def live_temple_products(config, tokens):
     """Match live Shopify products to configured garments by exact title.
 
-    Exact equality against the garment naming pattern is what keeps variants
-    like '(front logo)' or '- Limited Edition' out of the dropdowns.
+    Exact equality against the garment's composed title is what keeps
+    Limited Edition one-offs out of the dropdowns.
+
+    UNLISTED counts as live: every temple except the parent is deliberately
+    unlisted so the storefront shows one listing per garment line, and an
+    unlisted product's URL still resolves, which is what the dropdown links
+    to. Filtering to ACTIVE alone would see four products and report the rest
+    as gone.
     Returns ({garment: {temple: (label, handle)}}, attention lines)."""
     client = ShopifyClient()
     live = [p for p in client.all_products_summary()
-            if p["status"] == "ACTIVE" and p["publishedAt"]]
+            if p["status"] in ("ACTIVE", "UNLISTED") and p["publishedAt"]]
     expected, conflicted, attention, matched = {}, {}, [], set()
     for spec in config:
         garment = spec["garment"]
-        pattern = garment_title_pattern(garment)
+        cfg = load_garment_config(garment)
         per_temple = {}
         for token, temple in tokens.items():
-            want = pattern.format(place=token)
+            want = build_title(cfg, temple, token)
             for p in live:
                 if p["title"].strip() == want:
                     per_temple.setdefault(temple, []).append((token, p["handle"]))

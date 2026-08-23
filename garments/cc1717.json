@@ -7,8 +7,12 @@
   "description_skill": "cc1717-temple-description-builder",
   "template_product_id": null,
   "print_area": { "position": "back", "width_px": 4494, "height_px": 5097, "dpi": 300 },
+  "storefront_first_color": "Moss",
   "layout_profile": "back_stack",
   "personalized": false,
-  "naming": { "title": "{place} Temple Tee" },
+  "naming": {
+    "title": "Essential Temple Tee ({place})",
+    "title_parent": "Essential Temple Tee"
+  },
   "spacing_overrides": {}
 }

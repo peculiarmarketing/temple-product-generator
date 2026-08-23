@@ -17,6 +17,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from generate import title_is_dated
+
 # cc1717-dated print area (garments/cc1717-dated.json). Only dated garment today;
 # if a dated hoodie ever exists, lift these from its garment config instead.
 AREA = {"width_px": 4494, "height_px": 5097, "dpi": 300}
@@ -97,8 +99,8 @@ def group_is_dark(placeholder):
 def gate(product):
     """Hard scope filter. Everything must pass before any browser action."""
     title = product.get("title") or ""
-    if " - With Date" not in title:
-        return False, "not a With Date product"
+    if not title_is_dated(title):
+        return False, "not a personalizable date product"
     if title.startswith("Copy of"):
         return False, "unclaimed duplicate"
     if product.get("external"):
@@ -242,7 +244,7 @@ def main():
     else:
         summaries = [
             s for s in all_products(client)
-            if " - With Date" in (s.get("title") or "") and not s.get("external")
+            if title_is_dated(s.get("title")) and not s.get("external")
         ]
 
     todo = []

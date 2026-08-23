@@ -56,3 +56,99 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
 ## 19 August 2026 (economy gate dropped)
 
 - **Economy shipping is no longer a publish gate (Evan's 19 Aug decision, supersedes the 18 Aug hold-on-economy-off rule).** The Ephraim sweep held all four drafts on the economy gate, blocking unattended auto-publish. Evan chose to drop the gate rather than automate the toggle (Task 7 stays deferred): `publish_drafts.py` now publishes drafts with Economy off and prints a note ("eligible, note: economy shipping is off") for each one, so Evan can flip the toggle in the Printify UI whenever, post-publish. Consequence accepted: a product can be live offering only Standard shipping until he flips it. `is_economy_shipping_enabled` remains read-only via API.
+
+## 22 August 2026 (catalog rename, parent products, Shopify fixups)
+
+- **Product titles lead with the garment line, temple in parentheses.** New
+  patterns, one per garment config (`garments/*.json`, key `naming.title`):
+  `Pillar Temple Hoodie ({place})`, `Classic Temple Crew Sweatshirt ({place})`,
+  `Essential Temple Tee ({place})`, `Essential Temple Tee – with personalizable
+  date ({place})`. En dash, lowercase after it; that exact wording is
+  canonical and supersedes the hyphen and Title Case variants Evan tried by
+  hand on the Salt Lake and Layton products.
+- **Salt Lake is the parent temple** (`config/catalog.json`, key
+  `parent_temple`). Its four products carry the bare garment title with no
+  parenthetical (`naming.title_parent`) and stay ACTIVE on Shopify. Every
+  other temple's product is set to Shopify status UNLISTED, so the storefront
+  shows one listing per garment line and shoppers reach the rest through the
+  Easify Temple dropdown on the parent page. Unlisted products keep working
+  URLs, so every dropdown link still resolves. `publish_drafts.py` unlists
+  each newly published non-parent product automatically.
+- **Title parsing runs backwards now.** The place token is parenthesized at
+  the end, so reading a title back to a temple is an exact lookup rather than
+  the longest-prefix guess the old `{place} Temple Tee` titles needed
+  (`art_images.match_temple`). The nesting half of `check_title_collision` is
+  retired for the same reason: parentheses make Provo vs Provo City Center
+  structurally unambiguous, and the parent's bare title is a prefix of every
+  child title by design, which the old rule would have flagged 117 times.
+- **`limited edition` replaces `(front logo)` as the one-off marker.** Evan's
+  hand-built one-offs are now `Essential Temple Tee – Limited Edition
+  (Nauvoo)`, `Pillar Temple Hoodie – Limited Edition (Nauvoo)`, and `Classic
+  Temple Crew Sweatshirt – Limited Edition (Nauvoo)`. The pipeline never
+  claims one as a duplicate, never auto-publishes one, and never gives one a
+  dropdown row.
+- **The dated tee description opens with a Personalization section.** Evan
+  wrote it; it is held verbatim at
+  `reference/description-blocks/personalization-intro.html` and named by
+  `description_prefix` in `garments/cc1717-dated.json`. This is a new
+  directory on purpose: the vendored skill exports under `reference/skills/`
+  stay verbatim.
+- **Hoodie colorway "True Navy" is renamed to "Blue Jean" on Shopify.**
+  Printify labels the CC1567 hoodie colorway True Navy, but it does not match
+  the True Navy on the CC1717 tee or the CC1566 crew; it matches their Blue
+  Jean. Evan's call: Printify has it wrong and the storefront should read Blue
+  Jean. Shopify-only, so Printify order line items still say True Navy. Any
+  Printify republish re-syncs variants and pushes the old name back, which is
+  why `scripts/shopify_fixups.py hoodie-color` is re-runnable and part of the
+  end-of-run sequence rather than a one-shot.
+- **Moss is the default variant on the dated tees**, declared as
+  `default_colorway` in `garments/cc1717-dated.json`. `publish_drafts.py`
+  reports a wrong default before publishing and sets it right after, and
+  `scripts/default_variant.py` does the same in bulk. The size is preserved:
+  a product defaulting to "True Navy / L" moves to "Moss / L".
+- **`is_default` is writable through the Printify API**, measured 22 Aug 2026
+  against a live dated tee: the PUT was accepted and prices, enabled state and
+  variant count all came back unchanged. The Revision-2 spec
+  (`docs/temple-catalog-generator-plan.md`) listing it read-only was wrong, and
+  `WRITABLE_VARIANT_KEYS` now includes it.
+- **Printify's default variant does not drive Shopify's.** Measured the same
+  day: the Salt Lake dated tee Evan had already set to Moss showed the same
+  Shopify variant order (Brick / S first) as every product still defaulting to
+  True Navy. Setting the Printify default moves Printify's own default, which
+  mockup selection follows; the storefront is a separate lever.
+- **The storefront's opening variant is the Color option's first value.**
+  Shopify preselects variant position 1 and computes position from the option
+  value order, so `productOptionsReorder` is the only lever over it. That list
+  is also the swatch display order, so the chosen color moves to the front of
+  the swatch row too. Declared per garment as `storefront_first_color`:
+  **Moss** on both tee lines, **True Navy** on the crew, **Denim** on the
+  hoodie. Applied by `scripts/shopify_fixups.py color-order`.
+- **Reordering colors can scramble the size list, and Denim does.** Shopify
+  re-derives every option's value order from the resulting variant sequence,
+  so a first color missing a size pushes that size to the back. Shopify hides
+  out-of-stock variants at publish time (the "only show in-stock variants"
+  publishing setting), and Denim is missing S and 3XL on all 31 hoodies, so
+  hoodie sizes now read M, L, XL, 2XL, S, 3XL. Evan was shown the effect and
+  the three colors that are complete on every hoodie (Pepper, Blue Jean,
+  White) and chose Denim anyway on 22 Aug 2026. It corrects itself if those
+  Denim sizes come back in stock and the product is republished. Tees (Moss)
+  and crews (True Navy) are complete everywhere and kept correct size order.
+  `reorder_option_values` feeds a canonical size order in on every call so a
+  re-run cannot compound the scrambling.
+- **`productOptionsReorder` needs every option in the payload**, not just the
+  one moving; a partial list fails with MISSING_OPTION_NAME.
+- **The backfill wrote both sides directly, never republished.**
+  `scripts/rename_catalog.py` PUTs the title to Printify and then to Shopify,
+  addressing Shopify by the product id Printify stores in `external.id` rather
+  than by title (two products shared the title "Nauvoo Temple Sweatshirt
+  (front logo)"). A republish would re-sync images and variants along with the
+  title and would flip the UNLISTED children back to ACTIVE. Shopify keeps a
+  product's handle across a title change, so every existing link survived.
+- **Known gap, pre-existing:** six hand-built dated tees (Cody, Kirtland,
+  Logan, Manti, Provo, Taylorsville) have no description on Printify or
+  Shopify and no local facts fragment. They are reported and skipped by
+  `write_description.py --backfill-dated` until those temples are researched.
+- **Follow-up outside this repo:** Evan's three claude.ai description skills
+  resolve a Shopify product by the exact title `{place} Temple {Garment}` and
+  hard-stop on zero matches, so they need their resolution step updated to the
+  new titles.

@@ -31,7 +31,12 @@ WRITABLE_PRODUCT_KEYS = (
     "variants",
     "print_areas",
 )
-WRITABLE_VARIANT_KEYS = ("id", "price", "is_enabled")
+# is_default is writable, verified against the live API 22 Aug 2026 on a
+# dated tee: the PUT was accepted and prices, enabled state and variant
+# count all came back unchanged. The Revision-2 spec listing it read-only
+# was wrong. Note it moves the DEFAULT only on Printify; Shopify orders
+# variants itself and does not follow it.
+WRITABLE_VARIANT_KEYS = ("id", "price", "is_enabled", "is_default")
 WRITABLE_IMAGE_LAYER_KEYS = ("id", "x", "y", "scale", "angle")
 # No "id" on text layers: their GET ids are layer instance UUIDs, not media
 # library images, and POST validates every images[].id against the library

@@ -8,7 +8,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scripts.publish_drafts import eligibility
+from scripts.default_variant import wanted_default
+from scripts.publish_drafts import default_variant_note, eligibility
 from scripts.add_date_layer import load_layer_config
 
 CFG = load_layer_config()
@@ -16,7 +17,8 @@ CFG = load_layer_config()
 
 def base_product(**overrides):
     p = {
-        "title": "Logan Temple Tee",
+        "title": "Essential Temple Tee (Logan)",
+        "blueprint_id": 706,
         "external": None,
         "is_locked": False,
         "is_economy_shipping_enabled": True,
@@ -56,9 +58,17 @@ def check(name, product, want_ok, want_reason_part):
 check("clean draft", base_product(), True, "eligible")
 check("already published", base_product(external={"id": "1", "handle": "x"}), False, "already published")
 check("locked", base_product(is_locked=True), False, "locked")
-check("unclaimed duplicate", base_product(title="Copy of Logan Temple Tee"), False, "unclaimed duplicate")
-check("front logo test product", base_product(title="Nauvoo Temple Tee (front logo)"), False, "test product")
-check("dated by title", base_product(title="Logan Temple Tee - With Date"), False, "date-layer verification")
+check("unclaimed duplicate", base_product(title="Copy of Essential Temple Tee (Logan)"), False,
+      "unclaimed duplicate")
+check("parent temple product", base_product(title="Essential Temple Tee"), True, "eligible")
+check("limited edition one-off",
+      base_product(title="Essential Temple Tee – Limited Edition (Nauvoo)"), False, "Limited Edition")
+check("limited edition hoodie one-off",
+      base_product(title="Pillar Temple Hoodie – Limited Edition (Nauvoo)"), False, "Limited Edition")
+check("dated by title", base_product(title="Essential Temple Tee – with personalizable date (Logan)"),
+      False, "date-layer verification")
+check("retired With Date suffix still reads as dated",
+      base_product(title="Logan Temple Tee - With Date"), False, "date-layer verification")
 check(
     "personalizable by layers",
     base_product(
@@ -75,7 +85,7 @@ check(
 check(
     "dated with fully verified layers",
     base_product(
-        title="Logan Temple Tee - With Date",
+        title="Essential Temple Tee – with personalizable date (Logan)",
         sales_channel_properties={
             "personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "text"}]}
         },
@@ -90,7 +100,7 @@ check(
 check(
     "dated with one group missing its text layer",
     base_product(
-        title="Logan Temple Tee - With Date",
+        title="Essential Temple Tee – with personalizable date (Logan)",
         sales_channel_properties={
             "personalisation": {"strategy": "pstudio", "layers": [{"personalisation_id": "text"}]}
         },
@@ -106,5 +116,52 @@ check("missing facts section", base_product(description="just an intro"), False,
 check("no description at all", base_product(description=None), False, "temple facts")
 check("economy off still publishes", base_product(is_economy_shipping_enabled=False), True, "eligible")
 check("scp missing entirely", base_product(sales_channel_properties=None), True, "eligible")
+
+# --- the Moss default-variant note (reports, never gates)
+
+def check_note(name, product, want_part):
+    note = default_variant_note(product)
+    if want_part is None:
+        assert note is None, f"{name}: expected no note, got {note!r}"
+        return
+    assert note and want_part in note, f"{name}: expected note with {want_part!r}, got {note!r}"
+
+
+check_note("base product is not dated, no note",
+           base_product(variants=[{"is_default": True, "title": "Graphite / L"}]), None)
+check_note("dated on Moss is fine",
+           base_product(title="Essential Temple Tee – with personalizable date (Logan)",
+                        variants=[{"is_default": True, "title": "Moss / L"}]), None)
+check_note("dated on the wrong colorway is reported",
+           base_product(title="Essential Temple Tee – with personalizable date (Logan)",
+                        variants=[{"is_default": True, "title": "Graphite / L"}]), "Graphite")
+check_note("dated with no default at all",
+           base_product(title="Essential Temple Tee – with personalizable date (Logan)",
+                        variants=[{"is_default": False, "title": "Moss / L"}]),
+           "no default variant")
+check_note("a garment that declares no default colorway is left alone",
+           base_product(blueprint_id=1298, title="Pillar Temple Hoodie (Logan)",
+                        variants=[{"is_default": True, "title": "Crimson / L"}]), None)
+
+# --- picking the replacement default keeps the size
+
+def check_pick(name, variants, colorway, want_title):
+    got = wanted_default(variants, colorway)
+    got_title = got["title"] if got else None
+    assert got_title == want_title, f"{name}: expected {want_title!r}, got {got_title!r}"
+
+
+VARIANTS = [
+    {"id": 1, "title": "True Navy / L", "is_enabled": True, "is_default": True},
+    {"id": 2, "title": "Moss / S", "is_enabled": True},
+    {"id": 3, "title": "Moss / L", "is_enabled": True},
+    {"id": 4, "title": "Moss / 4XL", "is_enabled": False},
+]
+check_pick("keeps the current default's size", VARIANTS, "Moss", "Moss / L")
+check_pick("falls back to the first enabled of the colorway",
+           [dict(VARIANTS[0], title="True Navy / 2XL"), VARIANTS[1], VARIANTS[3]], "Moss", "Moss / S")
+check_pick("never picks a disabled variant",
+           [VARIANTS[0], VARIANTS[3]], "Moss", None)
+check_pick("colorway absent entirely", [VARIANTS[0]], "Ivory", None)
 
 print("all tests passed")

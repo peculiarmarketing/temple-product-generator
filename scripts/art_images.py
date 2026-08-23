@@ -21,7 +21,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import layout
-from generate import TEMPLES_DIR
+from generate import (PLACE_SUFFIX_RE, TEMPLES_DIR, parent_temple, parent_titles,
+                      title_is_one_off)
 
 ALT_MARKER = "Temple line art close-up"
 
@@ -52,7 +53,7 @@ def temples_with_manifests():
     return sorted(p.parent.name for p in TEMPLES_DIR.glob("*/manifest.json"))
 
 
-EXCLUDE_MARKERS = ("copy of", "template", "generator test", "api test")
+EXCLUDE_MARKERS = ("copy of", "template", "generator test", "api test", "limited edition")
 
 
 def temple_tokens():
@@ -68,16 +69,19 @@ def temple_tokens():
 
 
 def match_temple(title, tokens):
-    """Longest place token whose 'Token ...' prefix fits a temple-product
-    title. 'Salt Lake City Temple Tee' matches Salt Lake; 'Provo City Center
-    Temple Tee' matches Provo City Center, not Provo."""
+    """Read a product title back to its temple folder.
+
+    The place token is parenthesized at the end of the title ('Essential
+    Temple Tee (Provo City Center)'), so this is an exact lookup rather than
+    the longest-prefix guess the old '{place} Temple Tee' titles needed. A
+    title with no parenthetical is the parent temple's listing."""
     t = title.strip()
     if any(x in t.lower() for x in EXCLUDE_MARKERS) or " Temple" not in t:
         return None
-    for tok in sorted(tokens, key=len, reverse=True):
-        if t.startswith(tok + " "):
-            return tokens[tok]
-    return None
+    m = PLACE_SUFFIX_RE.search(t)
+    if m:
+        return tokens.get(m.group(1).strip())
+    return parent_temple() if t in parent_titles() else None
 
 
 def push_catalog(only_temple=None):

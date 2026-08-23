@@ -5,10 +5,16 @@
   "print_provider_id": 99,
   "product_type": "T-Shirt",
   "description_skill": "cc1717-temple-description-builder",
+  "description_prefix": "reference/description-blocks/personalization-intro.html",
   "template_product_id": null,
   "print_area": { "position": "back", "width_px": 4494, "height_px": 5097, "dpi": 300 },
+  "storefront_first_color": "Moss",
   "layout_profile": "back_stack_dated",
   "personalized": true,
-  "naming": { "title": "{place} Temple Tee - With Date" },
+  "default_colorway": "Moss",
+  "naming": {
+    "title": "Essential Temple Tee – with personalizable date ({place})",
+    "title_parent": "Essential Temple Tee – with personalizable date"
+  },
   "spacing_overrides": {}
 }

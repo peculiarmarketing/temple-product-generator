@@ -77,7 +77,7 @@ def dated_product(layers_per_group=None, **overrides):
         layers_per_group = [[divider_layer("white")], [divider_layer("black")]]
     p = {
         "id": "prod1",
-        "title": "Logan Temple Tee - With Date",
+        "title": "Essential Temple Tee – with personalizable date (Logan)",
         "external": None,
         "is_locked": False,
         "sales_channel_properties": {"personalisation": {"strategy": "pstudio"}},
@@ -97,8 +97,13 @@ def check_gate(name, product, want_ok, want_reason_part):
 
 
 check_gate("clean candidate", dated_product(), True, "needs date layer")
-check_gate("not dated", dated_product(title="Logan Temple Tee"), False, "not a With Date")
-check_gate("unclaimed duplicate", dated_product(title="Copy of Logan Temple Tee - With Date"), False, "unclaimed duplicate")
+check_gate("not dated", dated_product(title="Essential Temple Tee (Logan)"), False,
+           "not a personalizable date")
+check_gate("retired With Date suffix still reads as dated",
+           dated_product(title="Logan Temple Tee - With Date"), True, "")
+check_gate("unclaimed duplicate",
+           dated_product(title="Copy of Essential Temple Tee – with personalizable date (Logan)"),
+           False, "unclaimed duplicate")
 check_gate("already published", dated_product(external={"id": "1"}), False, "already published")
 check_gate("locked", dated_product(is_locked=True), False, "locked")
 check_gate("no back print area", dated_product(layers_per_group=[]), False, "no back print area")

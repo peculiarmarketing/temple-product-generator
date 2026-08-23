@@ -59,14 +59,15 @@ class ShopifyClient:
             cursor = block["pageInfo"]["endCursor"]
 
     def all_products_summary(self):
-        """One paginated pass over the catalog: [{title, handle, status,
-        publishedAt}, ...]. A list, not a dict, so duplicate titles stay visible."""
+        """One paginated pass over the catalog: [{id, title, handle, status,
+        publishedAt, productType}, ...]. A list, not a dict, so duplicate
+        titles stay visible."""
         out, cursor = [], None
         while True:
             data = self.gql("""
               query($after: String) { products(first: 100, after: $after) {
                 pageInfo { hasNextPage endCursor }
-                nodes { title handle status publishedAt } } }""",
+                nodes { id title handle status publishedAt productType } } }""",
                 {"after": cursor})
             block = data["products"]
             out.extend(block["nodes"])
@@ -81,6 +82,123 @@ class ShopifyClient:
             {"q": f'title:"{title}"'})
         exact = [p for p in data["products"]["nodes"] if p["title"].strip() == title]
         return exact[0] if len(exact) == 1 else None
+
+    def find_product_by_handle(self, handle):
+        """Handle lookup. Preferred over title for anything that has to bind a
+        Printify product to its Shopify twin: handles are unique, titles are
+        not (two products shared 'Nauvoo Temple Sweatshirt (front logo)')."""
+        data = self.gql("""
+          query($handle: String!) { productByIdentifier(identifier: {handle: $handle}) {
+            id title handle status productType } }""", {"handle": handle})
+        return data.get("productByIdentifier")
+
+    def update_product(self, product_gid, **fields):
+        """productUpdate with whatever scalar fields are passed (title,
+        descriptionHtml, status). Nothing else on the product is touched, and
+        no Printify republish is involved, so mockups, media order, handle and
+        publication state all survive."""
+        data = self.gql("""
+          mutation($input: ProductUpdateInput!) {
+            productUpdate(product: $input) {
+              product { id title handle status }
+              userErrors { field message } } }""",
+            {"input": {"id": product_gid, **fields}})
+        errs = data["productUpdate"]["userErrors"]
+        if errs:
+            raise ShopifyError(str(errs))
+        return data["productUpdate"]["product"]
+
+    def rename_option_value(self, product_gid, option_name, old_value, new_value):
+        """Rename one value of one product option, e.g. the hoodie's
+        'True Navy' to 'Blue Jean'. Variant titles follow automatically.
+
+        Returns True if it renamed something, False if the old value is not on
+        this product, which makes the call idempotent: a second run is a no-op
+        rather than an error. Printify re-syncs variants on any republish and
+        will push the old name back, so this is built to be re-run."""
+        data = self.gql("""
+          query($id: ID!) { product(id: $id) {
+            options { id name optionValues { id name } } } }""", {"id": product_gid})
+        product = data.get("product")
+        if not product:
+            raise ShopifyError(f"no product {product_gid}")
+        for option in product["options"]:
+            if option["name"] != option_name:
+                continue
+            if any(v["name"] == new_value for v in option["optionValues"]):
+                return False  # already renamed
+            match = next((v for v in option["optionValues"] if v["name"] == old_value), None)
+            if match is None:
+                return False
+            result = self.gql("""
+              mutation($productId: ID!, $option: OptionUpdateInput!,
+                       $values: [OptionValueUpdateInput!]) {
+                productOptionUpdate(productId: $productId, option: $option,
+                                    optionValuesToUpdate: $values) {
+                  userErrors { field message code } } }""",
+                {"productId": product_gid, "option": {"id": option["id"]},
+                 "values": [{"id": match["id"], "name": new_value}]})
+            errs = result["productOptionUpdate"]["userErrors"]
+            if errs:
+                raise ShopifyError(str(errs))
+            return True
+        return False
+
+    def reorder_option_values(self, product_gid, option_name, first_value, other_orders=None):
+        """Move one value to the front of a product option's value list.
+
+        Shopify preselects variant position 1, and position is computed from
+        the option value order, so this is the only lever it gives over which
+        variant a product page opens on. It is also the swatch display order,
+        so the chosen color moves to the front of the swatch row too.
+
+        `other_orders` gives a canonical order for the product's OTHER options,
+        e.g. {"Size": ["S", "M", "L", ...]}. Pass it. Shopify re-derives every
+        option's value order from the resulting variant sequence, so a color
+        with gaps in its size run pushes the missing sizes to the back; feeding
+        the currently stored order back in compounds that scrambling on every
+        re-run, while a canonical order keeps the damage to one pass and no
+        worse. Values absent from the product are dropped and any the caller
+        did not list are appended in their current order.
+
+        Returns True if it reordered, False if the value is already first or
+        not on this product. Idempotent, and worth re-running: a Printify
+        republish re-syncs variants and restores Printify's own order."""
+        data = self.gql("""
+          query($id: ID!) { product(id: $id) {
+            options { id name optionValues { id name } } } }""", {"id": product_gid})
+        product = data.get("product")
+        if not product:
+            raise ShopifyError(f"no product {product_gid}")
+        option = next((o for o in product["options"] if o["name"] == option_name), None)
+        if option is None:
+            return False
+        names = [v["name"] for v in option["optionValues"]]
+        if not names or names[0] == first_value or first_value not in names:
+            return False
+        ordered = [first_value] + [n for n in names if n != first_value]
+        # Every option has to be in the payload, not just the one moving:
+        # productOptionsReorder rejects a partial list with MISSING_OPTION_NAME.
+        # The others go back in exactly the order they came out.
+        other_orders = other_orders or {}
+        payload = []
+        for opt in product["options"]:
+            if opt["id"] == option["id"]:
+                values = ordered
+            else:
+                current = [v["name"] for v in opt["optionValues"]]
+                canonical = [n for n in other_orders.get(opt["name"], []) if n in current]
+                values = canonical + [n for n in current if n not in canonical]
+            payload.append({"id": opt["id"], "values": [{"name": n} for n in values]})
+        result = self.gql("""
+          mutation($productId: ID!, $options: [OptionReorderInput!]!) {
+            productOptionsReorder(productId: $productId, options: $options) {
+              userErrors { field message code } } }""",
+            {"productId": product_gid, "options": payload})
+        errs = result["productOptionsReorder"]["userErrors"]
+        if errs:
+            raise ShopifyError(str(errs))
+        return True
 
     def upload_media_image(self, product_gid, png_path, alt):
         """Staged upload then attach to the product. Returns the new media id."""
