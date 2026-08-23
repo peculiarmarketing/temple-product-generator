@@ -96,15 +96,21 @@ def group_is_dark(placeholder):
     return bool(d) and "white" in str(d.get("name", "")).lower()
 
 
-def gate(product):
-    """Hard scope filter. Everything must pass before any browser action."""
+def gate(product, allow_published=False):
+    """Hard scope filter. Everything must pass before any browser action.
+
+    Published products are excluded by default: the normal flow adds the layer
+    to a draft before it ever goes live. Regenerating a live product's design
+    wipes its text layers though (any print_areas write does), so
+    --allow-published exists to put one back. It stays opt-in so an unattended
+    run can never touch a live listing."""
     title = product.get("title") or ""
     if not title_is_dated(title):
         return False, "not a personalizable date product"
     if title.startswith("Copy of"):
         return False, "unclaimed duplicate"
-    if product.get("external"):
-        return False, "already published"
+    if product.get("external") and not allow_published:
+        return False, "already published (pass --allow-published to re-add a wiped layer)"
     if product.get("is_locked"):
         return False, "locked"
     backs = list(iter_back_placeholders(product))
@@ -232,6 +238,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-only", action="store_true", help="list candidates, change nothing")
     parser.add_argument("--product-id", help="run on this product only (still gated)")
+    parser.add_argument("--allow-published", action="store_true",
+                        help="also treat already-published products as candidates, for putting "
+                             "back a date layer that a design regeneration wiped")
     args = parser.parse_args()
 
     token, shop_id = load_config()
@@ -244,13 +253,14 @@ def main():
     else:
         summaries = [
             s for s in all_products(client)
-            if title_is_dated(s.get("title")) and not s.get("external")
+            if title_is_dated(s.get("title"))
+            and (args.allow_published or not s.get("external"))
         ]
 
     todo = []
     for summary in summaries:
         product = client._request("GET", f"/shops/{shop_id}/products/{summary['id']}.json")
-        ok, reason = gate(product)
+        ok, reason = gate(product, allow_published=args.allow_published)
         marker = "ADD" if ok else "skip"
         print(f"{marker:5}  {product['title']}  ({reason})")
         if ok:
