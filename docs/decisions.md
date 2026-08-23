@@ -207,8 +207,11 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   reliable either: on the Provo dated tee the Moss mockup sat at Shopify index
   5, not the index 10 that position arithmetic predicted. `media_id_by_color`
   refuses an ambiguous match rather than risk featuring the wrong colorway.
-- **Known gaps, both pre-existing:** the three Limited Edition one-offs have no
-  art cards by design, and Draper's four products cannot be carded because its
-  manifest names SVGs that now live in `Temples/Draper/Alts/` alongside a new
-  untraced source PNG. Draper looks like a redesign in progress; left alone
-  rather than guessing which art is current.
+- **Known gap:** the three Limited Edition one-offs have no art cards by design.
+  Draper's was closed on 22 Aug 2026 by retracing from the new sketch.
+- **A failed editor run is worth retrying before diagnosing.** The date-layer
+  automation timed out on the font picker's Search field and looked like the
+  editor redesign the discovery notes anticipate. It was not: Printify had not
+  changed, and the identical command succeeded on the next attempt. On this
+  machine the editor page needs longer to settle than the step allows. Retry
+  first; only open a repair session if it fails twice.
