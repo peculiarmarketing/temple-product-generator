@@ -5,6 +5,7 @@ Needs in .env:
   SHOPIFY_ADMIN_TOKEN=shpat_...   (custom app, read_products + write_products)
 """
 
+import io
 import mimetypes
 import time
 from pathlib import Path
@@ -213,6 +214,57 @@ class ShopifyClient:
         if not product:
             raise ShopifyError(f"no product {product_gid}")
         return product["media"]["nodes"], product["variants"]["nodes"]
+
+    @staticmethod
+    def mean_rgb(url, timeout=60):
+        """Average colour of an image's centre third, or None if unreadable.
+
+        The centre is the garment itself, away from the white studio backdrop,
+        so this separates colorways cleanly. Grayscale hashing does not: every
+        mockup in a set is the same shirt in the same pose and only the colour
+        differs."""
+        from PIL import Image
+        try:
+            resp = requests.get(url, timeout=timeout)
+            if not resp.ok:
+                return None
+            image = Image.open(io.BytesIO(resp.content)).convert("RGB")
+            w, h = image.size
+            patch = image.crop((w // 3, h // 3, 2 * w // 3, 2 * h // 3)).resize((32, 32))
+            pixels = list(patch.get_flattened_data())
+            n = len(pixels)
+            return tuple(sum(px[i] for px in pixels) / n for i in range(3))
+        except Exception:
+            return None
+
+    def media_id_by_color(self, product_gid, rgb, max_distance=12.0, min_ratio=3.0):
+        """The media whose garment colour matches `rgb`, or None.
+
+        The fallback for products whose variants carry no images, where
+        media_id_for_colorway has nothing to match on. Deliberately refuses an
+        ambiguous answer: the winner must be within max_distance AND clearly
+        ahead of the runner-up, because featuring the wrong colorway is worse
+        than featuring none. Observed on a real product: best 0.1, next 32.3."""
+        media, _ = self.product_media_and_variants(product_gid)
+        scored = []
+        for node in media:
+            url = (node.get("image") or {}).get("url")
+            if not url:
+                continue
+            mean = self.mean_rgb(url)
+            if mean is None:
+                continue
+            d = sum((a - b) ** 2 for a, b in zip(rgb, mean)) ** 0.5
+            scored.append((d, node["id"]))
+        if not scored:
+            return None
+        scored.sort(key=lambda x: x[0])
+        best_d, best_id = scored[0]
+        if best_d > max_distance:
+            return None
+        if len(scored) > 1 and scored[1][0] < best_d * min_ratio:
+            return None
+        return best_id
 
     def media_id_for_colorway(self, product_gid, colorway):
         """The media id of the mockup a colorway's variants point at, or None."""

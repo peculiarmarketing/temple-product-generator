@@ -181,3 +181,34 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   featured photo (gallery position 1, set by `featured-photo`). Setting one
   does not set the others. Evan's 22 Aug 2026 choice: featured photo follows
   the dated tee only (Moss).
+
+## 22 August 2026 (republish aftermath, measured)
+
+- **A full-catalog republish takes the storefront's images down for roughly 15
+  minutes.** Pushing all 123 products at once made Shopify delete and re-ingest
+  every mockup; products go full to empty to full as Printify's queue reaches
+  them. Peak was 94 of 123 with zero media, including two of the four ACTIVE
+  parent listings. Everything recovered by t+14m and the parents by t+4m.
+  Stage a future run in batches so only a few products are dark at a time, or
+  do it outside trading hours.
+- **`art_images.py` no longer aborts the batch on one failure.** A product with
+  no mockups yet cannot take a card at gallery position 2, and that exception
+  used to raise straight out of the loop: it left 51 of 55 products uncarded.
+  It now skips a product with no mockups (reported, re-run picks it up) and
+  catches per-product failures, card rendering included.
+- **Matching a colorway to its mockup: variant image URL first, garment colour
+  second.** Some products carry no per-variant images on Shopify, so there is
+  no URL linking Moss to a photo. The fallback reads Printify's own default
+  mockup for the colorway and matches on the average colour of the image's
+  centre third. Grayscale hashing does not work here (every mockup in a set is
+  the same shirt in the same pose, so several tie at distance 0); colour
+  separates cleanly, observed best 0.1 against next-best 32.3. Printify
+  renames files on upload so filenames never match, and media ORDER is not
+  reliable either: on the Provo dated tee the Moss mockup sat at Shopify index
+  5, not the index 10 that position arithmetic predicted. `media_id_by_color`
+  refuses an ambiguous match rather than risk featuring the wrong colorway.
+- **Known gaps, both pre-existing:** the three Limited Edition one-offs have no
+  art cards by design, and Draper's four products cannot be carded because its
+  manifest names SVGs that now live in `Temples/Draper/Alts/` alongside a new
+  untraced source PNG. Draper looks like a redesign in progress; left alone
+  rather than guessing which art is current.

@@ -107,6 +107,35 @@ def featured_color_for(product):
     return None
 
 
+_PRINTIFY_BY_SHOPIFY_ID = None
+
+
+def printify_mockup_rgb(product_gid, colorway):
+    """Average garment colour of Printify's default mockup for a colorway, or
+    None. Used only as a fallback: it costs a Printify catalog fetch and an
+    image download, and most products can be matched on Shopify alone."""
+    global _PRINTIFY_BY_SHOPIFY_ID
+    if _PRINTIFY_BY_SHOPIFY_ID is None:
+        from printify_client import PrintifyClient, load_config
+        client = PrintifyClient(*load_config())
+        _PRINTIFY_BY_SHOPIFY_ID = {}
+        for prod in client.all_products():
+            external = prod.get("external") or {}
+            if external.get("id"):
+                _PRINTIFY_BY_SHOPIFY_ID[str(external["id"])] = prod
+    product = _PRINTIFY_BY_SHOPIFY_ID.get(product_gid.rsplit("/", 1)[-1])
+    if not product:
+        return None
+    titles = {v["id"]: v.get("title") or "" for v in product.get("variants", [])}
+    for image in product.get("images", []):
+        if not image.get("is_default"):
+            continue
+        colors = {titles.get(v, "").split("/")[0].strip() for v in (image.get("variant_ids") or [])}
+        if colors == {colorway}:
+            return ShopifyClient.mean_rgb(image["src"])
+    return None
+
+
 def set_featured_photo(client, product_gid, title, colorway):
     """Put the colorway's mockup at gallery position 1 and keep the art card
     at position 2. Returns an action string or None.
@@ -115,6 +144,12 @@ def set_featured_photo(client, product_gid, title, colorway):
     Graphite, which is why a product can open on the Moss variant while the
     card still shows a Graphite shirt. A republish does not change this."""
     media_id = client.media_id_for_colorway(product_gid, colorway)
+    if media_id is None:
+        # Some products carry no per-variant images on Shopify, so there is no
+        # URL linking a colorway to a mockup. Fall back to matching Printify's
+        # own mockup for that colorway by garment colour.
+        rgb = printify_mockup_rgb(product_gid, colorway)
+        media_id = client.media_id_by_color(product_gid, rgb) if rgb else None
     if media_id is None:
         return None
     if client.media_position(product_gid, media_id) == 0:

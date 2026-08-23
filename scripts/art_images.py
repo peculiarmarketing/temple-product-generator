@@ -92,7 +92,7 @@ def push_catalog(only_temple=None):
     c = ShopifyClient()
     catalog = c.all_products_with_media()
     tokens = temple_tokens()
-    plan, skipped = [], []
+    plan, skipped, waiting = [], [], []
     for product in sorted(catalog, key=lambda p: (p["title"], p["id"])):
         title = product["title"]
         temple = match_temple(title, tokens)
@@ -104,19 +104,39 @@ def push_catalog(only_temple=None):
             continue
         if any(a.startswith(ALT_MARKER) for a in product["alts"]):
             continue
+        if not product["alts"]:
+            # No mockups on the product yet. Position 2 does not exist, so the
+            # card would upload and then fail to move. Printify re-ingests
+            # every mockup after a republish and a product sits empty for
+            # minutes while it does; wait for it rather than card it now.
+            waiting.append(title)
+            continue
         plan.append((title, product, temple))
     print(f"catalog: {len(catalog)} products; {len(plan)} missing cards; "
-          f"{len(skipped)} unmatched temple-like titles")
+          f"{len(waiting)} waiting on mockups; {len(skipped)} unmatched temple-like titles")
     for title in skipped:
         print(f"  UNMATCHED (no card): {title!r}")
-    cards = {}
+    for title in waiting:
+        print(f"  WAITING (no mockups yet, re-run later): {title!r}")
+    cards, failed = {}, []
     for title, product, temple in plan:
-        if temple not in cards:
-            cards[temple] = override_path(temple) or \
-                (card_path(temple) if card_path(temple).exists() else make(temple))
-        media_id = c.upload_media_image(product["id"], cards[temple], f"{ALT_MARKER} - {temple}")
-        c.move_media_to_position(product["id"], media_id, 1)  # gallery position 2
-        print(f"  {title!r} <- {temple} card, position 2")
+        # One product's failure must not abandon the rest: this used to raise
+        # straight out of the loop and left 51 of 55 products uncarded. Card
+        # rendering is inside the guard too, because a temple whose source art
+        # is missing raises here and is not the other temples' problem.
+        try:
+            if temple not in cards:
+                cards[temple] = override_path(temple) or \
+                    (card_path(temple) if card_path(temple).exists() else make(temple))
+            media_id = c.upload_media_image(product["id"], cards[temple], f"{ALT_MARKER} - {temple}")
+            c.move_media_to_position(product["id"], media_id, 1)  # gallery position 2
+            print(f"  {title!r} <- {temple} card, position 2")
+        except Exception as err:
+            print(f"  FAILED {title!r}: {err}")
+            failed.append(title)
+    if failed or waiting:
+        print(f"\n{len(plan) - len(failed)} carded, {len(failed)} failed, "
+              f"{len(waiting)} waiting on mockups. Re-run to pick them up.")
 
 
 def main():
