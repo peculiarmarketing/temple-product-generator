@@ -200,6 +200,34 @@ class ShopifyClient:
             raise ShopifyError(str(errs))
         return True
 
+    def product_media_and_variants(self, product_gid):
+        """(media, variants) for matching a colorway to the mockup that shows
+        it. Variant image URLs are the only reliable link: mockup media carry
+        no alt text from Printify."""
+        data = self.gql("""
+          query($id: ID!) { product(id: $id) {
+            media(first: 60) { nodes { ... on MediaImage { id alt image { url } } } }
+            variants(first: 100) { nodes { title image { url } } } } }""",
+            {"id": product_gid})
+        product = data.get("product")
+        if not product:
+            raise ShopifyError(f"no product {product_gid}")
+        return product["media"]["nodes"], product["variants"]["nodes"]
+
+    def media_id_for_colorway(self, product_gid, colorway):
+        """The media id of the mockup a colorway's variants point at, or None."""
+        media, variants = self.product_media_and_variants(product_gid)
+        urls = {(v["image"] or {}).get("url", "").split("?")[0]
+                for v in variants
+                if (v.get("title") or "").split("/")[0].strip() == colorway and v.get("image")}
+        urls.discard("")
+        if not urls:
+            return None
+        for node in media:
+            if (node.get("image") or {}).get("url", "").split("?")[0] in urls:
+                return node["id"]
+        return None
+
     def upload_media_image(self, product_gid, png_path, alt):
         """Staged upload then attach to the product. Returns the new media id."""
         png_path = Path(png_path)

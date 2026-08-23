@@ -152,3 +152,32 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   resolve a Shopify product by the exact title `{place} Temple {Garment}` and
   hard-stop on zero matches, so they need their resolution step updated to the
   new titles.
+
+## 22 August 2026 (republish costs, featured photos)
+
+- **A republish is destructive to the Shopify-side work, measured not assumed.**
+  Republishing one tee and one hoodie (Bountiful, 22 Aug 2026) kept the title
+  and the UNLISTED status but **deleted the art close-up cards outright**,
+  reverted the hoodie's Blue Jean colorway to Printify's True Navy, and
+  reverted the Color option order so the pages stopped opening on the wanted
+  color. It did **not** change the featured image. `scripts/republish.py`
+  therefore runs the three repair passes itself after the pushes settle;
+  republishing without them leaves the storefront worse than before.
+- **Unclaimed "Copy of ..." drafts are never republished.** They have no
+  Shopify counterpart, so publishing one creates a junk storefront product.
+- **The featured photo is a third thing, separate from both defaults.** A dated
+  tee can carry Printify `is_default` = Moss and open on the Moss variant on
+  Shopify while its card still shows a Graphite shirt, because Printify's
+  `images[]` leads with the Graphite mockup and `images` is not writable
+  through the API. Fixed on the Shopify side by moving that colorway's mockup
+  to gallery position 1 and reseating the art card at position 2
+  (`scripts/shopify_fixups.py featured-photo`, keyed by
+  `storefront_featured_color`). Mockup media carry no alt text from Printify,
+  so the colorway is matched through its variants' image URLs.
+- **Three separate "defaults", worth keeping straight:** Printify's
+  `variants[].is_default` (drives Printify's own default, set by
+  `scripts/default_variant.py`); Shopify's preselected variant (position 1,
+  driven by the Color option value order, set by `color-order`); and the
+  featured photo (gallery position 1, set by `featured-photo`). Setting one
+  does not set the others. Evan's 22 Aug 2026 choice: featured photo follows
+  the dated tee only (Moss).

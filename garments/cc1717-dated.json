@@ -9,6 +9,7 @@
   "template_product_id": null,
   "print_area": { "position": "back", "width_px": 4494, "height_px": 5097, "dpi": 300 },
   "storefront_first_color": "Moss",
+  "storefront_featured_color": "Moss",
   "layout_profile": "back_stack_dated",
   "personalized": true,
   "default_colorway": "Moss",

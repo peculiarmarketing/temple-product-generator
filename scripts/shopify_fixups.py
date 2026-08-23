@@ -5,6 +5,7 @@
   python scripts/shopify_fixups.py unlist
   python scripts/shopify_fixups.py hoodie-color
   python scripts/shopify_fixups.py color-order
+  python scripts/shopify_fixups.py featured-photo
   python scripts/shopify_fixups.py all --handle logan-temple-hoodie
 
 Two fixups, both idempotent and safe to re-run:
@@ -18,6 +19,13 @@ color-order
   the front of the swatch row too. Printify's own default variant is a
   separate, Printify-side thing that never crosses over; see
   scripts/default_variant.py.
+
+featured-photo
+  Moves the `storefront_featured_color` mockup to gallery position 1, keeping
+  the art close-up card at position 2. Printify's mockup order decides the
+  featured photo and leads with Graphite, so a dated tee can open on the Moss
+  variant while the card still shows a Graphite shirt. Only the dated tee sets
+  a featured color today (Moss, Evan's 22 Aug 2026 choice).
 
 unlist
   Every temple product except the parent temple's goes to Shopify status
@@ -51,7 +59,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from art_images import EXCLUDE_MARKERS, match_temple, temple_tokens
-from generate import GARMENTS_DIR, load_garment_config, parent_temple, parent_titles
+from generate import (GARMENTS_DIR, load_garment_config, parent_temple, parent_titles,
+                      title_is_dated)
 from shopify_client import ShopifyClient
 
 HOODIE_TYPE = "Hoodie"
@@ -66,6 +75,56 @@ SIZE_OPTION = "Size"
 # a re-run from compounding the damage.
 SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"]
 OTHER_ORDERS = {SIZE_OPTION: SIZE_ORDER}
+ART_ALT_PREFIX = "Temple line art close-up"
+
+
+def featured_colors_by_type():
+    """{productType: colorway whose mockup should be the featured photo}, from
+    `storefront_featured_color` in garments/*.json. Only the dated tee sets one
+    (Moss), and it shares the "T-Shirt" product type with the base tee, so this
+    cannot be keyed by type alone: see wants_featured_photo."""
+    out = {}
+    for path in GARMENTS_DIR.glob("*.json"):
+        cfg = load_garment_config(path.stem)
+        color = cfg.get("storefront_featured_color")
+        if color:
+            out[path.stem] = (cfg["product_type"], color)
+    return out
+
+
+def featured_color_for(product):
+    """The featured colorway for one product, or None.
+
+    Matched on product type AND the dated marker, because the dated tee and
+    the base tee are both "T-Shirt" and only the dated line has a featured
+    color set."""
+    for gid, (ptype, color) in featured_colors_by_type().items():
+        if product.get("productType") != ptype:
+            continue
+        if ("dated" in gid) != title_is_dated(product["title"]):
+            continue
+        return color
+    return None
+
+
+def set_featured_photo(client, product_gid, title, colorway):
+    """Put the colorway's mockup at gallery position 1 and keep the art card
+    at position 2. Returns an action string or None.
+
+    Printify's own mockup order decides the featured photo and it leads with
+    Graphite, which is why a product can open on the Moss variant while the
+    card still shows a Graphite shirt. A republish does not change this."""
+    media_id = client.media_id_for_colorway(product_gid, colorway)
+    if media_id is None:
+        return None
+    if client.media_position(product_gid, media_id) == 0:
+        return None
+    client.move_media_to_position(product_gid, media_id, 0)
+    media, _ = client.product_media_and_variants(product_gid)
+    art = next((m["id"] for m in media if (m.get("alt") or "").startswith(ART_ALT_PREFIX)), None)
+    if art and client.media_position(product_gid, art) != 1:
+        client.move_media_to_position(product_gid, art, 1)
+    return f"{colorway} photo featured"
 
 
 def first_colors_by_type():
@@ -169,6 +228,7 @@ def run(command, report_only=False, handle=None):
     do_unlist = command in ("all", "unlist")
     do_color = command in ("all", "hoodie-color")
     do_order = command in ("all", "color-order")
+    do_photo = command in ("all", "featured-photo")
     first_colors = first_colors_by_type()
     changed = 0
     for product in catalog:
@@ -193,6 +253,15 @@ def run(command, report_only=False, handle=None):
                 actions.append(f"maybe {first} first")
             elif client.reorder_option_values(gid, COLOR_OPTION, first, OTHER_ORDERS):
                 actions.append(f"{first} first")
+        # Last: it reseats the art card, so it must run after the card exists.
+        if do_photo and wants_color_order(product):
+            featured = featured_color_for(product)
+            if featured and report_only:
+                actions.append(f"maybe feature {featured}")
+            elif featured:
+                note = set_featured_photo(client, gid, title, featured)
+                if note:
+                    actions.append(note)
         if actions:
             changed += 1
             print(f"  {title!r}: {', '.join(actions)}")
@@ -208,7 +277,8 @@ def run(command, report_only=False, handle=None):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["all", "unlist", "hoodie-color", "color-order"])
+    ap.add_argument("command",
+                    choices=["all", "unlist", "hoodie-color", "color-order", "featured-photo"])
     ap.add_argument("--report-only", action="store_true", help="print, write nothing")
     ap.add_argument("--handle", help="restrict to one product handle")
     args = ap.parse_args()
