@@ -35,5 +35,10 @@
   "Layton": { "official_name": "Layton Utah Temple", "location_line": "LAYTON, UTAH", "verified": true },
   "Lindon": { "official_name": "Lindon Utah Temple", "location_line": "LINDON, UTAH", "verified": true },
   "Monticello": { "official_name": "Monticello Utah Temple", "location_line": "MONTICELLO, UTAH", "verified": true },
-  "Mount Timpanogos": { "official_name": "Mount Timpanogos Utah Temple", "location_line": "AMERICAN FORK, UTAH", "verified": true }
+  "Mount Timpanogos": { "official_name": "Mount Timpanogos Utah Temple", "location_line": "AMERICAN FORK, UTAH", "verified": true },
+  "Ogden": { "official_name": "Ogden Utah Temple", "location_line": "OGDEN, UTAH", "verified": true },
+  "Ogden (original)": { "official_name": "Ogden Utah Temple", "location_line": "OGDEN, UTAH", "verified": true },
+  "Orem": { "official_name": "Orem Utah Temple", "location_line": "OREM, UTAH", "verified": true },
+  "Red Cliffs": { "official_name": "Red Cliffs Utah Temple", "location_line": "ST. GEORGE, UTAH", "verified": true },
+  "Vernal": { "official_name": "Vernal Utah Temple", "location_line": "VERNAL, UTAH", "verified": true }
 }

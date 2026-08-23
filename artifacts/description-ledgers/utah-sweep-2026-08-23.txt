@@ -1,0 +1,112 @@
+SOURCE LEDGER - Utah sweep, August 23 2026
+Temples: Ogden, Ogden Original, Orem, Red Cliffs, Vernal
+
+
+=== OGDEN UTAH TEMPLE (current building) ===
+
+VERIFIED
+[T1] Announced Aug 24, 1967; site dedicated and groundbreaking Sept 8, 1969; open house Dec 16-30, 1971 with 150,000+ visitors; dedicated Jan 18-20, 1972 by Joseph Fielding Smith in six sessions - newsroom.churchofjesuschrist.org facts sheet, thechurchnews.com almanac
+[T1] Renovation announced Feb 17, 2010; closed Apr 2, 2011; open house Aug 1 - Sept 6, 2014 with roughly 500,000-600,000 visitors; rededicated Sept 21, 2014 by Thomas S. Monson in three sessions - thechurchnews.com 2014 facts page and almanac, newsroom
+[T1] Richardson Design Partnership (renovation architects); granite from China; Egyptian marbles Sunny Vinato, Tiberias Gold, Gallala; art glass from Indiana and West Virginia; African sapele and painted maple; Pioneer Rose, grass blade, weave and sunburst motifs; Robert Shepherd mural retained; Keith Bond baptistry murals; "not remotely similar to the original" - thechurchnews.com 2014 facts page
+[T1] First temple built with six ordinance rooms allowing a session every 20 minutes; first temple dedicated in the state of Utah rather than Utah Territory; sister building to Provo; district Brigham City to Syracuse and into Wyoming; Emil B. Fetzer architect - newsroom.churchofjesuschrist.org facts sheet
+[T1] Entrance moved west to east facing Washington Boulevard; underground parking; water feature - newsroom
+[T2] 112,232 sq ft; 188 ft 8 in; six instruction rooms, nine sealing rooms, one baptistry; 9.96 acres; 14th dedicated temple; Hugh B. Brown broke ground, Joseph Fielding Smith and Alvin R. Dyer dedicated the site - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Announcement date - Church News almanac prints Aug 14, 1967; Newsroom facts sheet and T2 both print Aug 24, 1967. Two-source date shipped, almanac treated as a typo.
+Original floor area - Newsroom facts sheet says 115,000 sq ft, Church News almanac says over 130,000. Both T1. Neither shipped on this page; the current 112,232 (T2, uncontested) shipped instead. See the Ogden Original entry.
+
+VOLATILE (re-check before reprint)
+Open house attendance "500,000 to 600,000" - the range is that wide in the source; a firm figure may supersede it.
+Room counts - the nine sealing rooms are post-renovation and older sources still print eleven.
+
+OMITTED
+Pillar of cloud / pillar of fire symbolism for the 1972 white-and-gold design - listed in known-myths.md under Provo 1972 and applies equally here, since Fetzer built both to one plan. Church News published a correction in 2024 citing Richard Cowan and Fred Baker. Not shipped on either Ogden page.
+First temple president - not found in any T1 or T2 source. Row deleted.
+
+
+=== OGDEN UTAH TEMPLE, ORIGINAL DESIGN (1972-2011) ===
+
+Handled per special-cases.md "Demolished and renamed temples": Status row first, headed with
+operating years, every field describing the original building rather than the current one.
+
+VERIFIED
+[T1] Six ordinance rooms and eleven sealing rooms; roughly 115,000 sq ft; Emil B. Fetzer; angel Moroni in the original design but eliminated before construction and added over 30 years after dedication; first temple with six ordinance rooms, session every 20 minutes; first dedicated in the state of Utah - newsroom.churchofjesuschrist.org facts sheet
+[T1] Fetzer designed Provo and Ogden to the same basic plan to expedite and economize construction - thechurchnews.com
+[T1] Original exterior white panels with a central spire; renovation "not remotely similar to the original" - thechurchnews.com almanac and 2014 facts page
+[T1] Provo Utah Temple redesign announced Nov 2021 - thechurchnews.com
+[T2] All dates as in the Ogden entry above - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Original floor area - 115,000 (Newsroom facts sheet, a pre-renovation document specific to the original building) vs "over 130,000" (Church News almanac). The purpose-specific source shipped, hedged as "roughly".
+
+VOLATILE (re-check before reprint)
+The Provo twin's status. Its redesign was announced in 2021 and the copy stops there deliberately.
+
+OMITTED
+Pillar of cloud / pillar of fire symbolism. Same reason as above, and this is the page where the temptation is strongest.
+First temple president - not found in T1 or T2.
+
+
+=== OREM UTAH TEMPLE ===
+
+Handled per special-cases.md "Recently dedicated temples": short and dense, leaning on
+published design motifs rather than padding a thin history.
+
+VERIFIED
+[T1] Announced Oct 5, 2019 by Russell M. Nelson in general conference; groundbreaking Sept 5, 2020; open house Oct 27 - Dec 16, 2023 excluding Sundays and Thanksgiving; dedicated Jan 21, 2024 by D. Todd Christofferson in two sessions - thechurchnews.com almanac, newsroom
+[T1] Cherry tree motif using blossoms, leaves, fruit and branches in art glass, wood panels and metal handrails; Orem's fruit-growing history; settlement named Orem in 1919; trainloads of fruit on Walter Orem's railroad; "Garden City of Utah" nickname - thechurchnews.com
+[T1] 71,998 sq ft; 218 ft; granite cladding; four instruction rooms seating fifty each; 15.39 acres; Crema Marfil marble from Turkey fabricated in California; first temple president Kenneth Lee Sorber with matron Kristy Nelson Sorber; 19th in Utah, sixth in Utah County - thechurchnews.com almanac
+[T2] Pedras Salgadas granite from Portugal; bronze colored doors and taupe window frames; four sealing rooms, one baptistry; 188th dedicated temple; Craig C. Christensen presided at the groundbreaking as Utah Area President - churchofjesuschristtemples.org
+
+VOLATILE (re-check before reprint)
+"188th dedicated temple" - stable once set, but confirm the wording if the Church restates its counting.
+First temple president - Sorber has already been succeeded by Daniel Gagon per the almanac. The row names the first president specifically, which does not expire, but do not update it to the sitting president.
+
+OMITTED
+Norwegian heritage design elements and art nouveau styling - single T2 mention, no corroboration found anywhere in T1. Dropped.
+Open house attendance - no figure published in any T1 or T2 source found. Row not written.
+
+
+=== RED CLIFFS UTAH TEMPLE ===
+
+Name does not match the city, per special-cases.md general guidance question 3. The Location
+row addresses it directly rather than letting the ST. GEORGE, UTAH caption read as an error.
+
+VERIFIED
+[T1] Announced Oct 7, 2018 by Russell M. Nelson in general conference; groundbreaking Nov 7, 2020 presided by Jeffrey R. Holland with about 70 invited guests under COVID-19 restrictions; open house Feb 1 - Mar 2, 2024; dedicated Mar 24, 2024 by Henry B. Eyring in two sessions - thechurchnews.com almanac, newsroom
+[T1] 96,277 sq ft; coral and beige precast concrete; 15.31 acres; first temple president J. Kevin Ence with matron Debbie Ence; second temple in St. George, fourth in southern Utah - thechurchnews.com almanac, newsroom
+[T1] Henry Eyring, President Eyring's great grandfather, was a pioneer of the St. George area and served as a recorder in the St. George Utah Temple - newsroom (President Eyring's own statement at the dedication)
+[T1] For five weeks, until the Urdaneta Philippines Temple was dedicated in late April 2024, St. George held both the oldest and the newest operating temples - thechurchnews.com
+[T1] Motifs from cottonwood trees, mountains and canyons; dwarf bearclaw poppy, succulents, Indian paintbrush, cottonwood leaves, pomegranates; palm-lined entrance - thechurchnews.com, newsroom
+[T2] 217 ft to the top of the spire, 230 ft to the top of the angel Moroni statue; four instruction rooms, six sealing rooms, one baptistry; 189th dedicated temple; art glass in coral, purple, green and gold; interior stone patterned to mimic horizontal lines in nearby cliffs and canyons; dwarf bearclaw poppy described as a rare endemic species - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Floor area - T2 prints 99,055 sq ft; two independent T1 sources print 96,277. Tier 1 wins, 96,277 shipped.
+
+VOLATILE (re-check before reprint)
+"Oldest and newest in one city for five weeks" - a closed window, so it will not expire, but it depends on the Urdaneta date being right.
+Angel Moroni statue - confirmed present per known-myths.md guidance, but statues do get removed in renovation.
+
+OMITTED
+Open house attendance - no figure published in any source found.
+
+
+=== VERNAL UTAH TEMPLE ===
+
+VERIFIED
+[T1] Announced Feb 13, 1994; groundbreaking May 13, 1995 presided by Gordon B. Hinckley; open house Oct 11-25, 1997; dedicated Nov 2-4, 1997 by Gordon B. Hinckley in eleven sessions with 3,528 at the first session; first temple president Alva C. Snow - thechurchnews.com almanac
+[T1] Uintah Stake Tabernacle dedicated 1907 by Joseph F. Smith; clay brick exterior, one of few temples without a light exterior; "We kept the outside and built a new building inside" - thechurchnews.com almanac
+[T1] About 1,500 crumbling bricks replaced with brick salvaged from a century-old Vernal home; west tower rebuilt to original specifications and an identical tower built on the east end; angel Moroni placed on the east tower; celestial room armchairs are horsehair replicas of First Presidency and Quorum of the Twelve chairs from the Salt Lake Temple; historic plaque describes a simplified, almost civic variant of the Georgian New England church form - thechurchnews.com, Nov 8 1997
+[T2] FFKR Architects, Roger Jackson chief architect; the Reader Home as the brick source, 16,000 bricks removed over two months, same kiln as the tabernacle (Abner N. Swain Brickworks); Moroni placed Sept 16, 1996, painted gold then refinished in gold leaf four months later; building carries both 1907 and 1997; open house drew about 118,700; had not hosted a stake conference since 1983; 38,771 sq ft; 98 ft; two instruction rooms in a two stage progressive arrangement, three sealing rooms, one baptistry; 1.6 acres; 51st dedicated temple; first temple built from an existing building, and the only one until Provo City Center in 2016 - churchofjesuschristtemples.org
+
+CONFLICTS RESOLVED
+Tabernacle construction start - Church News (Nov 1997) says construction began 1898; the almanac says it took seven years to a 1907 dedication, implying 1900. Neither shipped. The copy gives only the 1907 dedication, which every source agrees on.
+Brick counts - 1,500 replaced (T1) and 16,000 removed from the Reader Home (T2) are not in conflict: the salvage total exceeds what the wall needed. Both shipped, each labeled to what it counts.
+
+VOLATILE (re-check before reprint)
+"Only temple built from an existing tabernacle until 2016" - written as a closed span, so it holds.
+
+OMITTED
+Joseph F. Smith's reported remark at the 1907 tabernacle dedication that he "would not be surprised if a temple were built here some day." Church News repeats it, but there is no primary citation and it is a prophecy-fulfillment claim of exactly the texture known-myths.md warns about. Dropped despite being the most quotable line in the temple's history.
+"Population of the county" comparison for the 118,700 open house figure - the comparison was mine, not a source's. Dropped.
