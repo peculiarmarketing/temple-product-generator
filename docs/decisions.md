@@ -215,3 +215,35 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   changed, and the identical command succeeded on the next attempt. On this
   machine the editor page needs longer to settle than the step allows. Retry
   first; only open a repair session if it fails twice.
+
+## 23 August 2026 (publish ordering)
+
+- **The default variant is written BEFORE the publish, not after.**
+  `publish_drafts.py` used to call `fix_default_variant` after `publish_one`
+  returned. Two things went wrong with that, both seen on the 23 Aug sweep.
+  Printify locks a product while its publish is in flight, so the write raced
+  the lock and failed with code 8252 (the Ogden Original dated tee stayed
+  locked for over an hour). And when the write did land, it was by definition
+  an edit Printify had not pushed to the store, so every dated tee sat badged
+  "unpublished changes" in the Printify UI from the moment it went live.
+  Clearing that badge means a republish, and a republish deletes the art cards
+  and reverts the Shopify colorway and option order, so the badge is expensive
+  to clear and worthless to leave. Writing `is_default` first lets the publish
+  push carry it and the product lands clean.
+  The dated tee is the only line affected either way, because it is the only
+  garment declaring `default_colorway`. If the pre-publish write fails the
+  product still publishes, on the donor's colorway; fixing it afterward needs
+  `default_variant.py` and then `republish.py`, because once the product is
+  live only a republish carries the change to Shopify.
+- **`--report-only` cannot see a temple that has art but no SVGs.** The sweep's
+  report path calls `detect_art_files` (SVGs only) while the real run calls
+  `ensure_art_files`, which traces a source PNG first. Five folders with PNGs
+  and no SVGs therefore read as "NO ART YET" in the report and generated
+  normally in the run. The report is a lower bound on the work, not a preview
+  of it.
+- **`external.handle` sometimes comes back as a full URL.** On this shop
+  Printify returned `https://agv44k-jr.myshopify.com/products/<handle>` rather
+  than the bare handle, and the publish-time fixup looked it up literally and
+  skipped the product ("no Shopify product with handle 'https://...'"). The
+  Orem crew was the one hit; the catalog-wide `shopify_fixups.py all` pass
+  caught it afterward by title. Strip the origin before using that field.

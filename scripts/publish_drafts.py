@@ -85,8 +85,8 @@ def default_variant_note(product):
     """What is wrong with this product's default variant, or None.
 
     A donor duplicate carries its own default, so a fresh draft routinely
-    lands on the wrong colorway. Reported before the publish, then fixed
-    after it (fix_default_variant), because is_default is writable."""
+    lands on the wrong colorway. Reported here, then fixed by
+    fix_default_variant immediately before the publish."""
     colorway = wanted_colorway(product)
     if colorway is None:
         return None
@@ -96,12 +96,26 @@ def default_variant_note(product):
     current = (default.get("title") or "").split("/")[0].strip()
     if current == colorway:
         return None
-    return f"default variant is {current!r}, not {colorway!r}; will be set on publish"
+    return f"default variant is {current!r}, not {colorway!r}; will be set before publishing"
 
 
 def fix_default_variant(client, product):
-    """Put the default variant on the garment's declared colorway. Reported,
-    never fatal: the product is already live and the script is re-runnable."""
+    """Put the default variant on the garment's declared colorway, BEFORE the
+    publish, so the publish push carries it.
+
+    This used to run after publish_one, which cost two things. Printify locks a
+    product while its publish is in flight, so the write raced the lock and
+    failed with code 8252 often enough to matter. Worse, when it did succeed it
+    was by definition an edit Printify had not pushed to the store, so every
+    dated tee sat in the Printify UI badged "unpublished changes" from the
+    moment it went live (observed across the 23 Aug 2026 sweep). Clearing that
+    badge means a republish, and a republish deletes the art cards and reverts
+    the Shopify colorway and option order. Doing the write first avoids the
+    whole chain.
+
+    Reported, never fatal. If it fails, the product still publishes, just on
+    the donor's colorway; fix it afterward with default_variant.py followed by
+    republish.py, since by then only a republish can carry the change over."""
     colorway = wanted_colorway(product)
     if colorway is None:
         return
@@ -110,8 +124,9 @@ def fix_default_variant(client, product):
         if note:
             print(f"  Default variant: {note}")
     except Exception as err:
-        print(f"  DEFAULT VARIANT FAILED ({err}); re-run "
-              f"scripts/default_variant.py --only {product['title']!r}")
+        print(f"  DEFAULT VARIANT FAILED ({err}); publishing anyway on the donor's "
+              f"colorway. Afterward: scripts/default_variant.py --only "
+              f"{product['title']!r} then scripts/republish.py --only {product['title']!r}")
 
 
 def all_products(client):
@@ -220,6 +235,7 @@ def main():
     failures = 0
     for product in to_publish:
         print(f"\nPublishing {product['title']} ...")
+        fix_default_variant(client, product)
         try:
             result = publish_one(client, product, shopify=shopify)
         except PrintifyError as err:
@@ -229,7 +245,6 @@ def main():
         if result:
             note = "" if result["via"] == "printify" else " (Printify still syncing its own status)"
             print(f"  Live on Shopify: {result['handle']}{note}")
-            fix_default_variant(client, product)
             apply_fixups(result["handle"], product["title"])
         else:
             print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but neither "
