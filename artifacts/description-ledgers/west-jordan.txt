@@ -1,0 +1,40 @@
+SOURCE LEDGER - West Jordan Utah Temple
+Research date: August 25, 2026
+
+VERIFIED
+[T1] Status is "Announced" on the official temple page; only milestone listed is the April 7, 2024 announcement - https://www.churchofjesuschrist.org/temples/details/west-jordan-utah-temple?lang=eng
+[T1] Announced April 7, 2024, by President Russell M. Nelson in the concluding (Sunday afternoon) session of the April 2024 general conference, one of 15 temples announced that day - https://newsroom.churchofjesuschrist.org/article/april-2024-general-conference-new-temples
+[T1] The 15 announcements brought the worldwide total of temples (built or announced) to 350 - https://newsroom.churchofjesuschrist.org/article/april-2024-general-conference-new-temples
+[T1] West Jordan will be the 29th temple in Utah (operating, under renovation, under construction, or announced); Lehi the 30th - https://newsroom.churchofjesuschrist.org/article/april-2024-general-conference-new-temples
+[T1] Site released April 22, 2024: 16.10 acres at approximately 7148 South, west of Highway 111; multi-story temple of approximately 85,000 square feet plus a new meetinghouse; city's first temple; same release placed the Lehi Utah and Tampa Florida temple sites - https://newsroom.churchofjesuschrist.org/article/sites-released-for-three-temples-in-florida-and-utah
+[T1] Lehi Utah Temple announced same day, also planned as multi-story, approximately 85,000 square feet, with a new meetinghouse - https://newsroom.churchofjesuschrist.org/article/sites-released-for-three-temples-in-florida-and-utah
+[T1] Exterior rendering released April 14, 2025; no groundbreaking date announced in that release - https://newsroom.churchofjesuschrist.org/article/temple-open-house-dedication-dates-antofagasta-chile-bahia-blanca-argentina-west-jordan
+[T1] Westernmost of Salt Lake County's six temples, roughly 10 miles northwest of the Oquirrh Mountain Utah Temple; the county's others are Salt Lake, Jordan River, Draper, and Taylorsville - https://www.thechurchnews.com/temples/2025/04/14/west-jordan-utah-temple-rendering-released/
+[T2] 194th Annual General Conference as the announcing conference - https://churchofjesuschristtemples.org/west-jordan-utah-temple/
+[T2] West Jordan is a Salt Lake City suburb on the southwest side of the Salt Lake Valley - https://churchofjesuschristtemples.org/west-jordan-utah-temple/
+[T2] Site elevation 5,308 feet - https://churchofjesuschristtemples.org/west-jordan-utah-temple/
+[T2] Architectural feature: single attached end spire (from the released rendering) - https://churchofjesuschristtemples.org/west-jordan-utah-temple/
+[T2] Site shared with a meetinghouse and joint parking lot - https://churchofjesuschristtemples.org/west-jordan-utah-temple/news/
+[T2] Current status as of fetch date (Aug 25, 2026): planning and approval phase; temple site graded and staked; no groundbreaking date announced - https://churchofjesuschristtemples.org/west-jordan-utah-temple/
+[T2] Preliminary earthwork visible at the site by November 29, 2025; earthwork operations progressing as of April 2, 2026; groundbreaking to be announced once construction is ready to begin; will be the sixth temple dedicated in Salt Lake County - https://churchofjesuschristtemples.org/west-jordan-utah-temple/news/
+
+CONFLICTS RESOLVED
+Site address wording - Newsroom and Tier 2 give "approximately 7148 South and west of Highway 111"; Church News gives "approximately 7147 South U-111". Used the Newsroom/Tier 2 wording (7148 South, west of Highway 111) since the Newsroom release is the primary First Presidency announcement and Tier 2 matches it.
+"29th temple announced for Utah" (Tier 2) vs "29th temple in Utah, operating/renovation/construction/announced" (Newsroom) - same underlying count, different framing. Used the Newsroom framing and labeled the count explicitly in the copy.
+
+VOLATILE (re-check before reprint)
+Status row entirely - announced, earthwork underway, no groundbreaking. A groundbreaking announcement would obsolete the Status row, the Construction Story bullets, and the Temple Number row phrasing. Tier 2 status was current as of Aug 25, 2026.
+"Sixth temple in Salt Lake County" and "westernmost of the county's six" - true against the current county roster (Salt Lake, Jordan River, Draper, Oquirrh Mountain, Taylorsville). Another Salt Lake County announcement would break both the count and the superlative.
+"29th temple for Utah" - stated as an at-announcement fact, but Utah's count keeps growing (32 by April 2025 per Newsroom); keep it pinned to the announcement or re-verify.
+"Worldwide total of 350" - stated as an at-announcement fact tied to April 7, 2024; the running total is far past that now.
+85,000 square feet and single end spire - pre-construction figures from plans and rendering; confirm against the fact sheet the Church publishes closer to the open house.
+NOTE - this entry will need rewriting at least three times: after groundbreaking (convert Status, add Groundbreaking row with presiding officer), after the open house is announced/held (dates, attendance, interior design details which typically surface at media day), and after dedication (temple number, presiding officer, first temple president, tense conversion).
+
+OMITTED
+Groundbreaking row - no groundbreaking has occurred and no date announced; row deleted per skill rule rather than left empty.
+Ordinance Rooms row - no room counts published anywhere Tier 1/Tier 2; deleted.
+First Temple President, Rededicated, Changes Over Time, temple district/stake count - not applicable pre-dedication per special-cases undedicated rules.
+Symbolism & Design section - nothing published beyond the rendering's massing and spire, which is covered in the Architecture row; details typically surface at media day just before the open house. Section omitted rather than padded.
+President Nelson quote from the announcement ("Time in the temple will help you to think celestial...") - properly attributed on Tier 1 but devotional in register and not specific to West Jordan; outside the brand voice.
+"Foothills of the Oquirrh Mountains" siting (KUTV headline) - only a Tier 3 single source for that exact framing; the verified location facts (west of Highway 111, western edge of the valley) carry the same information.
+Presiding officer for any future groundbreaking - none named by Tier 1; nothing to say.

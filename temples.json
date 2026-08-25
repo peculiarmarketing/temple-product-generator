@@ -19,12 +19,12 @@
   "Brigham City": { "official_name": "Brigham City Utah Temple", "location_line": "BRIGHAM CITY, UTAH", "verified": true },
   "Cedar City": { "official_name": "Cedar City Utah Temple", "location_line": "CEDAR CITY, UTAH", "verified": true },
   "Ephraim": { "official_name": "Ephraim Utah Temple", "location_line": "EPHRAIM, UTAH", "verified": true },
-  "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": false },
+  "Heber Valley": { "official_name": "Heber Valley Utah Temple", "location_line": "HEBER CITY, UTAH", "verified": true },
   "Lehi": { "official_name": "Lehi Utah Temple", "location_line": "LEHI, UTAH", "verified": false },
   "Price": { "official_name": "Price Utah Temple", "location_line": "PRICE, UTAH", "verified": false },
   "Smithfield": { "official_name": "Smithfield Utah Temple", "location_line": "SMITHFIELD, UTAH", "verified": true },
-  "Spanish Fork": { "official_name": "Spanish Fork Utah Temple", "location_line": "SPANISH FORK, UTAH", "verified": false },
-  "West Jordan": { "official_name": "West Jordan Utah Temple", "location_line": "WEST JORDAN, UTAH", "verified": false },
+  "Spanish Fork": { "official_name": "Spanish Fork Utah Temple", "location_line": "SPANISH FORK, UTAH", "verified": true },
+  "West Jordan": { "official_name": "West Jordan Utah Temple", "location_line": "WEST JORDAN, UTAH", "verified": true },
   "Manhatten": { "official_name": "Manhattan New York Temple", "location_line": "NEW YORK, NEW YORK", "verified": true },
   "Mexico City": { "official_name": "Mexico City Mexico Temple", "location_line": "MEXICO CITY, MEXICO", "verified": true },
   "Oakland": { "official_name": "Oakland California Temple", "location_line": "OAKLAND, CALIFORNIA", "verified": true },
@@ -40,5 +40,7 @@
   "Ogden (original)": { "official_name": "Ogden Utah Temple", "location_line": "OGDEN, UTAH", "verified": true },
   "Orem": { "official_name": "Orem Utah Temple", "location_line": "OREM, UTAH", "verified": true },
   "Red Cliffs": { "official_name": "Red Cliffs Utah Temple", "location_line": "ST. GEORGE, UTAH", "verified": true },
-  "Vernal": { "official_name": "Vernal Utah Temple", "location_line": "VERNAL, UTAH", "verified": true }
+  "Vernal": { "official_name": "Vernal Utah Temple", "location_line": "VERNAL, UTAH", "verified": true },
+  "Boise": { "official_name": "Boise Idaho Temple", "location_line": "BOISE, IDAHO", "verified": true },
+  "Syracuse": { "official_name": "Syracuse Utah Temple", "location_line": "SYRACUSE, UTAH", "verified": true }
 }

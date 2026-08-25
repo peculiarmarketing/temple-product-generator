@@ -1,0 +1,36 @@
+SOURCE LEDGER - Spanish Fork Utah Temple
+
+VERIFIED
+[T1] Announced April 6, 2025, by President Russell M. Nelson, one of 15 temples announced that day (Spanish Fork named last of the 15) - https://newsroom.churchofjesuschrist.org/article/april-2025-general-conference-new-temples
+[T1] Official status "Announced," announcement date April 6, 2025 - https://www.churchofjesuschrist.org/temples/details/spanish-fork-utah-temple
+[T1] Site confirmed January 12, 2026: 8.7-acre site at the corner of 100 South and 2550 East; multistory temple of approximately 80,000 square feet with an accompanying ancillary building - https://newsroom.churchofjesuschrist.org/article/milestones-for-temples-in-california-guatemala-mozambique-and-utah
+[T1] Exterior rendering released July 13, 2026, by the First Presidency - https://newsroom.churchofjesuschrist.org/article/news-for-temples-in-brazil-colombia-and-utah, https://www.thechurchnews.com/temples/2026/07/13/spanish-fork-utah-temple-rendering-released/
+[T1] No groundbreaking held or scheduled; temple in planning and design stages as of July 2026 - https://www.thechurchnews.com/temples/2026/07/13/spanish-fork-utah-temple-rendering-released/ (corroborated [T2] https://churchofjesuschristtemples.org/spanish-fork-utah-temple/ fetched 2026-08-25: "currently in the planning stages. No groundbreaking date has been announced")
+[T1] Last temple announced by President Nelson, named in his final general conference address; Nelson died September 2025 - https://www.thechurchnews.com/temples/2026/07/13/spanish-fork-utah-temple-rendering-released/, https://www.thechurchnews.com/temples/2026/01/12/temple-sites-announced-in-spanish-fork-utah-and-beira-mozambique/ (Church News site announcement article, "the last temple that he announced before his death in September 2025")
+[T1] Announcement came exactly 148 years to the day after Utah's first temple, the St. George Utah Temple, was dedicated April 6, 1877 - https://www.thechurchnews.com/temples/2026/07/13/spanish-fork-utah-temple-rendering-released/
+[T1] Ninth temple in Utah County; 32 temples in Utah counting in operation, under renovation, under construction, or announced - https://newsroom.churchofjesuschrist.org/article/april-2025-general-conference-new-temples, https://newsroom.churchofjesuschrist.org/article/milestones-for-temples-in-california-guatemala-mozambique-and-utah (corroborated [T2] churchofjesuschristtemples.org "ninth temple announced for Utah County and the thirty-second for the state")
+[T1] Utah is the U.S. state with the most temples - https://www.thechurchnews.com/temples/2026/07/13/spanish-fork-utah-temple-rendering-released/
+[T1] Latter-day Saints settled Spanish Fork in 1851; about 50,000 residents at the time of the announcement - https://newsroom.churchofjesuschrist.org/article/april-2025-general-conference-new-temples (corroborated [T2] churchofjesuschristtemples.org)
+[T2] 195th Annual General Conference designation - https://churchofjesuschristtemples.org/spanish-fork-utah-temple/
+[T2] Elevation 4,729 feet - https://churchofjesuschristtemples.org/spanish-fork-utah-temple/
+[T2] Two attached end spires (architectural features from the official rendering) - https://churchofjesuschristtemples.org/spanish-fork-utah-temple/
+[T2] Spanish Fork sits in southern Utah Valley with Utah Lake to the northwest and the Wasatch Range to the east - https://churchofjesuschristtemples.org/spanish-fork-utah-temple/
+
+CONFLICTS RESOLVED
+Conference designation - churchofjesuschristtemples.org's footnote cites the announcement release as "15 New Temples Announced at the 194th Semiannual General Conference," but April 2025 was the 195th Annual General Conference, which its own body text uses and which matches the Newsroom article ("April 2025 General Conference"). The footnote title is a citation error on the Tier 2 page. Shipped 195th Annual General Conference.
+
+VOLATILE (re-check before reprint)
+Status row entirely - a groundbreaking can be announced at any time; the entry needs rewriting at groundbreaking, again after the open house, and again at dedication (tenses, temple number, presiding officer, first temple president)
+Ninth announced for Utah County / thirty-second for Utah / no state has more - counts grow with each general conference; verified as of August 25, 2026
+About 50,000 residents - population figure dated to the April 2025 announcement
+Two attached end spires / 80,000 square feet / ancillary building - design details can change between rendering and construction
+Future tense throughout - the building does not exist yet
+
+OMITTED
+President Nelson's April 6, 2025 address quote ("Time in the temple increases our confidence before the Lord") - verifiable and attributable, but devotional content is outside the brand voice; kept the factual frame (final address, final temple) instead
+Architect / design firm - not published by any tiered source yet
+Ordinance room counts - not published; expected closer to construction
+Temple district / stake counts - provisional until dedication per Tier 2
+Interior design motifs and symbolism - nothing published beyond the exterior rendering; details typically surface at media day just before the open house, likely years out
+Groundbreaking spec row - deleted entirely; no date exists, and the Status row carries the no-groundbreaking fact
+Construction Story and Symbolism & Design sections - deleted; nothing is under construction and the only published design fact (two end spires) is already in the Architecture row; short is correct for an announced-only temple
