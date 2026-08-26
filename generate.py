@@ -67,8 +67,10 @@ def load_catalog_config():
 
 def parent_temple():
     """The temple whose products are the storefront's parent listings: bare
-    garment titles, left ACTIVE on Shopify while every other temple's product
-    is UNLISTED and reached from the parent page's Easify Temple dropdown."""
+    garment titles, with every other temple's product reachable through the
+    parent page's Easify Temple dropdown. All products publish ACTIVE on
+    Shopify (Evan's 26 Aug 2026 decision); children published before that
+    date remain UNLISTED but their URLs still resolve."""
     return load_catalog_config()["parent_temple"]
 
 

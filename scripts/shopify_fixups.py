@@ -1,14 +1,13 @@
 """Shopify-side corrections the Printify publish cannot make itself.
 
   python scripts/shopify_fixups.py all --report-only     # what would change
-  python scripts/shopify_fixups.py all                   # both fixups, whole catalog
-  python scripts/shopify_fixups.py unlist
+  python scripts/shopify_fixups.py all                   # every fixup, whole catalog
   python scripts/shopify_fixups.py hoodie-color
   python scripts/shopify_fixups.py color-order
   python scripts/shopify_fixups.py featured-photo
   python scripts/shopify_fixups.py all --handle logan-temple-hoodie
 
-Two fixups, both idempotent and safe to re-run:
+Three fixups, all idempotent and safe to re-run:
 
 color-order
   Moves each garment's `storefront_first_color` to the front of its Color
@@ -27,12 +26,9 @@ featured-photo
   variant while the card still shows a Graphite shirt. Only the dated tee sets
   a featured color today (Moss, Evan's 22 Aug 2026 choice).
 
-unlist
-  Every temple product except the parent temple's goes to Shopify status
-  UNLISTED. The storefront then shows one listing per garment line and
-  shoppers reach the rest through the Easify Temple dropdown on the parent
-  page. Unlisted products keep working URLs, so every dropdown link and every
-  existing link still resolves.
+There is no unlist fixup anymore. New products stay ACTIVE on Shopify (Evan's
+26 Aug 2026 decision); children published before then remain UNLISTED and
+nothing here touches a product's status either way.
 
 hoodie-color
   Renames the hoodie colorway "True Navy" to "Blue Jean". Printify labels this
@@ -58,9 +54,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # where the scripts directory is not on the path the way it is for a direct run.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from art_images import EXCLUDE_MARKERS, match_temple, temple_tokens
-from generate import (GARMENTS_DIR, load_garment_config, parent_temple, parent_titles,
-                      title_is_dated)
+from art_images import EXCLUDE_MARKERS
+from generate import GARMENTS_DIR, load_garment_config, title_is_dated
 from shopify_client import ShopifyClient
 
 HOODIE_TYPE = "Hoodie"
@@ -193,25 +188,6 @@ def wants_color_order(product):
     return not any(x in title.lower() for x in EXCLUDE_MARKERS if x != "limited edition")
 
 
-def is_parent_product(title):
-    """Parent listings carry the bare garment title, no place in parentheses."""
-    return title.strip() in parent_titles()
-
-
-def wants_unlisting(product, tokens):
-    """A child temple product that is not already unlisted.
-
-    Scoped through match_temple so it can only ever touch a product this
-    pipeline recognizes as one temple's listing: Limited Edition one-offs,
-    unclaimed copies and anything non-temple are invisible to it."""
-    title = product["title"]
-    if is_parent_product(title):
-        return False
-    if match_temple(title, tokens) is None:
-        return False
-    return product["status"] != "UNLISTED"
-
-
 def wants_hoodie_color(product):
     """Any hoodie in the temple catalog, parent and Limited Edition included:
     the colorway is mislabeled on all of them equally. Copies and test
@@ -224,17 +200,11 @@ def wants_hoodie_color(product):
     return not any(x in title.lower() for x in EXCLUDE_MARKERS if x != "limited edition")
 
 
-def fix_published_product(client, product_gid, title, product_type, report_only=False):
+def fix_published_product(client, product_gid, product_type, report_only=False):
     """Every Shopify fixup for one product. Returns a list of action strings,
     empty when nothing needed doing. Used per-product at publish time and in
     bulk by the commands below."""
     actions = []
-    if not is_parent_product(title):
-        if report_only:
-            actions.append("would unlist")
-        else:
-            client.update_product(product_gid, status="UNLISTED")
-            actions.append("unlisted")
     if product_type == HOODIE_TYPE:
         if report_only:
             actions.append(f"would rename {HOODIE_OLD_COLOR} -> {HOODIE_NEW_COLOR}")
@@ -253,14 +223,12 @@ def fix_published_product(client, product_gid, title, product_type, report_only=
 
 def run(command, report_only=False, handle=None):
     client = ShopifyClient()
-    tokens = temple_tokens()
     catalog = sorted(client.all_products_summary(), key=lambda p: p["title"])
     if handle:
         catalog = [p for p in catalog if p["handle"] == handle]
         if not catalog:
             raise SystemExit(f"No Shopify product with handle {handle!r}.")
 
-    do_unlist = command in ("all", "unlist")
     do_color = command in ("all", "hoodie-color")
     do_order = command in ("all", "color-order")
     do_photo = command in ("all", "featured-photo")
@@ -269,12 +237,6 @@ def run(command, report_only=False, handle=None):
     for product in catalog:
         title, gid = product["title"], product["id"]
         actions = []
-        if do_unlist and wants_unlisting(product, tokens):
-            if report_only:
-                actions.append("unlist")
-            else:
-                client.update_product(gid, status="UNLISTED")
-                actions.append("unlisted")
         if do_color and wants_hoodie_color(product):
             if report_only:
                 actions.append(f"maybe {HOODIE_OLD_COLOR} -> {HOODIE_NEW_COLOR}")
@@ -301,9 +263,7 @@ def run(command, report_only=False, handle=None):
             changed += 1
             print(f"  {title!r}: {', '.join(actions)}")
 
-    parents = [p["title"] for p in catalog if is_parent_product(p["title"])]
-    print(f"\n{len(catalog)} product(s) scanned, {changed} touched. "
-          f"Parent listings left active: {', '.join(sorted(parents)) or 'none in scope'}")
+    print(f"\n{len(catalog)} product(s) scanned, {changed} touched.")
     if report_only:
         print("Report only, nothing written. The colorway lines say 'maybe' because "
               "whether True Navy is still present is only known at write time.")
@@ -313,7 +273,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("command",
-                    choices=["all", "unlist", "hoodie-color", "color-order", "featured-photo"])
+                    choices=["all", "hoodie-color", "color-order", "featured-photo"])
     ap.add_argument("--report-only", action="store_true", help="print, write nothing")
     ap.add_argument("--handle", help="restrict to one product handle")
     args = ap.parse_args()

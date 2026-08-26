@@ -5,8 +5,9 @@
   python scripts/republish.py --only "(Bountiful)"
 
 A republish re-syncs title, description, images and variants together. Measured
-22 Aug 2026 on one tee and one hoodie, it keeps the title and the UNLISTED
-status but it also:
+22 Aug 2026 on one tee and one hoodie, it keeps the title and the listing
+status (both were UNLISTED children at the time; new products publish ACTIVE
+since Evan's 26 Aug 2026 decision) but it also:
 
   - DELETES the Shopify-side art close-up cards outright
   - reverts the hoodie's Blue Jean colorway to Printify's True Navy
@@ -107,7 +108,7 @@ def main():
 
     from art_images import push_catalog
     from shopify_fixups import run as fixups_run
-    print("\n--- repair 1/3: Shopify fixups (unlist, hoodie colorway, color order)")
+    print("\n--- repair 1/3: Shopify fixups (hoodie colorway, color order)")
     fixups_run("all")
     print("\n--- repair 2/3: art close-up cards")
     push_catalog(only_temple=None)

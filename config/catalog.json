@@ -1,4 +1,4 @@
 {
-  "_comment": "The parent temple's products carry the bare garment title and stay ACTIVE on Shopify. Every other temple is a child: the title carries the temple in parentheses and the Shopify product is UNLISTED, reachable from the parent page's Easify Temple dropdown.",
+  "_comment": "The parent temple's products carry the bare garment title. Every other temple is a child: the title carries the temple in parentheses, reachable from the parent page's Easify Temple dropdown. All products publish ACTIVE on Shopify (Evan's 26 Aug 2026 decision); children published before that date remain UNLISTED.",
   "parent_temple": "Salt Lake"
 }

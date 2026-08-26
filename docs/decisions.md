@@ -247,3 +247,19 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   skipped the product ("no Shopify product with handle 'https://...'"). The
   Orem crew was the one hit; the catalog-wide `shopify_fixups.py all` pass
   caught it afterward by title. Strip the origin before using that field.
+
+## 26 August 2026 (new products publish ACTIVE)
+
+- **New products are no longer unlisted; they publish ACTIVE (Evan's 26 Aug
+  decision, supersedes the 22 Aug unlist-the-children rule).** The unlist
+  fixup is removed from `scripts/shopify_fixups.py` entirely: it is gone from
+  `fix_published_product()` (so `publish_drafts.py` leaves each newly
+  published product ACTIVE, which is how a Printify publish lands on Shopify)
+  and gone from the `all`/standalone commands (so no catalog-wide pass can
+  re-unlist anything). The parent-product concept is unchanged: Salt Lake's
+  products still carry the bare garment titles and the Easify Temple dropdown
+  still cross-links every temple.
+- **Children published before 26 Aug 2026 stay UNLISTED.** Nothing in the
+  pipeline sets a product's status in either direction anymore; flipping the
+  existing children to ACTIVE would be a separate, Evan-initiated pass.
+  `easify_options.py` therefore keeps counting UNLISTED as live.

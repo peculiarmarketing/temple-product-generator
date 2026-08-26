@@ -111,11 +111,10 @@ def live_temple_products(config, tokens):
     Exact equality against the garment's composed title is what keeps
     Limited Edition one-offs out of the dropdowns.
 
-    UNLISTED counts as live: every temple except the parent is deliberately
-    unlisted so the storefront shows one listing per garment line, and an
+    UNLISTED counts as live: children published before Evan's 26 Aug 2026
+    switch to publishing everything ACTIVE are still unlisted, and an
     unlisted product's URL still resolves, which is what the dropdown links
-    to. Filtering to ACTIVE alone would see four products and report the rest
-    as gone.
+    to. Filtering to ACTIVE alone would report those older children as gone.
     Returns ({garment: {temple: (label, handle)}}, attention lines)."""
     client = ShopifyClient()
     live = [p for p in client.all_products_summary()

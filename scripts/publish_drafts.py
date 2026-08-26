@@ -168,18 +168,20 @@ def publish_one(client, product, shopify=None):
     return None
 
 
-def apply_fixups(handle, title):
-    """Shopify-side corrections a Printify publish cannot make: unlist the
-    child listings, and rename the hoodie's mislabeled True Navy colorway.
-    See scripts/shopify_fixups.py. A failure here is reported, never fatal:
-    the product is already live and the fixups are re-runnable."""
+def apply_fixups(handle):
+    """Shopify-side corrections a Printify publish cannot make: rename the
+    hoodie's mislabeled True Navy colorway and put the wanted color first.
+    New products stay ACTIVE (Evan's 26 Aug 2026 decision; children were
+    unlisted before that). See scripts/shopify_fixups.py. A failure here is
+    reported, never fatal: the product is already live and the fixups are
+    re-runnable."""
     try:
         client = ShopifyClient()
         live = client.find_product_by_handle(handle)
         if not live:
             print(f"  fixups skipped: no Shopify product with handle {handle!r}")
             return
-        actions = fix_published_product(client, live["id"], title, live.get("productType"))
+        actions = fix_published_product(client, live["id"], live.get("productType"))
         print(f"  Shopify fixups: {', '.join(actions)}" if actions
               else "  Shopify fixups: nothing needed")
     except SystemExit as err:          # missing Shopify creds
@@ -245,7 +247,7 @@ def main():
         if result:
             note = "" if result["via"] == "printify" else " (Printify still syncing its own status)"
             print(f"  Live on Shopify: {result['handle']}{note}")
-            apply_fixups(result["handle"], product["title"])
+            apply_fixups(result["handle"])
         else:
             print(f"  TIMED OUT after {POLL_TIMEOUT_S}s: Printify accepted the publish but neither "
                   "Printify nor Shopify confirms it yet. Check the product in Printify before retrying.")
