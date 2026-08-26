@@ -263,3 +263,51 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   pipeline sets a product's status in either direction anymore; flipping the
   existing children to ACTIVE would be a separate, Evan-initiated pass.
   `easify_options.py` therefore keeps counting UNLISTED as live.
+
+## 26 August 2026 (collapsed temple facts, video guide fix)
+
+- **Temple facts render as collapsed `<details>` rows (Evan's 26 Aug
+  decision).** The facts block had grown to about six phone screens. Each
+  block is now a collapsed row: the temple name (h3) with its spec rows, then
+  one row per h4 block (Construction Story, Symbolism & Design, Changes Over
+  Time where present, Trivia). Scope is facts only: Personalization, the
+  garment intro, and the Size Guide stay open. The as-of line stays visible
+  after the rows.
+- **Presentation transforms live in `description_html.py` and run at
+  assembly time.** The vendored skill assets (`reference/skills/*/assets/`)
+  and the per-temple `Temples/*/temple-facts.html` fragments stay untouched;
+  `compose_description()` is now the one place a description's final HTML is
+  shaped, called from all three compose sites (generate.py and both
+  write_description.py paths). Transforms are idempotent by unwrap-then-
+  rewrap, so facts re-extracted from a live product re-collapse to identical
+  bytes and `--normalize` converges. The `<section class="temple-facts">`
+  wrapper stays outermost so the publish gate and FACTS_RE keep working.
+- **The size-guide video gets `controls="controls"` and
+  `preload="metadata"`.** The vendored tag is autoplay/loop/muted with
+  `preload="none"`, no controls, no poster. Autoplay is a request browsers
+  may decline (iPhones decline it in Low Power Mode), and with no controls
+  the video sits as a frozen frame with no way to start it, which is exactly
+  what Evan saw. Verified playing normally in desktop Chrome pre-fix, so the
+  files were never broken. The transform edits only the opening `<video>`
+  tag, so cc1717's deliberately odd `</source></video>` tail rides through.
+- **Description backfill channel: Printify PUT, then a description-only
+  publish (Evan's direction).** `write_description.py` gained `--only TEXT`
+  and `--via-publish`; the latter replaces the direct Shopify
+  `descriptionHtml` write with `POST publish.json` carrying
+  `{"description": true}` and every other sync flag false, because the
+  full-flag publish is the measured-destructive republish. Measured on the
+  Vernal base tee, 26 Aug 2026: the description-only publish synced within a
+  minute, kept the art card at gallery position 2, kept the color order, the
+  handle, and the listing status. Drafts with no `external` id are PUT only;
+  their description rides the first publish.
+- **The Printify connector decodes HTML entities on push**, measured the
+  same day on Vernal: `&sup2;` in the vendored size guide arrived on Shopify
+  as a literal superscript two. Rendering is identical, but a byte compare
+  would re-sync every product forever, so `--normalize` now compares the
+  Shopify side entity-insensitively (html.unescape on both sides). The
+  Printify side stays byte-exact.
+- **Follow-up outside this repo, still open:** Evan's claude.ai description
+  skills emit un-collapsed markup and the old video tag. They currently
+  hard-stop on the new title patterns, so they cannot overwrite anything; if
+  they are ever revived they need the same collapse and video treatment, and
+  until then a `--normalize` run re-converges anything they touch.

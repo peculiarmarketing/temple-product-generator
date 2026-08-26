@@ -41,6 +41,7 @@ from pathlib import Path
 from PIL import Image
 
 import layout
+from description_html import compose_description
 from layout import PROJECT_ROOT, TempleArt, load_art
 from printify_client import PrintifyClient, PrintifyError, load_config
 
@@ -436,10 +437,10 @@ def generate_one(c, temple_name, garment_id, args):
 
     # Full description when the temple's researched facts exist; fixed
     # sections alone otherwise. Keeps regeneration idempotent.
-    description = fixed_description(garment_cfg)
+    fixed = fixed_description(garment_cfg)
     facts_path = TEMPLES_DIR / temple_name / "temple-facts.html"
-    if description and facts_path.exists():
-        description = description + "\n\n" + facts_path.read_text().strip()
+    facts = facts_path.read_text().strip() if (fixed and facts_path.exists()) else None
+    description = compose_description(fixed, facts)
     body = {"title": title, "print_areas": areas, "description": description}
     if args.dry_run:
         out = PROJECT_ROOT / "artifacts" / "phase3" / f"dryrun_{temple_name.lower().replace(' ', '-')}_{garment_id}.json"

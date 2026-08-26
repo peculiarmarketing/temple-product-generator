@@ -16,6 +16,7 @@ import argparse
 import json
 import re
 import sys
+from html import unescape
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -23,6 +24,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from art_images import match_temple, temple_tokens
+from description_html import compose_description
 from generate import (TEMPLES_DIR, fixed_description, load_garment_config,
                       title_is_dated, title_is_one_off)
 from printify_client import PrintifyClient, load_config
@@ -30,6 +32,14 @@ from shopify_client import ShopifyClient, ShopifyError
 
 FACTS_RE = re.compile(r'<section class="temple-facts">.*</section>', re.S)
 DATED_GARMENT = "cc1717-dated"
+
+# --via-publish: sync ONLY the description through Printify's publish. A
+# full-flag publish is the measured-destructive republish (deletes art cards,
+# reverts the hoodie colorway and the color order), so every other flag stays
+# off.
+DESCRIPTION_SYNC_FLAGS = {"title": False, "description": True, "images": False,
+                          "variants": False, "tags": False, "keyFeatures": False,
+                          "shipping_template": False}
 
 
 def find_facts(title, description, tokens):
@@ -107,7 +117,7 @@ def is_broken(description, opener):
     return bool(opener) and not text.startswith(opener.strip())
 
 
-def repair(report_only=False, normalize=False):
+def repair(report_only=False, normalize=False, only=None, via_publish=False):
     """Rebuild every product's description from the garment's fixed sections
     plus its own temple's facts, on Printify AND Shopify.
 
@@ -146,6 +156,8 @@ def repair(report_only=False, normalize=False):
     fixed_cache, written, skipped, missing = {}, 0, 0, []
     for product in products:
         title = product["title"].strip()
+        if only and only.lower() not in title.lower():
+            continue
         temple = temple_of(title, tokens)
         garment = garment_for(product)
         if not temple or not garment:
@@ -161,21 +173,28 @@ def repair(report_only=False, normalize=False):
         if not fixed:
             skipped += 1
             continue
-        wanted = fixed + "\n\n" + facts
+        wanted = compose_description(fixed, facts)
 
         opener = fixed.split("\n\n")[0] if garment == "cc1717-dated" else ""
         live = shopify_by_title.get(title)
         if normalize:
             needs_printify = (product.get("description") or "").strip() != wanted
-            needs_shopify = live is not None and live.strip() != wanted
+            # Entity-insensitive on the Shopify side: the Printify connector
+            # decodes character entities on push (&sup2; arrives as a literal
+            # superscript two, measured 26 Aug 2026 on Vernal), so a byte
+            # compare would re-sync every product forever. Rendering is
+            # identical either way.
+            needs_shopify = live is not None and unescape(live.strip()) != unescape(wanted)
         else:
             needs_printify = is_broken(product.get("description"), opener)
             needs_shopify = live is not None and is_broken(live, opener)
         if not (needs_printify or needs_shopify):
             continue
-        where = ", ".join(w for w, f in (("Printify", needs_printify), ("Shopify", needs_shopify)) if f)
+        shopify_action = "publish sync" if via_publish else "Shopify"
+        where = ", ".join(w for w, f in (("Printify", needs_printify),
+                                         (shopify_action, needs_shopify)) if f)
         if report_only:
-            print(f"  would write {where:<19} {title}  ({len((product.get('description') or ''))} -> {len(wanted)} chars)")
+            print(f"  would write {where:<22} {title}  ({len((product.get('description') or ''))} -> {len(wanted)} chars)")
             written += 1
             continue
         try:
@@ -183,7 +202,13 @@ def repair(report_only=False, normalize=False):
                 printify.update_product(product["id"], {"description": wanted})
             if needs_shopify:
                 external = product.get("external") or {}
-                if external.get("id"):
+                if not external.get("id"):
+                    pass  # never published; the description rides its first publish
+                elif via_publish:
+                    printify._request("POST",
+                                      f"/shops/{printify.shop_id}/products/{product['id']}/publish.json",
+                                      json=DESCRIPTION_SYNC_FLAGS)
+                else:
                     shopify.update_product(f"gid://shopify/Product/{external['id']}",
                                            descriptionHtml=wanted)
             print(f"  {title}: {where} ({len(wanted)} chars)")
@@ -209,10 +234,19 @@ def main():
                          "current approved copy. A copy decision, not a repair: some live products "
                          "carry an older intro.")
     ap.add_argument("--report-only", action="store_true", help="with --repair: write nothing")
+    ap.add_argument("--only", help="with --repair/--normalize: restrict to products whose "
+                                   "title contains this text")
+    ap.add_argument("--via-publish", action="store_true",
+                    help="with --repair/--normalize: sync a stale Shopify copy by publishing "
+                         "the product from Printify with only the description flag on, "
+                         "instead of writing descriptionHtml to Shopify directly")
     args = ap.parse_args()
 
+    if args.via_publish and not (args.repair or args.normalize):
+        raise SystemExit("--via-publish only applies with --repair or --normalize.")
     if args.repair or args.normalize:
-        repair(report_only=args.report_only, normalize=args.normalize)
+        repair(report_only=args.report_only, normalize=args.normalize,
+               only=args.only, via_publish=args.via_publish)
         return
     if not args.temple:
         raise SystemExit("Pass --temple NAME (or --backfill-dated).")
@@ -241,7 +275,7 @@ def main():
         if not fixed:
             print(f"  SKIP {gid}: no fixed-section assets found")
             continue
-        c.update_product(pid, {"description": fixed + "\n\n" + facts})
+        c.update_product(pid, {"description": compose_description(fixed, facts)})
         after = c.get_product(pid)
         print(f"  {after['title']!r}: description written ({len(after['description'])} chars)")
 
