@@ -30,6 +30,28 @@ _FACTS_SECTION_RE = re.compile(
 _ASOF_RE = re.compile(r'<p class="temple-facts__asof">.*?</p>\s*$', re.S)
 _HEADING_RE = re.compile(r'\s*(<h([34])[^>]*>.*?</h\2>)', re.S)
 _VIDEO_TAG_RE = re.compile(r'<video [^>]*>')
+_SIZE_GUIDE_TAIL_RE = re.compile(
+    r'(<section class="size-guide">.*?</video>).*?(</section>)', re.S)
+_STYLE_RE = re.compile(r'<style class="temple-facts__style">.*?</style>\n?', re.S)
+
+# Scoped styling for the collapsed rows, shipped inside the facts section so
+# it rides every description without theme work. Evan's theme hides the
+# default disclosure markers and gives headings tall margins, so this adds
+# dividing lines, tight row padding, and a +/- indicator. Literal characters
+# only: the Printify connector decodes entities on push.
+FACTS_STYLE = (
+    '<style class="temple-facts__style">'
+    'section.temple-facts details{border-top:1px solid #d8d8d8}'
+    'section.temple-facts details:last-of-type{border-bottom:1px solid #d8d8d8}'
+    'section.temple-facts summary{cursor:pointer;display:flex;'
+    'justify-content:space-between;align-items:center;gap:12px;'
+    'padding:12px 0;list-style:none}'
+    'section.temple-facts summary::-webkit-details-marker{display:none}'
+    'section.temple-facts summary::after{content:"+";flex:none;'
+    'font-size:1.5em;line-height:1}'
+    'section.temple-facts details[open]>summary::after{content:"−"}'
+    'section.temple-facts summary h3,section.temple-facts summary h4{margin:0}'
+    '</style>')
 
 
 def fix_size_guide_video(html):
@@ -51,9 +73,19 @@ def fix_size_guide_video(html):
     return _VIDEO_TAG_RE.sub(add_controls, html)
 
 
+def trim_size_guide(html):
+    """Drop everything after the video inside the size-guide section (the
+    measurements table and its notes): the video IS the size guide (Evan's
+    26 Aug 2026 call). The vendored asset keeps the table; it just never
+    reaches a product."""
+    return _SIZE_GUIDE_TAIL_RE.sub(r'\1\n\2', html)
+
+
 def _unwrap(body):
-    """Strip any details/summary markers this module previously emitted.
-    Safe on canonical fragments: none contain details or summary tags."""
+    """Strip the style block and any details/summary markers this module
+    previously emitted. Safe on canonical fragments: none contain style,
+    details, or summary tags."""
+    body = _STYLE_RE.sub('', body)
     body = re.sub(r'<details[^>]*><summary[^>]*>', '', body)
     body = body.replace('</summary>', '')
     body = re.sub(r'\n?</details>', '', body)
@@ -62,7 +94,7 @@ def _unwrap(body):
 
 def _details_block(heading, rest):
     return ('<details class="temple-facts__block">'
-            f'<summary style="cursor:pointer">{heading}</summary>\n'
+            f'<summary>{heading}</summary>\n'
             f'{rest}\n</details>')
 
 
@@ -90,7 +122,8 @@ def collapse_temple_facts(fragment):
         if not m:
             return fragment
         blocks.append(_details_block(m.group(1), chunk[m.end():].strip()))
-    return "\n".join([open_tag] + blocks + ([tail] if tail else []) + [close_tag])
+    return "\n".join([open_tag, FACTS_STYLE] + blocks
+                     + ([tail] if tail else []) + [close_tag])
 
 
 def collapse_fixed_sections(html):
@@ -117,7 +150,7 @@ def compose_description(fixed, facts=None):
     temple's history); missing facts yield the fixed sections alone."""
     if not fixed:
         return ""
-    polished = collapse_fixed_sections(fix_size_guide_video(fixed))
+    polished = collapse_fixed_sections(trim_size_guide(fix_size_guide_video(fixed)))
     if not facts:
         return polished
     return polished + "\n\n" + collapse_temple_facts(facts.strip())

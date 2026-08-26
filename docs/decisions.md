@@ -311,3 +311,15 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   hard-stop on the new title patterns, so they cannot overwrite anything; if
   they are ever revived they need the same collapse and video treatment, and
   until then a `--normalize` run re-converges anything they touch.
+- **The collapsed rows carry their own scoped `<style>` block** (Evan's
+  iPhone review, same day: rows too far apart, no dividers, and the theme
+  hides the default disclosure markers so nothing said the rows open).
+  `FACTS_STYLE` ships inside the facts section: divider lines, 12px row
+  padding, zeroed heading margins, and a +/− indicator on the right.
+  Literal characters, no entities (the connector decodes them). Measured
+  surviving the Printify PUT and the connector push intact on Vernal.
+- **The size-guide measurements table is dropped at assembly; the video IS
+  the size guide** (same review). `trim_size_guide()` keeps the h3 and the
+  video and cuts everything after the video inside the section (the h4
+  Measurements table and the width/length note). The vendored asset keeps
+  its table; it just never reaches a product.

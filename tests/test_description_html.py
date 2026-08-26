@@ -9,8 +9,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from description_html import (collapse_temple_facts, compose_description,
-                              fix_size_guide_video)
+from description_html import (FACTS_STYLE, collapse_temple_facts,
+                              compose_description, fix_size_guide_video,
+                              trim_size_guide)
 from generate import TEMPLES_DIR, fixed_description, load_garment_config
 from scripts.write_description import FACTS_RE, is_broken
 
@@ -34,6 +35,9 @@ VIDEO_HTML = """<section class="size-guide">
 <video autoplay="autoplay" loop="loop" muted="" playsinline="" preload="none" style="display:block;width:100%">
 <source src="https://cdn.example/a.webm" type="video/webm">
 <source src="https://cdn.example/b.mp4" type="video/mp4"></source></video>
+<h4>Measurements (inches)</h4>
+<table><tbody><tr><td>S</td><td>18.25</td></tr></tbody></table>
+<p>Width is measured underarm to underarm.</p>
 </section>"""
 
 
@@ -47,9 +51,11 @@ def collapsed_shape(out, fragment):
     asof_pos = out.find('<p class="temple-facts__asof">')
     assert asof_pos > out.rfind("</details>"), "as-of line must sit after the last details block"
     assert asof_pos < out.rfind("</section>"), "as-of line must sit inside the section"
+    assert out.count(FACTS_STYLE) == 1, "exactly one scoped style block"
+    assert out.find(FACTS_STYLE) < out.find("<details"), "style block precedes the rows"
     # Heading tags ride inside the summaries, byte-identical.
     for heading in re.findall(r"<h[34][^>]*>.*?</h[34]>", fragment, re.S):
-        assert f"<summary style=\"cursor:pointer\">{heading}</summary>" in out, heading
+        assert f"<summary>{heading}</summary>" in out, heading
 
 
 # The mini fragment plus real fragments: one with Changes Over Time, one without.
@@ -93,11 +99,22 @@ assert 'preload="metadata"' in fixed_video and 'preload="none"' not in fixed_vid
 assert "</source></video>" in fixed_video, "malformed tail must ride through untouched"
 assert fix_size_guide_video(fixed_video) == fixed_video, "video fix must be idempotent"
 
-# The real assets: every garment's size guide gains controls and metadata preload.
+# Size-guide trim: the video IS the size guide; the table and notes go.
+trimmed = trim_size_guide(fixed_video)
+assert "</video>\n</section>" in trimmed
+assert "<table" not in trimmed and "Measurements (inches)" not in trimmed
+assert "Width is measured" not in trimmed
+assert "<h3>Size Guide</h3>" in trimmed and "</source></video>" in trimmed
+assert trim_size_guide(trimmed) == trimmed, "trim must be idempotent"
+
+# The real assets: every garment's size guide gains controls and metadata
+# preload, and ships without the measurements table.
 for garment in ("cc1717", "cc1717-dated", "cc1566", "cc1567"):
     out = compose_description(fixed_description(load_garment_config(garment)))
     assert out.count('controls="controls"') == 1, garment
     assert 'preload="none"' not in out, garment
+    assert "<table" not in out and "Measurements (inches)" not in out, garment
+    assert "<h3>Size Guide</h3>" in out, garment
 
 # The dated tee's composed description still starts with the raw
 # Personalization opener that is_broken() checks.
