@@ -323,3 +323,25 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   video and cuts everything after the video inside the section (the h4
   Measurements table and the width/length note). The vendored asset keeps
   its table; it just never reaches a product.
+
+## 26 August 2026 (Temples/All mirror for the digital download files)
+
+- **Every temple's black SVG is duplicated into `Temples/All/`** (Evan's
+  direction, same day he built the Temple Art File product on Shopify: 40
+  variants, $4.95 SVG download, delivery wired through a digital products
+  app that wants one flat folder of files). The copy is named by the CLEAN
+  place token, never the folder name: `Manhattan black.svg`,
+  `Washington D.C. black.svg`, `Ogden Original black.svg`, no ref-finder
+  stars. `mirror_black_art()` in generate.py does the copy; it runs per
+  temple in every sweep (not report-only) and every `--temple` run, right
+  after the manifest loads, and refreshes the copy when the source art is
+  newer. The 40 existing temples were backfilled the same day.
+- **`Temples/All/` is not a temple folder.** The sweep walk skips it by
+  name (`ALL_ART_DIR`); nothing scaffolds a manifest for it. Any future
+  script that walks `Temples/` must skip it too.
+- Found while backfilling: Evan had renamed the misspelled `Manhatten`
+  folder and its files to `Manhattan`, stranding the manifest's art
+  filenames. The manifest was fixed to match (manifests are
+  pipeline-maintained). A renamed folder strands its manifest silently
+  until the next run; the `Manifest names missing art file` hard stop is
+  the tell.

@@ -34,6 +34,7 @@ import base64
 import io
 import json
 import re
+import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -46,6 +47,9 @@ from layout import PROJECT_ROOT, TempleArt, load_art
 from printify_client import PrintifyClient, PrintifyError, load_config
 
 TEMPLES_DIR = PROJECT_ROOT.parent.parent / "Temples"
+# Flat folder of every temple's black SVG under its clean place-token name,
+# kept for the digital download files. Not a temple folder; the sweep skips it.
+ALL_ART_DIR = TEMPLES_DIR / "All"
 ASSETS_DIR = PROJECT_ROOT.parent.parent / "Important Elements"
 LOGO_FILES = {"black": ASSETS_DIR / "Peculiar People Logo - Black.png",
               "white": ASSETS_DIR / "Peculiar People Logo - White.png"}
@@ -167,6 +171,20 @@ def scaffold_manifest(temple_name):
     print(f"scaffolded manifest for {temple_name}: {entry['location_line']} "
           f"({manifest['art']['black']} / {manifest['art']['white']})")
     return manifest
+
+
+def mirror_black_art(temple_name, manifest):
+    """Duplicate the temple's black SVG into Temples/All/ under its clean
+    place-token name (folder names can carry ref-finder stars and old
+    spellings; the token is the customer-facing name). Refreshes the copy
+    when the source art is newer; the source is never touched."""
+    src = TEMPLES_DIR / temple_name / manifest["art"]["black"]
+    dest = ALL_ART_DIR / f"{manifest['place_tokens']['default']} black.svg"
+    if dest.exists() and dest.stat().st_mtime >= src.stat().st_mtime:
+        return
+    ALL_ART_DIR.mkdir(exist_ok=True)
+    shutil.copy2(src, dest)
+    print(f"  mirrored {src.name} -> Temples/All/{dest.name}")
 
 
 def load_manifest(temple_name):
@@ -486,7 +504,7 @@ def sweep(c, args):
     existing_titles = {p["title"].strip() for p in fetch_all_products(c)}
     rows, generated = [], 0
     for folder in sorted(TEMPLES_DIR.iterdir()):
-        if not folder.is_dir() or folder.name.startswith((".", "1.")):
+        if not folder.is_dir() or folder.name.startswith((".", "1.")) or folder == ALL_ART_DIR:
             continue
         temple = folder.name
         try:
@@ -504,6 +522,8 @@ def sweep(c, args):
         except SystemExit as e:
             rows.append((temple, "-", f"NEEDS LOCATION VERIFICATION"))
             continue
+        if not args.report_only:
+            mirror_black_art(temple, manifest)
         listed = manifest.get("garments", "all")
         garment_ids = all_garment_ids() if listed == "all" else listed
         results, errors = [], []
@@ -587,6 +607,7 @@ def main():
 
     c = None if (args.dry_run and args.fixture) else PrintifyClient(*load_config())
     manifest = load_manifest(args.temple)
+    mirror_black_art(args.temple, manifest)
     listed = manifest.get("garments", "all")
     if args.garments:
         garment_ids = args.garments.split(",")
