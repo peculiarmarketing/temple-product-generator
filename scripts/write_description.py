@@ -33,6 +33,26 @@ from shopify_client import ShopifyClient, ShopifyError
 FACTS_RE = re.compile(r'<section class="temple-facts">.*</section>', re.S)
 DATED_GARMENT = "cc1717-dated"
 
+
+def canon(html):
+    """A description's canonical form, for comparisons only. Never written.
+
+    Both stores rewrite HTML they are handed (all measured 26 Aug 2026): the
+    Printify connector decodes character entities on push (&sup2; arrives on
+    Shopify as a literal superscript two), serializes a video's last <source>
+    as <source ...></source></video> whether or not the input closed it (the
+    tee asset carries that form natively, which is why only crews and hoodies
+    showed that drift), and collapses XHTML-style <br /> to <br> (the six
+    old hand-researched temples carry <br /> in their facts). A save from
+    the Printify editor UI decodes entities on the Printify side too.
+    Rendering is identical in every case, so byte compares would rewrite and
+    re-publish render-identical products forever."""
+    html = unescape(html)
+    html = html.replace("<br />", "<br>").replace("<br/>", "<br>")
+    html = html.replace("</source>", "")
+    html = re.sub(r"<li>\s+", "<li>", html)
+    return re.sub(r"\s*</video>", "</video>", html)
+
 # --via-publish: sync ONLY the description through Printify's publish. A
 # full-flag publish is the measured-destructive republish (deletes art cards,
 # reverts the hoodie colorway and the color order), so every other flag stays
@@ -178,13 +198,11 @@ def repair(report_only=False, normalize=False, only=None, via_publish=False):
         opener = fixed.split("\n\n")[0] if garment == "cc1717-dated" else ""
         live = shopify_by_title.get(title)
         if normalize:
-            needs_printify = (product.get("description") or "").strip() != wanted
-            # Entity-insensitive on the Shopify side: the Printify connector
-            # decodes character entities on push (&sup2; arrives as a literal
-            # superscript two, measured 26 Aug 2026 on Vernal), so a byte
-            # compare would re-sync every product forever. Rendering is
-            # identical either way.
-            needs_shopify = live is not None and unescape(live.strip()) != unescape(wanted)
+            # Compared in canonical form (see canon): both stores rewrite
+            # render-identical HTML, so byte compares never converge.
+            wanted_c = canon(wanted)
+            needs_printify = canon((product.get("description") or "").strip()) != wanted_c
+            needs_shopify = live is not None and canon(live.strip()) != wanted_c
         else:
             needs_printify = is_broken(product.get("description"), opener)
             needs_shopify = live is not None and is_broken(live, opener)

@@ -345,3 +345,35 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   pipeline-maintained). A renamed folder strands its manifest silently
   until the next run; the `Manifest names missing art file` hard stop is
   the tell.
+
+## 26 August 2026 (catalog description rollout, canonical comparison)
+
+- **The collapsed-facts catalog rollout is complete: 158 of 162 products
+  verified in sync on both stores.** Run via `write_description.py
+  --normalize --via-publish` (interrupted once by a session restart and
+  resumed; the pass is convergent so the resume was a plain re-run). One
+  transient lock ("Product is disabled for editing", Printify error 8252,
+  the Layton hoodie) resolved itself when its in-flight publish finished.
+- **Descriptions are compared in canonical form (`canon()` in
+  write_description.py), never byte-for-byte.** Both stores rewrite
+  render-identical HTML, all measured 26 Aug 2026: the Printify connector
+  decodes character entities on push, serializes the video tail as
+  `</source></video>` (the tee asset carries that form natively, which is
+  why only crews and hoodies drifted), collapses `<br />` to `<br>` (the
+  six old hand-researched temples carry `<br />` in their facts), and
+  whitespace after `<li>` is unstable across round trips (Logan). A save
+  from the Printify editor UI decodes entities on the Printify side too
+  (Evan's publish retries did this to the Saratoga Springs products).
+  Canonicalization is comparison-only; stored bytes are never rewritten to
+  match it.
+- **OPEN: all four Saratoga Springs products fail to publish from
+  Printify.** Their Shopify descriptions are stale (still pre-collapse) and
+  Evan sees repeated publish-failure banners in the Printify UI, including
+  for his own manual retries, so it is not the description-only flags. The
+  products are API-identical to healthy ones (variants 52/52 aligned,
+  options matching, external link resolves to an ACTIVE Shopify product,
+  description well-formed). The failure reason is only visible in the
+  Printify UI banner. Workaround if wanted: write descriptionHtml to
+  Shopify directly (`--normalize --only "Saratoga Springs"` without
+  `--via-publish`), which fixes the storefront but not the broken publish
+  path.
