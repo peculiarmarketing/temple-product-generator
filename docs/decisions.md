@@ -366,14 +366,16 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   (Evan's publish retries did this to the Saratoga Springs products).
   Canonicalization is comparison-only; stored bytes are never rewritten to
   match it.
-- **OPEN: all four Saratoga Springs products fail to publish from
-  Printify.** Their Shopify descriptions are stale (still pre-collapse) and
-  Evan sees repeated publish-failure banners in the Printify UI, including
-  for his own manual retries, so it is not the description-only flags. The
-  products are API-identical to healthy ones (variants 52/52 aligned,
-  options matching, external link resolves to an ACTIVE Shopify product,
-  description well-formed). The failure reason is only visible in the
-  Printify UI banner. Workaround if wanted: write descriptionHtml to
-  Shopify directly (`--normalize --only "Saratoga Springs"` without
-  `--via-publish`), which fixes the storefront but not the broken publish
-  path.
+- **RESOLVED same day: the Saratoga Springs publish failures were
+  Printify's IP filter tripping on the word "Hardy".** All four products
+  failed to publish (Evan's manual retries included; the reason showed only
+  in the Printify UI banner). The trigger was the temple matron's maiden
+  name, "Marie Ellen Hardy Sorensen", in the First Temple President row:
+  Printify's intellectual-property screen apparently matches the brand Ed
+  Hardy against listing text and blocks the publish. Fix (Evan's call):
+  drop the maiden name from `Temples/Saratoga Springs/temple-facts.html`
+  ("Marie Ellen Sorensen") and re-run `--normalize --via-publish --only
+  "(Saratoga Springs)"`; publishes cleared immediately. TRAP for future
+  descriptions: a publish that fails repeatedly with no API-visible cause
+  may be the IP filter matching an innocent word (names especially) against
+  a brand; check the UI banner and reword.
