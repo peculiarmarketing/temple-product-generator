@@ -32,11 +32,22 @@ Playwright can do it (it is a real program: it can measure images, compute coord
 - **Login:** the script reuses a browser profile Evan logged into once by hand, so it never touches his password. Same pattern as the Printify date-layer setup (real Chrome, dedicated profile, attach over CDP) in `docs/discovery/2026-08-date-layer-editor-notes.md`.
 - **Ongoing cost:** browser automation breaks when Tapstitch redesigns the editor. Maintainable, not set-and-forget. This is the price of no API.
 
+## Open question: buyer personalization (the With Date products)
+
+Checked 27 Aug 2026: Tapstitch's help center and docs show NO buyer-personalization feature like Printify's (where the customer types a date at checkout and it flows into the print automatically). Everything Tapstitch calls "personalization" is seller-side branding (neck labels, hang tags, packaging) or marketing-blog language. Not proven absent; confirm with support@tapstitch.com or inside the dashboard before deciding.
+
+If it truly doesn't exist, the With Date options are:
+1. Manual per-order design edits (Easify collects the date at checkout, someone adds it in the Tapstitch editor per order). Labor on every dated order.
+2. Automate the per-order edit with Playwright. Rejected as a plan: per-order automation has to fire correctly on every incoming order, and a miss prints a customer's shirt wrong.
+3. **Split catalog (current lean):** base products move to Tapstitch for the blanks, With Date products stay on Printify where personalization works natively.
+4. Drop With Date from the Tapstitch lineup.
+
 ## First steps when samples arrive and Evan approves
 
-1. **Manual check (5 minutes):** confirm the Tapstitch editor defaults an upload to centered at full size, or that the size field can hit that exactly. The whole flattened-file approach leans on this.
-2. **Watch the editor's network traffic once** while saving a design by hand. Even without a public API, the editor talks to Tapstitch's servers to save designs, and that traffic usually carries exact positions and upload references. It may allow a sturdier or faster path than UI clicks, and it will tell us how the flattened file maps onto their design storage.
-3. **Prototype one temple end to end** (flattened PNG through published product) before touching the rest of the catalog.
+1. **Ask Tapstitch support whether buyer personalization exists** (see the open question above). The answer shapes whether this is a full migration or a split catalog.
+2. **Manual check (5 minutes):** confirm the Tapstitch editor defaults an upload to centered at full size, or that the size field can hit that exactly. The whole flattened-file approach leans on this.
+3. **Watch the editor's network traffic once** while saving a design by hand. Even without a public API, the editor talks to Tapstitch's servers to save designs, and that traffic usually carries exact positions and upload references. It may allow a sturdier or faster path than UI clicks, and it will tell us how the flattened file maps onto their design storage.
+4. **Prototype one temple end to end** (flattened PNG through published product) before touching the rest of the catalog.
 
 ## Discussion notes (Q&A from the 27 Aug session)
 
