@@ -1,7 +1,46 @@
-# Tapstitch Migration Plan (draft, pending sample verdict)
+# Tapstitch Migration Plan
 
-**Date:** 27 Aug 2026
-**Status:** ON HOLD. Evan ordered Tapstitch samples and will judge the blanks first. Nothing gets built until he approves. If the samples disappoint, this doc is dead and Printify stays.
+**Written:** 27 Aug 2026. **Updated:** 14 Sep 2026.
+**Status:** APPROVED AND UNDER WAY. Evan judged the samples and committed to Tapstitch blanks on 14 Sep 2026. The approach below (bake placement into the file) survived contact and is what got built.
+
+## What changed on 14 Sep 2026 (Evan's decisions)
+
+- **Three lines, all on Tapstitch:** one tee, one hoodie, one crewneck, carrying every temple design. CC1717, CC1566 and CC1567 retire.
+- **The personalizable date tee is PAUSED, not migrated.** This settles the open question below: rather than run a split catalogue to keep one line's personalization alive, the product waits. The split-catalogue lean recorded further down is superseded.
+- **The logo moves off the back to the front print.** The back is temple plus location text only. A new layout profile, `back_temple_text`, does this; the front logo file is generated from Evan's existing logo asset onto a front-print-area-shaped canvas.
+- **The store goes dark in two steps.** Every temple listing drafts now; each old listing is deleted only when its replacement publishes, so the replacement inherits the same handle and the Easify dropdown URLs survive. A DRAFT or ARCHIVED product keeps its handle reserved, which would push the replacement to a '-1' handle.
+- **Printify products stay untouched** as the way back.
+- **Descriptions are written straight to Shopify**, not typed into the Tapstitch editor. The existing writer is proven on 158 products and no Tapstitch redesign can break it.
+
+## What is built (14 Sep 2026)
+
+| Piece | File | State |
+|---|---|---|
+| Flattener | `flatten.py` | Done. 120 of 135 temple/garment pairs build clean, zero validator findings. The 15 gaps are 5 temples with no traced art. |
+| No-logo back layout | `layout.py:back_temple_text` | Done, plus a `vertical_anchor` option for the centring question. |
+| Build sweep | `scripts/tapstitch_build.py` | Done. |
+| Proof sheet | `scripts/tapstitch_preview.py` | Done. https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57 |
+| Migration ledger | `ledger.py`, `scripts/tapstitch_status.py` | Done. 121 rows seeded with the handle each replacement inherits. |
+| Store pull-down | `scripts/store_pulldown.py` | Built and snapshotted. NOT RUN: it changes the live store and needs Evan's go. |
+| Description plumbing | `generate.fixed_description` + `reference/garment-copy/` | Repointed per garment. Copy for the new blanks is not written. |
+| Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Written, never exercised. |
+| Editor automation | `config/tapstitch.json`, `scripts/tapstitch_publish.py` | Config scaffolded with 18 nulls; the Shopify half works, the editor half waits on a live session. |
+
+Blanks chosen 14 Sep 2026: tee RU0010, crew UT0044, hoodie RW0041, all DTG,
+international fulfillment, Special Line shipping, front and back print. Full specs
+and costs in `docs/decisions.md` and BRAND.md section 7.
+
+Still blocked on Evan: the print area dimensions (only readable inside the
+Tapstitch editor, so they come with the first live session), the storefront lead
+colour and prices for each line, which colourways print white versus black ink,
+the two back-spacing calls on the proof sheet, and his go-ahead to run the
+pull-down.
+
+---
+
+## Original plan, 27 Aug 2026
+
+
 
 ## Context
 
@@ -32,7 +71,7 @@ Playwright can do it (it is a real program: it can measure images, compute coord
 - **Login:** the script reuses a browser profile Evan logged into once by hand, so it never touches his password. Same pattern as the Printify date-layer setup (real Chrome, dedicated profile, attach over CDP) in `docs/discovery/2026-08-date-layer-editor-notes.md`.
 - **Ongoing cost:** browser automation breaks when Tapstitch redesigns the editor. Maintainable, not set-and-forget. This is the price of no API.
 
-## Open question: buyer personalization (the With Date products)
+## Open question: buyer personalization (the With Date products) [SUPERSEDED 14 Sep 2026: Evan paused the dated tee; option 4 in effect, not option 3]
 
 Checked 27 Aug 2026: Tapstitch's help center and docs show NO buyer-personalization feature like Printify's (where the customer types a date at checkout and it flows into the print automatically). Everything Tapstitch calls "personalization" is seller-side branding (neck labels, hang tags, packaging) or marketing-blog language. Not proven absent; confirm with support@tapstitch.com or inside the dashboard before deciding.
 

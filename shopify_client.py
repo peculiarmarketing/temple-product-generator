@@ -61,14 +61,18 @@ class ShopifyClient:
 
     def all_products_summary(self):
         """One paginated pass over the catalog: [{id, title, handle, status,
-        publishedAt, productType}, ...]. A list, not a dict, so duplicate
-        titles stay visible."""
+        publishedAt, productType, createdAt, vendor}, ...]. A list, not a dict,
+        so duplicate titles stay visible, and they do: two live products shared
+        the exact title "Essential Temple Tee" on 14 Sep 2026. createdAt is what
+        lets a caller tell the original from the later stray, and vendor is what
+        tells a retiring Printify listing from its Tapstitch replacement once
+        both exist under the same title."""
         out, cursor = [], None
         while True:
             data = self.gql("""
               query($after: String) { products(first: 100, after: $after) {
                 pageInfo { hasNextPage endCursor }
-                nodes { id title handle status publishedAt productType } } }""",
+                nodes { id title handle status publishedAt productType createdAt vendor } } }""",
                 {"after": cursor})
             block = data["products"]
             out.extend(block["nodes"])
@@ -108,6 +112,26 @@ class ShopifyClient:
         if errs:
             raise ShopifyError(str(errs))
         return data["productUpdate"]["product"]
+
+    def delete_product(self, product_gid):
+        """Permanently delete one product. Used at swap time only: an old
+        listing is deleted at the moment its Tapstitch replacement publishes,
+        so the replacement inherits the same handle and the Easify dropdown
+        URLs keep resolving. A DRAFT or ARCHIVED product keeps its handle
+        reserved, which would push the replacement to a '-1' handle instead.
+
+        There is no undo. Callers must have the pull-down snapshot on disk.
+        """
+        data = self.gql("""
+          mutation($input: ProductDeleteInput!) {
+            productDelete(input: $input) {
+              deletedProductId
+              userErrors { field message } } }""",
+            {"input": {"id": product_gid}})
+        errs = data["productDelete"]["userErrors"]
+        if errs:
+            raise ShopifyError(str(errs))
+        return data["productDelete"]["deletedProductId"]
 
     def rename_option_value(self, product_gid, option_name, old_value, new_value):
         """Rename one value of one product option, e.g. the hoodie's

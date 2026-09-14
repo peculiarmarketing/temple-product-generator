@@ -31,7 +31,14 @@ There is no unlist fixup anymore. New products stay ACTIVE on Shopify (Evan's
 nothing here touches a product's status either way.
 
 hoodie-color
-  Renames the hoodie colorway "True Navy" to "Blue Jean". Printify labels this
+  Two renames now, both Shopify-only and both under this command.
+
+  Tapstitch colour names, from the `colorways` block in each Tapstitch garment
+  config: Caramel Machiato -> Caramel, Wine Red -> Maroon, Grape Purple -> Grape
+  (Evan's call, 14 Sep 2026). Adding or changing one is a config edit, not a
+  code edit.
+
+  And the older Printify one: renames the hoodie colorway "True Navy" to "Blue Jean". Printify labels this
   colorway True Navy on the CC1567 hoodie, but it does not match the True Navy
   on the CC1717 tee or the CC1566 crew; it matches their Blue Jean. Evan's
   call (22 Aug 2026): Printify has it wrong and the storefront should read
@@ -71,6 +78,43 @@ SIZE_OPTION = "Size"
 SIZE_ORDER = ["S", "M", "L", "XL", "2XL", "3XL", "4XL"]
 OTHER_ORDERS = {SIZE_OPTION: SIZE_ORDER}
 ART_ALT_PREFIX = "Temple line art close-up"
+
+
+def colorway_renames_by_type():
+    """{productType: [(Tapstitch name, storefront name), ...]}.
+
+    Tapstitch's own colour names ship through to Shopify, and three of them are
+    not what Evan wants a customer to read: Caramel Machiato, Wine Red and Grape
+    Purple become Caramel, Maroon and Grape. The mapping lives in each Tapstitch
+    garment config's `colorways`, so adding or renaming a colour is a config edit.
+
+    Shopify-only, exactly like the older hoodie rename: Tapstitch order line items
+    keep their own names, and anything that re-syncs variants from Tapstitch will
+    push the original names back. That is why this is a re-runnable command in the
+    end-of-run sequence and not a one-shot.
+    """
+    out = {}
+    for path in GARMENTS_DIR.glob("*.json"):
+        cfg = load_garment_config(path.stem)
+        if cfg.get("channel") != "tapstitch":
+            continue
+        pairs = [(c["tapstitch"], c["shopify"]) for c in cfg.get("colorways", [])
+                 if c.get("tapstitch") and c.get("shopify") and c["tapstitch"] != c["shopify"]]
+        if pairs:
+            out.setdefault(cfg["product_type"], []).extend(pairs)
+    return out
+
+
+def wants_colorway_renames(product):
+    """Any temple product of a type that has renames declared. Copies, templates
+    and test titles excluded; Limited Edition included, since a mislabeled colour
+    reads equally wrong on a one-off."""
+    if product.get("productType") not in colorway_renames_by_type():
+        return False
+    title = product["title"]
+    if " Temple" not in title:
+        return False
+    return not any(x in title.lower() for x in EXCLUDE_MARKERS if x != "limited edition")
 
 
 def featured_colors_by_type():
@@ -161,19 +205,30 @@ def first_colors_by_type():
     """{Shopify productType: the color that should sit first}, from
     `storefront_first_color` in garments/*.json. Two garments sharing a
     product type must agree; a disagreement is a hard stop rather than a
-    coin flip (the tee and the dated tee are both "T-Shirt")."""
-    out = {}
+    coin flip (the tee and the dated tee are both "T-Shirt").
+
+    A retiring line and its Tapstitch replacement also share a product type,
+    and during the migration BOTH configs exist. They are resolved by
+    preference, not by exclusion: the replacement wins once it declares a
+    color, and until then the retiring line's color is used, because the
+    retiring products are the ones actually live on the store. Skipping
+    retired lines outright would empty this table while they are still the
+    whole catalogue, and every color-order and featured-photo fixup would
+    silently no-op and report success.
+    """
+    out, out_retired = {}, {}
     for path in GARMENTS_DIR.glob("*.json"):
         cfg = load_garment_config(path.stem)
         color = cfg.get("storefront_first_color")
         if not color:
             continue
         ptype = cfg["product_type"]
-        if out.get(ptype, color) != color:
+        table = out_retired if cfg.get("retired") else out
+        if table.get(ptype, color) != color:
             raise SystemExit(f"{ptype}: garments disagree on storefront_first_color "
-                             f"({out[ptype]!r} vs {color!r}). Fix garments/*.json.")
-        out[ptype] = color
-    return out
+                             f"({table[ptype]!r} vs {color!r}). Fix garments/*.json.")
+        table[ptype] = color
+    return {**out_retired, **out}
 
 
 def wants_color_order(product):
@@ -211,7 +266,13 @@ def fix_published_product(client, product_gid, product_type, report_only=False):
         elif client.rename_option_value(product_gid, HOODIE_OPTION,
                                         HOODIE_OLD_COLOR, HOODIE_NEW_COLOR):
             actions.append(f"{HOODIE_OLD_COLOR} -> {HOODIE_NEW_COLOR}")
-    # After the rename, so a hoodie asking for Blue Jean finds it under that name.
+    for old_name, new_name in colorway_renames_by_type().get(product_type, []):
+        if report_only:
+            actions.append(f"would rename {old_name} -> {new_name}")
+        elif client.rename_option_value(product_gid, COLOR_OPTION, old_name, new_name):
+            actions.append(f"{old_name} -> {new_name}")
+    # After the renames, so a product asking for a storefront colour name finds
+    # it under that name rather than Tapstitch's or Printify's original.
     first = first_colors_by_type().get(product_type)
     if first:
         if report_only:
@@ -243,7 +304,14 @@ def run(command, report_only=False, handle=None):
             elif client.rename_option_value(gid, HOODIE_OPTION,
                                             HOODIE_OLD_COLOR, HOODIE_NEW_COLOR):
                 actions.append(f"{HOODIE_OLD_COLOR} -> {HOODIE_NEW_COLOR}")
-        # After the rename, so a hoodie asking for Blue Jean finds it under that name.
+        if do_color and wants_colorway_renames(product):
+            for old_name, new_name in colorway_renames_by_type()[product["productType"]]:
+                if report_only:
+                    actions.append(f"maybe {old_name} -> {new_name}")
+                elif client.rename_option_value(gid, COLOR_OPTION, old_name, new_name):
+                    actions.append(f"{old_name} -> {new_name}")
+        # After the renames, so a product asking for a storefront colour name finds
+        # it under that name rather than Tapstitch's or Printify's original.
         if do_order and wants_color_order(product):
             first = first_colors[product["productType"]]
             if report_only:

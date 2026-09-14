@@ -1,0 +1,51 @@
+{
+  "_comment": "Every step the Tapstitch web editor needs, as configuration rather than code. Tapstitch has no public API, so product creation goes through their editor; when they redesign it, this file is what gets repaired, not the runner. EVERY null below is unknown and must be filled in during the first live session with the editor open. scripts/tapstitch_publish.py refuses to run while any required value is null and prints exactly which ones are missing.",
+  "_first_session_checklist": [
+    "BEFORE writing a single selector: open the network tab and save a design by hand. The save call almost certainly carries exact positions and upload references. If it does, a direct call is far sturdier than clicking through the UI and this whole file may be replaceable.",
+    "Confirm the exact colour swatch names for each blank against the `colorways` block in garments/*.json. Evan supplied those names and the tee's were carried over from a blank it no longer uses, so a spelling may differ. A mismatch is silent: the storefront rename finds nothing to rename and the colour reorder cannot find its lead colour.",
+    "Confirm an uploaded file defaults to centred at full size, or that the size field can hit that exactly. The entire flattened-file approach rests on this one behaviour.",
+    "Check whether the editor accepts a file whose canvas already matches the print area proportions without re-cropping it.",
+    "Do one temple end to end by hand before letting the runner touch the catalogue."
+  ],
+  "urls": {
+    "new_product": null,
+    "products_list": null,
+    "_note": "Filled from the address bar during the first session."
+  },
+  "selectors": {
+    "blank_search_input": null,
+    "blank_result_by_name": null,
+    "start_designing_button": null,
+    "print_area_tab_back": null,
+    "print_area_tab_front": null,
+    "upload_file_input": null,
+    "uploaded_asset_thumbnail": null,
+    "design_size_input": null,
+    "design_size_unit_toggle": null,
+    "product_title_input": null,
+    "save_design_button": null,
+    "publish_button": null,
+    "publish_confirm_button": null,
+    "publish_success_marker": null
+  },
+  "values": {
+    "design_size": null,
+    "_design_size_note": "The one number typed into the size field every run. Because the file is the exact shape of the print area, the same value works for every temple on a given garment. Record it per garment if they differ.",
+    "size_unit": null
+  },
+  "timing": {
+    "page_load_timeout_ms": 60000,
+    "upload_timeout_ms": 180000,
+    "save_timeout_ms": 120000,
+    "publish_timeout_ms": 300000,
+    "_note": "Uploads of 4500x5100 PNGs and the publish-to-Shopify round trip are both slow. The Printify pipeline learned that publishes can far exceed a 240s window and still complete, so the runner confirms against Shopify rather than trusting the editor's own success state."
+  },
+  "post_publish": {
+    "set_product_type": true,
+    "_set_product_type_note": "LOAD-BEARING. Tapstitch publishes with an EMPTY productType, and every fixup in scripts/shopify_fixups.py is keyed on it, so colour ordering and the featured photo silently do nothing without this. Measured 14 Sep 2026; see docs/discovery/2026-09-tapstitch-store-findings.md.",
+    "write_description": true,
+    "push_art_card": true,
+    "delete_old_listing": true,
+    "_delete_old_listing_note": "Evan's decision, 14 Sep 2026: the old Printify listing is deleted at the moment its replacement publishes, so the replacement inherits the same web address. A DRAFT or ARCHIVED product keeps its handle reserved and would push the replacement to a '-1' handle, breaking the Easify dropdown URLs."
+  }
+}

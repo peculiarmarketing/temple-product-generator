@@ -1,6 +1,17 @@
 # Temple Product Generator
 
-Generates Peculiar People temple products on Printify from templates, one product per temple per garment. The authoritative spec is `docs/temple-catalog-generator-plan.md` (Revision 2). Work proceeds phase by phase; a phase does not start until the previous phase's gate has been confirmed by Evan.
+Generates Peculiar People temple products, one product per temple per garment.
+
+**Two channels as of 14 September 2026.** The catalogue is moving from Printify
+to Tapstitch blanks (Evan's decision; see `docs/tapstitch-migration-plan.md`).
+The Printify pipeline stays on disk as the fallback and is not deleted until
+Tapstitch is proven on real orders. Garment configs carry a `channel` field and
+the two paths never touch each other's garments.
+
+The authoritative spec for the Printify pipeline is
+`docs/temple-catalog-generator-plan.md` (Revision 2). Work proceeds phase by
+phase; a phase does not start until the previous phase's gate has been confirmed
+by Evan.
 
 ## Status
 
@@ -24,16 +35,48 @@ Put the Printify Personal Access Token in `.env` (see the placeholder comments i
 
 ## Layout
 
-- `printify_client.py`: the Printify REST client. Shared by exploration and production code.
-- `scripts/phase1.py`: Phase 1 driver. One subcommand per spec step; see `docs/phase1-runbook.md`.
-- `artifacts/phase1/`: every raw API response plus `findings.md`, the Phase 1 gate report.
-- `docs/`: the spec and the runbook.
+Shared by both channels:
+
+- `layout.py`: the layout engine. Positions everything from the temple's INK, never its SVG frame.
+- `generate.py`: temple manifests, art detection, description assembly. Also the Printify pipeline.
+- `description_html.py`, `shopify_client.py`: description assembly and the Shopify Admin API.
+- `reference/garment-copy/{garment_id}/`: each garment's product intro and size guide.
+
+Printify only:
+
+- `printify_client.py`: the Printify REST client.
+- `scripts/phase1.py`, `artifacts/phase1/`: Phase 1 driver and its gate report.
+- `scripts/add_date_layer.py`, `scripts/printify_login.py`: the date-layer browser automation.
+
+Tapstitch only:
+
+- `flatten.py`: composites one temple into one flattened, print-area-shaped PNG, and validates it.
+- `ledger.py`: the migration ledger, one row per temple per garment.
+- `browser_session.py`, `scripts/tapstitch_login.py`: the dedicated-Chrome session, on port 9223.
+- `config/tapstitch.json`: every editor step as configuration. Nulls need one live session.
+- `scripts/tapstitch_build.py`: build every print file from a scan of the Temples folder.
+- `scripts/tapstitch_preview.py`: the proof sheet Evan reviews before anything uploads.
+- `scripts/tapstitch_status.py`: where the migration has got to.
+- `scripts/tapstitch_publish.py`: the editor half plus the Shopify half.
+- `scripts/store_pulldown.py`: take the Printify catalogue off the storefront.
 
 Reserved at project root for later phases (do not create early): `layout.py`, `preview.py`, `generate.py`, `garments/`, `spacing_defaults.json`. Temple manifests will live in the existing `../Temples/{Name}/` folders.
 
 The venv is named `.venv.nosync` so iCloud Drive does not sync interpreter files. If it is ever lost, recreate it from `requirements.txt`.
 
-## End-of-run sequence
+## Tapstitch sequence
+
+```
+scripts/store_pulldown.py snapshot            # record the catalogue. Always first.
+scripts/store_pulldown.py draft                # dry run by default; read it with Evan
+scripts/store_pulldown.py draft --apply        # the real thing. Evan initiates this.
+scripts/tapstitch_build.py --report-only       # validate every design, write no files
+scripts/tapstitch_preview.py                   # the proof sheet, for Evan's gate
+scripts/tapstitch_build.py                     # write the print files, once blanks are picked
+scripts/tapstitch_publish.py check             # what is still blocking a run
+```
+
+## Printify end-of-run sequence
 
 1. Run the sweep or a targeted generate (`generate.py --sweep` or `--temple ...`) to produce drafts.
 2. (Optional) `scripts/add_date_layer.py` adds date layers to With Date drafts via the browser; skipping it means adding layers by hand as before.

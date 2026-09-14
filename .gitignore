@@ -4,3 +4,9 @@ __pycache__/
 *.pyc
 .DS_Store
 .playwright*/
+
+# Regenerable review output. scripts/tapstitch_preview.py rebuilds the whole
+# sheet in about seven minutes, and it is rebuilt on every spacing change, so
+# committing ~6MB of PNGs each time would bloat history for no gain. The
+# published artifact is the shareable copy.
+artifacts/tapstitch-previews/

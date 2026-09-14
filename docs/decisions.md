@@ -379,3 +379,203 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   descriptions: a publish that fails repeatedly with no API-visible cause
   may be the IP filter matching an innocent word (names especially) against
   a brand; check the UI banner and reword.
+
+
+## 14 September 2026 (the Tapstitch decision and what it changed)
+
+- **Evan committed to Tapstitch blanks**: one tee, one hoodie, one crewneck for
+  every temple design. CC1717, CC1566 and CC1567 retire. The specific blanks are
+  NOT picked yet, so print areas, colours, prices and product copy are all still
+  placeholder.
+- **The personalizable date tee is PAUSED, not migrated.** This closes the
+  27 Aug open question about Tapstitch buyer personalization: rather than run a
+  split catalogue to keep one line alive, the product waits. The split-catalogue
+  lean in the migration plan is superseded.
+- **The logo moved off the back print to the front.** New layout profile
+  `back_temple_text` (temple plus location text). The existing `back_stack` and
+  `back_stack_dated` are untouched so the Printify fallback still works.
+- **Two back-spacing questions were raised by that change and are open.**
+  Measured across all 40 designs: removing the logo left the old 2.5in bottom
+  margin as the only thing capping tall temples (Salt Lake prints 11.1in against
+  a 12.5in target), and top-anchoring leaves between 2.5in and 8.6in of empty
+  canvas below the location line depending on the building's proportions.
+  `vertical_anchor: "center"` exists as the alternative. Proof sheet:
+  https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57
+- **Store pull-down is two steps, deliberately.** Every temple listing drafts
+  now; each old listing is deleted only when its replacement publishes. Mechanism
+  that forces this: a DRAFT or ARCHIVED Shopify product keeps its handle
+  reserved, so a replacement under the same title would be minted at a '-1'
+  handle and every Easify dropdown URL would break. Deleting at swap time lets
+  the replacement inherit the exact address. `scripts/store_pulldown.py` has
+  snapshot / draft / restore / delete, and snapshot must run first because the
+  temple-to-handle mapping is only reliably readable while the catalogue is intact.
+- **Descriptions go straight to Shopify, never through the Tapstitch editor.**
+  The writer is proven on 158 products and no Tapstitch redesign can break it.
+- **Garment copy moved out of the description skills** into
+  `reference/garment-copy/{garment_id}/`. Three new blanks would otherwise have
+  meant three new skills holding two HTML files each. The four Comfort Colors
+  descriptions were verified byte-identical before and after the move. The
+  Tapstitch folders hold a README and NO html files on purpose: `fixed_description()`
+  returns empty when the files are absent, and an empty description beats the
+  wrong garment's specifications on a live page, so a placeholder would defeat
+  the guard.
+- **MEASURED: Tapstitch publishes to Shopify with an EMPTY productType**, and
+  every fixup in `scripts/shopify_fixups.py` is keyed on that field, so colour
+  ordering and the featured photo silently do nothing and report success. The
+  runner sets productType immediately after publish, before any fixup. Full
+  findings in `docs/discovery/2026-09-tapstitch-store-findings.md`, including the
+  four Tapstitch test products Evan left as drafts on 28 Aug and their real
+  colours and prices.
+- **FOUND ON THE LIVE STORE: two products share the exact title "Essential
+  Temple Tee".** `salt-lake-city-temple-tee` (created 8 Aug, Moss first, carries
+  the art card) is the real parent; `essential-temple-tee` (created 27 Aug, Navy
+  first, no art card) is a stray. Only one address can be inherited, so the
+  snapshot keeps the OLDEST and reports the collision rather than letting
+  last-write-wins pick. The stray still needs a decision.
+- **The repo was in an iCloud conflict state** when this work started: empty
+  shells named `garments`, `config`, `scripts`, `docs`, `tests`, `artifacts`,
+  `fonts`, `reference` beside the real content in `<name> 2` twins. Git reported
+  every tracked file as deleted and `generate.py` could not read its own configs.
+  Resolved by confirming each plain directory held zero files, then moving the
+  twins back. If it recurs, that is the check to run first.
+- **Trap found in this session's own code:** an `lru_cache` on print-area-sized
+  rasters (~67MB each) at maxsize=256 holds gigabytes and the machine swaps
+  instead of working. Caches are capped at 8 and 4; callers iterate temple-major
+  so that covers every repeat within one temple.
+
+## 14 September 2026, later (the blanks)
+
+Evan chose all three blanks. Specs below were read off the live Tapstitch product
+pages the same day, not taken from the chat.
+
+| Line | Blank | Code | Weight | Sizes | Blank cost |
+|---|---|---|---|---|---|
+| tee | Pure Cotton Unisex T-Shirt #RU0010 | RU0010-C001-V6 | 180 gsm, 5.3 oz | M-3XL | $2.99 |
+| crew | Boxy Fleece Crewneck Sweatshirt #UT0044 | UT0044-P001-V3 | 345 gsm, 10.2 oz | S-2XL | $14.99 |
+| hoodie | Essential Oversized Boxy Fit Fleece Hoodie #RW0041 | RW0041-P001-V3 | 345 gsm, 10.2 oz | S-2XL | $16.99 |
+
+All three: DTG, international fulfillment, Special Line shipping (9-14 days),
+front and back print at $2.99 per frame. Production 1-3 days, so 10-17 days to a
+customer's door. The crew and hoodie are a matching set (same fabric, same colours).
+
+- **Colours are now in the garment configs** as a `colorways` list, each entry
+  carrying the Tapstitch name, the storefront name and which ink that colourway
+  prints. Tee: Black, Charcoal Gray, Caramel Machiato, Wine Red, Grape Purple.
+  Crew and hoodie: Black, Dark Gray, Haze Blue, Navy Blue, Dark Green, Coffee.
+- **Three tee colours are renamed on the storefront** (Evan's call): Caramel
+  Machiato to Caramel, Wine Red to Maroon, Grape Purple to Grape.
+  `scripts/shopify_fixups.py` gained `colorway_renames_by_type()`, which reads
+  those pairs from the configs rather than hardcoding them the way the older
+  Printify hoodie rename does. Same caveat as that one: it is Shopify-only, so a
+  variant re-sync from Tapstitch pushes the original names back, which is why it
+  stays a re-runnable command in the end-of-run sequence. The renames run BEFORE
+  the colour reorder, so a reorder asking for a storefront name finds it.
+- **Ink per colourway is a first pass.** Everything is white except Caramel,
+  which is set to black. Needs Evan's eye on a real mockup.
+- **PRINT AREAS ARE STILL UNKNOWN.** Not on the public product pages; only inside
+  the Tapstitch editor. They stay placeholders until the first live session, and
+  `tapstitch_publish.py check` still names them as blocking.
+
+THREE PROBLEMS WITH THE LINEUP, raised to Evan the same day:
+1. The RU0010 tee is 180 gsm / 5.3 oz, LIGHTER than the Comfort Colors 1717 it
+   replaces, when the stated reason for the whole migration was wanting heavier.
+   The fleece at 345 gsm does deliver that; the tee does not.
+2. The tee has NO SMALL (M-3XL) and Tapstitch's own page warns the sizing is
+   smaller than standard.
+3. Size ranges do not line up: tee M-3XL, fleece S-2XL. Only M, L, XL and 2XL
+   exist across all three lines.
+
+Also worth modelling before any multi-buy offer: per-additional-item shipping is
+about $1.55 (tee), $4.80 (crew), $6.70 (hoodie). Multi-temple orders are one of
+the three named AOV levers and this works against it.
+
+## 14 September 2026, later still (tee swapped, prices, real costs)
+
+- **The tee blank changed from RU0010 to RT0063** the same day it was chosen.
+  Raised three problems with the RU0010: 180 gsm / 5.3 oz (LIGHTER than the
+  Comfort Colors 1717 it replaces, defeating the stated reason for the migration),
+  no Small, and a "sizing is smaller than standard" warning on Tapstitch's own
+  product page. The RT0063 Essential Cotton T-Shirt is 260 gsm / 7.7 oz, runs
+  S-3XL, has no sizing warning, and costs $5.99 rather than $2.99.
+- **Colours settled.** Tee: Black, Dark Gray, Coffee, Navy Blue, Wine Red (shown
+  as Maroon). Crew and hoodie: Black, Dark Gray, Haze Blue, Navy Blue, Dark Green,
+  Coffee. Four of the five tee colours are shared with the fleece, so the
+  catalogue reads as one family. Caramel, Charcoal Gray and Grape are gone with
+  the RU0010.
+- **Every colourway in the range is dark, so every design prints WHITE.** There is
+  no light colourway and no second art file to manage. If a light colourway is
+  ever added, its `ink` must be set to black and the black art files built.
+- **Only one rename survives:** Wine Red to Maroon. Driven from the config, not code.
+- **Storefront opens on:** tee Black, crew Coffee, hoodie Dark Gray (Evan).
+- **Prices unchanged:** $44.99 tee, $64.99 crew, $74.99 hoodie.
+- **Real unit costs are Evan's figures, not Tapstitch list arithmetic:** $20.57
+  tee, $32.55 crew, $36.77 hoodie, including blank, both print sides, shipping,
+  custom neck tag, hangtag, order insert and payment gateway fees. Recorded in
+  each garment config under `costs_usd.all_in_per_unit`, which is the number to
+  trust; the Tapstitch line items beside it do not sum to it.
+  CAVEAT recorded and raised: the $20.57 was worked out while the tee was the
+  RU0010. RT0063 adds about $3.80 per unit (blank +$3.00, shipping +$0.80), so the
+  real tee cost is nearer $24 and the gross nearer $21, not $24.42.
+- Against the $22 to $40 acquisition cost in BRAND.md section 16, a single tee
+  does not pay for its own customer. Unchanged by the migration, but now arithmetic
+  rather than an estimate.
+
+TEST LESSON from this round: two tests written earlier in the day pinned exact
+colour values and exact rename pairs, and both failed on a CORRECT change rather
+than a regression. Both were rewritten to assert the contract instead: the colour
+table must be non-empty and cover every product type with a live garment's own
+choice winning, and the rename table must equal what the configs declare. Do not
+pin a lineup that is expected to change.
+
+## 14 September 2026, evening (spacing settled, store taken dark, six deletions)
+
+- **Designs are CENTRED in the print area** (`vertical_anchor: "center"`), not
+  top-anchored. Evan's call. Measured across the catalogue: every temple now sits
+  with equal space above and below, from 1.55in on Salt Lake to 4.49in on
+  Monticello, instead of the 2.5in-to-8.6in bottom gap top-anchoring produced.
+- **The location line is the same height on every temple**, so the type never
+  varies between products. It was already constant at 0.74in; what varied was the
+  temple art beside it, not the type. Set per Tapstitch garment in
+  `spacing_overrides`, so the retiring Printify profiles are provably untouched.
+- **0.8in, chosen against the width ceiling rather than by eye.** Asked for 1.0in
+  first, then asked what 0.8 would do. Measured across all 40 location lines, the
+  longest being SARATOGA SPRINGS, UTAH:
+
+  | Height | Widest line | Fits a 12in area | Fits 12.5in | Fits 14in |
+  |---|---|---|---|---|
+  | 0.7in | 9.52in | yes | yes | yes |
+  | 0.8in | 10.88in | yes | yes | yes |
+  | 0.9in | 12.24in | NO, 2 lines fail | NO, 1 fails | yes |
+  | 1.0in | 13.60in | NO, 6 lines fail | NO, 3 fail | NO, 1 fails |
+
+  0.8in is the LARGEST height that survives any plausible print area, which is
+  what makes it the right answer while the real Tapstitch print area is still
+  unknown. 1.0in only ever fit because the placeholder canvas is oversized at
+  14.98in; it would have started clipping the moment the real number arrived.
+- **Proof-sheet swatches were repainted** to the colours the products actually
+  open in (Black, Coffee, Dark Gray). They had been rendering the retiring
+  Comfort Colors moss, navy and denim, which meant Evan was being asked to judge
+  the design against colours that no longer exist.
+
+### THE STORE IS DARK, done 14 Sep 2026 on Evan's explicit go-ahead
+
+- **160 temple listings set to DRAFT**, 0 failures. Verified against Shopify
+  afterwards: 165 products, 164 DRAFT, 1 ACTIVE. The only thing still live is
+  **Temple Art File**, the $4.95 download, which is not a Printify product and
+  stays sellable. The four Tapstitch test drafts were correctly excluded by
+  vendor.
+- **SIX PRODUCTS PERMANENTLY DELETED** at Evan's instruction. There is no undo:
+  - the two stray duplicates from 27 Aug, `essential-temple-tee` and
+    `essential-temple-tee-with-personalizable-date`
+  - the three Nauvoo Limited Edition one-offs
+    (`nauvoo-temple-tee-limited-edition`, `copy-of-nauvoo-temple-hoodie`,
+    `nauvoo-temple-sweatshirt-front-logo`)
+  - `cornerstone-sweatpants`
+- **`restore --apply` is the way back** for the 160 drafts, reading
+  `artifacts/tapstitch/pre-migration-catalog.json`. It cannot bring back the six
+  deletions, and it will report them as failures if run, which is expected.
+- Two fixes the run itself forced: the snapshot now records FULL product details
+  for the products it leaves alone (it stored only a title and a reason, which
+  made the four non-temple leftovers unreachable by the guarded delete path), and
+  the delete message no longer claims a replacement is coming for a product that
+  has none.

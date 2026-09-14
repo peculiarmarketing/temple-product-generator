@@ -240,7 +240,44 @@ def back_stack_dated(temple, garment_cfg, sp, logo_aspect, text_aspect, logo_ove
     return [temple_layer, text_layer, divider, date_zone, logo_layer]
 
 
-PROFILES = {"back_stack": back_stack, "back_stack_dated": back_stack_dated}
+def back_temple_text(temple, garment_cfg, sp, logo_aspect, text_aspect):
+    """Tapstitch back design: temple and location text only, centered and
+    top-anchored. The logo left the back for the front print area when the
+    catalog moved off Printify (Evan, 14 Sep 2026), where a second print
+    location cost $4.90 and killed the margin. logo_aspect is unused here
+    and kept only so every profile takes the same arguments."""
+    area = garment_cfg["print_area"]
+    area_w_in = area["width_px"] / area["dpi"]
+    area_h_in = area["height_px"] / area["dpi"]
+    text_h = sp["location_text_height_in"]
+    stack_below = sp["gap_ink_to_text_in"] + text_h
+
+    temple_layer = _place_temple(temple, sp, area_w_in, area_h_in, stack_below)
+    y = temple_layer["ink_bottom_in"] + sp["gap_ink_to_text_in"]
+    text_layer = _layer("location_text", area_w_in / 2, y + text_h / 2,
+                        text_h * text_aspect, text_h, area_w_in, area_h_in)
+    layers = [temple_layer, text_layer]
+
+    # Losing the logo exposed how much top-anchoring varies between temples. A
+    # tall narrow temple fills the area; a wide short one hits its target width
+    # early and leaves the rest of the canvas empty (measured 14 Sep 2026 across
+    # 40 temples: 2.5in to 8.6in of empty canvas below the text). Centring the
+    # block instead makes every temple sit at the same height on the garment.
+    # Top-anchoring stays the default because it is what the live catalogue used.
+    if sp.get("vertical_anchor") == "center":
+        block_top = sp["top_margin_in"]          # _place_temple puts ink top here
+        block_bottom = text_layer["bottom_in"]
+        shift = (area_h_in - (block_bottom - block_top)) / 2 - block_top
+        for lyr in layers:
+            for key in ("cy_in", "top_in", "bottom_in", "ink_bottom_in"):
+                if key in lyr:
+                    lyr[key] += shift
+            lyr["y"] = lyr["cy_in"] / area_h_in
+    return layers
+
+
+PROFILES = {"back_stack": back_stack, "back_stack_dated": back_stack_dated,
+            "back_temple_text": back_temple_text}
 
 
 def location_text_height(garment_cfg):

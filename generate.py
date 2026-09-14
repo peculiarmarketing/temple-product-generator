@@ -291,13 +291,19 @@ def fetch_all_products(c, refresh=False):
 
 
 def fixed_description(garment_cfg):
-    """The garment's verbatim intro + size guide from the exported description
-    skill assets, behind an optional garment-specific block (the dated line's
-    Personalization section). Set at swap time so a published draft never
-    carries the donor temple's facts; the description event later replaces the
-    whole field with these fixed sections plus verified temple facts."""
-    skill = garment_cfg.get("description_skill") or ""
-    assets = PROJECT_ROOT / "reference" / "skills" / skill / skill / "assets"
+    """The garment's verbatim intro + size guide, behind an optional
+    garment-specific block (the dated line's Personalization section). Set at
+    swap time so a published draft never carries the donor temple's facts; the
+    description event later replaces the whole field with these fixed sections
+    plus verified temple facts.
+
+    Copy lives per garment in reference/garment-copy/{garment_id}/ rather than
+    inside a per-blank description skill. Three Tapstitch blanks would otherwise
+    have meant three new skills to hold two HTML files each. A garment whose
+    copy is missing still returns empty, which is the point: an empty
+    description beats the wrong garment's specifications on a live page."""
+    assets = PROJECT_ROOT / (garment_cfg.get("garment_copy")
+                             or f"reference/garment-copy/{garment_cfg['garment_id']}")
     intro, guide = assets / "product-intro.html", assets / "size-guide.html"
     if not (intro.exists() and guide.exists()):
         return ""  # empty beats a wrong temple's history on a live page
@@ -492,8 +498,21 @@ def write_status(temple_name, results, errors):
     status_path.write_text(json.dumps(status, indent=2))
 
 
-def all_garment_ids():
-    return sorted(p.stem for p in (PROJECT_ROOT / "garments").glob("*.json"))
+def all_garment_ids(channel="printify"):
+    """Garment ids for one channel, or every id when channel is None.
+
+    Defaults to printify because this module IS the Printify pipeline. The
+    Tapstitch garments share the garments/ folder, and sweeping one of them
+    through the Printify API would fail late and messily (no blueprint_id,
+    no print provider), so they are filtered out at the source. A config
+    with no channel is treated as printify: that was the only channel when
+    the four Comfort Colors files were written."""
+    ids = []
+    for path in (PROJECT_ROOT / "garments").glob("*.json"):
+        cfg = json.loads(path.read_text())
+        if channel is None or cfg.get("channel", "printify") == channel:
+            ids.append(path.stem)
+    return sorted(ids)  # by stem, not filename: "cc1717" sorts before "cc1717-dated"
 
 
 def sweep(c, args):
@@ -525,7 +544,18 @@ def sweep(c, args):
         if not args.report_only:
             mirror_black_art(temple, manifest)
         listed = manifest.get("garments", "all")
-        garment_ids = all_garment_ids() if listed == "all" else listed
+        if listed == "all":
+            garment_ids = all_garment_ids()
+        else:
+            known = set(all_garment_ids())
+            garment_ids = [g for g in listed if g in known]
+            # Filtering keeps a Tapstitch id in a manifest from reaching the
+            # Printify API, but a dropped id must never be silent: before this
+            # filter existed a typo'd id failed loudly at load_garment_config,
+            # and a temple that quietly looks satisfied is worse than an error.
+            for g in listed:
+                if g not in known:
+                    rows.append((temple, g, "UNKNOWN GARMENT in manifest, skipped"))
         results, errors = [], []
         # try/finally, not a plain call after the loop: a transient API fault
         # raises straight past the loop and used to take every product this

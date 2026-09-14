@@ -1,0 +1,118 @@
+{
+  "garment_id": "crew",
+  "channel": "tapstitch",
+  "display_name": "Boxy Fleece Crewneck Sweatshirt #UT0044",
+  "blank": {
+    "model": "UT0044",
+    "variant_code": "UT0044-P001-V3",
+    "name": "Boxy Fleece Crewneck Sweatshirt",
+    "url": "https://www.tapstitch.com/custom/UT0044-boxy-fleece-crewneck-sweatshirt",
+    "gsm": 345,
+    "oz": 10.2,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "2XL"
+    ],
+    "catalogue_colors": 9,
+    "_note": "Matching set with the RW0041 hoodie: same fabric, same colours.",
+    "_source": "Read from the live Tapstitch product page, 14 Sep 2026."
+  },
+  "shopify_product_type": "Sweatshirt",
+  "vendor": "ODMPOD",
+  "product_type": "Sweatshirt",
+  "print_area": {
+    "position": "back",
+    "width_px": 4494,
+    "height_px": 5097,
+    "dpi": 300,
+    "tbd": "Placeholder: retiring CC1717 print area. Replace with the real Tapstitch print area once the blank is picked."
+  },
+  "front_print_area": {
+    "position": "front",
+    "width_px": 3600,
+    "height_px": 4800,
+    "dpi": 300,
+    "logo_width_in": 6.0,
+    "logo_top_margin_in": 3.0,
+    "tbd": "Placeholder: a typical 12x16in DTG front area. Replace with the real Tapstitch front print area once the blank is picked. logo_width_in 6.0 is Evan's stated intent (BRAND.md section 8)."
+  },
+  "garment_copy": "reference/garment-copy/crew",
+  "storefront_first_color": "Coffee",
+  "preview_color_hex": "#4A3A2E",
+  "layout_profile": "back_temple_text",
+  "personalized": false,
+  "naming": {
+    "title": "Classic Temple Crew Sweatshirt ({place})",
+    "title_parent": "Classic Temple Crew Sweatshirt"
+  },
+  "_naming_note": "Carried over from the retiring Comfort Colors lines because these titles are what the store's web addresses were built on and the replacements inherit them. Renaming the lines is an open decision (BRAND.md section 19).",
+  "spacing_overrides": {
+    "vertical_anchor": "center",
+    "location_text_height_in": 0.8
+  },
+  "fulfillment": {
+    "technique": "DTG",
+    "fulfillment": "International Fulfillment",
+    "shipping_method": "Special Line",
+    "shipping_days": "9-14",
+    "production_days": "1-3",
+    "total_fulfillment_days": "10-17",
+    "print_locations": [
+      "front",
+      "back"
+    ],
+    "print_cost_per_frame_usd": 2.99
+  },
+  "costs_usd": {
+    "all_in_per_unit": 32.55,
+    "_all_in_note": "EVAN'S FIGURE, 14 Sep 2026, and the one to trust. Includes the blank, printing both sides, shipping, custom neck tag, hangtag, order insert, and payment gateway fees. The line items below are Tapstitch list prices only and do not add up to it.",
+    "blank": 14.99,
+    "print_per_frame": 2.99,
+    "print_total": 5.98,
+    "shipping_first_item": 7.4,
+    "shipping_additional_item": [
+      4.75,
+      4.89
+    ],
+    "gross_per_unit": 32.44
+  },
+  "colorways": [
+    {
+      "tapstitch": "Black",
+      "shopify": "Black",
+      "ink": "white"
+    },
+    {
+      "tapstitch": "Dark Gray",
+      "shopify": "Dark Gray",
+      "ink": "white"
+    },
+    {
+      "tapstitch": "Haze Blue",
+      "shopify": "Haze Blue",
+      "ink": "white"
+    },
+    {
+      "tapstitch": "Navy Blue",
+      "shopify": "Navy Blue",
+      "ink": "white"
+    },
+    {
+      "tapstitch": "Dark Green",
+      "shopify": "Dark Green",
+      "ink": "white"
+    },
+    {
+      "tapstitch": "Coffee",
+      "shopify": "Coffee",
+      "ink": "white"
+    }
+  ],
+  "_colorways_note": "tapstitch is the name in their editor; shopify is what the storefront shows, renamed after publish. ink is which art file that colorway prints. Every colorway in the current range is dark, so everything prints white and no black art file is needed; a light colorway added later needs ink 'black'. UNVERIFIED against the blank's own swatch names. These are the names Evan gave, and the tee's were carried over from the RU0010 it replaced, so RT0063 may spell one differently ('Dark Grey', 'Wine', and so on). A mismatch fails quietly: rename_option_value finds nothing to rename and the storefront keeps Tapstitch's name, and the colour reorder cannot find the colour it was told to lead with. Confirm the exact spellings in the editor during the first live session.",
+  "price_usd": 64.99,
+  "_preview_color_note": "Review-sheet background only, approximating Coffee, the colour this line opens on. Not a colour spec and nothing prints from it.",
+  "_spacing_note": "Evan, 14 Sep 2026: centre the block in the print area, and the location line is the same height on every temple so the type never varies between products. 0.8in, chosen because it is the LARGEST height that survives any plausible print area: the longest line, SARATOGA SPRINGS, UTAH, is 10.88in wide at 0.8 and fits even a 12in DTG area with margin to spare. At 0.9 it needs 12.24in and breaks a 12in area; at 1.0 it needs 13.60in and breaks everything except the oversized placeholder canvas in use today. Measured across all 40 lines."
+}
