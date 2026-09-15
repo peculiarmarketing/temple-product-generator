@@ -166,26 +166,52 @@ def build_front_logo(garment_cfg, color):
     """The front print file: the logo alone on a canvas shaped to the front print
     area, so the editor step is identical to the back (upload, centre, full size).
 
-    Sized and positioned from the garment's front_print_area: logo_width_in wide,
-    its top logo_top_margin_in below the top of the print area, centred across.
+    Sized and positioned from the garment's front_print_area, and measured on INK
+    exactly as the temple is, never on the file's frame: the logo PNG carries
+    about 2.4% transparent padding across and 6.4% down, so a frame-width rule
+    printed a 5.86in logo when the config said 6.0in. logo_ink_width_in is the
+    width of the drawn logo itself and logo_ink_top_margin_in is where its first
+    drawn pixel sits below the top of the print area (Evan, 14 Sep 2026).
     Centring the logo in the canvas instead would drop it to mid-chest.
     """
     area = garment_cfg.get("front_print_area")
     if not area:
         raise SystemExit(f"{garment_cfg['garment_id']}: no front_print_area in the garment config.")
+    for dead, live in (("logo_width_in", "logo_ink_width_in"),
+                       ("logo_top_margin_in", "logo_ink_top_margin_in")):
+        if dead in area:
+            raise SystemExit(
+                f"{garment_cfg['garment_id']}: front_print_area still carries {dead!r}, "
+                f"which measured the logo's FILE FRAME. It is now {live!r} and measures "
+                f"the drawn logo itself. Rename it rather than letting a frame-width "
+                f"number print about 2.4% small.")
     dpi = area["dpi"]
     area_w_in = area["width_px"] / dpi
     area_h_in = area["height_px"] / dpi
 
     logo_img = load_art(LOGO_FILES[color])
-    w_in = area["logo_width_in"]
+    alpha = np.asarray(logo_img.getchannel("A"))
+    ys, xs = np.nonzero(alpha > 8)
+    if not len(xs):
+        raise SystemExit(f"{LOGO_FILES[color]}: no ink found in the logo file.")
+    ink_l, ink_r = xs.min() / logo_img.width, (xs.max() + 1) / logo_img.width
+    ink_t, ink_b = ys.min() / logo_img.height, (ys.max() + 1) / logo_img.height
+
+    w_in = area["logo_ink_width_in"] / (ink_r - ink_l)        # frame width
     h_in = w_in * logo_img.height / logo_img.width
+    ink_top_in = area["logo_ink_top_margin_in"]
+    top_in = ink_top_in - ink_t * h_in                        # frame top
+    cx_in = area_w_in / 2 - ((ink_l + ink_r) / 2 - 0.5) * w_in
     layer = {"key": "logo", "w_in": w_in, "h_in": h_in,
-             "cx_in": area_w_in / 2,
-             "cy_in": area["logo_top_margin_in"] + h_in / 2,
-             "top_in": area["logo_top_margin_in"],
-             "bottom_in": area["logo_top_margin_in"] + h_in,
-             "x": 0.5, "y": (area["logo_top_margin_in"] + h_in / 2) / area_h_in,
+             "cx_in": cx_in,
+             "cy_in": top_in + h_in / 2,
+             "top_in": top_in,
+             "bottom_in": top_in + h_in,
+             "ink_width_in": area["logo_ink_width_in"],
+             "ink_height_in": (ink_b - ink_t) * h_in,
+             "ink_top_in": ink_top_in,
+             "ink_bottom_in": ink_top_in + (ink_b - ink_t) * h_in,
+             "x": cx_in / area_w_in, "y": (top_in + h_in / 2) / area_h_in,
              "scale": w_in / area_w_in}
 
     canvas = Image.new("RGBA", (area["width_px"], area["height_px"]), (0, 0, 0, 0))

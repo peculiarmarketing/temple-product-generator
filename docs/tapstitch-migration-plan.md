@@ -21,20 +21,23 @@
 | Build sweep | `scripts/tapstitch_build.py` | Done. |
 | Proof sheet | `scripts/tapstitch_preview.py` | Done. https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57 |
 | Migration ledger | `ledger.py`, `scripts/tapstitch_status.py` | Done. 121 rows seeded with the handle each replacement inherits. |
-| Store pull-down | `scripts/store_pulldown.py` | Built and snapshotted. NOT RUN: it changes the live store and needs Evan's go. |
+| Store pull-down | `scripts/store_pulldown.py` | Done AND RUN, 14 Sep 2026. 160 listings drafted, six deleted. The store is dark. |
 | Description plumbing | `generate.fixed_description` + `reference/garment-copy/` | Repointed per garment. Copy for the new blanks is not written. |
 | Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Written, never exercised. |
 | Editor automation | `config/tapstitch.json`, `scripts/tapstitch_publish.py` | Config scaffolded with 18 nulls; the Shopify half works, the editor half waits on a live session. |
 
-Blanks chosen 14 Sep 2026: tee RU0010, crew UT0044, hoodie RW0041, all DTG,
-international fulfillment, Special Line shipping, front and back print. Full specs
-and costs in `docs/decisions.md` and BRAND.md section 7.
+Blanks as they stand at the end of 14 Sep 2026: tee RT0063, crew R00368, hoodie
+R00286, all on USA fulfillment, front and back print. The tee prints DTG and the
+two fleece blanks print DTF. Three earlier choices were replaced the same day: the
+RU0010 tee (too light), and the UT0044 crew and RW0041 hoodie (international
+fulfillment). Full specs and costs in `docs/decisions.md` and BRAND.md section 7.
 
-Still blocked on Evan: the print area dimensions (only readable inside the
-Tapstitch editor, so they come with the first live session), the storefront lead
-colour and prices for each line, which colourways print white versus black ink,
-the two back-spacing calls on the proof sheet, and his go-ahead to run the
-pull-down.
+Still blocked on Evan: the 18 editor selectors, which are only readable inside
+the Tapstitch editor and so come with the first live session; whether the size
+guide is a new video or the branded chart images; and whether Flower Gray on the
+crew is dark enough to print white. The print areas came in on 14 Sep and are no
+longer blocking. Everything else on this list has been decided: spacing, sizes,
+lead colours, prices, and the pull-down are all settled and done.
 
 ---
 

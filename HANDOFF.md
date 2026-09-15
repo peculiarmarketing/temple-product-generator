@@ -12,14 +12,35 @@ The only thing a visitor can buy is the Temple Art File download. Six products
 were deleted permanently at your instruction: two stray duplicate listings, the
 three Nauvoo Limited Editions, and Cornerstone Sweatpants.
 
-**The blanks are chosen and everything about them is recorded**: the Essential
-Cotton T-Shirt RT0063, the Boxy Fleece Crewneck UT0044, and the Oversized Boxy
-Fleece Hoodie RW0041. Colours, prices, sizes, costs, and which colour each
-product page opens on are all set.
+**Everything fulfills from the USA now**, which is 4-7 days to a customer's door
+against 10-17 from the international center. Two blanks changed with that switch,
+because Tapstitch's fulfillment choice changes which colours and sizes a blank
+even has.
 
-**The designs are settled**: temple and city line on the back, logo on the front,
-centred in the print area, city line 0.8 inches tall on every temple. You can see
-all 40 at https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57
+**The blanks are chosen and everything about them is recorded**: the Essential
+Cotton T-Shirt **RT0063** (tee, unchanged), the Fleeced Sweatshirt **R00368**
+(crew, two colourways only, Black and Gray), and the Oversize Fleeced Hoodie
+**R00286** (hoodie, five colourways, Haze Blue gone). Colours, prices, sizes,
+costs, and which colour each product page opens on are all set. The two fleece
+blanks print DTF rather than DTG.
+
+**The designs are settled.** The back is the temple and the city line, centred in
+the print file with no margins anywhere. The temple spans no more than 12 inches
+at its widest, the city line is 0.7 inches tall, and its top sits 0.5 inches below
+the temple's lowest point. The front is the logo at 6 inches wide. Every number is
+ink to ink, the drawn artwork rather than the file around it. All 40 temples now
+reach the full 12 inches on all three garments. The proof sheet at
+https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57 still shows
+the older spacing and needs one regeneration.
+
+**The real print areas are in**, so the placeholder canvas is gone and every
+garment now has its own.
+
+One thing to confirm when you next have the editor open: the print areas were
+given in pixels, and the inches depend on the resolution those pixels are quoted
+at. Everything is built on 150, which is the only reading where a 12 inch temple
+fits at all and which matches the old Printify area closely. The editor shows
+inches. If the tee's back panel reads about 14.6 by 18.4 inches, it is right.
 
 **Two things are waiting on you:**
 
@@ -28,6 +49,17 @@ all 40 at https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57
 2. **Whether the size guide is a new video or the branded chart images** already
    in your `Important Elements` folder. That is the only thing stopping the
    product descriptions being written.
+
+**And one small thing to look at when you next see a mockup:** Flower Gray on the
+crew is set to print white like everything else, on the assumption it is as dark
+as the colourways it replaced. If it is not, its ink becomes black and the black
+art files have to be built for it. Every other colourway on every line is dark
+enough that white is certain.
+
+**Worth a second look on price:** the crew blank costs more than the hoodie blank
+($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
+but the crew sells for $10.00 less. That is $9.43 less gross on a garment that
+costs the same to make. Prices are unchanged and this is flagged, not decided.
 
 **Nothing else needs you.** The five untraced temples (Albuquerque, Billings,
 Burley, Lehi, Provo Rock Canyon) already have your sketches in their folders and
@@ -86,12 +118,11 @@ the live blocker list.
 
 ## What is blocked
 
-**On one Tapstitch editor session** (the big one, unblocks four things):
+**On one Tapstitch editor session** (three things left of the original four):
 
-1. The six print areas (front and back for each line). They exist only inside
-   their editor. Every print file today is built on a PLACEHOLDER canvas of
-   4494x5097 at 300dpi, marked `"tbd"` in each garment config. Everything
-   rebuilds when the real numbers land.
+1. DONE 14 Sep 2026: the six print areas are in the configs and the placeholder
+   canvas is retired. The print files on disk were built on the old canvas and
+   need one rebuild sweep.
 2. The 18 null values in `config/tapstitch.json`.
 3. Confirming the colour swatch names match `colorways` in `garments/*.json`.
    Evan supplied those names and the tee's came across from a blank that is no

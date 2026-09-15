@@ -3,99 +3,98 @@
     {
       "temple": "Albuquerque",
       "garment": "crew",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Albuquerque crew white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Albuquerque",
       "garment": "hoodie",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Albuquerque hoodie white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Albuquerque",
       "garment": "tee",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Albuquerque tee white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Billings",
       "garment": "crew",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Billings crew white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Billings",
       "garment": "hoodie",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Billings hoodie white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Billings",
       "garment": "tee",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Billings tee white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:11"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Boise",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Boise crew black back print (auto).png",
         "white": "Boise crew white back print (auto).png"
       },
       "problems": [],
@@ -104,14 +103,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Boise",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Boise hoodie black back print (auto).png",
         "white": "Boise hoodie white back print (auto).png"
       },
       "problems": [],
@@ -120,14 +118,13 @@
       "old_title": "Pillar Temple Hoodie (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Boise",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Boise tee black back print (auto).png",
         "white": "Boise tee white back print (auto).png"
       },
       "problems": [],
@@ -136,14 +133,13 @@
       "old_title": "Essential Temple Tee (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Bountiful",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Bountiful crew black back print (auto).png",
         "white": "Bountiful crew white back print (auto).png"
       },
       "problems": [],
@@ -152,14 +148,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Bountiful)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Bountiful",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Bountiful hoodie black back print (auto).png",
         "white": "Bountiful hoodie white back print (auto).png"
       },
       "problems": [],
@@ -168,14 +163,13 @@
       "old_title": "Pillar Temple Hoodie (Bountiful)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Bountiful",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Bountiful tee black back print (auto).png",
         "white": "Bountiful tee white back print (auto).png"
       },
       "problems": [],
@@ -184,14 +178,13 @@
       "old_title": "Essential Temple Tee (Bountiful)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Brigham City",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Brigham City crew black back print (auto).png",
         "white": "Brigham City crew white back print (auto).png"
       },
       "problems": [],
@@ -200,14 +193,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Brigham City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Brigham City",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Brigham City hoodie black back print (auto).png",
         "white": "Brigham City hoodie white back print (auto).png"
       },
       "problems": [],
@@ -216,14 +208,13 @@
       "old_title": "Pillar Temple Hoodie (Brigham City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Brigham City",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Brigham City tee black back print (auto).png",
         "white": "Brigham City tee white back print (auto).png"
       },
       "problems": [],
@@ -232,59 +223,58 @@
       "old_title": "Essential Temple Tee (Brigham City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Burley",
       "garment": "crew",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Burley crew white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:37"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Burley",
       "garment": "hoodie",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Burley hoodie white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:37"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Burley",
       "garment": "tee",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Burley tee white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:18:37"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cedar City",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cedar City crew black back print (auto).png",
         "white": "Cedar City crew white back print (auto).png"
       },
       "problems": [],
@@ -293,14 +283,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Cedar City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cedar City",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cedar City hoodie black back print (auto).png",
         "white": "Cedar City hoodie white back print (auto).png"
       },
       "problems": [],
@@ -309,14 +298,13 @@
       "old_title": "Pillar Temple Hoodie (Cedar City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cedar City",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cedar City tee black back print (auto).png",
         "white": "Cedar City tee white back print (auto).png"
       },
       "problems": [],
@@ -325,14 +313,13 @@
       "old_title": "Essential Temple Tee (Cedar City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cody",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cody crew black back print (auto).png",
         "white": "Cody crew white back print (auto).png"
       },
       "problems": [],
@@ -341,14 +328,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Cody)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cody",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cody hoodie black back print (auto).png",
         "white": "Cody hoodie white back print (auto).png"
       },
       "problems": [],
@@ -357,14 +343,13 @@
       "old_title": "Pillar Temple Hoodie (Cody)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Cody",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Cody tee black back print (auto).png",
         "white": "Cody tee white back print (auto).png"
       },
       "problems": [],
@@ -373,14 +358,13 @@
       "old_title": "Essential Temple Tee (Cody)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Deseret Peak",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Deseret Peak crew black back print (auto).png",
         "white": "Deseret Peak crew white back print (auto).png"
       },
       "problems": [],
@@ -389,14 +373,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Deseret Peak)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Deseret Peak",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Deseret Peak hoodie black back print (auto).png",
         "white": "Deseret Peak hoodie white back print (auto).png"
       },
       "problems": [],
@@ -405,14 +388,13 @@
       "old_title": "Pillar Temple Hoodie (Deseret Peak)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Deseret Peak",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Deseret Peak tee black back print (auto).png",
         "white": "Deseret Peak tee white back print (auto).png"
       },
       "problems": [],
@@ -421,14 +403,13 @@
       "old_title": "Essential Temple Tee (Deseret Peak)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Draper",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Draper crew black back print (auto).png",
         "white": "Draper crew white back print (auto).png"
       },
       "problems": [],
@@ -437,14 +418,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Draper)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Draper",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Draper hoodie black back print (auto).png",
         "white": "Draper hoodie white back print (auto).png"
       },
       "problems": [],
@@ -453,14 +433,13 @@
       "old_title": "Pillar Temple Hoodie (Draper)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Draper",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Draper tee black back print (auto).png",
         "white": "Draper tee white back print (auto).png"
       },
       "problems": [],
@@ -469,14 +448,13 @@
       "old_title": "Essential Temple Tee (Draper)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ephraim",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ephraim crew black back print (auto).png",
         "white": "Ephraim crew white back print (auto).png"
       },
       "problems": [],
@@ -485,14 +463,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Ephraim)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ephraim",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ephraim hoodie black back print (auto).png",
         "white": "Ephraim hoodie white back print (auto).png"
       },
       "problems": [],
@@ -501,14 +478,13 @@
       "old_title": "Pillar Temple Hoodie (Ephraim)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ephraim",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ephraim tee black back print (auto).png",
         "white": "Ephraim tee white back print (auto).png"
       },
       "problems": [],
@@ -517,14 +493,13 @@
       "old_title": "Essential Temple Tee (Ephraim)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Heber Valley*",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Heber Valley* crew black back print (auto).png",
         "white": "Heber Valley* crew white back print (auto).png"
       },
       "problems": [],
@@ -533,14 +508,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Heber Valley)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Heber Valley*",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Heber Valley* hoodie black back print (auto).png",
         "white": "Heber Valley* hoodie white back print (auto).png"
       },
       "problems": [],
@@ -549,14 +523,13 @@
       "old_title": "Pillar Temple Hoodie (Heber Valley)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Heber Valley*",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Heber Valley* tee black back print (auto).png",
         "white": "Heber Valley* tee white back print (auto).png"
       },
       "problems": [],
@@ -565,14 +538,13 @@
       "old_title": "Essential Temple Tee (Heber Valley)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Jordan River",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Jordan River crew black back print (auto).png",
         "white": "Jordan River crew white back print (auto).png"
       },
       "problems": [],
@@ -581,14 +553,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Jordan River)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Jordan River",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Jordan River hoodie black back print (auto).png",
         "white": "Jordan River hoodie white back print (auto).png"
       },
       "problems": [],
@@ -597,14 +568,13 @@
       "old_title": "Pillar Temple Hoodie (Jordan River)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Jordan River",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Jordan River tee black back print (auto).png",
         "white": "Jordan River tee white back print (auto).png"
       },
       "problems": [],
@@ -613,14 +583,13 @@
       "old_title": "Essential Temple Tee (Jordan River)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Kirtland",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Kirtland crew black back print (auto).png",
         "white": "Kirtland crew white back print (auto).png"
       },
       "problems": [],
@@ -629,14 +598,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Kirtland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Kirtland",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Kirtland hoodie black back print (auto).png",
         "white": "Kirtland hoodie white back print (auto).png"
       },
       "problems": [],
@@ -645,14 +613,13 @@
       "old_title": "Pillar Temple Hoodie (Kirtland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Kirtland",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Kirtland tee black back print (auto).png",
         "white": "Kirtland tee white back print (auto).png"
       },
       "problems": [],
@@ -661,14 +628,13 @@
       "old_title": "Essential Temple Tee (Kirtland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Layton",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Layton crew black back print (auto).png",
         "white": "Layton crew white back print (auto).png"
       },
       "problems": [],
@@ -677,14 +643,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Layton)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Layton",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Layton hoodie black back print (auto).png",
         "white": "Layton hoodie white back print (auto).png"
       },
       "problems": [],
@@ -693,14 +658,13 @@
       "old_title": "Pillar Temple Hoodie (Layton)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Layton",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Layton tee black back print (auto).png",
         "white": "Layton tee white back print (auto).png"
       },
       "problems": [],
@@ -709,59 +673,58 @@
       "old_title": "Essential Temple Tee (Layton)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lehi*",
       "garment": "crew",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Lehi* crew white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:20:01"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lehi*",
       "garment": "hoodie",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Lehi* hoodie white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:20:01"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lehi*",
       "garment": "tee",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Lehi* tee white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:20:01"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lindon",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Lindon crew black back print (auto).png",
         "white": "Lindon crew white back print (auto).png"
       },
       "problems": [],
@@ -770,14 +733,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Lindon)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lindon",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Lindon hoodie black back print (auto).png",
         "white": "Lindon hoodie white back print (auto).png"
       },
       "problems": [],
@@ -786,14 +748,13 @@
       "old_title": "Pillar Temple Hoodie (Lindon)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Lindon",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Lindon tee black back print (auto).png",
         "white": "Lindon tee white back print (auto).png"
       },
       "problems": [],
@@ -802,14 +763,13 @@
       "old_title": "Essential Temple Tee (Lindon)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Logan",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Logan crew black back print (auto).png",
         "white": "Logan crew white back print (auto).png"
       },
       "problems": [],
@@ -818,14 +778,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Logan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Logan",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Logan hoodie black back print (auto).png",
         "white": "Logan hoodie white back print (auto).png"
       },
       "problems": [],
@@ -834,14 +793,13 @@
       "old_title": "Pillar Temple Hoodie (Logan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Logan",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Logan tee black back print (auto).png",
         "white": "Logan tee white back print (auto).png"
       },
       "problems": [],
@@ -850,14 +808,13 @@
       "old_title": "Essential Temple Tee (Logan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manhattan",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manhattan crew black back print (auto).png",
         "white": "Manhattan crew white back print (auto).png"
       },
       "problems": [],
@@ -866,14 +823,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Manhattan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manhattan",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manhattan hoodie black back print (auto).png",
         "white": "Manhattan hoodie white back print (auto).png"
       },
       "problems": [],
@@ -882,14 +838,13 @@
       "old_title": "Pillar Temple Hoodie (Manhattan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manhattan",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manhattan tee black back print (auto).png",
         "white": "Manhattan tee white back print (auto).png"
       },
       "problems": [],
@@ -898,14 +853,13 @@
       "old_title": "Essential Temple Tee (Manhattan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manti",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manti crew black back print (auto).png",
         "white": "Manti crew white back print (auto).png"
       },
       "problems": [],
@@ -914,14 +868,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Manti)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manti",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manti hoodie black back print (auto).png",
         "white": "Manti hoodie white back print (auto).png"
       },
       "problems": [],
@@ -930,14 +883,13 @@
       "old_title": "Pillar Temple Hoodie (Manti)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Manti",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Manti tee black back print (auto).png",
         "white": "Manti tee white back print (auto).png"
       },
       "problems": [],
@@ -946,14 +898,13 @@
       "old_title": "Essential Temple Tee (Manti)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mexico City",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mexico City crew black back print (auto).png",
         "white": "Mexico City crew white back print (auto).png"
       },
       "problems": [],
@@ -962,14 +913,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Mexico City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mexico City",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mexico City hoodie black back print (auto).png",
         "white": "Mexico City hoodie white back print (auto).png"
       },
       "problems": [],
@@ -978,14 +928,13 @@
       "old_title": "Pillar Temple Hoodie (Mexico City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mexico City",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mexico City tee black back print (auto).png",
         "white": "Mexico City tee white back print (auto).png"
       },
       "problems": [],
@@ -994,14 +943,13 @@
       "old_title": "Essential Temple Tee (Mexico City)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Monticello",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Monticello crew black back print (auto).png",
         "white": "Monticello crew white back print (auto).png"
       },
       "problems": [],
@@ -1010,14 +958,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Monticello)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Monticello",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Monticello hoodie black back print (auto).png",
         "white": "Monticello hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1026,14 +973,13 @@
       "old_title": "Pillar Temple Hoodie (Monticello)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Monticello",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Monticello tee black back print (auto).png",
         "white": "Monticello tee white back print (auto).png"
       },
       "problems": [],
@@ -1042,14 +988,13 @@
       "old_title": "Essential Temple Tee (Monticello)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mount Timpanogos",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mount Timpanogos crew black back print (auto).png",
         "white": "Mount Timpanogos crew white back print (auto).png"
       },
       "problems": [],
@@ -1058,14 +1003,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Mount Timpanogos)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mount Timpanogos",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mount Timpanogos hoodie black back print (auto).png",
         "white": "Mount Timpanogos hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1074,14 +1018,13 @@
       "old_title": "Pillar Temple Hoodie (Mount Timpanogos)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Mount Timpanogos",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Mount Timpanogos tee black back print (auto).png",
         "white": "Mount Timpanogos tee white back print (auto).png"
       },
       "problems": [],
@@ -1090,14 +1033,13 @@
       "old_title": "Essential Temple Tee (Mount Timpanogos)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Nauvoo",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Nauvoo crew black back print (auto).png",
         "white": "Nauvoo crew white back print (auto).png"
       },
       "problems": [],
@@ -1106,14 +1048,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Nauvoo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Nauvoo",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Nauvoo hoodie black back print (auto).png",
         "white": "Nauvoo hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1122,14 +1063,13 @@
       "old_title": "Pillar Temple Hoodie (Nauvoo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Nauvoo",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Nauvoo tee black back print (auto).png",
         "white": "Nauvoo tee white back print (auto).png"
       },
       "problems": [],
@@ -1138,14 +1078,13 @@
       "old_title": "Essential Temple Tee (Nauvoo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Oakland",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Oakland crew black back print (auto).png",
         "white": "Oakland crew white back print (auto).png"
       },
       "problems": [],
@@ -1154,14 +1093,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Oakland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Oakland",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Oakland hoodie black back print (auto).png",
         "white": "Oakland hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1170,14 +1108,13 @@
       "old_title": "Pillar Temple Hoodie (Oakland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Oakland",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Oakland tee black back print (auto).png",
         "white": "Oakland tee white back print (auto).png"
       },
       "problems": [],
@@ -1186,14 +1123,13 @@
       "old_title": "Essential Temple Tee (Oakland)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden crew black back print (auto).png",
         "white": "Ogden crew white back print (auto).png"
       },
       "problems": [],
@@ -1202,14 +1138,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Ogden)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden hoodie black back print (auto).png",
         "white": "Ogden hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1218,14 +1153,13 @@
       "old_title": "Pillar Temple Hoodie (Ogden)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden tee black back print (auto).png",
         "white": "Ogden tee white back print (auto).png"
       },
       "problems": [],
@@ -1234,14 +1168,13 @@
       "old_title": "Essential Temple Tee (Ogden)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden (original)",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden (original) crew black back print (auto).png",
         "white": "Ogden (original) crew white back print (auto).png"
       },
       "problems": [],
@@ -1250,14 +1183,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Ogden Original)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden (original)",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden (original) hoodie black back print (auto).png",
         "white": "Ogden (original) hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1266,14 +1198,13 @@
       "old_title": "Pillar Temple Hoodie (Ogden Original)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Ogden (original)",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Ogden (original) tee black back print (auto).png",
         "white": "Ogden (original) tee white back print (auto).png"
       },
       "problems": [],
@@ -1282,14 +1213,13 @@
       "old_title": "Essential Temple Tee (Ogden Original)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Orem",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Orem crew black back print (auto).png",
         "white": "Orem crew white back print (auto).png"
       },
       "problems": [],
@@ -1298,14 +1228,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Orem)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Orem",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Orem hoodie black back print (auto).png",
         "white": "Orem hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1314,14 +1243,13 @@
       "old_title": "Pillar Temple Hoodie (Orem)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Orem",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Orem tee black back print (auto).png",
         "white": "Orem tee white back print (auto).png"
       },
       "problems": [],
@@ -1330,14 +1258,13 @@
       "old_title": "Essential Temple Tee (Orem)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo crew black back print (auto).png",
         "white": "Provo crew white back print (auto).png"
       },
       "problems": [],
@@ -1346,14 +1273,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Provo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo hoodie black back print (auto).png",
         "white": "Provo hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1362,14 +1288,13 @@
       "old_title": "Pillar Temple Hoodie (Provo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo tee black back print (auto).png",
         "white": "Provo tee white back print (auto).png"
       },
       "problems": [],
@@ -1378,14 +1303,13 @@
       "old_title": "Essential Temple Tee (Provo)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo City Center",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo City Center crew black back print (auto).png",
         "white": "Provo City Center crew white back print (auto).png"
       },
       "problems": [],
@@ -1394,14 +1318,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Provo City Center)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo City Center",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo City Center hoodie black back print (auto).png",
         "white": "Provo City Center hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1410,14 +1333,13 @@
       "old_title": "Pillar Temple Hoodie (Provo City Center)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo City Center",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Provo City Center tee black back print (auto).png",
         "white": "Provo City Center tee white back print (auto).png"
       },
       "problems": [],
@@ -1426,59 +1348,58 @@
       "old_title": "Essential Temple Tee (Provo City Center)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo Rock Canyon*",
       "garment": "crew",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Provo Rock Canyon* crew white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:22:10"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo Rock Canyon*",
       "garment": "hoodie",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Provo Rock Canyon* hoodie white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:22:10"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Provo Rock Canyon*",
       "garment": "tee",
-      "state": "art-missing",
-      "files": {},
-      "problems": [
-        "no traced art yet"
-      ],
+      "state": "file-approved",
+      "files": {
+        "white": "Provo Rock Canyon* tee white back print (auto).png"
+      },
+      "problems": [],
       "old_shopify_handle": null,
       "old_shopify_id": null,
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T09:22:10"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Red Cliffs",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Red Cliffs crew black back print (auto).png",
         "white": "Red Cliffs crew white back print (auto).png"
       },
       "problems": [],
@@ -1487,14 +1408,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Red Cliffs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Red Cliffs",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Red Cliffs hoodie black back print (auto).png",
         "white": "Red Cliffs hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1503,14 +1423,13 @@
       "old_title": "Pillar Temple Hoodie (Red Cliffs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Red Cliffs",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Red Cliffs tee black back print (auto).png",
         "white": "Red Cliffs tee white back print (auto).png"
       },
       "problems": [],
@@ -1519,14 +1438,13 @@
       "old_title": "Essential Temple Tee (Red Cliffs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Rome",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Rome crew black back print (auto).png",
         "white": "Rome crew white back print (auto).png"
       },
       "problems": [],
@@ -1535,14 +1453,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Rome)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Rome",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Rome hoodie black back print (auto).png",
         "white": "Rome hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1551,14 +1468,13 @@
       "old_title": "Pillar Temple Hoodie (Rome)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Rome",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Rome tee black back print (auto).png",
         "white": "Rome tee white back print (auto).png"
       },
       "problems": [],
@@ -1567,14 +1483,13 @@
       "old_title": "Essential Temple Tee (Rome)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Salt Lake",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Salt Lake crew black back print (auto).png",
         "white": "Salt Lake crew white back print (auto).png"
       },
       "problems": [],
@@ -1583,14 +1498,13 @@
       "old_title": "Classic Temple Crew Sweatshirt",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Salt Lake",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Salt Lake hoodie black back print (auto).png",
         "white": "Salt Lake hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1599,14 +1513,13 @@
       "old_title": "Pillar Temple Hoodie",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Salt Lake",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Salt Lake tee black back print (auto).png",
         "white": "Salt Lake tee white back print (auto).png"
       },
       "problems": [],
@@ -1615,14 +1528,13 @@
       "old_title": "Essential Temple Tee",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Antonio",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Antonio crew black back print (auto).png",
         "white": "San Antonio crew white back print (auto).png"
       },
       "problems": [],
@@ -1631,14 +1543,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (San Antonio)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Antonio",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Antonio hoodie black back print (auto).png",
         "white": "San Antonio hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1647,14 +1558,13 @@
       "old_title": "Pillar Temple Hoodie (San Antonio)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Antonio",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Antonio tee black back print (auto).png",
         "white": "San Antonio tee white back print (auto).png"
       },
       "problems": [],
@@ -1663,14 +1573,13 @@
       "old_title": "Essential Temple Tee (San Antonio)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Diego",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Diego crew black back print (auto).png",
         "white": "San Diego crew white back print (auto).png"
       },
       "problems": [],
@@ -1679,14 +1588,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (San Diego)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Diego",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Diego hoodie black back print (auto).png",
         "white": "San Diego hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1695,14 +1603,13 @@
       "old_title": "Pillar Temple Hoodie (San Diego)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "San Diego",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "San Diego tee black back print (auto).png",
         "white": "San Diego tee white back print (auto).png"
       },
       "problems": [],
@@ -1711,14 +1618,13 @@
       "old_title": "Essential Temple Tee (San Diego)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Saratoga Springs",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Saratoga Springs crew black back print (auto).png",
         "white": "Saratoga Springs crew white back print (auto).png"
       },
       "problems": [],
@@ -1727,14 +1633,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Saratoga Springs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Saratoga Springs",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Saratoga Springs hoodie black back print (auto).png",
         "white": "Saratoga Springs hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1743,14 +1648,13 @@
       "old_title": "Pillar Temple Hoodie (Saratoga Springs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Saratoga Springs",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Saratoga Springs tee black back print (auto).png",
         "white": "Saratoga Springs tee white back print (auto).png"
       },
       "problems": [],
@@ -1759,14 +1663,13 @@
       "old_title": "Essential Temple Tee (Saratoga Springs)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Smithfield",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Smithfield crew black back print (auto).png",
         "white": "Smithfield crew white back print (auto).png"
       },
       "problems": [],
@@ -1775,14 +1678,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Smithfield)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Smithfield",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Smithfield hoodie black back print (auto).png",
         "white": "Smithfield hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1791,14 +1693,13 @@
       "old_title": "Pillar Temple Hoodie (Smithfield)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Smithfield",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Smithfield tee black back print (auto).png",
         "white": "Smithfield tee white back print (auto).png"
       },
       "problems": [],
@@ -1807,14 +1708,13 @@
       "old_title": "Essential Temple Tee (Smithfield)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Spanish Fork*",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Spanish Fork* crew black back print (auto).png",
         "white": "Spanish Fork* crew white back print (auto).png"
       },
       "problems": [],
@@ -1823,14 +1723,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Spanish Fork)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Spanish Fork*",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Spanish Fork* hoodie black back print (auto).png",
         "white": "Spanish Fork* hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1839,14 +1738,13 @@
       "old_title": "Pillar Temple Hoodie (Spanish Fork)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Spanish Fork*",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Spanish Fork* tee black back print (auto).png",
         "white": "Spanish Fork* tee white back print (auto).png"
       },
       "problems": [],
@@ -1855,14 +1753,13 @@
       "old_title": "Essential Temple Tee (Spanish Fork)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "St. George",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "St. George crew black back print (auto).png",
         "white": "St. George crew white back print (auto).png"
       },
       "problems": [],
@@ -1871,14 +1768,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (St. George)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "St. George",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "St. George hoodie black back print (auto).png",
         "white": "St. George hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1887,14 +1783,13 @@
       "old_title": "Pillar Temple Hoodie (St. George)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "St. George",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "St. George tee black back print (auto).png",
         "white": "St. George tee white back print (auto).png"
       },
       "problems": [],
@@ -1903,14 +1798,13 @@
       "old_title": "Essential Temple Tee (St. George)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Syracuse",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Syracuse crew black back print (auto).png",
         "white": "Syracuse crew white back print (auto).png"
       },
       "problems": [],
@@ -1919,14 +1813,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Syracuse)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Syracuse",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Syracuse hoodie black back print (auto).png",
         "white": "Syracuse hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1935,14 +1828,13 @@
       "old_title": "Pillar Temple Hoodie (Syracuse)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Syracuse",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Syracuse tee black back print (auto).png",
         "white": "Syracuse tee white back print (auto).png"
       },
       "problems": [],
@@ -1951,14 +1843,13 @@
       "old_title": "Essential Temple Tee (Syracuse)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Taylorsville",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Taylorsville crew black back print (auto).png",
         "white": "Taylorsville crew white back print (auto).png"
       },
       "problems": [],
@@ -1967,14 +1858,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Taylorsville)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Taylorsville",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Taylorsville hoodie black back print (auto).png",
         "white": "Taylorsville hoodie white back print (auto).png"
       },
       "problems": [],
@@ -1983,14 +1873,13 @@
       "old_title": "Pillar Temple Hoodie (Taylorsville)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Taylorsville",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Taylorsville tee black back print (auto).png",
         "white": "Taylorsville tee white back print (auto).png"
       },
       "problems": [],
@@ -1999,14 +1888,13 @@
       "old_title": "Essential Temple Tee (Taylorsville)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Vernal",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Vernal crew black back print (auto).png",
         "white": "Vernal crew white back print (auto).png"
       },
       "problems": [],
@@ -2015,14 +1903,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Vernal)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Vernal",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Vernal hoodie black back print (auto).png",
         "white": "Vernal hoodie white back print (auto).png"
       },
       "problems": [],
@@ -2031,14 +1918,13 @@
       "old_title": "Pillar Temple Hoodie (Vernal)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Vernal",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Vernal tee black back print (auto).png",
         "white": "Vernal tee white back print (auto).png"
       },
       "problems": [],
@@ -2047,14 +1933,13 @@
       "old_title": "Essential Temple Tee (Vernal)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Washington DC",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Washington DC crew black back print (auto).png",
         "white": "Washington DC crew white back print (auto).png"
       },
       "problems": [],
@@ -2063,14 +1948,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (Washington D.C.)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Washington DC",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Washington DC hoodie black back print (auto).png",
         "white": "Washington DC hoodie white back print (auto).png"
       },
       "problems": [],
@@ -2079,14 +1963,13 @@
       "old_title": "Pillar Temple Hoodie (Washington D.C.)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "Washington DC",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "Washington DC tee black back print (auto).png",
         "white": "Washington DC tee white back print (auto).png"
       },
       "problems": [],
@@ -2095,14 +1978,13 @@
       "old_title": "Essential Temple Tee (Washington D.C.)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "West Jordan*",
       "garment": "crew",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "West Jordan* crew black back print (auto).png",
         "white": "West Jordan* crew white back print (auto).png"
       },
       "problems": [],
@@ -2111,14 +1993,13 @@
       "old_title": "Classic Temple Crew Sweatshirt (West Jordan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "West Jordan*",
       "garment": "hoodie",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "West Jordan* hoodie black back print (auto).png",
         "white": "West Jordan* hoodie white back print (auto).png"
       },
       "problems": [],
@@ -2127,14 +2008,13 @@
       "old_title": "Pillar Temple Hoodie (West Jordan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     },
     {
       "temple": "West Jordan*",
       "garment": "tee",
-      "state": "art-ok",
+      "state": "file-approved",
       "files": {
-        "black": "West Jordan* tee black back print (auto).png",
         "white": "West Jordan* tee white back print (auto).png"
       },
       "problems": [],
@@ -2143,8 +2023,8 @@
       "old_title": "Essential Temple Tee (West Jordan)",
       "tapstitch_product_url": null,
       "shopify_handle": null,
-      "updated_at": "2026-09-14T14:31:46"
+      "updated_at": "2026-09-15T09:25:39"
     }
   ],
-  "updated_at": "2026-09-14T14:31:46"
+  "updated_at": "2026-09-15T09:25:39"
 }

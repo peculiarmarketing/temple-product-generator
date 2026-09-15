@@ -10,3 +10,10 @@ __pycache__/
 # committing ~6MB of PNGs each time would bloat history for no gain. The
 # published artifact is the shareable copy.
 artifacts/tapstitch-previews/
+
+# Regenerable print output, same reasoning as the proof sheet. The three front
+# logo files are rebuilt by every tapstitch_build.py run, and the 135 back print
+# files are not here at all: they are written into each temple's own folder under
+# Temples/, which is outside this repo. Committing one half of a generated pair
+# would be worse than committing neither.
+artifacts/tapstitch/front-logo/

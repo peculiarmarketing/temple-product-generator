@@ -431,7 +431,8 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   the art card) is the real parent; `essential-temple-tee` (created 27 Aug, Navy
   first, no art card) is a stray. Only one address can be inherited, so the
   snapshot keeps the OLDEST and reports the collision rather than letting
-  last-write-wins pick. The stray still needs a decision.
+  last-write-wins pick. RESOLVED the same evening: the stray was deleted, along
+  with its dated twin. See the evening entry below.
 - **The repo was in an iCloud conflict state** when this work started: empty
   shells named `garments`, `config`, `scripts`, `docs`, `tests`, `artifacts`,
   `fonts`, `reference` beside the real content in `<name> 2` twins. Git reported
@@ -579,3 +580,284 @@ pin a lineup that is expected to change.
   made the four non-temple leftovers unreachable by the guarded delete path), and
   the delete message no longer claims a replacement is coming for a product that
   has none.
+
+## 14 September 2026, late evening (US fulfillment, crew and hoodie blanks swapped)
+
+- **Every line moves to USA fulfillment.** Production 1-2 days and shipping 3-5,
+  so **4-7 days to a customer's door against 10-17** from the international
+  center. This is the largest single improvement the migration has produced for
+  a buyer, and it is the reason the two fleece blanks changed with it.
+- **Mechanism, and why it forced blank changes:** the fulfillment selector on a
+  Tapstitch product page is not a shipping preference. Their own wording is that
+  it changes which colours and sizes are available, the printing price, and the
+  shipping options. A blank is therefore a different product from the US center
+  than from the international one, and two of the three did not survive the move
+  intact.
+
+| Line | Blank | Code | Weight | Sizes | Blank | Technique | All-in |
+|---|---|---|---|---|---|---|---|
+| tee | Essential Cotton T-Shirt #RT0063 | RT0063-C001-V5 | 260 gsm, 7.7 oz | S-3XL | $5.99 | DTG | $19.57 |
+| crew | Fleeced Sweatshirt #R00368 | R00368-C001-V7 | 350 gsm, 10.3 oz | S-2XL | $16.57 | DTF | $34.10 |
+| hoodie | Oversize Fleeced Hoodie #R00286 | R00286-C001-V7 | 350 gsm, 10.3 oz | S-2XL | $14.92 | DTF | $34.67 |
+
+- **The crew is now the R00368 Fleeced Sweatshirt**, replacing the UT0044. Same
+  weight class as the blank it replaces (350 gsm against 345) and the same S-2XL
+  range. **Two colourways only: Black and Flower Gray**, which the storefront
+  shows as Gray. The line opens on Gray (Evan).
+- **The hoodie is now the R00286 Oversize Fleeced Hoodie**, replacing the RW0041,
+  at 350 gsm / 10.3 oz and S-2XL. **Haze Blue is gone**; Black, Dark Gray, Navy
+  Blue, Dark Green and Coffee remain, all dark, so everything still prints white
+  and there is still no black art file to build. Opens on Dark Gray, unchanged.
+- **The crew and hoodie are still a matching set on fabric** (both 350 gsm /
+  10.3 oz, both DTF) but **no longer on colour**: two colourways against five,
+  sharing only Black. The 'four of the five tee colours are shared with the
+  fleece, so the catalogue reads as one family' rationale from earlier today no
+  longer holds. Black is the only colour all three lines carry.
+- **The tee is unchanged** (Evan, asked directly): still the RT0063, still Black,
+  Dark Gray, Coffee, Navy Blue and Wine Red shown as Maroon, still opening on
+  Black. Only its cost moved.
+- **Two storefront renames now, not one.** Wine Red to Maroon on the tee, and
+  Flower Gray to Gray on the crew. This supersedes 'only one rename survives'
+  from the afternoon. Both are read from the configs by
+  `colorway_renames_by_type()`, so the table picked the second one up with no
+  code change: it now returns `{'T-Shirt': [('Wine Red', 'Maroon')], 'Sweatshirt':
+  [('Flower Gray', 'Gray')]}`.
+- **The two fleece blanks print DTF, not DTG.** DTF lays a film layer on the
+  fabric: strong opacity on dark grounds, which is what white line art wants, at
+  the cost of breathability across large solid areas. Our designs are line work
+  on dark blanks, so this is a fair trade, but it is a real change in what the
+  garment feels like and the product copy should not claim DTG.
+- **Costs are Evan's figures and they supersede the $20.57 caveat.** The tee's
+  earlier number was worked out while the blank was still the RU0010 and was
+  about $3.80 light for the RT0063; $19.57 is measured on the blank and the
+  fulfillment actually in use, so that open caveat is closed. The stale
+  international shipping line items were REMOVED from the configs rather than
+  left sitting beside the new all-in numbers, where they would have read as
+  current.
+
+**MARGIN, and one thing worth a second look:**
+
+| Line | Price | All-in | Gross | Change since this afternoon |
+|---|---|---|---|---|
+| tee | $44.99 | $19.57 | $25.42 | cost down $1.00, and down about $4.80 against the RT0063-corrected figure |
+| crew | $64.99 | $34.10 | $30.89 | cost UP $1.55 |
+| hoodie | $74.99 | $34.67 | $40.32 | cost down $2.10 |
+
+  The crew is the one to look at. Its blank costs MORE than the hoodie's ($16.57
+  against $14.92) and its all-in is within $0.57 of the hoodie's, while it sells
+  for $10.00 less. That is $9.43 less gross on a garment that costs essentially
+  the same to make and ship. Either the crew price rises or the gap is accepted
+  deliberately; prices are unchanged for now and this is flagged, not decided.
+  Against the $22 to $40 acquisition cost in BRAND.md section 16, the tee at
+  $25.42 still does not reliably pay for its own customer.
+
+**OPEN, all small, none blocking the editor session:**
+
+1. **Is Flower Gray dark enough to print white?** Every colourway until now was
+   obviously dark. Its `ink` is set to white on the assumption that it follows
+   the rest, and if a real mockup says otherwise it becomes black and the black
+   art files have to be built for that colourway. Needs Evan's eye.
+2. **Does the RT0063 print DTG from the US center?** DTG is what its
+   international page says, and both fleece blanks print DTF from the US. Confirm
+   before any copy claims a technique.
+3. **The US center's shipping service name** was not readable on the product
+   page. `shipping_method` is null in all three configs rather than carrying the
+   international 'Special Line', which no longer applies.
+4. **Colour swatch spellings stay unverified** for all three blanks, and
+   'Flower Gray' is the likeliest to differ. A mismatch still fails silently.
+
+## 14 September 2026, last of the day (design sizes, hoodie lead colour)
+
+- **The hoodie opens on Navy Blue**, not Dark Gray. Evan. `storefront_first_color`
+  in `garments/hoodie.json`, and the proof-sheet swatch follows it.
+- **The temple is 12.0 inches wide ink to ink at its widest point**, down from the
+  12.5in the Printify catalogue used. Set as `temple_target_ink_width_in` in each
+  Tapstitch garment's `spacing_overrides`, so `spacing_defaults.json` keeps 12.5
+  for the retiring `back_stack` profiles and they are provably untouched.
+- **The front logo is 6.0 inches wide ink to ink.** This one needed a code change,
+  not a config change. `build_front_logo` sized the logo by its FILE FRAME, and
+  the logo PNG carries about 2.4% transparent padding across and 6.4% down, so
+  `logo_width_in: 6.0` was printing a 5.86in logo. It now measures the ink bbox
+  and scales the frame so the drawn logo is exactly the configured width,
+  horizontally centred on its own ink rather than on its padding. Measured after
+  the change: 6.003in, the 0.003 being the rounding to a whole pixel at 300dpi.
+- **The keys were renamed rather than redefined**: `logo_width_in` became
+  `logo_ink_width_in` and `logo_top_margin_in` became `logo_ink_top_margin_in`,
+  and `build_front_logo` hard-stops if it finds either old key. A config that
+  silently changed meaning is exactly the kind of failure that would have printed
+  a wrong-sized logo on 120 products without anyone noticing.
+- **`logo_ink_top_margin_in` is now the ink top**, where it used to be the frame
+  top. On the placeholder front area the logo's first drawn pixel now sits at
+  2.997in rather than 3.038in. The number to trust is the ink one; the old
+  behaviour was off by whatever padding the file happened to carry.
+
+**MEASURED CONSEQUENCE of the 12.0in rule, across all 40 traced temples:** six
+finish under 12.0in because the height cap shrinks them first.
+
+| Temple | Ink width | Ink height |
+|---|---|---|
+| West Jordan | 10.68in | 12.59in |
+| Nauvoo | 10.85in | 12.59in |
+| Salt Lake | 11.05in | 12.59in |
+| Spanish Fork | 11.20in | 12.59in |
+| Washington DC | 11.54in | 12.59in |
+| Lindon | 11.71in | 12.59in |
+
+  All six hit 12.59in tall, which is the entire vertical budget on the
+  placeholder canvas: 16.99in of area less the 0.6in top margin, the 2.5in bottom
+  margin, the 0.5in gap and the 0.8in location line. They are the tall narrow
+  buildings, so they run out of height before they run out of width and
+  `_place_temple` shrinks them to fit. **The 2.5in bottom margin is the binding
+  constraint, not the 12.0in rule.** It was measured off the live Printify
+  catalogue for a layout where the logo sat at the bottom of the back stack, and
+  centring made it meaningless: the block is repositioned afterwards anyway.
+  Matching it to the 0.6in top margin gives 14.49in of budget and every one of
+  the six clears 12.0in (the tallest, West Jordan, needs 14.14in). That is a
+  one-line change to each garment's `spacing_overrides` and it is NOT made:
+  margins are a design decision and this one is Evan's, already open in BRAND.md
+  section 19.
+- **Worth knowing before the real print area lands:** a 12.0in-wide design on a
+  12in print area touches both edges, and the validator's 0.25in safe margin
+  would fail every file. 12.0in only works if the real Tapstitch area is wider
+  than 12.5in. The placeholder is 14.98in wide, so nothing fails today, and this
+  is one more thing the first editor session settles.
+
+## 14 September 2026, the print areas (and two file rules)
+
+**PNG only, no SVG uploads.** Evan, from Tapstitch. Already true and unchanged by
+it: the pipeline has never uploaded a vector. The SVGs under `Temples/` are
+sources that get rasterised into one flattened PNG per print file, which is the
+whole point of the flattener, and both `back_file_path()` and
+`front_file_path()` build `.png` names. Nothing to change; recorded so a future
+session does not 'optimise' by uploading the vector.
+
+**Invisible pixels must carry the ink colour, not black.** Evan, from seeing grey
+where white art should be. Already fixed, and the mechanism is worth keeping
+written down. A rasterised PNG stores RGB(0,0,0) under fully transparent pixels.
+Tapstitch's previewer and Finder's thumbnailer resample without premultiplying
+alpha, so they average that hidden black into the neighbouring ink and smear grey
+halos around white line work. `flatten.matte()` sets every pixel's RGB to the ink
+colour and leaves alpha alone, so the average is a no-op. Verified again today on
+a built white file: 21,676,134 fully transparent pixels and 446,172
+semi-transparent ones, every one of them RGB(255,255,255). This is why
+`matte()` must never be 'optimised' to skip invisible pixels: they are exactly
+the pixels it exists for.
+
+**THE REAL PRINT AREAS, read off the editor by Evan.** The placeholder canvas is
+retired.
+
+| Line | Blank | Front px | Back px | Front in | Back in |
+|---|---|---|---|---|---|
+| tee | RT0063 | 2193 x 2758 | 2193 x 2758 | 14.62 x 18.39 | 14.62 x 18.39 |
+| crew | R00368 | 1982 x 2609 | 2061 x 2757 | 13.21 x 17.39 | 13.74 x 18.38 |
+| hoodie | R00286 | 2069 x 1615 | 2067 x 2770 | 13.79 x 10.77 | 13.78 x 18.47 |
+
+- **The inches assume 150 dpi, and that is an assumption, not a reading.**
+  Tapstitch does not publish the resolution those pixel counts are quoted at, and
+  it is the one number that changes every dimension in the catalogue. Two things
+  argue for 150. At 300 the widest back area is 6.89in across, which makes Evan's
+  own 12in temple rule impossible on every garment, and the front logo would have
+  to shrink with it. At 150 the areas land within half an inch of the 14.98 x
+  16.99in Printify area this catalogue printed on for a year. **Confirm it in the
+  editor, which shows inches.** If it is 300, change `editor_dpi` in the three
+  configs and every inch halves; nothing else needs touching, because the layout
+  computes from `width_px / dpi`.
+- **The stored `width_px` is the editor's number DOUBLED, with `dpi` set to 300.**
+  Exporting at the editor's native 2193 x 2758 would mean a 150dpi print file,
+  under this project's own 200 effective-DPI floor, on a $75 garment. Doubling
+  keeps the aspect ratio identical to the pixel, so 'upload, centre, full size'
+  places the art exactly the same way, and the file arrives at 300dpi at final
+  size. `editor_px` and `editor_dpi` are recorded beside it so the real numbers
+  are never lost behind the doubled ones.
+- **Every garment now has its own canvas**, and the front and back differ: the tee
+  is square-ish and identical front and back, the crew's front is an inch narrower
+  and a full inch shorter than its back, and the hoodie's front is LANDSCAPE, 13.79
+  wide by 10.77 tall, because the pouch pocket takes the bottom of the panel.
+
+**FIT, measured across all 40 traced temples on the real areas:**
+
+- **39 of 40 reach the full 12.0in width on every garment.** On the placeholder
+  canvas six fell short; the real areas are taller, so five of those six now make it.
+- **West Jordan is the one that does not**, at 11.86in on the tee and crew and
+  11.93in on the hoodie. It is the tallest narrow building in the catalogue and it
+  runs out of height first. The shortfall is under a sixth of an inch and is
+  invisible next to any other temple.
+- **The 2.5in bottom margin is still what binds**, exactly as flagged earlier
+  today. Ink-height budget is 13.99in on the tee, 13.98in on the crew and 14.07in
+  on the hoodie; West Jordan needs 14.14in. Matching the bottom margin to the
+  0.6in top would clear it with inches to spare. Still Evan's call, still one line.
+- **Side margins at 12.0in wide** are 1.31in on the tee, 0.87in on the crew and
+  0.89in on the hoodie, all comfortably past the 0.25in safe margin. Every sample
+  built and validated clean on all three garments.
+
+**RAISED, not decided: `logo_ink_top_margin_in` means something different on the
+hoodie.** It is 3.0in on all three lines, measured from the top of the print area.
+On the tee and crew that is a 3in drop inside an 18in panel, which is high on the
+chest. On the hoodie it is a 3in drop inside a 10.77in panel, so the logo sits
+almost a third of the way down a much shorter area. The number is identical and
+the result is not. Placement is already open in BRAND.md section 19 and waits on
+seeing a mockup.
+
+**Blockers cleared by this:** `tapstitch_publish.py check` went from 9 garment-setup
+items to 3. All six print-area items are gone. What remains is the product copy for
+the three lines, which waits only on the size-guide decision.
+
+## 14 September 2026, the back design stated completely (supersedes all earlier spacing)
+
+Evan, replacing the margin-based spacing the layout inherited from Printify. The
+back print is now four rules and nothing else:
+
+1. The temple and the location line are **centred in the print file**, vertically
+   and horizontally.
+2. The temple ink spans **no more than 12.0in** at its widest point.
+3. The location line is **0.7in of INK tall**, not 0.7in of box.
+4. The **top of the location line sits 0.5in below the temple's lowest ink**.
+
+- **There is no top or bottom margin any more.** `top_margin_in` and
+  `bottom_margin_in` are both 0.0 in the three Tapstitch garment configs.
+  `spacing_defaults.json` keeps 0.6 and 2.5 for the retiring `back_stack`
+  profiles, so the Printify layouts are provably untouched.
+- **This is what finally cleared the width problem.** The 2.5in bottom margin was
+  measured off the live Printify catalogue, where the back stack ENDED with the
+  logo and that space had a job. Once the logo moved to the front, the margin
+  reserved space for nothing while still capping how tall a temple could be, and
+  height is what caps width for a tall narrow building. Six temples fell short of
+  12.0in on the placeholder canvas, one (West Jordan) on the real areas. With the
+  margins gone, **all 40 reach the full 12.0in on all three garments.**
+- **0.7in replaces 0.8in.** The 0.8 was reasoned against a guessed print area
+  before the real ones were known; this is Evan's number against the real thing.
+  At 0.7in the longest line in the catalogue, SARATOGA SPRINGS, UTAH, renders
+  9.52in wide, which clears the narrowest back area (13.74in on the crew) by more
+  than two inches either side.
+- **The ink-not-box rule matters more for type than for art.** `render_text`
+  already crops to the alpha bbox before scaling, so the height asked for is the
+  height of the letterforms; a font's own box is taller than its letters and would
+  have printed visibly small. Verified on a build: 0.700in of ink at both heights.
+  Worth knowing: a manual `*location text*` override file in a temple folder
+  bypasses that crop and would be scaled by its box. There are zero overrides in
+  the catalogue today (checked), but the first one added will need trimming.
+- **The 0.5in gap was already the value in use** (`gap_ink_to_text_in`, raised
+  from 0.2 by Evan on 19 Aug 2026). It is now stated explicitly per garment rather
+  than inherited, so a change to the Printify defaults cannot move it.
+
+**VERIFIED ON BUILT FILES, all three garments, the tallest, widest and most
+extreme temples:**
+
+| Garment | Temple | Block | Temple ink | Gap | City line | Centred within |
+|---|---|---|---|---|---|---|
+| tee | West Jordan | 15.34in | 12.00in wide, 14.14in tall | 0.500in | 0.700in | 0.002in |
+| tee | Monticello | 7.45in | 11.98in wide, 6.24in tall | 0.510in | 0.700in | 0.002in |
+| crew | Salt Lake | 14.87in | 11.99in wide, 13.67in tall | 0.507in | 0.700in | 0.003in |
+| hoodie | West Jordan | 15.34in | 12.00in wide, 14.14in tall | 0.500in | 0.700in | 0.002in |
+
+  The hundredths of an inch are the alpha threshold, not the layout. Measuring a
+  rasterised file counts a pixel as ink above alpha 10, and a line drawing's
+  faintest antialiased edge falls below that, so a measured edge can sit two or
+  three pixels inside the computed one. At 300dpi three pixels is 0.01in. The
+  geometry itself is exact.
+
+- **Every sample validated clean** on all three garments: no safe-margin breach,
+  no resolution problem, single ink throughout.
+- **The proof sheet's own copy was rewritten** to match, and `spacing_study()`
+  (the same temple at four different bottom margins) is retired, since the
+  question it answered no longer exists. `main()` no longer calls it.

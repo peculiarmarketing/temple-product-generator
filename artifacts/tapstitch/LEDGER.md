@@ -1,146 +1,145 @@
 # Tapstitch migration ledger
 
-Updated 2026-09-14T14:31:46. 135 rows.
+Updated 2026-09-15T09:25:39. 135 rows.
 
 | State | Count |
 |---|---|
-| art-missing | 15 |
-| art-ok | 120 |
+| file-approved | 135 |
 
 | Temple | Garment | State | Old web address | Problems |
 |---|---|---|---|---|
-| Albuquerque | crew | art-missing |  | no traced art yet |
-| Albuquerque | hoodie | art-missing |  | no traced art yet |
-| Albuquerque | tee | art-missing |  | no traced art yet |
-| Billings | crew | art-missing |  | no traced art yet |
-| Billings | hoodie | art-missing |  | no traced art yet |
-| Billings | tee | art-missing |  | no traced art yet |
-| Boise | crew | art-ok | classic-temple-crew-sweatshirt-boise |  |
-| Boise | hoodie | art-ok | pillar-temple-hoodie-boise |  |
-| Boise | tee | art-ok | essential-temple-tee-boise |  |
-| Bountiful | crew | art-ok | bountiful-temple-sweatshirt |  |
-| Bountiful | hoodie | art-ok | bountiful-temple-hoodie |  |
-| Bountiful | tee | art-ok | bountiful-temple-tee |  |
-| Brigham City | crew | art-ok | brigham-city-temple-sweatshirt |  |
-| Brigham City | hoodie | art-ok | brigham-city-temple-hoodie |  |
-| Brigham City | tee | art-ok | brigham-city-temple-tee |  |
-| Burley | crew | art-missing |  | no traced art yet |
-| Burley | hoodie | art-missing |  | no traced art yet |
-| Burley | tee | art-missing |  | no traced art yet |
-| Cedar City | crew | art-ok | cedar-city-temple-sweatshirt |  |
-| Cedar City | hoodie | art-ok | cedar-city-temple-hoodie |  |
-| Cedar City | tee | art-ok | cedar-city-temple-tee |  |
-| Cody | crew | art-ok | cody-temple-sweatshirt |  |
-| Cody | hoodie | art-ok | cody-temple-hoodie |  |
-| Cody | tee | art-ok | cody-temple-tee |  |
-| Deseret Peak | crew | art-ok | deseret-peak-temple-sweatshirt |  |
-| Deseret Peak | hoodie | art-ok | deseret-peak-temple-hoodie |  |
-| Deseret Peak | tee | art-ok | deseret-peak-temple-tee |  |
-| Draper | crew | art-ok | draper-temple-sweatshirt |  |
-| Draper | hoodie | art-ok | draper-temple-hoodie |  |
-| Draper | tee | art-ok | draper-temple-tee |  |
-| Ephraim | crew | art-ok | ephraim-temple-sweatshirt |  |
-| Ephraim | hoodie | art-ok | ephraim-temple-hoodie |  |
-| Ephraim | tee | art-ok | ephraim-temple-tee |  |
-| Heber Valley* | crew | art-ok | classic-temple-crew-sweatshirt-heber-valley |  |
-| Heber Valley* | hoodie | art-ok | pillar-temple-hoodie-heber-valley |  |
-| Heber Valley* | tee | art-ok | essential-temple-tee-heber-valley |  |
-| Jordan River | crew | art-ok | jordan-river-temple-sweatshirt |  |
-| Jordan River | hoodie | art-ok | jordan-river-temple-hoodie |  |
-| Jordan River | tee | art-ok | jordan-river-temple-tee |  |
-| Kirtland | crew | art-ok | kirtland-temple-sweatshirt |  |
-| Kirtland | hoodie | art-ok | kirtland-temple-hoodie |  |
-| Kirtland | tee | art-ok | kirtland-temple-tee |  |
-| Layton | crew | art-ok | layton-temple-sweatshirt |  |
-| Layton | hoodie | art-ok | layton-temple-hoodie |  |
-| Layton | tee | art-ok | layton-temple-tee |  |
-| Lehi* | crew | art-missing |  | no traced art yet |
-| Lehi* | hoodie | art-missing |  | no traced art yet |
-| Lehi* | tee | art-missing |  | no traced art yet |
-| Lindon | crew | art-ok | lindon-temple-sweatshirt |  |
-| Lindon | hoodie | art-ok | lindon-temple-hoodie |  |
-| Lindon | tee | art-ok | lindon-temple-tee |  |
-| Logan | crew | art-ok | logan-temple-sweatshirt |  |
-| Logan | hoodie | art-ok | logan-temple-hoodie |  |
-| Logan | tee | art-ok | logan-temple-tee |  |
-| Manhattan | crew | art-ok | manhattan-temple-sweatshirt |  |
-| Manhattan | hoodie | art-ok | manhattan-temple-hoodie |  |
-| Manhattan | tee | art-ok | manhattan-temple-tee |  |
-| Manti | crew | art-ok | manti-temple-sweatshirt |  |
-| Manti | hoodie | art-ok | manti-temple-hoodie |  |
-| Manti | tee | art-ok | manti-temple-tee |  |
-| Mexico City | crew | art-ok | mexico-city-temple-sweatshirt |  |
-| Mexico City | hoodie | art-ok | mexico-city-temple-hoodie |  |
-| Mexico City | tee | art-ok | mexico-city-temple-tee |  |
-| Monticello | crew | art-ok | monticello-temple-sweatshirt |  |
-| Monticello | hoodie | art-ok | monticello-temple-hoodie |  |
-| Monticello | tee | art-ok | monticello-temple-tee |  |
-| Mount Timpanogos | crew | art-ok | mount-timpanogos-temple-sweatshirt |  |
-| Mount Timpanogos | hoodie | art-ok | mount-timpanogos-temple-hoodie |  |
-| Mount Timpanogos | tee | art-ok | mount-timpanogos-temple-tee |  |
-| Nauvoo | crew | art-ok | nauvoo-temple-sweatshirt |  |
-| Nauvoo | hoodie | art-ok | nauvoo-temple-hoodie |  |
-| Nauvoo | tee | art-ok | nauvoo-temple-tee |  |
-| Oakland | crew | art-ok | oakland-temple-sweatshirt |  |
-| Oakland | hoodie | art-ok | oakland-temple-hoodie |  |
-| Oakland | tee | art-ok | oakland-temple-tee |  |
-| Ogden | crew | art-ok | classic-temple-crew-sweatshirt-ogden |  |
-| Ogden | hoodie | art-ok | pillar-temple-hoodie-ogden |  |
-| Ogden | tee | art-ok | essential-temple-tee-ogden |  |
-| Ogden (original) | crew | art-ok | classic-temple-crew-sweatshirt-ogden-original |  |
-| Ogden (original) | hoodie | art-ok | pillar-temple-hoodie-ogden-original |  |
-| Ogden (original) | tee | art-ok | essential-temple-tee-ogden-original |  |
-| Orem | crew | art-ok | classic-temple-crew-sweatshirt-orem |  |
-| Orem | hoodie | art-ok | pillar-temple-hoodie-orem |  |
-| Orem | tee | art-ok | essential-temple-tee-orem |  |
-| Provo | crew | art-ok | provo-temple-sweatshirt |  |
-| Provo | hoodie | art-ok | provo-temple-hoodie |  |
-| Provo | tee | art-ok | provo-temple-tee |  |
-| Provo City Center | crew | art-ok | provo-city-center-temple-sweatshirt |  |
-| Provo City Center | hoodie | art-ok | provo-city-center-temple-hoodie |  |
-| Provo City Center | tee | art-ok | provo-city-center-temple-tee |  |
-| Provo Rock Canyon* | crew | art-missing |  | no traced art yet |
-| Provo Rock Canyon* | hoodie | art-missing |  | no traced art yet |
-| Provo Rock Canyon* | tee | art-missing |  | no traced art yet |
-| Red Cliffs | crew | art-ok | classic-temple-crew-sweatshirt-red-cliffs |  |
-| Red Cliffs | hoodie | art-ok | pillar-temple-hoodie-red-cliffs |  |
-| Red Cliffs | tee | art-ok | essential-temple-tee-red-cliffs |  |
-| Rome | crew | art-ok | rome-temple-sweatshirt |  |
-| Rome | hoodie | art-ok | rome-temple-hoodie |  |
-| Rome | tee | art-ok | rome-temple-tee |  |
-| Salt Lake | crew | art-ok | salt-lake-temple-sweatshirt |  |
-| Salt Lake | hoodie | art-ok | salt-lake-temple-hoodie |  |
-| Salt Lake | tee | art-ok | salt-lake-city-temple-tee |  |
-| San Antonio | crew | art-ok | san-antonio-temple-sweatshirt |  |
-| San Antonio | hoodie | art-ok | san-antonio-temple-hoodie |  |
-| San Antonio | tee | art-ok | san-antonio-temple-tee |  |
-| San Diego | crew | art-ok | san-diego-temple-sweatshirt |  |
-| San Diego | hoodie | art-ok | san-diego-temple-hoodie |  |
-| San Diego | tee | art-ok | san-diego-temple-tee |  |
-| Saratoga Springs | crew | art-ok | saratoga-springs-temple-sweatshirt |  |
-| Saratoga Springs | hoodie | art-ok | saratoga-springs-temple-hoodie |  |
-| Saratoga Springs | tee | art-ok | saratoga-springs-temple-tee |  |
-| Smithfield | crew | art-ok | smithfield-temple-sweatshirt |  |
-| Smithfield | hoodie | art-ok | smithfield-temple-hoodie |  |
-| Smithfield | tee | art-ok | smithfield-temple-tee |  |
-| Spanish Fork* | crew | art-ok | classic-temple-crew-sweatshirt-spanish-fork |  |
-| Spanish Fork* | hoodie | art-ok | pillar-temple-hoodie-spanish-fork |  |
-| Spanish Fork* | tee | art-ok | essential-temple-tee-spanish-fork |  |
-| St. George | crew | art-ok | st-george-temple-sweatshirt |  |
-| St. George | hoodie | art-ok | st-george-temple-hoodie |  |
-| St. George | tee | art-ok | st-george-temple-tee |  |
-| Syracuse | crew | art-ok | classic-temple-crew-sweatshirt-syracuse |  |
-| Syracuse | hoodie | art-ok | pillar-temple-hoodie-syracuse |  |
-| Syracuse | tee | art-ok | essential-temple-tee-syracuse |  |
-| Taylorsville | crew | art-ok | taylorsville-temple-sweatshirt |  |
-| Taylorsville | hoodie | art-ok | taylorsville-temple-hoodie |  |
-| Taylorsville | tee | art-ok | taylorsville-temple-tee |  |
-| Vernal | crew | art-ok | classic-temple-crew-sweatshirt-vernal |  |
-| Vernal | hoodie | art-ok | pillar-temple-hoodie-vernal |  |
-| Vernal | tee | art-ok | essential-temple-tee-vernal |  |
-| Washington DC | crew | art-ok | washington-d-c-temple-sweatshirt |  |
-| Washington DC | hoodie | art-ok | washington-d-c-temple-hoodie |  |
-| Washington DC | tee | art-ok | washington-d-c-temple-tee |  |
-| West Jordan* | crew | art-ok | classic-temple-crew-sweatshirt-west-jordan |  |
-| West Jordan* | hoodie | art-ok | pillar-temple-hoodie-west-jordan |  |
-| West Jordan* | tee | art-ok | essential-temple-tee-west-jordan |  |
+| Albuquerque | crew | file-approved |  |  |
+| Albuquerque | hoodie | file-approved |  |  |
+| Albuquerque | tee | file-approved |  |  |
+| Billings | crew | file-approved |  |  |
+| Billings | hoodie | file-approved |  |  |
+| Billings | tee | file-approved |  |  |
+| Boise | crew | file-approved | classic-temple-crew-sweatshirt-boise |  |
+| Boise | hoodie | file-approved | pillar-temple-hoodie-boise |  |
+| Boise | tee | file-approved | essential-temple-tee-boise |  |
+| Bountiful | crew | file-approved | bountiful-temple-sweatshirt |  |
+| Bountiful | hoodie | file-approved | bountiful-temple-hoodie |  |
+| Bountiful | tee | file-approved | bountiful-temple-tee |  |
+| Brigham City | crew | file-approved | brigham-city-temple-sweatshirt |  |
+| Brigham City | hoodie | file-approved | brigham-city-temple-hoodie |  |
+| Brigham City | tee | file-approved | brigham-city-temple-tee |  |
+| Burley | crew | file-approved |  |  |
+| Burley | hoodie | file-approved |  |  |
+| Burley | tee | file-approved |  |  |
+| Cedar City | crew | file-approved | cedar-city-temple-sweatshirt |  |
+| Cedar City | hoodie | file-approved | cedar-city-temple-hoodie |  |
+| Cedar City | tee | file-approved | cedar-city-temple-tee |  |
+| Cody | crew | file-approved | cody-temple-sweatshirt |  |
+| Cody | hoodie | file-approved | cody-temple-hoodie |  |
+| Cody | tee | file-approved | cody-temple-tee |  |
+| Deseret Peak | crew | file-approved | deseret-peak-temple-sweatshirt |  |
+| Deseret Peak | hoodie | file-approved | deseret-peak-temple-hoodie |  |
+| Deseret Peak | tee | file-approved | deseret-peak-temple-tee |  |
+| Draper | crew | file-approved | draper-temple-sweatshirt |  |
+| Draper | hoodie | file-approved | draper-temple-hoodie |  |
+| Draper | tee | file-approved | draper-temple-tee |  |
+| Ephraim | crew | file-approved | ephraim-temple-sweatshirt |  |
+| Ephraim | hoodie | file-approved | ephraim-temple-hoodie |  |
+| Ephraim | tee | file-approved | ephraim-temple-tee |  |
+| Heber Valley* | crew | file-approved | classic-temple-crew-sweatshirt-heber-valley |  |
+| Heber Valley* | hoodie | file-approved | pillar-temple-hoodie-heber-valley |  |
+| Heber Valley* | tee | file-approved | essential-temple-tee-heber-valley |  |
+| Jordan River | crew | file-approved | jordan-river-temple-sweatshirt |  |
+| Jordan River | hoodie | file-approved | jordan-river-temple-hoodie |  |
+| Jordan River | tee | file-approved | jordan-river-temple-tee |  |
+| Kirtland | crew | file-approved | kirtland-temple-sweatshirt |  |
+| Kirtland | hoodie | file-approved | kirtland-temple-hoodie |  |
+| Kirtland | tee | file-approved | kirtland-temple-tee |  |
+| Layton | crew | file-approved | layton-temple-sweatshirt |  |
+| Layton | hoodie | file-approved | layton-temple-hoodie |  |
+| Layton | tee | file-approved | layton-temple-tee |  |
+| Lehi* | crew | file-approved |  |  |
+| Lehi* | hoodie | file-approved |  |  |
+| Lehi* | tee | file-approved |  |  |
+| Lindon | crew | file-approved | lindon-temple-sweatshirt |  |
+| Lindon | hoodie | file-approved | lindon-temple-hoodie |  |
+| Lindon | tee | file-approved | lindon-temple-tee |  |
+| Logan | crew | file-approved | logan-temple-sweatshirt |  |
+| Logan | hoodie | file-approved | logan-temple-hoodie |  |
+| Logan | tee | file-approved | logan-temple-tee |  |
+| Manhattan | crew | file-approved | manhattan-temple-sweatshirt |  |
+| Manhattan | hoodie | file-approved | manhattan-temple-hoodie |  |
+| Manhattan | tee | file-approved | manhattan-temple-tee |  |
+| Manti | crew | file-approved | manti-temple-sweatshirt |  |
+| Manti | hoodie | file-approved | manti-temple-hoodie |  |
+| Manti | tee | file-approved | manti-temple-tee |  |
+| Mexico City | crew | file-approved | mexico-city-temple-sweatshirt |  |
+| Mexico City | hoodie | file-approved | mexico-city-temple-hoodie |  |
+| Mexico City | tee | file-approved | mexico-city-temple-tee |  |
+| Monticello | crew | file-approved | monticello-temple-sweatshirt |  |
+| Monticello | hoodie | file-approved | monticello-temple-hoodie |  |
+| Monticello | tee | file-approved | monticello-temple-tee |  |
+| Mount Timpanogos | crew | file-approved | mount-timpanogos-temple-sweatshirt |  |
+| Mount Timpanogos | hoodie | file-approved | mount-timpanogos-temple-hoodie |  |
+| Mount Timpanogos | tee | file-approved | mount-timpanogos-temple-tee |  |
+| Nauvoo | crew | file-approved | nauvoo-temple-sweatshirt |  |
+| Nauvoo | hoodie | file-approved | nauvoo-temple-hoodie |  |
+| Nauvoo | tee | file-approved | nauvoo-temple-tee |  |
+| Oakland | crew | file-approved | oakland-temple-sweatshirt |  |
+| Oakland | hoodie | file-approved | oakland-temple-hoodie |  |
+| Oakland | tee | file-approved | oakland-temple-tee |  |
+| Ogden | crew | file-approved | classic-temple-crew-sweatshirt-ogden |  |
+| Ogden | hoodie | file-approved | pillar-temple-hoodie-ogden |  |
+| Ogden | tee | file-approved | essential-temple-tee-ogden |  |
+| Ogden (original) | crew | file-approved | classic-temple-crew-sweatshirt-ogden-original |  |
+| Ogden (original) | hoodie | file-approved | pillar-temple-hoodie-ogden-original |  |
+| Ogden (original) | tee | file-approved | essential-temple-tee-ogden-original |  |
+| Orem | crew | file-approved | classic-temple-crew-sweatshirt-orem |  |
+| Orem | hoodie | file-approved | pillar-temple-hoodie-orem |  |
+| Orem | tee | file-approved | essential-temple-tee-orem |  |
+| Provo | crew | file-approved | provo-temple-sweatshirt |  |
+| Provo | hoodie | file-approved | provo-temple-hoodie |  |
+| Provo | tee | file-approved | provo-temple-tee |  |
+| Provo City Center | crew | file-approved | provo-city-center-temple-sweatshirt |  |
+| Provo City Center | hoodie | file-approved | provo-city-center-temple-hoodie |  |
+| Provo City Center | tee | file-approved | provo-city-center-temple-tee |  |
+| Provo Rock Canyon* | crew | file-approved |  |  |
+| Provo Rock Canyon* | hoodie | file-approved |  |  |
+| Provo Rock Canyon* | tee | file-approved |  |  |
+| Red Cliffs | crew | file-approved | classic-temple-crew-sweatshirt-red-cliffs |  |
+| Red Cliffs | hoodie | file-approved | pillar-temple-hoodie-red-cliffs |  |
+| Red Cliffs | tee | file-approved | essential-temple-tee-red-cliffs |  |
+| Rome | crew | file-approved | rome-temple-sweatshirt |  |
+| Rome | hoodie | file-approved | rome-temple-hoodie |  |
+| Rome | tee | file-approved | rome-temple-tee |  |
+| Salt Lake | crew | file-approved | salt-lake-temple-sweatshirt |  |
+| Salt Lake | hoodie | file-approved | salt-lake-temple-hoodie |  |
+| Salt Lake | tee | file-approved | salt-lake-city-temple-tee |  |
+| San Antonio | crew | file-approved | san-antonio-temple-sweatshirt |  |
+| San Antonio | hoodie | file-approved | san-antonio-temple-hoodie |  |
+| San Antonio | tee | file-approved | san-antonio-temple-tee |  |
+| San Diego | crew | file-approved | san-diego-temple-sweatshirt |  |
+| San Diego | hoodie | file-approved | san-diego-temple-hoodie |  |
+| San Diego | tee | file-approved | san-diego-temple-tee |  |
+| Saratoga Springs | crew | file-approved | saratoga-springs-temple-sweatshirt |  |
+| Saratoga Springs | hoodie | file-approved | saratoga-springs-temple-hoodie |  |
+| Saratoga Springs | tee | file-approved | saratoga-springs-temple-tee |  |
+| Smithfield | crew | file-approved | smithfield-temple-sweatshirt |  |
+| Smithfield | hoodie | file-approved | smithfield-temple-hoodie |  |
+| Smithfield | tee | file-approved | smithfield-temple-tee |  |
+| Spanish Fork* | crew | file-approved | classic-temple-crew-sweatshirt-spanish-fork |  |
+| Spanish Fork* | hoodie | file-approved | pillar-temple-hoodie-spanish-fork |  |
+| Spanish Fork* | tee | file-approved | essential-temple-tee-spanish-fork |  |
+| St. George | crew | file-approved | st-george-temple-sweatshirt |  |
+| St. George | hoodie | file-approved | st-george-temple-hoodie |  |
+| St. George | tee | file-approved | st-george-temple-tee |  |
+| Syracuse | crew | file-approved | classic-temple-crew-sweatshirt-syracuse |  |
+| Syracuse | hoodie | file-approved | pillar-temple-hoodie-syracuse |  |
+| Syracuse | tee | file-approved | essential-temple-tee-syracuse |  |
+| Taylorsville | crew | file-approved | taylorsville-temple-sweatshirt |  |
+| Taylorsville | hoodie | file-approved | taylorsville-temple-hoodie |  |
+| Taylorsville | tee | file-approved | taylorsville-temple-tee |  |
+| Vernal | crew | file-approved | classic-temple-crew-sweatshirt-vernal |  |
+| Vernal | hoodie | file-approved | pillar-temple-hoodie-vernal |  |
+| Vernal | tee | file-approved | essential-temple-tee-vernal |  |
+| Washington DC | crew | file-approved | washington-d-c-temple-sweatshirt |  |
+| Washington DC | hoodie | file-approved | washington-d-c-temple-hoodie |  |
+| Washington DC | tee | file-approved | washington-d-c-temple-tee |  |
+| West Jordan* | crew | file-approved | classic-temple-crew-sweatshirt-west-jordan |  |
+| West Jordan* | hoodie | file-approved | pillar-temple-hoodie-west-jordan |  |
+| West Jordan* | tee | file-approved | essential-temple-tee-west-jordan |  |

@@ -145,7 +145,14 @@ def scaffold_manifest(temple_name):
     dataset has a VERIFIED location for them."""
     dataset = json.loads((PROJECT_ROOT / "temples.json").read_text())
     dataset.pop("_comment", None)
-    entry = dataset.get(temple_name)
+    # A trailing '*' is Evan's ref-finder marker on the FOLDER, never part of the
+    # temple's name. Left in, it reaches the dataset lookup (which misses), the
+    # slug, the Temples/All mirror filename, and worst of all the place token,
+    # which is what prints in the product title: "Essential Temple Tee (Lehi*)".
+    # Hand-written manifests already strip it (see West Jordan*); scaffolded ones
+    # must too.
+    clean_name = temple_name.rstrip("*").strip()
+    entry = dataset.get(temple_name) or dataset.get(clean_name)
     if entry is None:
         raise SystemExit(
             f"{temple_name!r} has no manifest and is not in temples.json. Add it: look up the "
@@ -159,10 +166,10 @@ def scaffold_manifest(temple_name):
             f"verified=true, and re-run. Do not guess.")
     folder = TEMPLES_DIR / temple_name
     manifest = {
-        "slug": temple_name.lower().replace(" ", "-").replace(".", ""),
+        "slug": clean_name.lower().replace(" ", "-").replace(".", ""),
         "official_name": entry["official_name"],
         "location_line": entry["location_line"],
-        "place_tokens": {"default": temple_name},
+        "place_tokens": {"default": clean_name},
         "art": ensure_art_files(folder, temple_name),
         "garments": "all",
         "scaffolded": True,

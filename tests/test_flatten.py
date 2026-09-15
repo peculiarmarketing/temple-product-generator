@@ -144,9 +144,19 @@ assert flatten.validate(front["image"], TEE, front["sources"], "white",
 # The logo sits near the top of the chest, not centred in the canvas: centring
 # it in the print area would drop it to mid-chest.
 fdpi = fa["dpi"]
-fys = np.where(np.asarray(front["image"].getchannel("A")) > 10)[0]
-assert abs(fys.min() / fdpi - fa["logo_top_margin_in"]) < 0.05, \
-    f"logo top at {fys.min() / fdpi:.3f}in, config says {fa['logo_top_margin_in']}in"
+falpha = np.asarray(front["image"].getchannel("A"))
+fys, fxs = np.nonzero(falpha > 10)
+assert abs(fys.min() / fdpi - fa["logo_ink_top_margin_in"]) < 0.01, \
+    f"logo ink top at {fys.min() / fdpi:.3f}in, config says {fa['logo_ink_top_margin_in']}in"
+# The logo is sized on its INK, not on the file frame it is padded into: the
+# config asks for six inches of drawn logo and six inches is what must print.
+ink_w_in = (fxs.max() + 1 - fxs.min()) / fdpi
+assert abs(ink_w_in - fa["logo_ink_width_in"]) < 0.01, \
+    f"logo ink is {ink_w_in:.3f}in wide, config asks for {fa['logo_ink_width_in']}in"
+# and it is centred on its own ink, not on its frame
+ink_cx_in = (fxs.min() + fxs.max() + 1) / 2 / fdpi
+assert abs(ink_cx_in - fa["width_px"] / fdpi / 2) < 0.01, \
+    f"logo ink centre at {ink_cx_in:.3f}in, area centre is {fa['width_px'] / fdpi / 2:.3f}in"
 
 # Centring is opt-in. With no override the profile still anchors to the top,
 # which is what leaves the retiring Printify layouts exactly as they were.

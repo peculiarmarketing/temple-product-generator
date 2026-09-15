@@ -69,10 +69,10 @@ def render(temple, manifest, garment_cfg, color, spacing_overrides=None):
 def spacing_study(temple, garment_cfg, color):
     """The same temple at several bottom margins.
 
-    Why this exists: with the logo gone the back stack is much shorter, but
-    bottom_margin_in (2.5in) was tuned around a stack that ENDED with the logo.
-    The temple is now height-constrained by a margin that no longer has a job,
-    so it prints narrower than the 12.5in target. These are the options.
+    RETIRED 14 Sep 2026 and kept only as a tool. The question it existed to
+    answer is closed: there is no bottom margin any more. The stack is centred
+    in the print file and the margins are 0.0, so nothing caps a tall temple
+    below the 12.0in width rule. main() no longer calls this.
     """
     manifest = generate.load_manifest(temple)
     out = []
@@ -219,10 +219,10 @@ height on every product. Below is the reasoning, then all {len(rows)} temples.</
 <p class=specline>
   <span><b>print area</b> {w_in:.2f} &times; {h_in:.2f} in</span>
   <span><b>ink</b> {html.escape(color)}</span>
-  <span><b>city line</b> {sp['location_text_height_in']} in tall</span>
-  <span><b>placement</b> centred</span>
-  <span><b>temple target width</b> {target} in</span>
-  <span><b>canvas</b> placeholder until a blank is picked</span>
+  <span><b>city line</b> {sp['location_text_height_in']} in of ink</span>
+  <span><b>placement</b> centred, no margins</span>
+  <span><b>temple width</b> {target} in max, ink to ink</span>
+  <span><b>gap</b> {sp['gap_ink_to_text_in']} in under the temple's lowest ink</span>
   <span><b>backgrounds</b> approximate, not the real blank</span>
 </p>
 """
@@ -246,22 +246,27 @@ Centred, every temple sits at the same height on the garment.</p>
         parts.append(card(name, f"{temple}, {label}", f"{facts['empty_below_in']} in below"))
     parts.append(f"""</div>
 <p style="margin-top:22px"><b>The city line is {sp['location_text_height_in']} in on
-every temple.</b> The type was never what varied; the art beside it was. A fixed
-height means every product reads at the same size. {sp['location_text_height_in']} in
-was chosen against a ceiling rather than by eye: the longest line in the catalog,
-SARATOGA SPRINGS, UTAH, is 10.88 in wide at this height and fits even a 12 in print
-area, which is the narrow end of what Tapstitch is likely to give. At 0.9 in it
-overflows a 12 in area, and at 1 in it overflows everything except the oversized
-placeholder canvas being used until the real number is known.</p>
+every temple</b>, measured on the ink rather than on the box around it. The type
+was never what varied; the art beside it was. A fixed height means every product
+reads at the same size. At this height the longest line in the catalog,
+SARATOGA SPRINGS, UTAH, is 9.52 in wide, comfortably inside the narrowest back
+print area of the three garments ({w_in:.2f} in on this one).</p>
+<p><b>Nothing is measured from an edge.</b> The temple and the city line are
+centred in the print file, horizontally and vertically, with the temple spanning
+no more than {target} in at its widest ink and the city line sitting
+{sp['gap_ink_to_text_in']} in below the temple's lowest ink. The old top and
+bottom margins came off the Printify layout, where the logo sat at the bottom of
+the back; centring made them meaningless and they were the only thing keeping
+tall temples under full width.</p>
 </div></section>""")
 
     parts.append(f"""<section>
 <p class=eyebrow>As built today</p>
 <h2>Every temple ({len(rows)})</h2>
 <p>Centred, city line {sp['location_text_height_in']} in. The bar under each shows
-how much of the print area's height the design uses. Note this is still the
-placeholder canvas: the real Tapstitch print area is not known until the first
-session in their editor, and every one of these rebuilds when it is.</p>
+how much of the print area's height the design uses. These are built on the real
+Tapstitch print area for this garment, {w_in:.2f} &times; {h_in:.2f} in, read off
+the editor on 14 September 2026.</p>
 <div class=grid>""")
     for temple, name, facts in rows:
         parts.append(card(name, temple,
