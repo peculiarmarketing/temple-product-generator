@@ -861,3 +861,35 @@ extreme temples:**
 - **The proof sheet's own copy was rewritten** to match, and `spacing_study()`
   (the same temple at four different bottom margins) is retired, since the
   question it answered no longer exists. `main()` no longer calls it.
+
+## 15 September 2026 (the temple folder root is Evan's, not the pipeline's)
+
+- **Every per-temple file the pipeline owns now lives in
+  `Temples/{Name}/Working files/`.** Evan moved them there by hand across all
+  45 temple folders. That is `manifest.json`, `status.json`,
+  `temple-facts.html`, and `{Temple} trace check (auto).png`. Nothing the
+  pipeline writes goes to the folder root any more.
+- **What stays at the root is what Evan opens:** the two traces
+  (`{Temple} black.svg` / `{Temple} white.svg`), the three garment print files,
+  the art close-up, and the source PNG. `References/` and his own
+  `old designs/`, `Old versions/`, `Alts/`, `mockups/` folders are unchanged
+  and untouched by the pipeline.
+- **Resolution goes through `layout.working_path(temple, filename)`.** Writes
+  always land in the working folder, creating it if needed. Reads prefer it and
+  fall back to the folder root, so a temple whose files have not been moved
+  still resolves; a file that exists in neither place resolves to the working
+  path, which keeps `.exists()` meaning "no file anywhere". Temple discovery
+  goes through `layout.temple_manifests()`, which reads both locations with the
+  working folder winning. Any new script that reaches for a per-temple pipeline
+  file uses these rather than joining a path itself.
+- **The Printify path was moved too, though it is dormant.**
+  `location_text_images()` renders `{Temple} location text {color} (auto).png`
+  and used to drop it in the folder root; it now writes to the working folder.
+  Only the Printify channel calls it and there are zero such files on disk (Evan
+  cleared them in the move), so nothing changed in practice — but running the
+  fallback would otherwise have littered the roots again. The override lookup
+  (`layout.find_text_override()`) still scans the folder root, which is where
+  Evan's own `*location text*` files go; its `(auto)` exclusion now only
+  matters for leftovers from before this move.
+- The fallback is a migration convenience, not a supported second home. Once no
+  temple has files at its root (true as of today, checked) it can go.

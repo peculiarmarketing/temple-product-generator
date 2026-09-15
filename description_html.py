@@ -2,12 +2,12 @@
 
 The fixed sections are vendored claude.ai skill exports (reference/skills/*/
 assets/) that must stay byte-identical to their claude.ai copies, and the
-per-temple facts fragments (Temples/{Name}/temple-facts.html) are canonical
-research output. Neither is ever edited for presentation, so presentation
-changes live here and are applied when a description is composed (Evan's
-26 Aug 2026 decisions: temple facts render as collapsed <details> rows, and
-the size-guide video gets controls so a phone that declines autoplay still
-shows a play button instead of a frozen frame).
+per-temple facts fragments (Temples/{Name}/Working files/temple-facts.html)
+are canonical research output. Neither is ever edited for presentation, so
+presentation changes live here and are applied when a description is composed
+(Evan's 26 Aug 2026 decisions: temple facts render as collapsed <details>
+rows, and the size-guide video gets controls so a phone that declines autoplay
+still shows a play button instead of a frozen frame).
 
 Idempotency is by full re-derivation: facts re-extracted from a live product
 (write_description.FACTS_RE) unwrap back to the canonical fragment before

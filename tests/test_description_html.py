@@ -61,7 +61,8 @@ def collapsed_shape(out, fragment):
 # The mini fragment plus real fragments: one with Changes Over Time, one without.
 fragments = {"mini": MINI_FRAGMENT}
 with_change = without_change = None
-for path in sorted(TEMPLES_DIR.glob("*/temple-facts.html")):
+for path in sorted(TEMPLES_DIR.glob("*/temple-facts.html")) + \
+            sorted(TEMPLES_DIR.glob("*/Working files/temple-facts.html")):
     text = path.read_text().strip()
     if "Changes Over Time" in text and not with_change:
         with_change = (path.parent.name, text)

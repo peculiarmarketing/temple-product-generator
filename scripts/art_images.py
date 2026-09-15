@@ -22,7 +22,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import layout
 from generate import (PLACE_SUFFIX_RE, TEMPLES_DIR, parent_temple, parent_titles,
-                      title_is_one_off)
+                      temple_manifests, title_is_one_off, working_path)
 
 ALT_MARKER = "Temple line art close-up"
 
@@ -37,7 +37,7 @@ def override_path(temple):
 
 
 def make(temple):
-    manifest = json.loads((TEMPLES_DIR / temple / "manifest.json").read_text())
+    manifest = json.loads(working_path(temple, "manifest.json").read_text())
     override = override_path(temple)
     if override:
         print(f"{temple}: using Evan's own {override.name}")
@@ -50,7 +50,7 @@ def make(temple):
 
 
 def temples_with_manifests():
-    return sorted(p.parent.name for p in TEMPLES_DIR.glob("*/manifest.json"))
+    return sorted(temple_manifests())
 
 
 EXCLUDE_MARKERS = ("copy of", "template", "generator test", "api test", "limited edition")
@@ -60,8 +60,7 @@ def temple_tokens():
     """{token: temple folder}. Tokens are folder names plus every manifest
     place token, matched longest-first so Provo City Center beats Provo."""
     tokens = {}
-    for mf in TEMPLES_DIR.glob("*/manifest.json"):
-        temple = mf.parent.name
+    for temple, mf in temple_manifests().items():
         m = json.loads(mf.read_text())
         for tok in {temple, *m.get("place_tokens", {}).values()}:
             tokens[tok] = temple

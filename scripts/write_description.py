@@ -2,7 +2,7 @@
 
 The temple-facts fragment is researched by the session (per the methodology
 in reference/skills/cc1717-temple-description-builder) and saved to
-Temples/{Name}/temple-facts.html. This script assembles, per garment,
+Temples/{Name}/Working files/temple-facts.html. This script assembles, per garment,
 the garment-correct fixed sections plus that fragment, and PUTs it onto
 each product recorded in the temple's status.json.
 
@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from art_images import match_temple, temple_tokens
 from description_html import compose_description
 from generate import (TEMPLES_DIR, fixed_description, load_garment_config,
-                      title_is_dated, title_is_one_off)
+                      title_is_dated, title_is_one_off, working_path)
 from printify_client import PrintifyClient, load_config
 from shopify_client import ShopifyClient, ShopifyError
 
@@ -73,7 +73,7 @@ def find_facts(title, description, tokens):
     temple = match_temple(title, tokens)
     if not temple:
         return None
-    path = TEMPLES_DIR / temple / "temple-facts.html"
+    path = working_path(temple, "temple-facts.html")
     return path.read_text().strip() if path.exists() else None
 
 
@@ -111,7 +111,7 @@ def build_facts_index(printify_products, shopify_by_title, tokens):
     for temple in {temple_of(p["title"], tokens) for p in printify_products}:
         if not temple:
             continue
-        path = TEMPLES_DIR / temple / "temple-facts.html"
+        path = working_path(temple, "temple-facts.html")
         if path.exists() and "temple-facts" in path.read_text():
             index[temple] = path.read_text().strip()
     for source in (printify_products,
@@ -269,7 +269,7 @@ def main():
     if not args.temple:
         raise SystemExit("Pass --temple NAME (or --backfill-dated).")
 
-    facts_path = TEMPLES_DIR / args.temple / "temple-facts.html"
+    facts_path = working_path(args.temple, "temple-facts.html")
     if not facts_path.exists():
         raise SystemExit(f"No {facts_path}. Research the temple first and save the facts fragment there.")
     facts = facts_path.read_text().strip()
@@ -281,7 +281,7 @@ def main():
             raise SystemExit("--product-id needs --garment.")
         targets = [(args.garment, args.product_id)]
     else:
-        status = json.loads((TEMPLES_DIR / args.temple / "status.json").read_text())
+        status = json.loads(working_path(args.temple, "status.json").read_text())
         targets = [(r["garment"], r["product_id"]) for r in status.get("results", []) if r.get("product_id")]
         if not targets:
             raise SystemExit("status.json lists no generated products for this temple.")

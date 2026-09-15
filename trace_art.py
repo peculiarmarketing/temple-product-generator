@@ -11,7 +11,8 @@ any product is generated from it:
     ink weight delta within +/-8% (measured on an untrimmed QC trace so the
     render aligns with the source pixel for pixel)
 A side-by-side check composite is saved to the folder as
-"{Temple} trace check (auto).png" for Evan's optional eyeball; the real gate
+"{Temple}/Working files/{Temple} trace check (auto).png" for Evan's optional
+eyeball; the real gate
 remains his review of the unpublished product before publishing.
 """
 
@@ -25,6 +26,8 @@ from pathlib import Path
 import numpy as np
 import resvg_py
 from PIL import Image
+
+from layout import WORKING_DIR_NAME
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 TRACER = PROJECT_ROOT / "reference" / "skills" / "temple-svg-tracer" / "temple-svg-tracer" / "scripts" / "trace_to_svg.py"
@@ -151,7 +154,9 @@ def verify_trace(folder, temple, source_png, qc_black_svg):
         tile = Image.new("RGBA", (side, side), bg + (255,))
         tile.alpha_composite(r, ((side - r.width) // 2, (side - r.height) // 2))
         combo.paste(tile.convert("RGB"), (i * side, 0))
-    combo.save(folder / f"{temple} trace check (auto).png")
+    check_dir = folder / WORKING_DIR_NAME
+    check_dir.mkdir(parents=True, exist_ok=True)
+    combo.save(check_dir / f"{temple} trace check (auto).png")
 
     return problems, metrics
 
@@ -186,5 +191,6 @@ def trace_temple(folder, temple, accept_failed=False):
         for color in ("black", "white"):
             (folder / f"{temple} {color}.svg").unlink(missing_ok=True)
         raise SystemExit(f"{temple}: trace failed verification: " + "; ".join(problems))
-    print(f"  trace verified; check composite saved as '{temple} trace check (auto).png'")
+    print(f"  trace verified; check composite saved as "
+          f"'{WORKING_DIR_NAME}/{temple} trace check (auto).png'")
     return metrics

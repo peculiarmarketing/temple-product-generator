@@ -128,7 +128,7 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
             client.update_product(product["id"], productType=ptype)
         actions.append(f"product type set to {ptype!r}")
 
-    facts_path = generate.TEMPLES_DIR / temple / "temple-facts.html"
+    facts_path = generate.working_path(temple, "temple-facts.html")
     fixed = generate.fixed_description(g)
     if not fixed:
         actions.append("SKIPPED description: no garment copy written yet")

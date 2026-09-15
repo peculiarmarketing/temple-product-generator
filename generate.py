@@ -18,7 +18,7 @@ Usage:
   python generate.py --temple Logan --garments cc1717 --test-suffix " GENERATOR TEST"
   python generate.py --temple Logan --garments cc1717 --duplicate-id <id>
 
-Temple manifest (Temples/{Name}/manifest.json):
+Temple manifest (Temples/{Name}/Working files/manifest.json):
   {
     "slug": "logan",
     "official_name": "Logan Utah Temple",
@@ -43,10 +43,10 @@ from PIL import Image
 
 import layout
 from description_html import compose_description
-from layout import PROJECT_ROOT, TempleArt, load_art
+from layout import (PROJECT_ROOT, TEMPLES_DIR, WORKING_DIR_NAME, TempleArt, load_art,
+                    temple_manifests, working_path)
 from printify_client import PrintifyClient, PrintifyError, load_config
 
-TEMPLES_DIR = PROJECT_ROOT.parent.parent / "Temples"
 # Flat folder of every temple's black SVG under its clean place-token name,
 # kept for the digital download files. Not a temple folder; the sweep skips it.
 ALL_ART_DIR = TEMPLES_DIR / "All"
@@ -174,7 +174,8 @@ def scaffold_manifest(temple_name):
         "garments": "all",
         "scaffolded": True,
     }
-    (folder / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    working_path(temple_name, "manifest.json", for_write=True).write_text(
+        json.dumps(manifest, indent=2))
     print(f"scaffolded manifest for {temple_name}: {entry['location_line']} "
           f"({manifest['art']['black']} / {manifest['art']['white']})")
     return manifest
@@ -195,7 +196,7 @@ def mirror_black_art(temple_name, manifest):
 
 
 def load_manifest(temple_name):
-    path = TEMPLES_DIR / temple_name / "manifest.json"
+    path = working_path(temple_name, "manifest.json")
     if not path.exists():
         return scaffold_manifest(temple_name)
     m = json.loads(path.read_text())
@@ -231,8 +232,9 @@ TEXT_RENDER_PX = 600  # fixed tall render; every profile downscales, so text sta
 def location_text_images(temple_name, manifest, garment_cfg):
     """Evan's override files win; otherwise render with Alata at a fixed
     generous resolution, always fresh, and save '(auto)' copies into the
-    temple folder for inspection. '(auto)' files are never read back as
-    input, so a stale render can't outlive a manifest edit."""
+    temple's working folder for inspection. '(auto)' files are never read back
+    as input, so a stale render can't outlive a manifest edit. The override
+    lookup stays on the folder root, which is where Evan puts his own files."""
     folder = TEMPLES_DIR / temple_name
     out = {}
     for color in ("black", "white"):
@@ -242,7 +244,7 @@ def location_text_images(temple_name, manifest, garment_cfg):
             continue
         img = layout.render_text(manifest["location_line"], TEXT_RENDER_PX / 300, 300, COLORS[color])
         name = f"{temple_name} location text {color} (auto).png"
-        img.save(folder / name)
+        img.save(working_path(temple_name, name, for_write=True))
         out[color] = (img, name, False)
     return out
 
@@ -469,7 +471,7 @@ def generate_one(c, temple_name, garment_id, args):
     # Full description when the temple's researched facts exist; fixed
     # sections alone otherwise. Keeps regeneration idempotent.
     fixed = fixed_description(garment_cfg)
-    facts_path = TEMPLES_DIR / temple_name / "temple-facts.html"
+    facts_path = working_path(temple_name, "temple-facts.html")
     facts = facts_path.read_text().strip() if (fixed and facts_path.exists()) else None
     description = compose_description(fixed, facts)
     body = {"title": title, "print_areas": areas, "description": description}
@@ -496,8 +498,9 @@ def generate_one(c, temple_name, garment_id, args):
 
 
 def write_status(temple_name, results, errors):
-    status_path = TEMPLES_DIR / temple_name / "status.json"
+    status_path = working_path(temple_name, "status.json")
     status = json.loads(status_path.read_text()) if status_path.exists() else {"results": [], "errors": []}
+    status_path = working_path(temple_name, "status.json", for_write=True)
     keep = {r["garment"] for r in results}
     status["results"] = [r for r in status.get("results", []) if r.get("garment") not in keep] + results
     status["errors"] = errors
@@ -667,7 +670,7 @@ def main():
     finally:
         if not args.dry_run and not args.fixture and (results or errors):
             write_status(args.temple, results, errors)
-            print(f"status.json updated in the {args.temple} folder")
+            print(f"status.json updated in {args.temple}/{WORKING_DIR_NAME}")
     if errors:
         sys.exit(1)
 

@@ -22,6 +22,45 @@ from PIL import Image, ImageDraw, ImageFont
 PROJECT_ROOT = Path(__file__).resolve().parent
 FONT_PATH = PROJECT_ROOT / "fonts" / "Alata-Regular.ttf"
 INK_SAMPLE_PX = 1024
+TEMPLES_DIR = PROJECT_ROOT.parent.parent / "Temples"
+
+# The pipeline's own per-temple files (manifest, status, facts fragment, trace
+# check composite) live in this subfolder so the temple folder root holds only
+# what Evan works with: the two traces, the three garment prints, the art
+# close-up, and the source PNG.
+WORKING_DIR_NAME = "Working files"
+
+
+def working_dir(temple_name):
+    return TEMPLES_DIR / temple_name / WORKING_DIR_NAME
+
+
+def working_path(temple_name, filename, for_write=False):
+    """Resolve one pipeline file for a temple.
+
+    Writes always land in the working folder. Reads prefer it but fall back
+    to the folder root, so a temple whose files have not been moved yet still
+    resolves. A non-existent file resolves to the working-folder path, which
+    keeps .exists() checks meaning 'no file anywhere'."""
+    new = working_dir(temple_name) / filename
+    if for_write:
+        new.parent.mkdir(parents=True, exist_ok=True)
+        return new
+    if new.exists():
+        return new
+    old = TEMPLES_DIR / temple_name / filename
+    return old if old.exists() else new
+
+
+def temple_manifests():
+    """{temple folder name: manifest path} for every temple that has one,
+    from either location. The working folder wins when both exist."""
+    found = {}
+    for pattern, depth in ((f"*/{WORKING_DIR_NAME}/manifest.json", 2), ("*/manifest.json", 1)):
+        for path in TEMPLES_DIR.glob(pattern):
+            temple = path.parents[depth - 1].name
+            found.setdefault(temple, path)
+    return found
 
 
 def load_spacing(garment_cfg):
