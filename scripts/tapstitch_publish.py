@@ -2,17 +2,19 @@
 
 Two halves, deliberately separated:
 
-  the EDITOR half   drives the Tapstitch web editor with Playwright. Tapstitch
-                    has no public API, so this is the only way to create a
-                    product. It is driven entirely by config/tapstitch.json and
-                    CANNOT RUN until that file's nulls are filled in during a
-                    live session with the editor open.
+  the TAPSTITCH half  creates the product. Tapstitch has no public API, but the
+                    editor turned out to be one (15 Sep 2026), so this is plain
+                    HTTP through tapstitch_api.py rather than the Playwright
+                    click path originally planned. It needs the dedicated
+                    Chrome's cookies and nothing else.
 
   the SHOPIFY half  everything after Tapstitch pushes the product to the store:
                     set the product type, write the description, push the art
-                    close-up card to gallery slot 2, delete the old listing. All
-                    of it goes through the Shopify Admin API, none of it depends
-                    on the editor, and all of it works today.
+                    close-up card to gallery slot 2, run the colour fixups, and
+                    run scripts/tapstitch_variant_images.py. All of it goes
+                    through the Shopify Admin API and none of it depends on the
+                    editor. There is NO delete step: old listings stay DRAFT
+                    (post_publish.delete_old_listing, off since 16 Sep 2026).
 
 Splitting them matters because the editor half is the fragile part. A Tapstitch
 redesign breaks it; none of it can break the description writer, which is proven

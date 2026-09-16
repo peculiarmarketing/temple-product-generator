@@ -114,11 +114,14 @@ class ShopifyClient:
         return data["productUpdate"]["product"]
 
     def delete_product(self, product_gid):
-        """Permanently delete one product. Used at swap time only: an old
-        listing is deleted at the moment its Tapstitch replacement publishes,
-        so the replacement inherits the same handle and the Easify dropdown
-        URLs keep resolving. A DRAFT or ARCHIVED product keeps its handle
-        reserved, which would push the replacement to a '-1' handle instead.
+        """Permanently delete one product. NOT part of any sequence.
+
+        This existed for the swap-time delete that freed an old listing's address
+        for its replacement. That is RETIRED (Evan, 16 Sep 2026, asked and
+        confirmed): it never actually moved the address, because Shopify builds a
+        new product's address from its title and ignores whatever a deletion just
+        freed. Old listings now stay DRAFT, so this is only ever a deliberate
+        one-off.
 
         There is no undo. Callers must have the pull-down snapshot on disk.
         """

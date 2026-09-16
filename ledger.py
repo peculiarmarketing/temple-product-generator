@@ -4,11 +4,17 @@ One row per temple per garment. The migration recreates roughly 140 products
 through a web editor, which is slow and will be done across many sessions, so
 the run has to be able to lose its place and find it again.
 
-The load-bearing field is `old_shopify_handle`. Evan's decision (14 Sep 2026)
-is that each old listing is deleted only at the moment its Tapstitch
-replacement publishes, so the replacement inherits the same web address and
-the Easify temple dropdown keeps working. That mapping is captured by the
-pull-down snapshot while the catalog is still intact, and it lives here.
+`old_shopify_handle` records the address each row's Printify listing had, which
+is captured by the pull-down snapshot while the catalogue is still intact and
+cannot be reliably read afterwards.
+
+It is no longer an address the replacement takes over. That was the 14 Sep 2026
+plan, retired on 16 Sep (Evan, asked and confirmed) once it turned out not to
+work: Shopify builds a new product's address from its title and ignores whatever
+address a deletion just freed. Replacements now take their own address, old
+listings stay DRAFT, and the Easify dropdown links are repointed by
+scripts/easify_options.py sync. The field is kept because it is the only record
+of what each product used to be reachable at.
 """
 
 import json

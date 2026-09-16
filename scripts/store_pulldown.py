@@ -1,27 +1,32 @@
 """Take the Printify temple catalogue off the storefront, in two steps.
 
-Evan's decision, 14 Sep 2026: the store goes dark now, but nothing is destroyed
-yet. Every temple listing goes to DRAFT today. Each old listing is deleted only
-at the moment its Tapstitch replacement publishes, because a DRAFT or ARCHIVED
-product keeps its handle reserved and would push the replacement onto a '-1'
-handle, breaking every Easify temple-dropdown URL.
+Evan's decision, 14 Sep 2026: the store goes dark now, but nothing is destroyed.
+Every temple listing goes to DRAFT.
+
+The second step, deleting each old listing as its replacement published, is
+RETIRED (Evan, 16 Sep 2026, asked and confirmed). Its whole purpose was to free
+the old address for the replacement, and that never worked: Shopify builds a new
+product's address from its title and ignores whatever just came free.
+Replacements take their own address, old listings stay DRAFT indefinitely, and
+scripts/easify_options.py sync repoints the dropdown links. `delete` below
+remains for a deliberate one-off and is not part of any sequence.
 
   snapshot                      record the catalogue before anything changes. Always first.
   draft                         show what would change (the default is a dry run)
   draft --apply                 actually set every temple listing to DRAFT
   restore                       show what would come back
   restore --apply               put them back to the status the snapshot recorded
-  delete --handle H --confirm-handle H    delete one old listing at swap time
+  delete --handle H --confirm-handle H    delete one old listing (one-off; NOT part of publishing)
 
 Nothing here touches Printify. Those products stay as the way back.
 
 Three mechanisms this file exists to respect, all learned the hard way:
 
-1. The replacement INHERITS the old handle. So a handle is not a stable name for
-   a product across the migration: before the swap it names the Printify listing,
-   after the swap it names the Tapstitch one. Every destructive operation is
-   therefore pinned to the product ID recorded in the snapshot, never to a
-   handle re-resolved against the live store.
+1. A handle is not a stable name for a product. It can be reassigned to another
+   product, and the Salt Lake crew's was: the Printify listing was deleted and
+   the replacement was given that address deliberately. Every destructive
+   operation is therefore pinned to the product ID recorded in the snapshot,
+   never to a handle re-resolved against the live store.
 2. The snapshot is the ONLY undo record for `draft`. Overwriting it after a
    draft run would record everything as already-DRAFT and silently turn `restore`
    into a no-op, so `snapshot` refuses to overwrite without --replace.
@@ -299,13 +304,14 @@ def cmd_restore(client, apply):
 
 
 def cmd_delete(client, handle, confirm_handle):
-    """Delete one old listing so its replacement can take the handle.
+    """Delete one old listing. A deliberate one-off, not part of publishing.
 
     Pinned to the product ID the snapshot recorded, NOT to whatever the handle
-    resolves to now. The replacement inherits the same handle by design, so a
-    live handle lookup would target the new product the moment the swap is done,
-    and a re-run or a retry would delete the very thing this exists to make room
-    for.
+    resolves to now, because a handle can be reassigned to another product and an
+    id cannot. That is not hypothetical: the Salt Lake crew's replacement was
+    given its predecessor's address, so a live lookup of that handle now returns
+    the new product, and a re-run or a retry against it would delete the
+    replacement rather than the listing it replaced.
     """
     if confirm_handle != handle:
         raise SystemExit("delete needs --confirm-handle to match --handle exactly. "
