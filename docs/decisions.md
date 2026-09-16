@@ -1153,3 +1153,31 @@ crew the same day.
   at the end of the migration.
 - **The art close-up card was not pushed.** `scripts/art_images.py push --all` is
   catalogue-wide and was not run for one product.
+
+## 16 September 2026, later still (the Tapstitch lines get their own names)
+
+- **EVAN: the crew is the "Cloud Temple Crew Sweatshirt" and the hoodie is the
+  "Cloud Temple Hoodie".** The tee is unchanged, "Essential Temple Tee". Patterns
+  live in `garments/crew.json` and `garments/hoodie.json` under `naming`, as
+  always; no title is ever hardcoded. Evan is renaming the one already-published
+  crew himself.
+- **This closes the "whether the product line names carry over" question** in
+  BRAND.md section 7, and it closes it in the opposite direction to the reasoning
+  recorded there. That reasoning was: the Tapstitch products keep the old titles
+  because a replacement that takes the same title inherits the same web address,
+  so renaming would cost the Easify dropdown links. **That is not how it works.**
+  Shopify builds a new product's address from its title and ignores whatever
+  address just came free, which is why the first crew was minted at
+  `classic-temple-crew-sweatshirt` on 16 Sep despite the old listing having
+  already been deleted, and had to have `salt-lake-temple-sweatshirt` set on it
+  explicitly. That step is needed on every replacement whatever it is called, so
+  the rename costs nothing that was not already being paid.
+- **The retiring Printify configs keep the old titles.** `cc1566` stays "Classic
+  Temple Crew Sweatshirt" and `cc1567` stays "Pillar Temple Hoodie", because the
+  live products they describe still carry those titles and
+  `store_pulldown.retiring_patterns()` builds its match patterns from the
+  printify configs. Changing them would stop the pull-down recognising its own
+  targets.
+- **`parent_titles()` now returns both the old and the new names**, which is
+  correct during the changeover: a title still has to be readable back to a
+  temple while the catalogue holds a mix.
