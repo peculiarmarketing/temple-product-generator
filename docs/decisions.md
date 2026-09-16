@@ -927,3 +927,29 @@ extreme temples:**
   events only while the caller is inside a Playwright call, so a `time.sleep()`
   in the watch loop swallows every callback and the capture reports success
   while writing nothing.
+
+## 15 September 2026, late (the API route is proven, and the click path is retired)
+
+- **The editor's API was driven from Python and it worked.** A design template
+  was created from the blank's SKU, a 640KB print file was uploaded through the
+  signed OSS URL, and the design was saved — after which Tapstitch rendered four
+  mockups from it. Verified by reading the design back: geometry and source URL
+  persisted, new `commitId` minted.
+- **Auth is the dedicated Chrome profile's cookies, nothing more.** No CSRF
+  header, no token, no editor session.
+- **The selector block is retired.** All fourteen selectors, `urls.new_product`,
+  `values.design_size` and `values.size_unit` moved to
+  `_selectors_superseded_by_api` in `config/tapstitch.json`. They are kept rather
+  than deleted because the store-product call has not been run; if the API route
+  has a hole, that block is the map back to the fallback.
+- **`tapstitch_publish.py check` no longer says "ready"** for the editor half.
+  Saying so would have been the same class of stale signal this repo keeps
+  getting bitten by: the config is ready, which is a smaller claim than the
+  runner being ready.
+- **`create_store_product` remains unrun by choice.** It is the only step that
+  reaches the live storefront, and the store is dark.
+- **The placement numbers were reused, not derived.** `left: 344, top: 358` on a
+  700x700 canvas came from observing one tee. The canvas-to-print-area mapping is
+  still unknown, so placement must NOT be generated for the crew or hoodie until
+  it is worked out. This is the one thing in the API route that would fail
+  quietly and misprint rather than error.

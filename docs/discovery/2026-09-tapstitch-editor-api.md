@@ -80,22 +80,53 @@ A draft edit is staged at
 
 ## What is NOT settled — do not build on these
 
-- **No call has been replayed.** Everything here is observation. Whether these
-  endpoints accept a scripted call carrying only the profile's cookies, and
-  whether any of them need a CSRF header or editor-session state, is untested.
-  That is the next experiment and it should be run against ONE throwaway
-  product, not the catalogue.
-- **Response bodies were not recorded**, so what step 1 returns — presumably the
-  new `templateId` — was not observed. The capture script records request bodies
-  only; add response capture before relying on a returned id.
 - **The canvas-to-inches mapping is unverified.** The object sits at
   `left: 344, top: 358` on a 700x700 canvas, not at 350/350. That is most likely
   the print area's centre rather than the canvas's, since a print area does not
-  sit centred on a garment — but it was inferred, not measured. Confirm against
-  the editor's own inch readout before trusting generated placement.
+  sit centred on a garment — but it was inferred, not measured. The replay
+  reused the observed numbers rather than deriving them, so DO NOT generate
+  placement for another garment until the mapping is worked out.
 - **Only the tee (RT0063, DTG) was exercised.** The crew (R00368) and hoodie
   (R00286) print DTF and have their own print areas; their `specialProcessTags`
   and colour codes are unknown.
+- **`create_store_product` has never been run.** It is the step that reaches the
+  live storefront, and the store is dark.
+
+## Replayed and confirmed, same evening
+
+Steps 1, 2, 3 and 6 were driven from Python against the live account. Tapstitch
+accepted the result and **rendered four mockups from it**, so it was processed as
+a real design rather than stored and ignored. Verified by reading the design back
+with `get_template`: the persisted `src` and geometry matched what was sent, and
+a new `commitId` was minted.
+
+`tapstitch_api.py` is that route as code.
+
+**Auth is the profile's cookies and nothing else.** No CSRF header, no bearer
+token, no editor session. 23 cookies lifted from the dedicated Chrome profile
+authenticated every call.
+
+**`srcDetails.srcId` is not required.** `srcDetails: {width, height}` is enough,
+which is what lets step 4 — the multipart `user_cover_img/save` whose payload was
+never captured — be skipped entirely.
+
+### The traps, each of which fails silently or opaquely
+
+- **`x-oss-meta-author` is part of what OSS signs.** Omit it from the upload PUT
+  and you get a bare 403, with a signature that is fresh and otherwise correct.
+  Its value is the `author` field that `retrieve-upload-data` returns.
+- **The upload host and the reference host differ.** Bytes go to the
+  `ajmall-vc-public-bucket…aliyuncs.com` bucket; a design must reference the same
+  path on `files.tapstitch.com`.
+- **A rejected call still returns HTTP 200.** The envelope's `code` is the truth.
+- **A malformed save returns `code: 10001, "System error, please refresh and try
+  again"`**, which names nothing. It means a required key is missing:
+  `virtualConfig`, `mockupConfig`, or per-object `clipId`, `customAreaId`,
+  `designPart`, `flipX`, `flipY`, `visible`.
+- **And one self-inflicted trap worth naming**, because it cost a debugging
+  cycle and looked exactly like a schema error: a `src` copied from truncated
+  console output points at a file that does not exist, and produces the same
+  opaque 10001. Keep full URLs in variables; never retype them from a log.
 
 ## How the capture was made to work
 

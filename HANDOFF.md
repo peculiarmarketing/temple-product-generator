@@ -37,19 +37,26 @@ the older spacing and needs one regeneration.
 **The real print areas are in**, so the placeholder canvas is gone and every
 garment now has its own.
 
-One thing to confirm when you next have the editor open: the print areas were
-given in pixels, and the inches depend on the resolution those pixels are quoted
-at. Everything is built on 150, which is the only reading where a 12 inch temple
-fits at all and which matches the old Printify area closely. The editor shows
-inches. If the tee's back panel reads about 14.6 by 18.4 inches, it is right.
+The 150 DPI reading is CONFIRMED, 15 September 2026, and did not need the editor
+after all. Tapstitch's own API states it: a template's `backSideDpiTip` reads
+"Print area size 2193 x 2758 px (150)DPI", which is exactly `editor_px` and
+`editor_dpi` in `garments/tee.json`, and 14.62 by 18.39 inches.
 
 **Two things are waiting on you:**
 
-1. **One session with the Tapstitch editor open.** It unblocks four things at
-   once, and nothing else can move until it happens. Details below.
+1. **Whether to run `create_store_product`.** It is the one call that reaches
+   your live storefront, and it is the only untested step left. Everything
+   before it is proven. Your store is dark, so this is a deliberate decision
+   rather than a next keystroke.
 2. **Whether the size guide is a new video or the branded chart images** already
    in your `Important Elements` folder. That is the only thing stopping the
    product descriptions being written.
+
+**And one thing that will fail quietly if ignored:** the design placement numbers
+were copied from watching one tee, not derived from the print area. They are
+right for the tee and unknown for the crew and hoodie. Work out the
+canvas-to-print-area mapping before generating placement for those two, or they
+will misprint without erroring.
 
 **And one small thing to look at when you next see a mockup:** Flower Gray on the
 crew is set to print white like everything else, on the assumption it is as dark
@@ -119,7 +126,9 @@ the live blocker list.
 
 ## What is blocked
 
-**On one Tapstitch editor session** (three things left of the original four):
+**Nothing is left on an editor session.** All four items are answered as of
+15 September 2026, and the click path they described is retired — the editor is
+a JSON API and `tapstitch_api.py` drives it. What remains is written below.
 
 1. DONE 14 Sep 2026: the six print areas are in the configs and the placeholder
    canvas is retired. The rebuild sweep is DONE too — verified 15 Sep 2026 by
@@ -129,7 +138,9 @@ the live blocker list.
    4134x5540) with zero on the old canvas. Do NOT re-run the sweep to be safe;
    it is seven minutes for nothing. To re-verify, measure against
    `print_area.width_px`/`height_px` in `garments/*.json`.
-2. The 18 null values in `config/tapstitch.json`.
+2. RETIRED 15 Sep 2026. The selectors and `values` moved to
+   `_selectors_superseded_by_api`. A design is now created, uploaded to and saved
+   by direct HTTP, proven against the live account.
 3. Confirming the colour swatch names match `colorways` in `garments/*.json`.
    Evan supplied those names and the tee's came across from a blank that is no
    longer used, so a spelling may differ. A mismatch fails SILENTLY: the

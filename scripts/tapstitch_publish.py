@@ -89,7 +89,13 @@ def cmd_check():
         for m in editor:
             print(f"      {m}")
     else:
-        print("  ready.")
+        # Not "ready": the config has what it needs, which is a smaller claim.
+        # The click path was retired on 15 Sep 2026 in favour of the editor's own
+        # JSON API (tapstitch_api.py). The store-product call that reaches Shopify
+        # has never been run, and this runner's editor half is still unwritten.
+        print("  config ready. The click path is retired: use tapstitch_api.py.")
+        print("  NOT yet exercised: create_store_product, the step that reaches")
+        print("  the live storefront. See docs/discovery/2026-09-tapstitch-editor-api.md.")
     print("\nGARMENT SETUP")
     if garments:
         print(f"  blocked: {len(garments)} items need Evan's blank choices:")
