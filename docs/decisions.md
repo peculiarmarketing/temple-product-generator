@@ -984,3 +984,81 @@ extreme temples:**
   per-blank video showing the wrong garment. Omitted. The original decision — new
   video, or the branded chart images in `Important Elements/` — is still open,
   and now applies only to the video, since the measurements are settled.
+
+## 16 September 2026 (the crew blank exercised, and the placement mapping derived)
+
+- **THE QUIET FAILURE IS CLOSED. The canvas-to-print-area mapping is derived,
+  not copied.** Tapstitch states it outright and nobody had looked:
+  `get_template()` returns `craftItemDto.customArea`, and every printable side
+  carries a `<side>_side_middle` detail whose x/y/width/height are coordinates on
+  the editor's own 700x700 canvas. `tapstitch_api.print_areas()` reads it;
+  `placement()` turns it into the editor's geometry. The rules, each checked
+  against the 15 Sep tee rather than assumed:
+  - `left`/`top` are the print area's CENTRE, not its corner and not the
+    canvas's centre. The tee's back area is x=214 y=194 w=260 h=327, so the
+    centre is 344, 357.5 — and the editor stored left=344, top=358.
+  - `scaleX` and `scaleY` are both the area's height over the canvas:
+    327/700 = 0.4671428571, exactly what the editor stored.
+  - The object's own width/height is the image fitted inside the canvas with the
+    minor dimension TRUNCATED: 700 x 4386/5516 = 556.6 becomes 556, not 557.
+  - We send the exact centre rather than rounding it, because half a canvas pixel
+    is 0.03in on the garment and an exact centre needs no guess about which way
+    Tapstitch rounds a .5. Tapstitch persisted 348.5 and 342.5 unchanged.
+- **The rectangles differ per garment and, on the crew, per side.** Tee: 260x327
+  on both. Crew: 210x281 back, 209x275 front. Copying the tee's numbers onto the
+  crew would have printed the back art 16% oversized and off centre, front and
+  back both wrong, with no error anywhere. That is the failure the handoff named
+  and it was real.
+- **`placement()` refuses a mis-shaped file.** Scaling to fit the height only
+  works because every print file is built to its own print area's aspect, so the
+  function checks the drawn width lands within one canvas pixel of the area width
+  and raises if it does not. The assumption is now checked rather than silent.
+- **The crew blank's ids are recorded**: `productId` 1534524735445225472,
+  `specialProcessTags` `["DTF"]`, colours 5720 Black and 6551 Flower Gray. Read
+  from `GET /api/services/site/products/search?q=r00368`, which is how any
+  blank's ids can be got without opening the editor.
+- **The crew's print areas are CONFIRMED, not assumed.** The template's own
+  `backSideDpiTip` reads "Print area size 2061 x 2757 px (150)DPI" and
+  `frontSideDpiTip` reads "1982 x 2609 px (150)DPI", matching
+  `garments/crew.json` exactly. The "ASSUMED 150, NOT CONFIRMED" note in that
+  file can go.
+- **The colour swatch names are CLEAN for the crew.** The store-product prefill
+  (`GET /stores/{storeId}/products/templates/{templateId}/new`) is what Tapstitch
+  will send Shopify, and it names them "Black" and "Flower Gray", matching the
+  config. The silent-rename risk is closed for this blank too.
+- **A design is built and saved on the crew**, Salt Lake back plus the front
+  logo, and Tapstitch rendered mockups from it. Nothing has reached the store.
+- **The crew size guide is written** from the blank's own published measurements,
+  in the tee's format: `reference/garment-copy/crew/size-guide.html`, S-2XL.
+
+### Raised to Evan the same day, not decided
+
+1. **Flower Gray is a mid heather gray, not a dark**, RGB(184,181,186), and the
+   mockup shows white line art on it reading noticeably weaker than on black.
+   The fine line work and the city line both lose definition. Black ink would be
+   far stronger and would mean building the black art files for this colourway.
+   This is the "INK NEEDS EVAN'S EYE" note in `garments/crew.json`, now with a
+   real mockup behind it.
+2. **A third colourway is US-fulfilled**, 6672 Oat Gray, RGB(237,233,221). The
+   config lists two. It is light, so it would print the black art.
+3. **The crew fabric is 42% cotton, 53% polyester, 5% other fibers**, against the
+   CC1566's 80% ring-spun cotton with a 100% cotton face. The CC1566 intro's
+   closing line claims a ringspun cotton face and garment dyeing, so it cannot be
+   copied across for the same reason the tee's could not. The crew intro is still
+   unwritten and still blocks descriptions.
+
+## 16 September 2026 (the size guide on the Tapstitch side)
+
+- **EVAN: the size guide goes in the product description, and it is IMPERIAL.
+  Not metric, not both.** Recorded as `size_guide` in `config/tapstitch.json`.
+- **This is a trap, not a preference.** Tapstitch's store-product prefill comes
+  back with `unitOptions` IMPERIAL and METRIC **both selected**, so the default
+  behaviour publishes inch/cm column pairs. `sizeGuide.descriptionHtml` offers
+  `IMPERIAL`, `METRIC` and `BOTH`; the runner takes `IMPERIAL`.
+- **The size guide is not a field in the POST body.** Tapstitch bakes the chosen
+  table into `description.content` when the store product is created, which is
+  why this has to be got right at create time rather than fixed afterwards.
+- **Caveat worth knowing:** the IMPERIAL table has no unit label anywhere, just
+  bare numbers. That is what the live tee shipped with on 15 Sep before the
+  repo's own section replaced it, and the repo's version says "Measurements
+  (inches)".

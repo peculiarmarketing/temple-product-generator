@@ -49,7 +49,18 @@
         "lead_colorCode": 8079,
         "name": "Essential Cotton T-Shirt"
       },
-      "_unknown": "crew (R00368) and hoodie (R00286) were not exercised; they print DTF and their ids and colour codes are unknown."
+      "crew": {
+        "silSn": "R00368",
+        "productId": "1534524735445225472",
+        "specialProcessTags": [
+          "DTF"
+        ],
+        "colorCodes": "5720,6551",
+        "lead_colorCode": 5720,
+        "name": "Fleeced Sweatshirt",
+        "_colour_note": "5720 Black, 6551 Flower Gray. Read off the catalogue search on 16 Sep 2026 and CONFIRMED against the store-product prefill, which is what Tapstitch will send Shopify: it names them 'Black' and 'Flower Gray', matching garments/crew.json. The swatch-name risk is closed for this blank. A THIRD colourway, 6672 Oat Gray, is also US-fulfilled and is left out because the config lists two; it is light, so it would need the black art."
+      },
+      "_unknown": "hoodie (R00286) was not exercised. Its productId is 1356935091779162112 and it prints DTF, both read from the catalogue search, but its print area and colour codes have not been confirmed from a template of its own."
     },
     "_status": "PROVEN END TO END 15 Sep 2026. create_template, the signed OSS upload, save_design and distribute have all been run against the live account; distribute put a real product on the live Shopify storefront. distribute takes a LIST of STORE-PRODUCT ids (a third id kind), so a batch is one call.",
     "_traps": [
@@ -58,7 +69,8 @@
       "A rejected call still returns HTTP 200. Check the envelope's `code`, not the status line.",
       "A malformed save returns code 10001 'System error, please refresh and try again', which says nothing. It means a required key is missing: virtualConfig, mockupConfig, or per-object clipId / customAreaId / designPart / flipX / flipY / visible.",
       "srcDetails.srcId is NOT required, so the multipart user_cover_img/save call can be skipped entirely."
-    ]
+    ],
+    "_placement": "DERIVED 16 Sep 2026, no longer copied. get_template()'s craftItemDto.customArea states each side's print-area rectangle on the 700x700 canvas; tapstitch_api.print_areas() reads it and placement() turns it into the editor's geometry. Checked against the 15 Sep tee, which it reproduces to within the half pixel the editor rounded away. The rectangles differ per garment AND per side: tee 260x327 both sides, crew 210x281 back and 209x275 front."
   },
   "_selectors_superseded_by_api": {
     "_note": "DEAD as of 15 Sep 2026. These described a click path through the web editor. There is no need to click: every step is a JSON call, proven by replaying them from Python the same evening (a design was created, uploaded to and saved, and Tapstitch rendered four mockups from it). Use tapstitch_api.py. Kept here, not deleted, because nothing has driven the FULL path yet -- the store-product call is still unrun -- so if the API route turns out to have a hole, this is the map back to the fallback.",
@@ -84,5 +96,11 @@
       "_design_size_note": "The one number typed into the size field every run. Because the file is the exact shape of the print area, the same value works for every temple on a given garment. Record it per garment if they differ.",
       "size_unit": null
     }
+  },
+  "size_guide": {
+    "placement": "DESCRIPTION",
+    "units": "IMPERIAL",
+    "_note": "EVAN'S RULE, 16 Sep 2026: the size guide goes in the description and it is imperial. Not metric, not both. This is a real trap rather than a preference, because Tapstitch's store-product prefill comes back with IMPERIAL and METRIC BOTH selected, so the default behaviour ships inch/cm column pairs. The runner takes sizeGuide.descriptionHtml['IMPERIAL'] from the prefill and appends it to description.content; there is no sizeGuide key in the POST body, the table is baked into the description at create time.",
+    "_bare_numbers_caveat": "Tapstitch's IMPERIAL table carries NO unit label anywhere: 'Chest 23.62' with nothing saying inches. reference/garment-copy/*/size-guide.html says 'Measurements (inches)' and is written to Shopify afterwards, which is what the live tee ended up with on 15 Sep."
   }
 }

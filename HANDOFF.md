@@ -1,6 +1,6 @@
 # Tapstitch migration: where this stands
 
-**Last worked: 15 September 2026, night.** Read this first if you are picking the
+**Last worked: 16 September 2026.** Read this first if you are picking the
 migration up on another machine, or in a new session.
 
 **The headline: the migration works end to end and one product is LIVE.** The
@@ -72,17 +72,21 @@ after all. Tapstitch's own API states it: a template's `backSideDpiTip` reads
    settled and written. The CC1717 section embeds a per-blank video showing the
    wrong garment, so it was omitted rather than reused.
 
-**And one thing that will fail quietly if ignored:** the design placement numbers
-were copied from watching one tee, not derived from the print area. They are
-right for the tee and unknown for the crew and hoodie. Work out the
-canvas-to-print-area mapping before generating placement for those two, or they
-will misprint without erroring.
+**The thing that would have failed quietly is fixed.** The design placement
+numbers used to be copied from watching one tee. They are now worked out from each
+garment's own print area, which Tapstitch states in its own API, and the method
+reproduces the tee exactly. It was a real risk, not a theoretical one: the crew's
+back print area is 16% shorter than the tee's, so the copied numbers would have
+printed the art oversized and off centre on every crew, with no error anywhere.
 
-**And one small thing to look at when you next see a mockup:** Flower Gray on the
-crew is set to print white like everything else, on the assumption it is as dark
-as the colourways it replaced. If it is not, its ink becomes black and the black
-art files have to be built for it. Every other colourway on every line is dark
-enough that white is certain.
+**One thing genuinely needs your eye now, and there is a mockup for it.** Flower
+Gray on the crew is NOT dark. It is RGB(184,181,186), a mid heather, and on the
+mockup the white line art reads noticeably weaker than on black: the fine lines
+and the city line both lose definition. It is legible, not crisp. Black ink would
+be much stronger and would mean building the black art files for that colourway.
+Every other colourway on every line is dark enough that white is certain. There is
+also a THIRD US colourway on the crew that the config leaves out, 6672 Oat Gray,
+RGB(237,233,221); it is light, so it would print black art too.
 
 **Worth a second look on price:** the crew blank costs more than the hoodie blank
 ($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
@@ -155,25 +159,41 @@ against the live account, ending in a real published product. See
 `docs/discovery/2026-09-tapstitch-editor-api.md` for payloads and every trap.
 
 1. **The tee intro** (above). Blocks descriptions for all temples.
-2. **The crew and hoodie are unexercised.** Only the tee (RT0063, DTG) has been
-   through the route. The two fleece blanks print DTF, and their Tapstitch
-   `productId`, colour codes and measurements are all unknown. Capture one
-   hand-built design per blank the same way the tee was done.
+2. **The crew is exercised; the hoodie is not.** The crew (R00368, DTF) has been
+   through create -> upload -> save and Tapstitch rendered mockups from it. Its
+   ids, colour codes, print areas and measurements are all recorded. The hoodie
+   (R00286) has only its `productId` (1356935091779162112) and its DTF technique,
+   both read from the catalogue search. It needs no capture session: the blank
+   lookup is `GET /api/services/site/products/search?q=r00286` and its print areas
+   come from a template of its own, the way the crew's did.
 3. **The catalogue runner does not exist yet.** `tapstitch_api.py` is the
    library; nothing drives it over 135 rows, handles the handle inheritance, or
    sequences the Shopify fixups.
 
-### The one that will fail QUIETLY
+### The one that would have failed QUIETLY, now closed
 
-Everything else on this list errors or returns empty when it is wrong. This one
-does not:
+**The placement mapping is derived.** `get_template()` returns
+`craftItemDto.customArea`, in which every printable side states its own rectangle
+on the editor's 700x700 canvas. `tapstitch_api.print_areas()` reads it and
+`placement()` turns it into geometry: the object's centre is the rectangle's
+centre, and the scale is the rectangle's height over 700. Checked against the
+15 Sep tee, which it reproduces to within the half pixel the editor rounded away.
+`placement()` also refuses a print file whose shape does not match its print area,
+so the one assumption underneath it is checked rather than silent.
 
-**The design placement numbers were copied, not derived.** `left: 344, top: 358`
-on a 700x700 canvas came from watching one tee. They are correct for the tee and
-UNKNOWN for the crew and hoodie, which have different print areas. Generate
-placement for those two without first working out the canvas-to-print-area
-mapping and the art will be misplaced on the garment, with no error anywhere —
-just wrong shirts. Do that mapping before the first fleece product.
+### THE SIZE GUIDE UNIT TRAP
+
+Tapstitch bakes its own size-guide table into `description.content` at the moment
+the store product is created, and **it defaults to BOTH unit systems**: the
+prefill comes back with IMPERIAL and METRIC both selected, which produces inch/cm
+column pairs. Evan's rule, 16 Sep 2026, is imperial only. The runner must take
+`sizeGuide.descriptionHtml["IMPERIAL"]`, never `["BOTH"]`.
+
+Know what that table is, though: the IMPERIAL variant carries **no unit label
+anywhere**. It is bare numbers, "Chest 23.62", with nothing saying inches. That is
+what the live tee shipped with on 15 Sep before the repo's own section replaced
+it. `reference/garment-copy/*/size-guide.html` says "Measurements (inches)", which
+is why the Shopify-side writer wins in the end.
 
 ## The one thing to be careful with
 
@@ -213,17 +233,18 @@ In order, on a new session:
    lives in a dedicated Chrome profile and survives reboots, but not forever.
 3. `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` for the live
    blocker list.
-4. Then either the tee intro, or a capture run on the crew to start the second
-   blank. `scripts/tapstitch_capture.py --minutes 30`, build one design by hand,
-   and it records the ids, colour codes and geometry the way the tee's were got.
+4. Then the hoodie, which needs no capture session: look its ids up with
+   `GET /api/services/site/products/search?q=r00286`, create a template, and read
+   its print areas back off that template.
 
 ## Not yet reviewed
 
 The work up to and including the store pull-down went through the full review
 loop (six specialists plus a final judge, all signed off). **Changes made after
 that review have not been through it**, and that now includes everything from
-15 September: `tapstitch_api.py`, `scripts/tapstitch_capture.py`, the retired
-selector block, and the tee size guide. The API client has been exercised against
+15 and 16 September: `tapstitch_api.py` (including `print_areas` and
+`placement`), `scripts/tapstitch_capture.py`, the retired selector block, the tee
+and crew size guides, and the crew blank config. The API client has been exercised against
 the live account but never reviewed. Also: the blank specs and colour configs, the
 `colorway_renames_by_type` mechanism in `scripts/shopify_fixups.py`, the centring
 and 0.8in spacing, the `kept`-records change in `scripts/store_pulldown.py`, and

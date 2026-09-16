@@ -90,14 +90,17 @@ def cmd_check():
             print(f"      {m}")
     else:
         # Still not "ready" in the sense that matters. The API route is finished
-        # and proven to the point of a live published product, but nothing drives
-        # it over the catalogue yet, and the placement numbers are only known for
-        # the tee. Saying "ready" would invite someone to start a 135-row run.
+        # and proven to the point of a live published product, and placement is
+        # now derived rather than copied, but nothing drives it over the
+        # catalogue. Saying "ready" would invite someone to start a 135-row run.
         print("  config ready, and the API route is PROVEN end to end")
         print("  (create_template -> upload -> save_design -> distribute, one")
         print("  product live on the storefront 15 Sep 2026). Use tapstitch_api.py.")
+        print("  Placement is DERIVED from each garment's own print area")
+        print("  (tapstitch_api.print_areas/placement), checked against the tee.")
+        print("  Blanks known: tee, crew. Hoodie has its productId only.")
         print("  NOT built: the catalogue runner, handle inheritance, fixup")
-        print("  sequencing. NOT known: crew/hoodie ids, codes and placement.")
+        print("  sequencing, and create_store_product.")
         print("  See docs/discovery/2026-09-tapstitch-editor-api.md.")
     print("\nGARMENT SETUP")
     if garments:

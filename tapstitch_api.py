@@ -124,6 +124,73 @@ def upload_print_file(s, png_path):
     return CDN + urlsplit(up["resourceUrl"]).path
 
 
+CANVAS = 700  # the editor's design canvas is always 700x700
+
+
+def print_areas(template):
+    """Each printable side's rectangle on the 700x700 canvas, from get_template().
+
+    This is the canvas-to-print-area mapping the migration was missing. Tapstitch
+    states it outright in craftItemDto.customArea: every side carries a
+    `<side>_side_middle` detail whose x/y/width/height are canvas coordinates.
+    The sleeves' `virtual` details are skipped; they are mockup anchors, not
+    print areas.
+
+    The rectangles are NOT the same across garments, and on the crew not even
+    across sides. The tee is 260x327 on both sides; the crew is 210x281 on the
+    back and 209x275 on the front. Reusing one garment's numbers on another
+    misplaces and misscales the art with no error anywhere.
+    """
+    out = {}
+    for area in template["craftItemDto"]["customArea"]:
+        for det in area["details"]:
+            if det.get("type") == "virtual":
+                continue
+            if det["id"] == f"{area['name']}_side_middle":
+                out[area["name"]] = {k: float(det[k])
+                                     for k in ("x", "y", "width", "height")}
+    return out
+
+
+def placement(area, src_size, canvas=CANVAS):
+    """Lay one print file over its print area. Returns the editor's geometry.
+
+    Derived from, and checked against, the tee design of 15 Sep 2026, whose
+    back area is x=214 y=194 w=260 h=327 and whose saved object is left=344
+    top=358 width=556 height=700 scale=0.4671428571:
+
+    - The editor first fits the image inside the canvas (contain), TRUNCATING
+      the minor dimension: 700 * 4386/5516 = 556.6 becomes 556, not 557.
+    - scaleX and scaleY are both the print area's height over the canvas:
+      327/700 = 0.4671428571. Height governs, and the width follows, which is
+      safe only because every print file is built to the shape of its own print
+      area. The assert below is what makes that a checked assumption rather than
+      a silent one.
+    - left and top are the print area's CENTRE, not its corner, and not the
+      canvas's centre: 214 + 260/2 = 344, 194 + 327/2 = 357.5. The editor stored
+      358, so it rounds; we send the exact centre, because half a canvas pixel
+      is 0.03in on the garment and an exact centre needs no guess about which
+      way Tapstitch rounds a .5.
+    """
+    w, h = src_size
+    if h >= w:
+        box_h, box_w = canvas, int(canvas * w / h)
+    else:
+        box_w, box_h = canvas, int(canvas * h / w)
+    scale = area["height"] / box_h
+    drawn_w = box_w * scale
+    if abs(drawn_w - area["width"]) > 1.0:
+        raise TapstitchError(
+            f"print file {w}x{h} is the wrong shape for a "
+            f"{area['width']:.0f}x{area['height']:.0f} print area: scaling it to "
+            f"fit the height draws it {drawn_w:.1f} canvas px wide, not "
+            f"{area['width']:.0f}. Rebuild the file to the print area's aspect.")
+    return {"left": area["x"] + area["width"] / 2,
+            "top": area["y"] + area["height"] / 2,
+            "width": box_w, "height": box_h,
+            "scaleX": scale, "scaleY": scale}
+
+
 def design_object(piece, src, placement, src_size):
     """One image on one print area, in the shape the editor sends.
 
@@ -131,9 +198,8 @@ def design_object(piece, src, placement, src_size):
     flipX/flipY or visible gets the same opaque code 10001 as sending nothing.
 
     `placement` is left/top/width/height/scaleX/scaleY on the editor's 700x700
-    canvas. NOTE: these came from observing ONE tee design and have not been
-    derived from the print area. Before generating them for the crew and hoodie,
-    work out the canvas-to-print-area mapping rather than reusing these numbers.
+    canvas, and comes from placement() below, which derives it from the garment's
+    own print area rather than reusing the tee's observed numbers.
     """
     return {"zIndex": 3,
             "src": src,

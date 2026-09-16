@@ -144,3 +144,92 @@ knowing, because each failure is silent:
    while the caller is inside a Playwright call. The capture loop must wait with
    `page.wait_for_timeout()`. This was the root cause of all three failures and
    is the single most important line in the script.
+
+---
+
+# The canvas-to-print-area mapping, 16 September 2026
+
+The open question above ("the canvas-to-inches mapping is unverified ... DO NOT
+generate placement for another garment until the mapping is worked out") is
+answered, and it needed no measuring. **Tapstitch states the mapping in its own
+API.** `GET /api/designs/customized/templates/{id}` returns
+`craftItemDto.customArea`, a list of sides, each with a `details` entry whose id
+is `<side>_side_middle` and whose `x`, `y`, `width` and `height` are the print
+area's rectangle **on the same 700x700 canvas the design objects use**.
+
+| Garment | side | rectangle | DPI tip |
+|---|---|---|---|
+| tee RT0063 | front and back | x=214 y=194 w=260 h=327 | 2193 x 2758 (150) |
+| crew R00368 | back | x=243 y=205 w=210 h=**281** | 2061 x 2757 (150) |
+| crew R00368 | front | x=244 y=205 w=209 h=**275** | 1982 x 2609 (150) |
+
+The sleeves' `details` entries carry `type: "virtual"` and are mockup anchors,
+not print areas. Skip them.
+
+## The rules, each checked against the 15 Sep tee
+
+The tee's saved object was `left=344 top=358 width=556 height=700
+scaleX=scaleY=0.4671428571` for a 4386x5516 file. Every number falls out of the
+rectangle:
+
+- **`left`/`top` are the CENTRE of the print area.** Not its corner, and not the
+  canvas centre. 214 + 260/2 = 344; 194 + 327/2 = 357.5, which the editor stored
+  as 358. That 344 was never "nearly 350"; it was exactly the area's centre.
+- **`scaleX` and `scaleY` are the area's height over the canvas.** 327/700 =
+  0.4671428571, to the last digit the editor sent. Height governs and width
+  follows, which is only safe because every print file is built to the shape of
+  its own print area.
+- **`width`/`height` are the image contain-fitted to the canvas, minor dimension
+  TRUNCATED.** 700 x 4386/5516 = 556.6 becomes 556, not 557.
+
+`tapstitch_api.print_areas()` and `placement()` are these rules. `placement()`
+raises if scaling a file to its area's height draws it more than one canvas pixel
+off the area's width, which turns the "every file is print-area-shaped"
+assumption into a checked one.
+
+**The risk this closed was real.** The crew's back rectangle is 281 canvas px
+tall against the tee's 327. Reusing the tee's numbers would have printed every
+crew's art about 16% oversized and off centre, front and back both wrong, with no
+error from any call.
+
+**We send the exact centre rather than the editor's rounded integer** (348.5 and
+342.5 on the crew). Tapstitch persisted both unchanged. Half a canvas pixel is
+0.03in on the garment, so this is about not having to guess which way Tapstitch
+rounds a .5.
+
+# Looking a blank up without the editor
+
+`GET /api/services/site/products/search?categorySlug=all&pageSize=48&q=<sku>`
+returns the blank's `uniqueId` (which is the `productId` the template call
+wants), its `availableSize`, its `specialProcessList` (the technique tags), and
+`colorAttributes`: every colourway with its numeric id, its RGB, and
+`orderFulfillmentServices`, where `LA` means the US center carries it. That is
+the whole blank lookup, so no capture session is needed for the hoodie.
+
+Crew R00368: productId 1534524735445225472, DTF, US colourways 5720 Black,
+6672 Oat Gray, 6551 Flower Gray. Hoodie R00286: productId 1356935091779162112,
+DTF.
+
+# The store-product prefill, and the size-guide unit trap
+
+`GET /api/services/user/distribution/stores/{storeId}/products/templates/{templateId}/new`
+returns the whole store product ready to edit: title, description, options with
+the colour names **as Tapstitch will send them to Shopify**, variants with costs
+and retail prices, shipping profiles, and a `sizeGuide` block. It is the cheapest
+way to check the swatch names before publishing anything (the crew's came back
+"Black" and "Flower Gray", matching `garments/crew.json`).
+
+**The trap:** `sizeGuide.unitOptions` comes back with IMPERIAL **and** METRIC
+both `selected: true`, and `sizeGuide.descriptionHtml` has three variants,
+`IMPERIAL`, `METRIC` and `BOTH`. The default therefore publishes inch/cm column
+pairs. Evan's rule is imperial only, so the runner takes `IMPERIAL`.
+
+**There is no `sizeGuide` key in the POST body.** The captured create call carries
+only title, description, mockups, options, variants, costIncludesShipping,
+shippingProfileIds, tags, visibility, collectionIds and distribute. The chosen
+table is baked into `description.content` at create time, which is why the unit
+choice has to be right then rather than repaired later.
+
+Note what the IMPERIAL table is: bare numbers with no unit label anywhere, "Chest
+23.62". That is what the live tee carried on 15 Sep until the repo's own
+`size-guide.html` section replaced it.
