@@ -45,6 +45,7 @@ that has no ledger row, such as the 15 Sep tee test.
 """
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -54,7 +55,9 @@ import ledger
 import tapstitch_api as T
 from shopify_client import ShopifyClient, ShopifyError
 
-STORE_ID = "1402569694703132672"
+CONFIG = json.loads((Path(__file__).resolve().parent.parent
+                     / "config" / "tapstitch.json").read_text())
+STORE_ID = CONFIG["api"]["shopify_store_id"]
 
 
 def ledger_targets(handle=None):

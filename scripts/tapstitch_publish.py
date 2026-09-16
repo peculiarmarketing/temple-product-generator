@@ -131,6 +131,7 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
     import art_images
     from shopify_fixups import fix_published_product
 
+    post = load_config().get("post_publish", {})
     g = generate.load_garment_config(garment_id)
     product = client.find_product_by_handle(handle)
     if not product:
@@ -163,8 +164,22 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
         actions.append("would push the art card and run the Shopify fixups")
 
     if old_handle and old_handle != handle:
-        actions.append(f"old listing {old_handle!r} still needs deleting "
-                       f"(store_pulldown.py delete --handle {old_handle})")
+        if post.get("delete_old_listing"):
+            actions.append(f"old listing {old_handle!r} still needs deleting "
+                           f"(store_pulldown.py delete --handle {old_handle})")
+        else:
+            # Evan's 16 Sep 2026 call: replacements take their own address and
+            # old listings stay DRAFT. Deleting was the only irreversible step in
+            # the migration and it ate the Printify fallback one product at a
+            # time, so this must not keep pointing at it.
+            actions.append(f"old listing {old_handle!r} stays DRAFT, not deleted; "
+                           f"its dropdown row is repointed by easify_options sync")
+    if post.get("set_variant_back_images"):
+        # Not automated here on purpose: the repair needs a Tapstitch session and
+        # this function is the Shopify half. Naming it in the action list is what
+        # stops "required after every publish" depending on memory.
+        actions.append("run scripts/tapstitch_variant_images.py "
+                       f"--handle {handle} (variants publish bound to the FRONT)")
     return actions
 
 

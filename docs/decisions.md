@@ -1116,8 +1116,9 @@ frees the address and then leaves it unused.
   The real description comes later; Evan is handling that separately.
 - **Still outstanding on this product**, recorded in the ledger row: the real
   description, and the art close-up card at gallery position 2. It is also in no
-  collection, matching the tee, so neither live product is browsable from the
-  storefront's own navigation yet.
+  collection Evan curates (it lands only in the automatic All Products), matching
+  the tee, so neither live product is browsable from the storefront's own
+  navigation yet.
 
 ### There is a FOURTH "default", and it is the one the shopper actually sees
 
