@@ -17,3 +17,8 @@ artifacts/tapstitch-previews/
 # Temples/, which is outside this repo. Committing one half of a generated pair
 # would be worse than committing neither.
 artifacts/tapstitch/front-logo/
+
+# Captured Tapstitch editor traffic. Recorded by scripts/tapstitch_capture.py to
+# work out how the editor saves a design. Redacted at capture time, but a body
+# can still carry account detail, so it never goes in git.
+artifacts/tapstitch/network/

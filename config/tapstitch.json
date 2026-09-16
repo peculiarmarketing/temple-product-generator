@@ -1,16 +1,17 @@
 {
   "_comment": "Every step the Tapstitch web editor needs, as configuration rather than code. Tapstitch has no public API, so product creation goes through their editor; when they redesign it, this file is what gets repaired, not the runner. EVERY null below is unknown and must be filled in during the first live session with the editor open. scripts/tapstitch_publish.py refuses to run while any required value is null and prints exactly which ones are missing.",
   "_first_session_checklist": [
-    "BEFORE writing a single selector: open the network tab and save a design by hand. The save call almost certainly carries exact positions and upload references. If it does, a direct call is far sturdier than clicking through the UI and this whole file may be replaceable.",
-    "Confirm the exact colour swatch names for each blank against the `colorways` block in garments/*.json. Evan supplied those names and the tee's were carried over from a blank it no longer uses, so a spelling may differ. A mismatch is silent: the storefront rename finds nothing to rename and the colour reorder cannot find its lead colour.",
-    "Confirm an uploaded file defaults to centred at full size, or that the size field can hit that exactly. The entire flattened-file approach rests on this one behaviour.",
-    "Check whether the editor accepts a file whose canvas already matches the print area proportions without re-cropping it.",
+    "ANSWERED 15 Sep 2026, YES. The save is PUT /api/designs/customized/templates/<templateId> and it carries piece, src, left, top, width, height, scaleX, scaleY and angle. Every step of product creation is a JSON call. See docs/discovery/2026-09-tapstitch-editor-api.md. The selectors block below is probably dead, but NO CALL HAS BEEN REPLAYED yet, so it is kept until a scripted call is proven to work against one throwaway product.",
+    "PARTLY ANSWERED 15 Sep 2026. Tapstitch identifies colours by NUMERIC CODE (colorCode 8079,8088,8084,8085,8081 for the tee), so the API route cannot suffer a swatch-name typo. The check is NOT retired: shopify_fixups.py still matches on names, so colorway_renames_by_type must agree with whatever Tapstitch publishes to Shopify.",
+    "ANSWERED 15 Sep 2026, YES. Both files registered at 4386x5516, exactly the tee's real print area, and front and back got identical left/top/width/height/scale with only src differing. Uniform scale, no distortion.",
+    "ANSWERED 15 Sep 2026, YES. No re-crop was observed; the print-area-shaped file was accepted as-is.",
     "Do one temple end to end by hand before letting the runner touch the catalogue."
   ],
   "urls": {
     "new_product": null,
-    "products_list": null,
-    "_note": "Filled from the address bar during the first session."
+    "products_list": "https://www.tapstitch.com/account/products-pool",
+    "_note": "Filled from the address bar 15 Sep 2026. new_product stays null because the observed flow never used one: a design is created by POSTing the blank's SKU to api.create_template. If the API route is adopted, this key goes away rather than gets filled.",
+    "catalog_search": "https://www.tapstitch.com/collections/all?q={sku}"
   },
   "selectors": {
     "blank_search_input": null,
@@ -47,5 +48,28 @@
     "push_art_card": true,
     "delete_old_listing": true,
     "_delete_old_listing_note": "Evan's decision, 14 Sep 2026: the old Printify listing is deleted at the moment its replacement publishes, so the replacement inherits the same web address. A DRAFT or ARCHIVED product keeps its handle reserved and would push the replacement to a '-1' handle, breaking the Easify dropdown URLs."
+  },
+  "api": {
+    "_comment": "The editor's own endpoints, observed 15 Sep 2026 and NOT yet replayed. Relative to https://www.tapstitch.com. See docs/discovery/2026-09-tapstitch-editor-api.md for payload shapes and for what is still unverified.",
+    "create_template": "/api/services/user/service/template",
+    "retrieve_upload_data": "/api/designs/user_cover_img/retrieve-upload-data?name={filename}",
+    "register_cover_img": "/api/designs/user_cover_img/save",
+    "register_history_img": "/api/designs/user/history/img",
+    "save_design": "/api/designs/customized/templates/{templateId}",
+    "create_store_product": "/api/services/user/distribution/stores/{storeId}/products",
+    "_method_note": "save_design is a PUT. create_template, register_* and create_store_product are POSTs. The image bytes go by PUT straight to the OSS URL that retrieve_upload_data returns.",
+    "shopify_store_id": "1402569694703132672",
+    "blanks": {
+      "tee": {
+        "silSn": "RT0063",
+        "productId": "1529865635893596160",
+        "specialProcessTags": [
+          "DTG"
+        ],
+        "colorCodes": "8079,8088,8084,8085,8081",
+        "lead_colorCode": 8079
+      },
+      "_unknown": "crew (R00368) and hoodie (R00286) were not exercised; they print DTF and their ids and colour codes are unknown."
+    }
   }
 }

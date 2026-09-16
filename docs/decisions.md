@@ -893,3 +893,37 @@ extreme temples:**
   matters for leftovers from before this move.
 - The fallback is a migration convenience, not a supported second home. Once no
   temple has files at its root (true as of today, checked) it can go.
+
+## 15 September 2026, evening (the editor turned out to be an API)
+
+- **The highest-value unknown in the migration is answered, and the answer is
+  yes.** Recording the editor's own traffic while Evan built one tee by hand
+  showed that the save is `PUT /api/designs/customized/templates/<id>` carrying
+  the complete design as JSON — piece, source URL, left, top, width, height,
+  scaleX, scaleY, angle. Every other step is a JSON call too. Full detail and
+  payload shapes in `docs/discovery/2026-09-tapstitch-editor-api.md`.
+- **The blank is addressed by its SKU** (`silSn: "RT0063"`), not by searching a
+  catalogue and clicking a result. Three selectors die on that fact alone.
+- **The flattened-file bet paid off.** Both uploads registered at 4386x5516,
+  exactly the tee's real print area, and front and back received identical
+  placement differing only in `src`. Because every file is built to the shape of
+  its own print area, the editor places it the same way every time — which is
+  what the whole approach rested on and what `config/tapstitch.json` asked to
+  have confirmed before any of it was trusted.
+- **Colours are numeric codes to Tapstitch**, so the swatch-name mismatch cannot
+  bite on the API path. It is not retired: `shopify_fixups.py` matches on names,
+  so `colorway_renames_by_type` must still agree with what Tapstitch publishes.
+- **Saving a draft does not touch Shopify**, checked straight afterwards — the
+  newest product in the store is still from 27 August. The store stays dark.
+- **Nothing has been replayed.** Everything above is observation of a human
+  session. Whether a scripted call is accepted with only the profile's cookies,
+  and whether anything needs a CSRF header, is untested. The next step is one
+  throwaway product, not the catalogue. The selector block stays in the config
+  until then, and `tapstitch_publish.py check` still reports it.
+- **`scripts/tapstitch_capture.py` is new** and is the tool that answered this.
+  It automates nothing; it attaches to the dedicated Chrome and records while
+  Evan works. It took three silent failures to get right, all documented in the
+  discovery note. The one that mattered: the sync Playwright API dispatches
+  events only while the caller is inside a Playwright call, so a `time.sleep()`
+  in the watch loop swallows every callback and the capture reports success
+  while writing nothing.

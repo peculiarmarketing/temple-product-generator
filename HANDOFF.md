@@ -135,10 +135,13 @@ the live blocker list.
    longer used, so a spelling may differ. A mismatch fails SILENTLY: the
    storefront rename finds nothing to rename and the colour reorder cannot find
    its lead colour.
-4. **Before writing a single selector**, open the network tab and save a design by
-   hand. If that save call carries positions and upload references, a direct call
-   replaces the whole click path and most of item 2 disappears. This is the
-   highest-value thing to do first and it is easy to skip.
+4. DONE 15 Sep 2026, and it changes the shape of the remaining work. The save
+   call DOES carry positions and upload references: the editor is a JSON API from
+   end to end, the blank is addressed by SKU, and the flattened-file approach is
+   confirmed working. See `docs/discovery/2026-09-tapstitch-editor-api.md`. The
+   selector list in item 2 is probably dead — but NOTHING HAS BEEN REPLAYED, so
+   it stays in the config until a scripted call is proven against one throwaway
+   product. Do that before deciding to delete anything.
 
 **On a decision:** whether the size guide is a new video per blank or the branded
 chart images in `Important Elements/`. Blocks the three product copy files.
