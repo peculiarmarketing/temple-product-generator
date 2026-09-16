@@ -64,10 +64,10 @@
   "layout_profile": "back_temple_text",
   "personalized": false,
   "naming": {
-    "title": "Oversized Cloud Temple Hoodie ({place})",
-    "title_parent": "Oversized Cloud Temple Hoodie"
+    "title": "Ultra-soft Oversized Temple Hoodie ({place})",
+    "title_parent": "Ultra-soft Oversized Temple Hoodie"
   },
-  "_naming_note": "Was 'Pillar Temple Hoodie', then 'Cloud Temple Hoodie' from 16 Sep 2026. EVAN, 17 Sep 2026: renamed again to 'Oversized Cloud Temple Hoodie' to call out the fit in the title itself. Evan is updating the live Salt Lake City product's title by hand; this config only governs titles for every hoodie generated from here on. The rest of the 16 Sep reasoning still applies: this closes the 'whether the product line names carry over' question in BRAND.md section 7, and renaming costs nothing extra because a replacement never inherited its predecessor's web address by title anyway -- Shopify builds the address from the title, so the address is always set explicitly with productUpdate(handle:) after publish. The retiring Printify configs (cc1566, cc1567) keep their old titles, because the live products they describe still carry them.",
+  "_naming_note": "Was 'Pillar Temple Hoodie', then 'Cloud Temple Hoodie' from 16 Sep 2026, then 'Oversized Cloud Temple Hoodie' briefly on 17 Sep. EVAN, 17 Sep 2026: settled on 'Ultra-soft Oversized Temple Hoodie', leading with feel over the 'Cloud' brand word, matching the sweatshirt's new 'Ultra-soft Temple Sweatshirt' naming. Evan is updating the live Salt Lake City product's title by hand; this config only governs titles for every hoodie generated from here on. The rest of the 16 Sep reasoning still applies: this closes the 'whether the product line names carry over' question in BRAND.md section 7, and renaming costs nothing extra because a replacement never inherited its predecessor's web address by title anyway -- Shopify builds the address from the title, so the address is always set explicitly with productUpdate(handle:) after publish. The retiring Printify configs (cc1566, cc1567) keep their old titles, because the live products they describe still carry them.",
   "spacing_overrides": {
     "vertical_anchor": "center",
     "temple_target_ink_width_in": 12.0,
