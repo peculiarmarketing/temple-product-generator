@@ -297,8 +297,29 @@ def store_product_prefill(s, store_id, template_id):
                        f"/products/templates/{template_id}/new", timeout=60))
 
 
+def mockups_back_first(mockups, lead_color_id=None):
+    """Order the gallery so the temple leads, not a near-blank front.
+
+    Tapstitch hands mockups back front-first, and the whole product is a back
+    print: the front carries only a 6in logo, so a front-first gallery leads with
+    an almost blank sweatshirt. The retiring Printify catalogue leads with the
+    back on every temple product, checked against the live Bountiful crew on
+    16 Sep 2026, so this is the store's own established order rather than a new
+    opinion.
+
+    `lead_color_id` puts that colourway first within each side, which should be
+    the garment's `storefront_first_color`, so gallery position 1 matches the
+    colour the page opens on.
+    """
+    def key(m):
+        payload = m["media"]["attributes"][0]["payload"]
+        return (payload.get("placement") != "BackEndImage",
+                payload.get("colorId") != lead_color_id)
+    return sorted(mockups, key=key)
+
+
 def store_product_payload(prefill, title, retail_cents, description_html=None,
-                          units="IMPERIAL"):
+                          units="IMPERIAL", lead_color_id=None):
     """Turn a prefill into the create call's body.
 
     TRAP: the size guide is NOT a field in this payload. Tapstitch bakes the
@@ -319,7 +340,7 @@ def store_product_payload(prefill, title, retail_cents, description_html=None,
         variants.append({**v, "retailPrice": retail_cents})
     return {"title": title,
             "description": {"type": "HTML", "content": description_html},
-            "mockups": prefill["mockups"],
+            "mockups": mockups_back_first(prefill["mockups"], lead_color_id),
             "options": prefill["options"],
             "variants": variants,
             "costIncludesShipping": prefill["costIncludesShipping"],

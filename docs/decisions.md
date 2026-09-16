@@ -1118,3 +1118,38 @@ frees the address and then leaves it unused.
   description, and the art close-up card at gallery position 2. It is also in no
   collection, matching the tee, so neither live product is browsable from the
   storefront's own navigation yet.
+
+### There is a FOURTH "default", and it is the one the shopper actually sees
+
+The 22 Aug entry names three things called "default" and warns that setting one
+does not set the others: Printify's `is_default`, Shopify's preselected variant
+(option value order), and the featured photo (gallery position 1). Publishing the
+crew found a fourth: **each variant's own bound image**.
+
+Tapstitch's mockup payload binds every image to a colour
+(`option: {id: "Color", valueIds: ["5720"]}`), and Shopify binds each variant to
+the FIRST image of its colour at import time. Tapstitch hands its mockups back
+front-first, so every Gray variant was bound to the gray FRONT. The theme shows
+the selected variant's image, so the page opened on an almost blank sweatshirt
+even after the gallery was reordered and `featuredMedia` was correct. Gallery
+order and featured media are not what the product page opens on when variants
+carry their own images.
+
+Fixed on the live product with `productVariantsBulkUpdate(variants: [{id,
+mediaId}])`, each colour's variants bound to that colour's BACK image.
+
+**And fixed at the source:** `tapstitch_api.mockups_back_first()` reorders the
+mockups before they are sent, backs first and the `storefront_first_color`
+leading within each side, so the binding lands on the back at import and no
+repair is needed. The order is not a new opinion: the retiring Printify catalogue
+leads with the back on every temple product, checked against the live Bountiful
+crew the same day.
+
+- **The Easify Temple dropdown does not appear on the new crew.** The option sets
+  bind to product ids and the replacement is a new product, so inheriting the
+  handle keeps inbound links working but does not put the product in a set. This
+  is not worth chasing while the catalogue is dark and the dropdown has nothing
+  to point at; `scripts/easify_options.py sync` rebuilds from the live catalogue
+  at the end of the migration.
+- **The art close-up card was not pushed.** `scripts/art_images.py push --all` is
+  catalogue-wide and was not run for one product.
