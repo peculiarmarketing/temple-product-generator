@@ -300,22 +300,34 @@ def fetch_all_products(c, refresh=False):
 
 
 def fixed_description(garment_cfg):
-    """The garment's verbatim intro + size guide, behind an optional
+    """The garment's verbatim fixed sections, behind an optional
     garment-specific block (the dated line's Personalization section). Set at
     swap time so a published draft never carries the donor temple's facts; the
     description event later replaces the whole field with these fixed sections
     plus verified temple facts.
 
     Copy lives per garment in reference/garment-copy/{garment_id}/ rather than
-    inside a per-blank description skill. Three Tapstitch blanks would otherwise
-    have meant three new skills to hold two HTML files each. A garment whose
-    copy is missing still returns empty, which is the point: an empty
+    inside a per-blank description skill. Two shapes exist. Garments with a
+    product-details.html assemble as details -> intro (Evan, 16 Sep 2026: the
+    product-specific details lead, the size guide drops out of the description
+    entirely, and compose_description() still appends temple facts last).
+    Garments without one -- the retiring Printify CC1566/1567/1717 configs --
+    keep the older intro -> size-guide shape they were built with. A garment
+    whose copy is missing still returns empty, which is the point: an empty
     description beats the wrong garment's specifications on a live page."""
     assets = PROJECT_ROOT / (garment_cfg.get("garment_copy")
                              or f"reference/garment-copy/{garment_cfg['garment_id']}")
-    intro, guide = assets / "product-intro.html", assets / "size-guide.html"
-    if not (intro.exists() and guide.exists()):
-        return ""  # empty beats a wrong temple's history on a live page
+    intro = assets / "product-intro.html"
+    details = assets / "product-details.html"
+    guide = assets / "size-guide.html"
+    if details.exists():
+        if not intro.exists():
+            return ""  # empty beats a wrong temple's history on a live page
+        fixed_parts = [details.read_text().strip(), intro.read_text().strip()]
+    else:
+        if not (intro.exists() and guide.exists()):
+            return ""  # empty beats a wrong temple's history on a live page
+        fixed_parts = [intro.read_text().strip(), guide.read_text().strip()]
     parts = []
     prefix = garment_cfg.get("description_prefix")
     if prefix:
@@ -324,7 +336,7 @@ def fixed_description(garment_cfg):
             raise SystemExit(f"{garment_cfg['garment_id']}: description_prefix "
                              f"{prefix} is missing; refusing to write a partial description.")
         parts.append(prefix_path.read_text().strip())
-    parts += [intro.read_text().strip(), guide.read_text().strip()]
+    parts += fixed_parts
     return "\n\n".join(parts)
 
 
