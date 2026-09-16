@@ -1,11 +1,11 @@
 # Tapstitch migration ledger
 
-Updated 2026-09-16T09:59:16. 135 rows.
+Updated 2026-09-16T10:34:58. 135 rows.
 
 | State | Count |
 |---|---|
-| file-approved | 134 |
-| live | 1 |
+| file-approved | 133 |
+| live | 2 |
 
 | Temple | Garment | State | Old web address | Problems |
 |---|---|---|---|---|
@@ -109,7 +109,7 @@ Updated 2026-09-16T09:59:16. 135 rows.
 | Rome | hoodie | file-approved | rome-temple-hoodie |  |
 | Rome | tee | file-approved | rome-temple-tee |  |
 | Salt Lake | crew | live | salt-lake-temple-sweatshirt |  |
-| Salt Lake | hoodie | file-approved | salt-lake-temple-hoodie |  |
+| Salt Lake | hoodie | live | salt-lake-temple-hoodie |  |
 | Salt Lake | tee | file-approved | salt-lake-city-temple-tee |  |
 | San Antonio | crew | file-approved | san-antonio-temple-sweatshirt |  |
 | San Antonio | hoodie | file-approved | san-antonio-temple-hoodie |  |

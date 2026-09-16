@@ -67,7 +67,7 @@
     "title": "Cloud Temple Hoodie ({place})",
     "title_parent": "Cloud Temple Hoodie"
   },
-  "_naming_note": "Was 'Pillar Temple Hoodie'. EVAN, 16 Sep 2026: the Tapstitch lines get their own names. This closes the 'whether the product line names carry over' question in BRAND.md section 19, and it is only safe because of what publishing the first crew showed the same day: a replacement does NOT inherit its predecessor's web address by having the same title. Shopify builds the address from the title, so the address has to be set explicitly with productUpdate(handle:) after publish either way. The rename therefore costs nothing that was not already being paid, and the old addresses stay inherited. The retiring Printify configs (cc1566, cc1567) keep the old titles, because the live products they describe still carry them.",
+  "_naming_note": "Was 'Pillar Temple Hoodie'. EVAN, 16 Sep 2026: the Tapstitch lines get their own names. This closes the 'whether the product line names carry over' question in BRAND.md section 7, and it is only safe because of what publishing the first crew showed the same day: a replacement does NOT inherit its predecessor's web address by having the same title. Shopify builds the address from the title, so the address has to be set explicitly with productUpdate(handle:) after publish either way. The rename therefore costs nothing that was not already being paid, and the old addresses stay inherited. The retiring Printify configs (cc1566, cc1567) keep the old titles, because the live products they describe still carry them.",
   "spacing_overrides": {
     "vertical_anchor": "center",
     "temple_target_ink_width_in": 12.0,
@@ -101,32 +101,43 @@
   },
   "colorways": [
     {
-      "tapstitch": "Black",
-      "shopify": "Black",
-      "ink": "white"
-    },
-    {
-      "tapstitch": "Dark Gray",
-      "shopify": "Dark Gray",
-      "ink": "white"
-    },
-    {
       "tapstitch": "Navy Blue",
       "shopify": "Navy Blue",
-      "ink": "white"
+      "ink": "white",
+      "code": 6674
     },
     {
-      "tapstitch": "Dark Green",
-      "shopify": "Dark Green",
-      "ink": "white"
+      "tapstitch": "Black",
+      "shopify": "Black",
+      "ink": "white",
+      "code": 5720
+    },
+    {
+      "tapstitch": "Gray",
+      "shopify": "Gray",
+      "ink": "white",
+      "code": 6645
     },
     {
       "tapstitch": "Coffee",
       "shopify": "Coffee",
-      "ink": "white"
+      "ink": "white",
+      "code": 6657
+    },
+    {
+      "tapstitch": "Dark Purple",
+      "shopify": "Mauve",
+      "ink": "white",
+      "code": 6650
+    },
+    {
+      "tapstitch": "Klein Blue",
+      "shopify": "Royal Blue",
+      "ink": "white",
+      "code": 6654
     }
   ],
-  "_colorways_note": "tapstitch is the name in their editor; shopify is what the storefront shows, renamed after publish. ink is which art file that colorway prints. Haze Blue is gone with the move to USA fulfillment; the five that remain are all dark, so everything still prints white and no black art file is needed. UNVERIFIED against the blank's own swatch names: a mismatch fails quietly, because rename_option_value finds nothing to rename and the colour reorder cannot find the colour it was told to lead with. Confirm the exact spellings in the editor during the first live session.",
+  "_colorways_note": "EVAN, 16 Sep 2026, chosen off real mockups. Six colourways, all US-fulfilled. SUPERSEDES a lineup that was STALE AND PARTLY IMPOSSIBLE: it listed 'Dark Gray' and 'Dark Green', neither of which exists on R00286 in any colour range. Those names belonged to the RW0041 blank this one replaced on 14 Sep, and the crew was updated for its own blank change that day while the hoodie was not. Verified against the live catalogue search, so every name here is one Tapstitch really has. Two are renamed on the storefront: Dark Purple shows as Mauve and Klein Blue as Royal Blue, driven by shopify_fixups.colorway_renames_by_type() from this table, which runs AFTER publish and must be re-run after any variant re-sync. CONTRAST, raised to Evan with the mockup: Dark Purple is RGB(178,156,175) and renders as a light dusty pink, so white art on it is the softest of the six, softer than the crew's Flower Gray. Kept at white deliberately; a black-ink version would be a separate product, because a Tapstitch template binds ONE design to a LIST of colour codes.",
   "price_usd": 74.99,
   "_preview_color_note": "Review-sheet background only, approximating Navy Blue, the colour this line opens on. Not a colour spec and nothing prints from it.",
   "_spacing_note": "Evan, 14 Sep 2026, superseding the earlier spacing: the temple and the location line are simply centred in the print file, vertically and horizontally, with the temple ink spanning no more than 12.0in at its widest point, the location line 0.7in of INK tall (not box), and the top of that line 0.5in below the temple's lowest ink. There is no top or bottom margin requirement any more, which is why both are 0.0 here: they were measured off the Printify back-stack layout, where the logo sat at the bottom of the back, and centring made them meaningless. They were also the only thing stopping tall temples reaching full width. The retiring Printify profiles keep 0.6 and 2.5 in spacing_defaults.json, untouched."

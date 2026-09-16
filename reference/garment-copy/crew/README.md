@@ -1,6 +1,8 @@
 # Garment copy: crew
 
-**AWAITING BLANK SELECTION. Do not create the HTML files until the blank is picked.**
+**Blank picked 14 Sep 2026 (R00368). `size-guide.html` is WRITTEN, from the
+blank's own published measurements. `product-intro.html` is still missing, on
+purpose, and that is what keeps `fixed_description()` returning empty.**
 
 `generate.fixed_description()` needs two files in this folder:
 

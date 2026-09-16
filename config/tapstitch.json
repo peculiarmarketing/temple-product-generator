@@ -24,8 +24,10 @@
     "_set_product_type_note": "LOAD-BEARING. Tapstitch publishes with an EMPTY productType, and every fixup in scripts/shopify_fixups.py is keyed on it, so colour ordering and the featured photo silently do nothing without this. Measured 14 Sep 2026; see docs/discovery/2026-09-tapstitch-store-findings.md.",
     "write_description": true,
     "push_art_card": true,
-    "delete_old_listing": true,
-    "_delete_old_listing_note": "Evan's decision, 14 Sep 2026: the old Printify listing is deleted at the moment its replacement publishes, so the replacement inherits the same web address. A DRAFT or ARCHIVED product keeps its handle reserved and would push the replacement to a '-1' handle, breaking the Easify dropdown URLs."
+    "delete_old_listing": false,
+    "_delete_old_listing_note": "TURNED OFF 16 Sep 2026 (Evan). Was: delete the old Printify listing at the moment its replacement publishes, so the replacement inherits the same web address. That never worked. Shopify builds a new product's address from its TITLE and ignores whatever address just came free, so deleting freed the address and then left it unused; the crew's address had to be set afterwards with productUpdate(handle:), and its predecessor was permanently destroyed for nothing. Replacements now take their own address, old listings stay DRAFT, and scripts/easify_options.py sync repoints the dropdown links by reading handles from the live catalogue. This also keeps Printify intact as the way back, which deleting was quietly eating one product at a time.",
+    "set_variant_back_images": true,
+    "_set_variant_back_images_note": "LOAD-BEARING and not optional. Shopify binds each variant to the FIRST image of its colour at import and Tapstitch sends fronts first, so every variant lands on a near-blank garment and the product page opens there, whatever the gallery order says. MEASURED on the hoodie 16 Sep: posting the mockups back-first fixes the gallery but NOT the binding. Run scripts/tapstitch_variant_images.py after every publish; it is idempotent."
   },
   "api": {
     "_comment": "The editor's own endpoints, observed 15 Sep 2026 and NOT yet replayed. Relative to https://www.tapstitch.com. See docs/discovery/2026-09-tapstitch-editor-api.md for payload shapes and for what is still unverified.",
@@ -60,9 +62,19 @@
         "name": "Fleeced Sweatshirt",
         "_colour_note": "5720 Black, 6551 Flower Gray. Read off the catalogue search on 16 Sep 2026 and CONFIRMED against the store-product prefill, which is what Tapstitch will send Shopify: it names them 'Black' and 'Flower Gray', matching garments/crew.json. The swatch-name risk is closed for this blank. A THIRD colourway, 6672 Oat Gray, is also US-fulfilled and is left out because the config lists two; it is light, so it would need the black art."
       },
-      "_unknown": "hoodie (R00286) was not exercised. Its productId is 1356935091779162112 and it prints DTF, both read from the catalogue search, but its print area and colour codes have not been confirmed from a template of its own."
+      "hoodie": {
+        "silSn": "R00286",
+        "productId": "1356935091779162112",
+        "specialProcessTags": [
+          "DTF"
+        ],
+        "colorCodes": "6674,5720,6645,6657,6650,6654",
+        "lead_colorCode": 6674,
+        "name": "Oversize Fleeced Hoodie",
+        "_colour_note": "6674 Navy Blue, 5720 Black, 6645 Gray, 6657 Coffee, 6650 Dark Purple (shown as Mauve), 6654 Klein Blue (shown as Royal Blue). Evan's lineup off real mockups, 16 Sep 2026, and CONFIRMED against the store-product prefill, which named all six exactly as garments/hoodie.json does. It replaced a lineup that was stale and partly impossible: the config had listed 'Dark Gray' and 'Dark Green', neither of which exists on R00286. Navy Blue leads because it is the storefront_first_color."
+      }
     },
-    "_status": "PROVEN END TO END 15 Sep 2026. create_template, the signed OSS upload, save_design and distribute have all been run against the live account; distribute put a real product on the live Shopify storefront. distribute takes a LIST of STORE-PRODUCT ids (a third id kind), so a batch is one call.",
+    "_status": "PROVEN END TO END for all three garments. create_template, the signed OSS upload, save_design, create_store_product and distribute have all run against the live account; a crew and a hoodie were published to the live Shopify storefront on 16 Sep 2026. distribute takes a LIST of STORE-PRODUCT ids (a third id kind), so a batch is one call.",
     "_traps": [
       "x-oss-meta-author is a SIGNED header on the OSS upload. Omit it and the PUT is a bare 403 with a valid, fresh signature. Its value is retrieve-upload-data's `author` field.",
       "Upload lands on the OSS bucket host; a design must reference it on files.tapstitch.com. Same path, different host.",
@@ -73,7 +85,7 @@
     "_placement": "DERIVED 16 Sep 2026, no longer copied. get_template()'s craftItemDto.customArea states each side's print-area rectangle on the 700x700 canvas; tapstitch_api.print_areas() reads it and placement() turns it into the editor's geometry. Checked against the 15 Sep tee, which it reproduces to within the half pixel the editor rounded away. The rectangles differ per garment AND per side: tee 260x327 both sides, crew 210x281 back and 209x275 front."
   },
   "_selectors_superseded_by_api": {
-    "_note": "DEAD as of 15 Sep 2026. These described a click path through the web editor. There is no need to click: every step is a JSON call, proven by replaying them from Python the same evening (a design was created, uploaded to and saved, and Tapstitch rendered four mockups from it). Use tapstitch_api.py. Kept here, not deleted, because nothing has driven the FULL path yet -- the store-product call is still unrun -- so if the API route turns out to have a hole, this is the map back to the fallback.",
+    "_note": "DEAD as of 15 Sep 2026. These described a click path through the web editor. There is no need to click: every step is a JSON call, proven by replaying them from Python the same evening (a design was created, uploaded to and saved, and Tapstitch rendered four mockups from it). Use tapstitch_api.py. Kept here, not deleted, as the map back to the fallback if the API route ever turns out to have a hole. The FULL path HAS now been driven: the store-product call and distribute both ran on 16 Sep 2026 and put two real products on the live storefront.",
     "urls.new_product": null,
     "selectors": {
       "blank_search_input": null,

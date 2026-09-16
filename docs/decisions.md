@@ -996,7 +996,7 @@ extreme temples:**
   against the 15 Sep tee rather than assumed:
   - `left`/`top` are the print area's CENTRE, not its corner and not the
     canvas's centre. The tee's back area is x=214 y=194 w=260 h=327, so the
-    centre is 344, 357.5 — and the editor stored left=344, top=358.
+    centre is 344, 357.5, and the editor stored left=344, top=358.
   - `scaleX` and `scaleY` are both the area's height over the canvas:
     327/700 = 0.4671428571, exactly what the editor stored.
   - The object's own width/height is the image fitted inside the canvas with the
@@ -1181,3 +1181,114 @@ crew the same day.
 - **`parent_titles()` now returns both the old and the new names**, which is
   correct during the changeover: a title still has to be readable back to a
   temple while the catalogue holds a mix.
+
+## 16 September 2026, the hoodie (and the end of handle inheritance)
+
+### EVAN: replacements get their OWN web address. Old listings are no longer deleted.
+
+This reverses the 14 September "delete at swap time so the replacement inherits
+the address" mechanism, and it reverses it for a good reason: that mechanism never
+worked. Deleting the old listing frees its address but does not give it to the
+replacement, because Shopify builds a new product's address from its title. The
+crew only got `salt-lake-temple-sweatshirt` because the address was set on it by
+hand afterwards, and the old listing was permanently deleted for nothing.
+
+Evan's call, in his words: "can't we just make new web address and replace all the
+old ones in easify?" Yes. What it buys:
+
+- **No more permanent deletions.** Deleting was the only irreversible step in the
+  whole migration, and it destroyed the Printify fallback for that product one at
+  a time. HANDOFF says Printify stays untouched as the way back until Tapstitch is
+  proven on real orders, and deleting contradicted that.
+- **Addresses finally match titles.** `cloud-temple-hoodie` is what the product is
+  called. 90 of 120 old addresses were minted under pre-rename titles.
+- **One fewer step per product.** No delete, and no explicit handle set either.
+
+What it costs, stated plainly: any link from outside the store to an old product
+address stops working. Those addresses are ALREADY dead, because every old listing
+has been drafted since 14 September and a drafted product's page does not resolve,
+so this changes nothing for anyone arriving today. The Easify dropdown links are
+repointed by `scripts/easify_options.py sync`, which reads handles from the live
+catalogue and never derives them from titles.
+
+The Salt Lake crew keeps `salt-lake-temple-sweatshirt`, since it already has it.
+Everything after it takes its own address.
+
+### The hoodie is live
+
+- **"Cloud Temple Hoodie"**, ACTIVE, 30 variants at $74.99, at `cloud-temple-hoodie`.
+  The old `salt-lake-temple-hoodie` listing is still there, still DRAFT, not deleted.
+- **Its colour lineup was stale and partly IMPOSSIBLE.** `garments/hoodie.json`
+  listed "Dark Gray" and "Dark Green"; neither exists on R00286 in any range. They
+  belonged to the RW0041 blank this one replaced on 14 September. The crew was
+  updated for its own blank change that day and the hoodie was not, so the config
+  had sat wrong for two days and would have failed silently: the renames and the
+  colour reorder both match on names and would have found nothing.
+- **Evan's lineup, off real mockups:** Navy Blue, Black, Gray, Coffee, Dark Purple
+  and Klein Blue, with Dark Purple shown as **Mauve** and Klein Blue as **Royal
+  Blue** on the storefront. Both renames are driven from the config table.
+- **Raised and accepted:** Dark Purple is RGB(178,156,175) and renders as a light
+  dusty pink, so the white art on it is the softest of the six, softer than the
+  crew's Flower Gray.
+- The hoodie's print areas are CONFIRMED from its own template (front
+  1982 x 2609 is wrong, it is 2069 x 1615; back 2067 x 2770), matching
+  `garments/hoodie.json` exactly. Its front print area is LANDSCAPE, which
+  exercised `placement()`'s landscape branch for the first time.
+
+### mockups_back_first IS NOT ENOUGH. The claim written this morning was wrong.
+
+The 16 September entry above says reordering the posted mockups makes the variant
+binding land on the back "and no repair is needed". **Measured on the hoodie
+publish: false.** The gallery order DID carry through, backs first exactly as
+posted. Every variant still came back bound to its colour's FRONT image, and the
+theme shows the variant's image, so the page would still have opened on a
+near-blank garment. The per-variant repair is REQUIRED after every publish.
+
+`scripts/tapstitch_variant_images.py` is that repair, and it is idempotent.
+
+**Two wrong ways to pair a colour with its back image were tried first**, both of
+which would have been worse than the problem:
+
+1. **Pair colours by their order in the variant list.** Wrong because the
+   colour-order fixup rewrites that sequence. It bound Gray's variants to the
+   BLACK garment's photo.
+2. **Split the gallery in half, backs then fronts.** Wrong because the layout is
+   not consistent between products: the tee published on 15 September is
+   INTERLEAVED, front, back, front, back, one pair per colour. A rule that fits a
+   back-first product silently corrupts that one, and it reported 12 confident
+   rebinds that were all wrong.
+
+The only exact key is Tapstitch's own mockup metadata, which carries `colorId` and
+`placement` per image, matched to Shopify by the filename Shopify preserves.
+`tapstitch_api.back_for_front_mockups()` does that pairing.
+
+**This lives in its own script rather than in `scripts/shopify_fixups.py`**, where
+the other re-runnable repairs are, because the pairing needs a Tapstitch session
+and that module deliberately has none.
+
+The 15 September tee was still bound to its fronts and has been repaired.
+
+### The rename would have silently killed the Temple dropdown
+
+`artifacts/easify/sets.json` bound the Sweatshirt and Hoodie option sets to
+`cc1566` and `cc1567`, and `easify_options.live_temple_products()` matches a live
+product to a set by EXACT EQUALITY against that garment's composed title. While
+`crew.json` and `cc1566.json` shared a title this did not matter. Renaming the
+lines to Cloud made it matter: a renamed product matches no set, and the next sync
+would have detached the set from every replacement and removed the dropdown from
+those pages. Rebound to `tee`, `crew` and `hoodie`; `cc1717-dated` stays because
+the dated tee is paused rather than replaced.
+
+Note the sync cannot be run while the store is dark: a populated set whose garment
+has no live products raises SystemExit by design, which is the guard against
+blanking a set on a bad catalogue read.
+
+### Tests
+
+`tests/test_tapstitch_placement.py` covers the geometry that was the project's
+named quiet-failure risk: the tee reproduction, the centre/scale/truncation
+invariants, the landscape branch, and the aspect guard raising on five mismatches
+while passing the three real pairs. Fixtures under `tests/fixtures/tapstitch/` are
+trimmed REAL responses, so they pin the shape Tapstitch sends rather than what
+their author assumed. Nothing in them pins a blank, a colour code, a DPI or a
+price, per the 14 September lesson.

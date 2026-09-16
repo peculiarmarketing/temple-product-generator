@@ -74,7 +74,10 @@ def missing_garment_setup():
             out.append(f"{gid}: no storefront_first_color chosen")
         copy_dir = PROJECT_ROOT / g["garment_copy"]
         if not (copy_dir / "product-intro.html").exists():
-            out.append(f"{gid}: no product copy written yet ({g['garment_copy']})")
+            missing = "product-intro.html"
+            if not (copy_dir / "size-guide.html").exists():
+                missing += " and size-guide.html"
+            out.append(f"{gid}: {missing} not written yet ({g['garment_copy']})")
     return out
 
 
@@ -94,13 +97,14 @@ def cmd_check():
         # now derived rather than copied, but nothing drives it over the
         # catalogue. Saying "ready" would invite someone to start a 135-row run.
         print("  config ready, and the API route is PROVEN end to end")
-        print("  (create_template -> upload -> save_design -> distribute, one")
-        print("  product live on the storefront 15 Sep 2026). Use tapstitch_api.py.")
+        print("  (create_template -> upload -> save_design -> create_store_product")
+        print("  -> distribute). Three products live on the storefront as of")
+        print("  16 Sep 2026. Use tapstitch_api.py.")
         print("  Placement is DERIVED from each garment's own print area")
         print("  (tapstitch_api.print_areas/placement), checked against the tee.")
-        print("  Blanks known: tee, crew. Hoodie has its productId only.")
-        print("  NOT built: the catalogue runner, handle inheritance, fixup")
-        print("  sequencing, and create_store_product.")
+        print("  All three blanks are known and all three have published.")
+        print("  NOT built: the catalogue runner and fixup sequencing.")
+        print("  create_store_product EXISTS and has run.")
         print("  See docs/discovery/2026-09-tapstitch-editor-api.md.")
     print("\nGARMENT SETUP")
     if garments:

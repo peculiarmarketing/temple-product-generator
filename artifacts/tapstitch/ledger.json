@@ -1511,7 +1511,7 @@
     {
       "temple": "Salt Lake",
       "garment": "hoodie",
-      "state": "file-approved",
+      "state": "live",
       "files": {
         "white": "Salt Lake hoodie white back print (auto).png"
       },
@@ -1520,8 +1520,18 @@
       "old_shopify_id": "gid://shopify/Product/15222560391540",
       "old_title": "Pillar Temple Hoodie",
       "tapstitch_product_url": null,
-      "shopify_handle": null,
-      "updated_at": "2026-09-15T09:25:39"
+      "shopify_handle": "cloud-temple-hoodie",
+      "updated_at": "2026-09-16T10:34:58",
+      "shopify_status": "ACTIVE",
+      "shopify_id": "gid://shopify/Product/15302513459572",
+      "tapstitch_template_id": "1549938476965916672",
+      "tapstitch_store_product_id": "1549941216953643008",
+      "old_listing_kept": "salt-lake-temple-hoodie left DRAFT, not deleted: Evan's 16 Sep call to stop inheriting addresses",
+      "pending": [
+        "real description (size guide only for now)",
+        "art close-up card at gallery position 2",
+        "Easify dropdown row repointed to the new address"
+      ]
     },
     {
       "temple": "Salt Lake",
@@ -2034,5 +2044,5 @@
       "updated_at": "2026-09-15T09:25:39"
     }
   ],
-  "updated_at": "2026-09-16T09:59:16"
+  "updated_at": "2026-09-16T10:34:58"
 }

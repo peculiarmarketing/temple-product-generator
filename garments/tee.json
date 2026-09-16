@@ -68,7 +68,7 @@
     "title": "Essential Temple Tee ({place})",
     "title_parent": "Essential Temple Tee"
   },
-  "_naming_note": "Carried over from the retiring Comfort Colors lines because these titles are what the store's web addresses were built on and the replacements inherit them. Renaming the lines is an open decision (BRAND.md section 19).",
+  "_naming_note": "The tee KEEPS this title, Evan's call 16 Sep 2026, while the crew and hoodie became Cloud Temple lines. The rationale this note used to carry, that the titles are what the store's web addresses were built on and the replacements inherit them, is FALSE and was disproved the same day: Shopify builds a new product's address from its title and ignores whatever address just came free, so every replacement needs its address handled deliberately whatever it is called. See docs/decisions.md, 16 Sep.",
   "spacing_overrides": {
     "vertical_anchor": "center",
     "temple_target_ink_width_in": 12.0,
@@ -104,27 +104,32 @@
     {
       "tapstitch": "Black",
       "shopify": "Black",
-      "ink": "white"
+      "ink": "white",
+      "code": 8079
     },
     {
       "tapstitch": "Dark Gray",
       "shopify": "Dark Gray",
-      "ink": "white"
+      "ink": "white",
+      "code": 8088
     },
     {
       "tapstitch": "Coffee",
       "shopify": "Coffee",
-      "ink": "white"
+      "ink": "white",
+      "code": 8085
     },
     {
       "tapstitch": "Navy Blue",
       "shopify": "Navy Blue",
-      "ink": "white"
+      "ink": "white",
+      "code": 8081
     },
     {
       "tapstitch": "Wine Red",
       "shopify": "Maroon",
-      "ink": "white"
+      "ink": "white",
+      "code": 8084
     }
   ],
   "_colorways_note": "tapstitch is the name in their editor; shopify is what the storefront shows, renamed after publish. ink is which art file that colorway prints. Every colorway in the current range is dark, so everything prints white and no black art file is needed; a light colorway added later needs ink 'black'. UNVERIFIED against the blank's own swatch names. These are the names Evan gave, and the tee's were carried over from the RU0010 it replaced, so RT0063 may spell one differently ('Dark Grey', 'Wine', and so on). A mismatch fails quietly: rename_option_value finds nothing to rename and the storefront keeps Tapstitch's name, and the colour reorder cannot find the colour it was told to lead with. Confirm the exact spellings in the editor during the first live session.",

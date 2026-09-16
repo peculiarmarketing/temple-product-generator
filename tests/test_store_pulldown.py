@@ -117,11 +117,19 @@ keys = [(r["temple"], r["garment"]) for r in data["rows"]]
 assert keys == sorted(set(keys)) and len(keys) == len(set(keys)), keys
 
 # --- a replacement must never be classified as a target ----------------------
-# The Tapstitch replacement deliberately carries the SAME TITLE as the listing it
-# replaces, so it inherits the same web address. Title matching therefore cannot
-# tell them apart once both exist, and a second snapshot run mid-migration would
-# otherwise classify the new catalogue as things to pull down. Vendor is the
-# discriminator: measured on the live store, Printify 166 / ODMPOD 4.
+# Title matching cannot tell a replacement from the listing it replaces, so a
+# second snapshot run mid-migration would otherwise classify the new catalogue as
+# things to pull down. Vendor is the discriminator: measured on the live store,
+# Printify 166 / ODMPOD 4.
+#
+# The fixture below deliberately gives the replacement the SAME TITLE as the old
+# listing, which is the hardest case, and it stays that way on purpose even though
+# real replacements no longer share a title (the crew and hoodie lines were renamed
+# to Cloud on 16 Sep 2026). Two earlier beliefs behind this comment were disproved
+# that day and are recorded in docs/decisions.md: a same title never inherited the
+# web address, and addresses are now set deliberately per product. None of that
+# changes what this test guards, which is that vendor, not title, is what separates
+# old from new.
 mixed = [
     product("Essential Temple Tee (Logan)"),                        # the old one
     product("Essential Temple Tee (Logan)", vendor="ODMPOD",
@@ -314,6 +322,20 @@ assert shopify_fixups.wants_color_order(
     "a live Printify tee must still want its colors reordered"
 assert shopify_fixups.wants_color_order(
     {"productType": "Hoodie", "title": "Pillar Temple Hoodie (Manti)"})
+
+# And every Tapstitch replacement's OWN title must pass the same filter. Derived
+# from config, never written out: asserting the literal "Cloud Temple Hoodie" here
+# would pin a name Evan has already changed once, which is the 14 Sep lesson. What
+# is pinned is the contract, that a title this pipeline composes is one the fixups
+# recognise. Renaming a line and silently losing its colour ordering is the failure
+# this catches.
+for gid in generate.all_garment_ids("tapstitch"):
+    cfg = generate.load_garment_config(gid)
+    for title in (cfg["naming"]["title"].format(place="Manti"),
+                  cfg["naming"]["title_parent"]):
+        assert shopify_fixups.wants_color_order(
+            {"productType": cfg["product_type"], "title": title}), \
+            f"{gid} composes {title!r}, which the colour-order fixup does not recognise"
 
 # A replacement that declares a colour overrides the line it replaces, and every
 # value in the table is a colourway some garment of that type actually has.

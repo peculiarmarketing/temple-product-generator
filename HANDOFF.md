@@ -1,6 +1,6 @@
 # Tapstitch migration: where this stands
 
-**Last worked: 16 September 2026.** Read this first if you are picking the
+**Last worked: 16 September 2026, second session.** Read this first if you are picking the
 migration up on another machine, or in a new session.
 
 **The headline: the migration works end to end and one product is LIVE.** The
@@ -12,9 +12,9 @@ What is left is copy, the other two blanks, and one unsolved geometry question.
 
 ## For Evan, in one minute
 
-**Your store is dark except for three things.** The remaining temple listings are
+**Your store is dark except for four things.** The remaining temple listings are
 still hidden (drafted, not deleted). A visitor can buy the Temple Art File
-download, and two garments:
+download, and three garments:
 
 - **"Essential Heavyweight Temple Tee"**, live since 15 September, ACTIVE, 30
   variants at $44.99, Salt Lake on the back. Its title names no temple and its
@@ -26,7 +26,23 @@ download, and two garments:
   web address, so the Easify dropdown link to it still resolves. The old Printify
   listing at that address was deleted to make room, which has no undo.
 
-Both are real and purchasable. Draft them if you do not want them sold.
+- **"Cloud Temple Hoodie"**, live since 16 September, ACTIVE, 30 variants at
+  $74.99, Salt Lake on the back, at `cloud-temple-hoodie`. Six colours: Navy Blue,
+  Black, Gray, Coffee, Mauve and Royal Blue.
+
+All three are real and purchasable. Draft them if you do not want them sold.
+
+**You changed how replacements get their web address, and it was the right call.**
+The old plan deleted each old listing so its replacement could take over its
+address. That never worked: Shopify builds a new product's address from its title
+and ignores whatever address just came free, so the crew's address had to be set by
+hand afterwards and its predecessor was destroyed for nothing. From now on each
+replacement simply takes its own address (`cloud-temple-hoodie`), old listings stay
+drafted rather than deleted, and the Temple dropdown links are repointed by the
+Easify sync, which reads addresses from the live store. Nothing is permanently
+deleted any more, which also keeps Printify intact as the way back. The one cost is
+that old product addresses stay dead, and they have been dead since 14 September
+anyway because those listings are drafted.
 
 Six products were deleted permanently at your instruction: two stray duplicate
 listings, the three Nauvoo Limited Editions, and Cornerstone Sweatpants.
@@ -81,14 +97,15 @@ reproduces the tee exactly. It was a real risk, not a theoretical one: the crew'
 back print area is 16% shorter than the tee's, so the copied numbers would have
 printed the art oversized and off centre on every crew, with no error anywhere.
 
-**One thing genuinely needs your eye now, and there is a mockup for it.** Flower
-Gray on the crew is NOT dark. It is RGB(184,181,186), a mid heather, and on the
-mockup the white line art reads noticeably weaker than on black: the fine lines
-and the city line both lose definition. It is legible, not crisp. Black ink would
-be much stronger and would mean building the black art files for that colourway.
-Every other colourway on every line is dark enough that white is certain. There is
-also a THIRD US colourway on the crew that the config leaves out, 6672 Oat Gray,
-RGB(237,233,221); it is light, so it would print black art too.
+**The Flower Gray ink question is CLOSED: white, your call on 16 September, made
+on a real mockup.** It was a real question, not a theoretical one. Flower Gray is
+a mid heather, not a dark, and the white line art on it is visibly softer than on
+black. You kept white knowing that, because black ink on one colourway would mean
+a second listing rather than a second option: a Tapstitch design belongs to the
+product, and the colours are just a list attached to it, so there is nothing like
+Printify's per-colour designs. Every other colourway on every line is dark enough
+that white is obvious. One colourway the config leaves out, 6672 Oat Gray, is
+light and would have the same problem more severely.
 
 **Worth a second look on price:** the crew blank costs more than the hoodie blank
 ($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
@@ -148,7 +165,9 @@ for each pair. Do not merge them by hand without checking first.
 | **Tapstitch API client** | `tapstitch_api.py` | **Done and proven against the live account, publish included.** |
 | Traffic capture | `scripts/tapstitch_capture.py` | Done. Records the editor while you work; automates nothing. |
 | Editor automation (click path) | `_selectors_superseded_by_api` | RETIRED 15 Sep 2026. There is no click path any more. |
-| Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: one live crew, 16 Sep 2026. |
+| Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: a live crew and a live hoodie, 16 Sep 2026. |
+| Variant image repair | `scripts/tapstitch_variant_images.py` | Done, idempotent, REQUIRED after every publish. |
+| Geometry and payload tests | `tests/test_tapstitch_placement.py` | Done. Fixtures are trimmed real responses. |
 | Catalogue runner | `scripts/tapstitch_publish.py` | Still unwritten. This is the next build. |
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
@@ -190,7 +209,31 @@ centre, and the scale is the rectangle's height over 700. Checked against the
 `placement()` also refuses a print file whose shape does not match its print area,
 so the one assumption underneath it is checked rather than silent.
 
-### DELETING THE OLD LISTING DOES NOT MOVE ITS ADDRESS
+### THE VARIANT IMAGE IS THE ONE THE SHOPPER SEES
+
+Run `scripts/tapstitch_variant_images.py` after every publish. It is not optional
+and not a fallback.
+
+Tapstitch attaches each mockup to a colour, and Shopify binds each variant to the
+FIRST image of that colour at import. Tapstitch sends fronts first, and the front
+of these garments is a 6in logo on a blank garment, so every variant lands bound to
+an almost empty shirt. The theme shows the SELECTED VARIANT'S image, which is a
+fourth thing called "default" and the only one anyone actually sees: the gallery
+order and the featured image can both be right while the page still opens on the
+blank front.
+
+Posting the mockups back-first fixes the gallery and was confirmed to carry
+through, but MEASURED 16 Sep on the hoodie, it does not change the binding. An
+earlier note in this file claimed it did; that claim was wrong.
+
+Do not try to work out which image is which by position. Two rules were tried and
+both were confidently wrong: pairing colours by their order in the variant list
+(the colour reorder rewrites that sequence, and it bound Gray to the black
+garment's photo), and splitting the gallery in half (the 15 Sep tee's gallery is
+interleaved, front/back per colour, so the rule corrupts it). The only exact key is
+Tapstitch's own mockup metadata matched by filename.
+
+### DELETING THE OLD LISTING DOES NOT MOVE ITS ADDRESS, WHICH IS WHY IT STOPPED
 
 The 14 Sep plan says a replacement inherits its predecessor's web address once
 the old listing is deleted rather than drafted. That holds only when the old
@@ -202,10 +245,14 @@ like that.
 
 Watched happen on the 16 Sep publish: the old listing was deleted FIRST, and the
 replacement was still minted at `classic-temple-crew-sweatshirt`, because Shopify
-builds a new product's address from its title and ignores whatever just came
-free. One field fixes it, `productUpdate(handle:)` once the product appears, and
-`shopify_client.update_product()` already accepts it. **The runner must do it.**
-Deleting alone frees the address and then leaves it unused, and nothing errors.
+builds a new product's address from its title and ignores whatever just came free.
+The crew's address was then set with `productUpdate(handle:)`.
+
+**Evan's decision the same day: stop doing this.** Replacements take their own
+address, old listings stay drafted, and the Easify sync repoints the dropdown. The
+Salt Lake crew keeps the inherited address it already has; nothing after it
+inherits one. `delete_old_listing` in `config/tapstitch.json` and the `delete`
+command in `store_pulldown.py` are no longer part of the publish sequence.
 
 ### THE SIZE GUIDE UNIT TRAP
 
@@ -259,9 +306,10 @@ In order, on a new session:
    lives in a dedicated Chrome profile and survives reboots, but not forever.
 3. `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` for the live
    blocker list.
-4. Then the hoodie, which needs no capture session: look its ids up with
-   `GET /api/services/site/products/search?q=r00286`, create a template, and read
-   its print areas back off that template.
+4. Then the catalogue runner. All three garments are now proven end to end, so
+   the runner is the 16 Sep sequence written down: prefill, payload, create,
+   distribute, wait for Shopify, set productType, run the fixups, run
+   `tapstitch_variant_images.py`, update the ledger.
 
 ## Not yet reviewed
 

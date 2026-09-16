@@ -13,10 +13,11 @@ AUTH is the dedicated Chrome profile's cookies, nothing else: no CSRF header, no
 bearer token, no editor session. Evan logs in once with scripts/tapstitch_login.py
 and the profile keeps the session for days. Never print the cookie jar.
 
-WHAT THIS DOES NOT DO: create the Shopify-bound store product. That call is
-`POST /api/services/user/distribution/stores/{storeId}/products` and it is the
-one with consequences for a live storefront, so it is deliberately absent until
-Evan decides to run it.
+WHICH CALL REACHES THE LIVE STOREFRONT: only `distribute()`. Everything else,
+including `create_store_product()`, stays inside Tapstitch. The store product is
+created with `distribute: False` on purpose, which is what makes the safe order
+possible: build the product, check it, then distribute. Both were run against the
+live account on 16 Sep 2026 and put two real products on the storefront.
 """
 
 import json
@@ -164,8 +165,8 @@ def placement(area, src_size, canvas=CANVAS):
     - scaleX and scaleY are both the print area's height over the canvas:
       327/700 = 0.4671428571. Height governs, and the width follows, which is
       safe only because every print file is built to the shape of its own print
-      area. The assert below is what makes that a checked assumption rather than
-      a silent one.
+      area. The guard below is what makes that a checked assumption rather
+      than a silent one; it raises rather than quietly drawing the wrong size.
     - left and top are the print area's CENTRE, not its corner, and not the
       canvas's centre: 214 + 260/2 = 344, 194 + 327/2 = 357.5. The editor stored
       358, so it rounds; we send the exact centre, because half a canvas pixel
@@ -191,14 +192,14 @@ def placement(area, src_size, canvas=CANVAS):
             "scaleX": scale, "scaleY": scale}
 
 
-def design_object(piece, src, placement, src_size):
+def design_object(piece, src, geometry, src_size):
     """One image on one print area, in the shape the editor sends.
 
     Every key here is load-bearing. Dropping clipId, customAreaId, designPart,
     flipX/flipY or visible gets the same opaque code 10001 as sending nothing.
 
-    `placement` is left/top/width/height/scaleX/scaleY on the editor's 700x700
-    canvas, and comes from placement() below, which derives it from the garment's
+    `geometry` is left/top/width/height/scaleX/scaleY on the editor's 700x700
+    canvas, and comes from placement() above, which derives it from the garment's
     own print area rather than reusing the tee's observed numbers.
     """
     return {"zIndex": 3,
@@ -211,7 +212,7 @@ def design_object(piece, src, placement, src_size):
             "visible": True,
             "designPart": piece,
             "srcDetails": {"width": src_size[0], "height": src_size[1]},
-            **placement}
+            **geometry}
 
 
 def save_design(s, template_id, blank, pieces):
@@ -225,9 +226,11 @@ def save_design(s, template_id, blank, pieces):
     srcDetails.srcId is NOT required, which is why the multipart
     /api/designs/user_cover_img/save call this module skips can be skipped.
     """
-    cfg = [{"piece": p, "objects": [o], "canvasSize": {"width": 700, "height": 700},
-            "embs": []} for p, o in pieces.items()]
-    mock = [{"piece": p, "objects": [o], "canvasSize": {"width": 700, "height": 700}}
+    cfg = [{"piece": p, "objects": [o],
+            "canvasSize": {"width": CANVAS, "height": CANVAS}, "embs": []}
+           for p, o in pieces.items()]
+    mock = [{"piece": p, "objects": [o],
+             "canvasSize": {"width": CANVAS, "height": CANVAS}}
             for p, o in pieces.items()]
     body = {"colorCode": blank["colorCodes"],
             "uniqueId": template_id,
@@ -307,9 +310,21 @@ def mockups_back_first(mockups, lead_color_id=None):
     16 Sep 2026, so this is the store's own established order rather than a new
     opinion.
 
-    `lead_color_id` puts that colourway first within each side, which should be
-    the garment's `storefront_first_color`, so gallery position 1 matches the
-    colour the page opens on.
+    `lead_color_id` puts that colourway first within each side. It is the
+    TAPSTITCH NUMERIC COLOUR ID (the `code` on each `colorways` entry in
+    garments/*.json), NOT `storefront_first_color`, which is the post-rename
+    Shopify display name. Passing the name matches nothing and the sort silently
+    leaves Tapstitch's own order, which is the fail-quiet class this module
+    exists to document. Resolve it as: storefront_first_color -> the colorways
+    entry whose `shopify` equals it -> that entry's `code`.
+
+    MEASURED 16 Sep 2026, AND IT IS NOT ENOUGH ON ITS OWN. Reordering the posted
+    mockups DOES carry through to Shopify's gallery order, confirmed on the
+    hoodie publish. It does NOT fix which image each variant is bound to: every
+    variant still came back bound to its colour's FRONT image, and the theme
+    shows the variant's image, so the page still opens on the near-blank front.
+    The per-variant repair (scripts/shopify_fixups.py `variant-image`) is
+    REQUIRED after every publish, not a fallback.
     """
     def key(m):
         payload = m["media"]["attributes"][0]["payload"]
@@ -318,23 +333,27 @@ def mockups_back_first(mockups, lead_color_id=None):
     return sorted(mockups, key=key)
 
 
-def store_product_payload(prefill, title, retail_cents, description_html=None,
-                          units="IMPERIAL", lead_color_id=None):
+def store_product_payload(prefill, title, retail_cents, description_html,
+                          lead_color_id=None):
     """Turn a prefill into the create call's body.
 
-    TRAP: the size guide is NOT a field in this payload. Tapstitch bakes the
-    chosen table into description.content when the product is created, so the
-    unit choice has to be right here and cannot be repaired afterwards. The
-    prefill comes back with IMPERIAL and METRIC BOTH selected, which publishes
-    inch/cm column pairs; Evan's rule is imperial. Pass description_html to send
-    our own copy instead, in which case no Tapstitch table is added at all.
+    `description_html` is REQUIRED and is the whole description body. There is
+    deliberately no fallback to Tapstitch's own copy, because that fallback is a
+    silent path to a mistake this project has already made: the 15 Sep tee
+    published carrying Tapstitch's wholesale blurb ("Recommended as a core stock
+    item for essential collections, perfect for custom printing and branding")
+    plus their size table, whose IMPERIAL variant is bare numbers with no unit
+    label anywhere. Pass reference/garment-copy/{garment}/size-guide.html, or
+    whatever generate.fixed_description() composes. This mirrors the guard in
+    fixed_description(), which returns EMPTY rather than the wrong garment's copy.
 
-    Its IMPERIAL table carries no unit label anywhere, just bare numbers, which
-    is why reference/garment-copy/*/size-guide.html is the better body.
+    TRAP worth knowing even though this function no longer touches it: the size
+    guide is NOT a field in this payload. Tapstitch bakes its table into
+    description.content at create time, so nothing about it can be repaired
+    afterwards on the Tapstitch side. Evan's rule (config/tapstitch.json
+    `size_guide`) is imperial, in the description; sending our own body satisfies
+    it and adds no Tapstitch table at all.
     """
-    if description_html is None:
-        description_html = (prefill["description"]["content"]
-                            + prefill["sizeGuide"]["descriptionHtml"][units])
     variants = []
     for v in prefill["variants"]:
         variants.append({**v, "retailPrice": retail_cents})
@@ -366,6 +385,38 @@ def create_store_product(s, store_id, payload):
     d = _data(s.post(f"{BASE}/api/services/user/distribution/stores/{store_id}/products",
                      data=json.dumps(payload),
                      headers={"Content-Type": "application/json"}, timeout=300))
+    if isinstance(d, str) and d:
+        return d                      # what the live calls returned, 16 Sep 2026
     if isinstance(d, dict):
-        return d.get("uniqueId") or d.get("id") or d
-    return d
+        for key in ("uniqueId", "id"):
+            if isinstance(d.get(key), str) and d[key]:
+                return d[key]
+        raise TapstitchError(f"create_store_product found no id in the response; "
+                             f"keys were {sorted(d)}")
+    raise TapstitchError(f"create_store_product returned {type(d).__name__}, "
+                         f"expected a store-product id")
+
+
+def back_for_front_mockups(prefill):
+    """{front image filename: back image filename} paired by COLOUR, from a prefill.
+
+    The exact answer to "which image is this variant's back", and the only exact
+    one available. Shopify keeps none of Tapstitch's mockup metadata, but it does
+    keep the filename, so a Shopify media URL can be matched back to the mockup it
+    came from and therefore to that mockup's colorId and placement.
+
+    Position cannot be used instead, which was learned the expensive way on
+    16 Sep 2026. The gallery layout is not consistent between products: the tee
+    published on 15 Sep is INTERLEAVED (front, back, front, back, one pair per
+    colour), while a product posted through mockups_back_first() is every back
+    then every front. A positional rule that fits one silently corrupts the other,
+    and pairing by the colour's position in the VARIANT list is wrong again,
+    because the colour-order fixup rewrites that sequence.
+    """
+    backs, fronts = {}, {}
+    for m in prefill["mockups"]:
+        payload = m["media"]["attributes"][0]["payload"]
+        name = m["media"]["url"].split("/")[-1].split("?")[0]
+        target = backs if payload.get("placement") == "BackEndImage" else fronts
+        target[payload.get("colorId")] = name
+    return {fronts[c]: backs[c] for c in fronts if c in backs}

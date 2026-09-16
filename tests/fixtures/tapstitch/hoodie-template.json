@@ -1,0 +1,205 @@
+{
+ "_comment": "Trimmed real response from GET /api/designs/customized/templates/{id}, 16 Sep 2026. Only the keys the tests need. This is DATA, the shape Tapstitch really sends, not a hand-typed guess, which is the point: a guessed fixture would test what its author assumed.",
+ "frontSideDpiTip": "Print area size 2069 \u00d7 1615 px (150)DPI",
+ "backSideDpiTip": "Print area size 2067 \u00d7 2770 px (150)DPI",
+ "craftItemDto": {
+  "customArea": [
+   {
+    "name": "front",
+    "cnName": "\u6b63\u9762",
+    "details": [
+     {
+      "x": "251",
+      "y": "275",
+      "width": "205",
+      "height": "160",
+      "id": "front_side_middle",
+      "title": "Front Side Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": 0,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     },
+     {
+      "x": "569",
+      "y": "283",
+      "width": "54",
+      "height": "216",
+      "id": "left_sleeve_bottom",
+      "title": "Left Sleeve Bottom",
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "-30",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "left_sleeve"
+     },
+     {
+      "x": "80",
+      "y": "283",
+      "width": "54",
+      "height": "216",
+      "id": "right_sleeve_bottom",
+      "title": "Right Sleeve Bottom",
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "30",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "right_sleeve"
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "back",
+    "cnName": "\u80cc\u9762",
+    "details": [
+     {
+      "x": "247",
+      "y": "275",
+      "width": "200",
+      "height": "268",
+      "id": "back_side_middle",
+      "title": "Back Side Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": 0,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     },
+     {
+      "x": "83",
+      "y": "300",
+      "width": "53",
+      "height": "210",
+      "id": "left_sleeve_bottom",
+      "title": "Left Sleeve Bottom",
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "30",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "left_sleeve"
+     },
+     {
+      "x": "562",
+      "y": "300",
+      "width": "53",
+      "height": "210",
+      "id": "right_sleeve_bottom",
+      "title": "Right Sleeve Bottom",
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "-30",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "right_sleeve"
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "left_sleeve",
+    "cnName": "\u5de6\u8896",
+    "details": [
+     {
+      "x": "342",
+      "y": "230",
+      "width": "93",
+      "height": "372",
+      "id": "left_sleeve_bottom",
+      "title": "Left Sleeve Bottom",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "right_sleeve",
+    "cnName": "\u53f3\u8896",
+    "details": [
+     {
+      "x": "303",
+      "y": "230",
+      "width": "93",
+      "height": "372",
+      "id": "right_sleeve_bottom",
+      "title": "Right Sleeve Bottom",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   }
+  ]
+ }
+}
