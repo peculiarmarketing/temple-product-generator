@@ -1519,9 +1519,9 @@
       "old_shopify_handle": "salt-lake-temple-hoodie",
       "old_shopify_id": "gid://shopify/Product/15222560391540",
       "old_title": "Pillar Temple Hoodie",
-      "tapstitch_product_url": null,
+      "tapstitch_product_url": "https://www.tapstitch.com/account/products-pool",
       "shopify_handle": "cloud-temple-hoodie",
-      "updated_at": "2026-09-16T10:34:58",
+      "updated_at": "2026-09-16T10:51:51",
       "shopify_status": "ACTIVE",
       "shopify_id": "gid://shopify/Product/15302513459572",
       "tapstitch_template_id": "1549938476965916672",
@@ -2044,5 +2044,5 @@
       "updated_at": "2026-09-15T09:25:39"
     }
   ],
-  "updated_at": "2026-09-16T10:34:58"
+  "updated_at": "2026-09-16T10:51:51"
 }

@@ -3,10 +3,12 @@
 **Last worked: 16 September 2026, second session.** Read this first if you are picking the
 migration up on another machine, or in a new session.
 
-**The headline: the migration works end to end and one product is LIVE.** The
-Tapstitch editor turned out to be a JSON API, it is now driven from Python
-(`tapstitch_api.py`), and a real tee was published to the storefront through it.
-What is left is copy, the other two blanks, and one unsolved geometry question.
+**The headline: the migration works end to end and THREE products are LIVE**, one
+of each garment. The Tapstitch editor turned out to be a JSON API, it is now driven
+from Python (`tapstitch_api.py`), and a tee, a crew and a hoodie have all been
+published to the storefront through it. All three blanks are exercised and the
+geometry question is closed. What is left is the product copy and the catalogue
+runner that drives the other 132 rows.
 
 ---
 
@@ -32,7 +34,12 @@ download, and three garments:
 
 All three are real and purchasable. Draft them if you do not want them sold.
 
-**You changed how replacements get their web address, and it was the right call.**
+**AWAITING YOUR YES: how replacements get their web address.** You asked whether
+we could just give them new addresses and repoint the Easify links, and I acted on
+it, because the alternative was destroying another listing before you had answered.
+Nothing is lost either way: no listing was deleted, and the hoodie can still be
+moved to the old address later. But it reverses a decision you DID state on
+14 September, so say yes or no before this is treated as settled.
 The old plan deleted each old listing so its replacement could take over its
 address. That never worked: Shopify builds a new product's address from its title
 and ignores whatever address just came free, so the crew's address had to be set by
@@ -316,9 +323,14 @@ In order, on a new session:
 The work up to and including the store pull-down went through the full review
 loop (six specialists plus a final judge, all signed off). **Changes made after
 that review have not been through it**, and that now includes everything from
-15 and 16 September: `tapstitch_api.py` (including `print_areas` and
-`placement`), `scripts/tapstitch_capture.py`, the retired selector block, the tee
-and crew size guides, and the crew blank config. The API client has been exercised against
+15 and 16 September. The 16 September morning work DID go through the full loop
+(six specialists plus the judge) and every finding was fixed and signed off, which
+covers `print_areas`, `placement`, the store-product calls, the crew blank config
+and the crew size guide. NOT yet reviewed: the hoodie publish and its blank config,
+`scripts/tapstitch_variant_images.py`, the Easify `sets.json` rebind, the hoodie
+size guide, `tests/test_tapstitch_placement.py` and its fixtures, and the
+`post_publish` wiring in `finish_on_shopify`. Also still unreviewed from 15
+September: `scripts/tapstitch_capture.py` and the retired selector block. The API client has been exercised against
 the live account but never reviewed. Also: the blank specs and colour configs, the
 `colorway_renames_by_type` mechanism in `scripts/shopify_fixups.py`, the centring
 and 0.8in spacing, the `kept`-records change in `scripts/store_pulldown.py`, and

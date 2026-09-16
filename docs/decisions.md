@@ -1185,7 +1185,19 @@ crew the same day.
 
 ## 16 September 2026, the hoodie (and the end of handle inheritance)
 
-### EVAN: replacements get their OWN web address. Old listings are no longer deleted.
+### Replacements get their OWN web address. Old listings are no longer deleted.
+
+**STATUS: acted on, NOT yet explicitly confirmed by Evan.** His words were a
+question, asked while deciding whether to publish the hoodie: "can't we just make
+new web address and replace all the old ones in easify?" It was read as a yes and
+implemented, because the alternative was permanently deleting another listing
+before he had answered, and deleting is the one step with no undo. The reversible
+choice was taken deliberately. It nevertheless reverses a decision he DID state
+outright on 14 September, so it needs his confirmation before it is treated as
+settled; until then nothing else has been deleted and the hoodie can still be
+moved to the old address.
+
+The mechanism below is true either way, and is why the question was worth asking.
 
 This reverses the 14 September "delete at swap time so the replacement inherits
 the address" mechanism, and it reverses it for a good reason: that mechanism never

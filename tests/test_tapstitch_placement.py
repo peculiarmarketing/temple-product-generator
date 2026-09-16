@@ -42,18 +42,13 @@ TEE_AREA = {"x": 214.0, "y": 194.0, "width": 260.0, "height": 327.0}
 TEE_SRC = (4386, 5516)
 
 got = T.placement(TEE_AREA, TEE_SRC)
-assert got["left"] == 344.0, got            # centre, not corner: 214 + 260/2
-assert got["top"] == 357.5, got             # exact centre; the editor rounded to 358
-assert got["width"] == 556, got             # truncated contain-fit: 556.6, not 557
+assert got["left"] == 344.0, "centred on the canvas instead of on the print area"
+assert got["top"] == 357.5, "used the rectangle's corner instead of its centre "\
+                            "(and 358 means it was rounded, which we do not do)"
+assert got["width"] == 556, "round() instead of int() on the contain-fit gives 557"
 assert got["height"] == 700, got
-assert got["scaleX"] == 327 / 700, got      # area height over canvas, not width
-assert got["scaleX"] == got["scaleY"], got  # uniform, so nothing is distorted
-
-# Each of those catches a specific plausible bug:
-assert got["width"] != 557, "round() instead of int() on the contain-fit"
-assert got["top"] != TEE_AREA["y"], "used the rectangle's corner instead of its centre"
-assert got["scaleX"] != TEE_AREA["width"] / 700, "scaled by width instead of height"
-assert got["left"] != 350, "centred on the canvas instead of on the print area"
+assert got["scaleX"] == 327 / 700, "scaled by the area's width instead of its height"
+assert got["scaleX"] == got["scaleY"], "non-uniform scale would distort the art"
 
 # --- the invariants, over rectangles that are just inputs --------------------
 
@@ -68,12 +63,20 @@ for area, src in (({"x": 243.0, "y": 205.0, "width": 210.0, "height": 281.0}, (4
     assert p["height"] == 700, (area, p)          # portrait source fits by height
     assert p["width"] == int(700 * src[0] / src[1]), (area, p)
 
-# A landscape source fits by WIDTH instead. The hoodie front really is landscape
-# (its print area is wider than it is tall), so this branch is live, not hypothetical.
+# A landscape source fits by WIDTH instead. This is not hypothetical and these are
+# not the formula written out twice: the hoodie's FRONT print area really is wider
+# than it is tall, and the numbers below are what Tapstitch PERSISTED for the live
+# hoodie on 16 Sep 2026, read back with get_template(). Same standard as the tee.
 land = T.placement({"x": 251.0, "y": 275.0, "width": 205.0, "height": 160.0}, (4138, 3230))
-assert land["width"] == 700, land
-assert land["height"] == int(700 * 3230 / 4138), land
-assert land["scaleX"] == 160 / land["height"], land
+assert land["left"] == 353.5, land       # 251 + 205/2
+assert land["top"] == 355.0, land        # 275 + 160/2
+assert land["width"] == 700, land        # major dimension fills the canvas
+assert land["height"] == 546, land       # 546.4 truncated; NOT 546 by luck, see below
+assert land["scaleX"] == land["scaleY"] == 0.29304029304029305, land
+# 546.4 does not discriminate truncation from rounding, so pin a landscape shape
+# where it does: 700 * 3/7 = 300.0 exactly is no help, but 4000x1234 gives 215.95.
+edge = T.placement({"x": 0.0, "y": 0.0, "width": 700.0, "height": 215.0}, (4000, 1234))
+assert edge["height"] == 215, "landscape minor dimension must truncate, not round"
 
 # --- the aspect guard -------------------------------------------------------
 # This is the only thing between a file/area mix-up and a silent misprint. The
@@ -113,10 +116,24 @@ for name, sides in (("tee", {"front", "back"}),
                     ("hoodie", {"front", "back"})):
     areas = T.print_areas(fixture(name))
     assert set(areas) == sides, (name, sorted(areas))
-    assert "left_sleeve" not in areas, f"{name}: a virtual sleeve area leaked in"
+    assert "left_sleeve" not in areas, \
+        f"{name}: a sleeve leaked in; the id filter should have excluded it"
     for side, rect in areas.items():
         assert set(rect) == {"x", "y", "width", "height"}, (name, side, rect)
         assert all(isinstance(v, float) for v in rect.values()), (name, side, rect)
+
+# The `virtual` skip is a SEPARATE mechanism from the id filter, and the real
+# fixtures do not reach it: every sleeve detail in them is named `<side>_middle` or
+# `<side>_bottom`, so the id comparison rejects it first. Removing the virtual check
+# entirely leaves all three fixtures' output identical. This synthetic case is the
+# only input that reaches the branch, so without it the skip has zero coverage.
+virtual_only = {"craftItemDto": {"customArea": [
+    {"name": "front", "details": [{"id": "front_side_middle", "type": "virtual",
+                                   "x": "1", "y": "2", "width": "3", "height": "4"}]},
+    {"name": "back", "details": [{"id": "back_side_middle", "type": None,
+                                  "x": "5", "y": "6", "width": "7", "height": "8"}]}]}}
+only = T.print_areas(virtual_only)
+assert set(only) == {"back"}, f"a virtual print area was treated as printable: {only}"
 
 # End to end on the real shape: the fixture's own rectangle must still reproduce
 # the geometry Tapstitch stored, which is what turns the hand-typed TEE_AREA
@@ -146,10 +163,33 @@ assert len(ordered) == len(mockups), "mockups were dropped"
 assert {id(m) for m in ordered} == {id(m) for m in mockups}, "mockups were duplicated"
 
 # --- back_for_front_mockups() ----------------------------------------------
-# Pairing is by COLOUR, never by position: the tee's live gallery is interleaved
-# and a back-first product's is not, so any positional rule corrupts one of them.
-pairs = T.back_for_front_mockups({"mockups": mockups})
-assert pairs == {"f1.png": "b1.png", "f2.png": "b2.png"}, pairs
+# Pairing is by COLOUR, never by position. The fixture has to be able to FAIL
+# under a positional rule or it proves nothing, and `mockups` above cannot: its
+# order is f1, f2, b1, b2, for which pairing by colour, by half, and by position
+# within each half all give the same answer. Both rules that shipped wrong on
+# 16 Sep would pass it.
+#
+# So pair against the tee's REAL layout, which is interleaved, and against a
+# reversed-backs layout. Under "split the gallery in half" the second one yields
+# f1 -> b2, which is the class of error that put Gray's variants on the black
+# garment's photo.
+interleaved = [mockup(1, "FrontImage", "f1"), mockup(1, "BackEndImage", "b1"),
+               mockup(2, "FrontImage", "f2"), mockup(2, "BackEndImage", "b2")]
+reversed_backs = [mockup(1, "FrontImage", "f1"), mockup(2, "FrontImage", "f2"),
+                  mockup(2, "BackEndImage", "b2"), mockup(1, "BackEndImage", "b1")]
+for fixture_name, ms in (("posted back-first", mockups),
+                         ("interleaved, as the live tee is", interleaved),
+                         ("backs in a different order from the fronts", reversed_backs)):
+    pairs = T.back_for_front_mockups({"mockups": ms})
+    assert pairs == {"f1.png": "b1.png", "f2.png": "b2.png"}, (fixture_name, pairs)
+
+# A colour with a front and no back must be ABSENT rather than paired with
+# something else. scripts/tapstitch_variant_images.py relies on a back never being
+# a key, which is what makes the rebind idempotent.
+odd = T.back_for_front_mockups({"mockups": [mockup(1, "FrontImage", "f1"),
+                                            mockup(2, "FrontImage", "f2"),
+                                            mockup(1, "BackEndImage", "b1")]})
+assert odd == {"f1.png": "b1.png"}, odd
 
 # --- store_product_payload() ------------------------------------------------
 # Three safety rules live in here and each is a one-token regression.
