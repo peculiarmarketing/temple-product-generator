@@ -192,3 +192,27 @@ def get_template(s, template_id):
     """
     return _data(s.get(f"{BASE}/api/designs/customized/templates/{template_id}",
                        timeout=30))
+
+
+def distribute(s, store_product_ids):
+    """PUBLISH store products to Shopify. This reaches the live storefront.
+
+    The only call in this module with outward-facing consequences: a distributed
+    product appears on the storefront as ACTIVE and is immediately purchasable.
+    There is no undo here — unpublishing is a Shopify-side operation afterwards.
+
+    `store_product_ids` are STORE-PRODUCT ids, which are a third kind of id and
+    not interchangeable with the template id or the pool product id. It takes a
+    list, so a batch is one call rather than one per product.
+
+    TRAP: Tapstitch publishes with an EMPTY productType and every fixup in
+    scripts/shopify_fixups.py is keyed on it, so colour ordering and the featured
+    photo silently do nothing and report success. Set it before any fixup runs.
+
+    TRAP: the publish can outrun the editor's own success state. Confirm against
+    Shopify rather than trusting this call's response — measured 15 Sep 2026,
+    the product took over a minute to appear after the call returned.
+    """
+    return _data(s.post(f"{BASE}/api/services/user/distribution/stores/products/distribute",
+                        data=json.dumps({"uniqueIdList": list(store_product_ids)}),
+                        headers={"Content-Type": "application/json"}, timeout=300))

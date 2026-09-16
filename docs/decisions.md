@@ -953,3 +953,34 @@ extreme temples:**
   still unknown, so placement must NOT be generated for the crew or hoodie until
   it is worked out. This is the one thing in the API route that would fail
   quietly and misprint rather than error.
+
+## 15 September 2026, night (first product published, and the size guide decided)
+
+- **A real product is live on Shopify**, published through the captured
+  `POST /api/services/user/distribution/stores/products/distribute`, which takes
+  a LIST of store-product ids — so 135 products is a batch, not 135 clicks.
+  "Essential Heavyweight Temple Tee", ACTIVE, 30 variants at $44.99.
+- **Tapstitch published it with an empty `productType`, exactly as documented.**
+  Set to "T-Shirt" immediately. Every fixup is keyed on it.
+- **The publish outran the editor.** The product took over a minute to appear
+  after the call returned, confirming the existing rule: verify against Shopify,
+  never trust the editor's success state.
+- **The colour swatch names are CLEAN for the tee.** Tapstitch sends Black, Dark
+  Gray, Coffee, Navy Blue and Wine Red, all five matching `garments/tee.json`.
+  The silent-mismatch risk does not exist for RT0063. Still unchecked for the
+  crew and hoodie.
+- **The size guide is decided: the CC1717 section's FORMAT, with RT0063's own
+  measurements.** Evan asked for the CC1717 size guide section. Its numbers are
+  for a different garment and could not be shipped: RT0063 runs ~1.4in wider in
+  the chest and HAS NO 4XL, so the CC1717 table would have advertised an
+  unsellable size on every listing. `reference/garment-copy/tee/size-guide.html`
+  carries the manufacturer's real figures for S-3XL, labelled in inches.
+- **The CC1717 intro was NOT copied across.** It claims garment-dyed ringspun
+  cotton at 6.x oz; RT0063 is 7.7 oz (260 gsm) and not garment-dyed. Copying it
+  would have published false product claims. `tee/product-intro.html` therefore
+  does not exist, `fixed_description()` still returns empty, and that is the
+  guard in its README working as intended rather than a gap to paper over.
+- **No size-guide video for the new blank.** The CC1717 section embeds a
+  per-blank video showing the wrong garment. Omitted. The original decision — new
+  video, or the branded chart images in `Important Elements/` — is still open,
+  and now applies only to the video, since the measurements are settled.

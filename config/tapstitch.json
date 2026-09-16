@@ -35,6 +35,7 @@
     "register_history_img": "/api/designs/user/history/img",
     "save_design": "/api/designs/customized/templates/{templateId}",
     "create_store_product": "/api/services/user/distribution/stores/{storeId}/products",
+    "distribute": "/api/services/user/distribution/stores/products/distribute",
     "_method_note": "save_design is a PUT. create_template, register_* and create_store_product are POSTs. The image bytes go by PUT straight to the OSS URL that retrieve_upload_data returns.",
     "shopify_store_id": "1402569694703132672",
     "blanks": {
@@ -50,7 +51,7 @@
       },
       "_unknown": "crew (R00368) and hoodie (R00286) were not exercised; they print DTF and their ids and colour codes are unknown."
     },
-    "_status": "PROVEN 15 Sep 2026 for create_template, retrieve_upload_data + OSS PUT, and save_design, each verified by reading the design back. create_store_product is UNRUN: it is the step that reaches a live storefront and needs Evan's decision first.",
+    "_status": "PROVEN END TO END 15 Sep 2026. create_template, the signed OSS upload, save_design and distribute have all been run against the live account; distribute put a real product on the live Shopify storefront. distribute takes a LIST of STORE-PRODUCT ids (a third id kind), so a batch is one call.",
     "_traps": [
       "x-oss-meta-author is a SIGNED header on the OSS upload. Omit it and the PUT is a bare 403 with a valid, fresh signature. Its value is retrieve-upload-data's `author` field.",
       "Upload lands on the OSS bucket host; a design must reference it on files.tapstitch.com. Same path, different host.",
