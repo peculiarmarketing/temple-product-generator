@@ -323,8 +323,10 @@ def mockups_back_first(mockups, lead_color_id=None):
     hoodie publish. It does NOT fix which image each variant is bound to: every
     variant still came back bound to its colour's FRONT image, and the theme
     shows the variant's image, so the page still opens on the near-blank front.
-    The per-variant repair (scripts/shopify_fixups.py `variant-image`) is
-    REQUIRED after every publish, not a fallback.
+    The per-variant repair (scripts/tapstitch_variant_images.py) is REQUIRED
+    after every publish, not a fallback. It is not in scripts/shopify_fixups.py
+    with the other re-runnable repairs because the pairing needs Tapstitch's own
+    mockup metadata, and that module deliberately has no Tapstitch session.
     """
     def key(m):
         payload = m["media"]["attributes"][0]["payload"]
