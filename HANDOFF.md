@@ -1,17 +1,33 @@
 # Tapstitch migration: where this stands
 
-**Last worked: 15 September 2026** (the migration itself last moved on the 14th;
-the 15th was the `Working files/` reorg and this verification). Read this first
-if you are picking the migration up on another machine, or in a new session.
+**Last worked: 15 September 2026, night.** Read this first if you are picking the
+migration up on another machine, or in a new session.
+
+**The headline: the migration works end to end and one product is LIVE.** The
+Tapstitch editor turned out to be a JSON API, it is now driven from Python
+(`tapstitch_api.py`), and a real tee was published to the storefront through it.
+What is left is copy, the other two blanks, and one unsolved geometry question.
 
 ---
 
 ## For Evan, in one minute
 
-**Your store is dark.** All 160 temple listings are hidden (drafted, not deleted).
-The only thing a visitor can buy is the Temple Art File download. Six products
-were deleted permanently at your instruction: two stray duplicate listings, the
-three Nauvoo Limited Editions, and Cornerstone Sweatpants.
+**Your store is dark except for two things.** All 160 temple listings are still
+hidden (drafted, not deleted). A visitor can buy the Temple Art File download —
+and, since the night of 15 September, **one live tee**: "Essential Heavyweight
+Temple Tee", ACTIVE, 30 variants at $44.99, carrying the Salt Lake back print.
+It was published deliberately, as the end-to-end test of the new route. It is
+real and purchasable. Draft it if you do not want it sold.
+
+Note what that product is NOT: its title names no temple, and its handle
+(`essential-heavyweight-temple-tee`) inherited nothing from a predecessor. The
+real run needs both — the catalogue naming pattern is "Essential Temple Tee
+(West Jordan)", and `delete_old_listing` exists so each replacement takes over
+its predecessor's URL and does not break the Easify dropdown. This test did not
+exercise that.
+
+Six products were deleted permanently at your instruction: two stray duplicate
+listings, the three Nauvoo Limited Editions, and Cornerstone Sweatpants.
 
 **Everything fulfills from the USA now**, which is 4-7 days to a customer's door
 against 10-17 from the international center. Two blanks changed with that switch,
@@ -44,13 +60,17 @@ after all. Tapstitch's own API states it: a template's `backSideDpiTip` reads
 
 **Two things are waiting on you:**
 
-1. **Whether to run `create_store_product`.** It is the one call that reaches
-   your live storefront, and it is the only untested step left. Everything
-   before it is proven. Your store is dark, so this is a deliberate decision
-   rather than a next keystroke.
-2. **Whether the size guide is a new video or the branded chart images** already
-   in your `Important Elements` folder. That is the only thing stopping the
-   product descriptions being written.
+1. **The tee's `product-intro.html`.** It is the single thing between here and
+   descriptions working for every future temple. `fixed_description()` returns
+   EMPTY for the tee until it exists, by design. The CC1717 intro could not be
+   reused: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7
+   oz (260 gsm) and not garment-dyed, so copying it would publish false claims.
+   This is new outward-facing prose, so it goes through the `humanizer` then
+   `structural-humanizer` passes before it ships.
+2. **Whether the size guide gets a new video** or the branded chart images in
+   `Important Elements/`. This is now ONLY about the video — the measurements are
+   settled and written. The CC1717 section embeds a per-blank video showing the
+   wrong garment, so it was omitted rather than reused.
 
 **And one thing that will fail quietly if ignored:** the design placement numbers
 were copied from watching one tee, not derived from the print area. They are
@@ -117,45 +137,43 @@ for each pair. Do not merge them by hand without checking first.
 | Migration ledger | `ledger.py`, `scripts/tapstitch_status.py` | Done. 135 rows. |
 | Store pull-down | `scripts/store_pulldown.py` | Done AND RUN. Store is dark. |
 | Colour renames | `scripts/shopify_fixups.py` | Done, config-driven. |
-| Description plumbing | `generate.fixed_description`, `reference/garment-copy/` | Done. Copy not written. |
-| Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Written, never exercised. |
-| Editor automation | `config/tapstitch.json`, `scripts/tapstitch_publish.py` | Config scaffolded, 18 nulls. Editor half unwritten. |
+| Description plumbing | `generate.fixed_description`, `reference/garment-copy/` | Done. Tee size guide written; tee intro still missing, so it returns EMPTY. |
+| Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Done AND exercised 15 Sep 2026. |
+| **Tapstitch API client** | `tapstitch_api.py` | **Done and proven against the live account, publish included.** |
+| Traffic capture | `scripts/tapstitch_capture.py` | Done. Records the editor while you work; automates nothing. |
+| Editor automation (click path) | `_selectors_superseded_by_api` | RETIRED 15 Sep 2026. There is no click path any more. |
+| Catalogue runner | `scripts/tapstitch_publish.py` | Still unwritten. This is the next build. |
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
 the live blocker list.
 
 ## What is blocked
 
-**Nothing is left on an editor session.** All four items are answered as of
-15 September 2026, and the click path they described is retired — the editor is
-a JSON API and `tapstitch_api.py` drives it. What remains is written below.
+**On copy, not on Tapstitch.** The API route is finished and proven:
+`create_template` -> signed OSS upload -> `save_design` -> `distribute`, all run
+against the live account, ending in a real published product. See
+`docs/discovery/2026-09-tapstitch-editor-api.md` for payloads and every trap.
 
-1. DONE 14 Sep 2026: the six print areas are in the configs and the placeholder
-   canvas is retired. The rebuild sweep is DONE too — verified 15 Sep 2026 by
-   measuring the files on disk, not by mtime, which iCloud and git both reset.
-   A sample of 27 back print files across 10 temple folders matched their
-   garment's real area exactly (tee 4386x5516, crew 4122x5514, hoodie
-   4134x5540) with zero on the old canvas. Do NOT re-run the sweep to be safe;
-   it is seven minutes for nothing. To re-verify, measure against
-   `print_area.width_px`/`height_px` in `garments/*.json`.
-2. RETIRED 15 Sep 2026. The selectors and `values` moved to
-   `_selectors_superseded_by_api`. A design is now created, uploaded to and saved
-   by direct HTTP, proven against the live account.
-3. Confirming the colour swatch names match `colorways` in `garments/*.json`.
-   Evan supplied those names and the tee's came across from a blank that is no
-   longer used, so a spelling may differ. A mismatch fails SILENTLY: the
-   storefront rename finds nothing to rename and the colour reorder cannot find
-   its lead colour.
-4. DONE 15 Sep 2026, and it changes the shape of the remaining work. The save
-   call DOES carry positions and upload references: the editor is a JSON API from
-   end to end, the blank is addressed by SKU, and the flattened-file approach is
-   confirmed working. See `docs/discovery/2026-09-tapstitch-editor-api.md`. The
-   selector list in item 2 is probably dead — but NOTHING HAS BEEN REPLAYED, so
-   it stays in the config until a scripted call is proven against one throwaway
-   product. Do that before deciding to delete anything.
+1. **The tee intro** (above). Blocks descriptions for all temples.
+2. **The crew and hoodie are unexercised.** Only the tee (RT0063, DTG) has been
+   through the route. The two fleece blanks print DTF, and their Tapstitch
+   `productId`, colour codes and measurements are all unknown. Capture one
+   hand-built design per blank the same way the tee was done.
+3. **The catalogue runner does not exist yet.** `tapstitch_api.py` is the
+   library; nothing drives it over 135 rows, handles the handle inheritance, or
+   sequences the Shopify fixups.
 
-**On a decision:** whether the size guide is a new video per blank or the branded
-chart images in `Important Elements/`. Blocks the three product copy files.
+### The one that will fail QUIETLY
+
+Everything else on this list errors or returns empty when it is wrong. This one
+does not:
+
+**The design placement numbers were copied, not derived.** `left: 344, top: 358`
+on a 700x700 canvas came from watching one tee. They are correct for the tee and
+UNKNOWN for the crew and hoodie, which have different print areas. Generate
+placement for those two without first working out the canvas-to-print-area
+mapping and the art will be misplaced on the garment, with no error anywhere —
+just wrong shirts. Do that mapping before the first fleece product.
 
 ## The one thing to be careful with
 
@@ -186,11 +204,27 @@ the old handle by design.
    revealed, including the empty-productType trap.
 5. `../BRAND.md` sections 6, 7, 8, 18, 19. Not in git; it syncs through iCloud.
 
+## Where to pick up
+
+In order, on a new session:
+
+1. Read this file, then `docs/discovery/2026-09-tapstitch-editor-api.md`.
+2. `./.venv.nosync/bin/python scripts/tapstitch_login.py --check` — the session
+   lives in a dedicated Chrome profile and survives reboots, but not forever.
+3. `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` for the live
+   blocker list.
+4. Then either the tee intro, or a capture run on the crew to start the second
+   blank. `scripts/tapstitch_capture.py --minutes 30`, build one design by hand,
+   and it records the ids, colour codes and geometry the way the tee's were got.
+
 ## Not yet reviewed
 
 The work up to and including the store pull-down went through the full review
 loop (six specialists plus a final judge, all signed off). **Changes made after
-that review have not been through it**: the blank specs and colour configs, the
+that review have not been through it**, and that now includes everything from
+15 September: `tapstitch_api.py`, `scripts/tapstitch_capture.py`, the retired
+selector block, and the tee size guide. The API client has been exercised against
+the live account but never reviewed. Also: the blank specs and colour configs, the
 `colorway_renames_by_type` mechanism in `scripts/shopify_fixups.py`, the centring
 and 0.8in spacing, the `kept`-records change in `scripts/store_pulldown.py`, and
 several test rewrites. Run `review-loop` over the delta before any of it drives
