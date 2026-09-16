@@ -1,7 +1,8 @@
 # Tapstitch migration: where this stands
 
-**Last worked: 14 September 2026.** Read this first if you are picking the
-migration up on another machine, or in a new session.
+**Last worked: 15 September 2026** (the migration itself last moved on the 14th;
+the 15th was the `Working files/` reorg and this verification). Read this first
+if you are picking the migration up on another machine, or in a new session.
 
 ---
 
@@ -121,8 +122,13 @@ the live blocker list.
 **On one Tapstitch editor session** (three things left of the original four):
 
 1. DONE 14 Sep 2026: the six print areas are in the configs and the placeholder
-   canvas is retired. The print files on disk were built on the old canvas and
-   need one rebuild sweep.
+   canvas is retired. The rebuild sweep is DONE too — verified 15 Sep 2026 by
+   measuring the files on disk, not by mtime, which iCloud and git both reset.
+   A sample of 27 back print files across 10 temple folders matched their
+   garment's real area exactly (tee 4386x5516, crew 4122x5514, hoodie
+   4134x5540) with zero on the old canvas. Do NOT re-run the sweep to be safe;
+   it is seven minutes for nothing. To re-verify, measure against
+   `print_area.width_px`/`height_px` in `garments/*.json`.
 2. The 18 null values in `config/tapstitch.json`.
 3. Confirming the colour swatch names match `colorways` in `garments/*.json`.
    Evan supplied those names and the tee's came across from a blank that is no
