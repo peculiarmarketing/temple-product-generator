@@ -1303,3 +1303,20 @@ while passing the three real pairs. Fixtures under `tests/fixtures/tapstitch/` a
 trimmed REAL responses, so they pin the shape Tapstitch sends rather than what
 their author assumed. Nothing in them pins a blank, a colour code, a DPI or a
 price, per the 14 September lesson.
+
+### The 15 Sep tee had never had its Shopify fixups run
+
+Found while verifying the three live products at the end of the session. The tee
+was publishing-complete in every way except that nobody ran
+`scripts/shopify_fixups.py` against it, so it had been live for a day showing
+"Wine Red" rather than "Maroon" and opening on Wine Red rather than Black, both of
+which `garments/tee.json` has declared since 14 September. Fixed with the existing
+command; it took one pass and reported both changes.
+
+This is the same shape as the variant-image finding and is worth naming as a
+pattern rather than an incident: the publish itself succeeds and looks finished, and
+everything that makes the page correct afterwards is a separate step that nothing
+enforces. The 15 Sep tee missed two of them, the colour fixups and the variant
+images. That is the argument for the catalogue runner owning the whole sequence
+rather than a person remembering it, and `finish_on_shopify` now at least names
+each step in its action list.
