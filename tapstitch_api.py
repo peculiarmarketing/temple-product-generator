@@ -376,10 +376,12 @@ def store_product_payload(prefill, title, retail_cents, description_html,
 def create_store_product(s, store_id, payload):
     """Create the Shopify-bound store product. Does NOT reach the storefront.
 
-    With distribute False this stays inside Tapstitch, which is what makes the
-    safe order possible: build the product, then delete the old listing to free
-    its handle, then distribute(). The only irreversible step then happens after
-    the replacement is known to exist.
+    With distribute False this stays inside Tapstitch, which is what lets the
+    product be built and checked before anything is public: build, check,
+    distribute. There is no delete step in that order any more. Old listings stay
+    DRAFT (`post_publish.delete_old_listing`, turned off 16 Sep 2026 on Evan's
+    confirmed decision), so nothing in the publish sequence is irreversible except
+    distribute() itself making the product purchasable.
 
     Returns the STORE-PRODUCT id, which is a third kind of id and the one
     distribute() wants.

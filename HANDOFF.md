@@ -194,11 +194,14 @@ against the live account, ending in a real published product. See
    come from a template of its own, the way the crew's did.
 3. **The catalogue runner does not exist yet.** `tapstitch_api.py` is the
    library and every call in it is now proven against the live account, publish
-   included. Nothing drives it over 135 rows, sets each product's inherited
-   handle, or sequences the Shopify fixups. The 16 Sep crew publish is the whole
-   sequence done once by hand and is the thing to turn into the runner:
-   prefill -> payload -> create -> delete the old listing -> distribute -> wait
-   for Shopify -> set handle and productType -> fixups -> ledger.
+   included. Nothing drives it over the remaining rows or sequences the Shopify
+   fixups. The 16 Sep hoodie publish is the whole sequence done once by hand and
+   is the thing to turn into the runner:
+   prefill -> payload -> create -> distribute -> wait for Shopify -> set
+   productType -> fixups -> `tapstitch_variant_images.py` -> ledger.
+   There is NO delete step and NO handle step. Both belonged to the retired
+   inherit-the-address plan; the replacement takes its own address, which Shopify
+   derives from its title with nothing to set.
 
 ### The one that would have failed QUIETLY, now closed
 
@@ -284,10 +287,13 @@ back:
 not pass `--replace` while those listings are still drafted. It cannot restore the
 six deleted products; nothing can.
 
-`delete` is the only operation with no undo. It needs `--handle` and a matching
-`--confirm-handle`, and it is pinned to the product id in the snapshot rather than
-whatever the handle resolves to now, because the Tapstitch replacement inherits
-the old handle by design.
+`delete` is the only operation with no undo, and it is NO LONGER PART OF THE
+PUBLISH SEQUENCE: replacements take their own address and old listings stay
+drafted (Evan's confirmed 16 Sep decision, `post_publish.delete_old_listing` is
+false). It still exists for a deliberate one-off. It needs `--handle` and a
+matching `--confirm-handle`, and it is pinned to the product id in the snapshot
+rather than to whatever the handle resolves to now, because a handle can be
+reassigned to another product and the snapshot's id cannot.
 
 ## Reading order for a new session
 

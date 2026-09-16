@@ -193,10 +193,15 @@ keep3, collisions3 = resolve_collisions(classify([product("Pillar Temple Hoodie 
 assert collisions3 == [] and len(keep3) == 1
 
 # --- delete: the one operation with no undo ---------------------------------
-# The replacement inherits the old handle by design, so a handle is NOT a stable
-# name for a product across the migration. Every guard below exists to stop a
-# re-run, a retry, or a recalled shell command from deleting the replacement
-# instead of the listing it replaced.
+# A handle is NOT a stable name for a product across the migration: it can be
+# reassigned to another product, and the Salt Lake crew's was. Every guard below
+# exists to stop a re-run, a retry, or a recalled shell command from deleting the
+# replacement instead of the listing it replaced.
+#
+# These guards still matter even though delete LEFT the publish sequence on
+# 16 Sep 2026 (Evan's confirmed decision: replacements take their own address and
+# old listings stay drafted). The command still exists for a deliberate one-off,
+# and it is the only thing in the repo with no undo, so it keeps its coverage.
 import store_pulldown
 
 
