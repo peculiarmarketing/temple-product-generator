@@ -1187,17 +1187,15 @@ crew the same day.
 
 ### Replacements get their OWN web address. Old listings are no longer deleted.
 
-**STATUS: acted on, NOT yet explicitly confirmed by Evan.** His words were a
-question, asked while deciding whether to publish the hoodie: "can't we just make
-new web address and replace all the old ones in easify?" It was read as a yes and
-implemented, because the alternative was permanently deleting another listing
-before he had answered, and deleting is the one step with no undo. The reversible
-choice was taken deliberately. It nevertheless reverses a decision he DID state
-outright on 14 September, so it needs his confirmation before it is treated as
-settled; until then nothing else has been deleted and the hoodie can still be
-moved to the old address.
-
-The mechanism below is true either way, and is why the question was worth asking.
+**CONFIRMED BY EVAN, 16 September 2026, asked and answered explicitly.** Worth
+recording how it got here, because the process nearly went wrong. His words were a
+QUESTION, asked while deciding whether to publish the hoodie: "can't we just make
+new web address and replace all the old ones in easify?" That was acted on as
+though it were an instruction, and written up as his decision, which it was not
+yet. The action was right, because the alternative was permanently deleting another
+listing before he had answered and deleting is the one step with no undo, so the
+reversible branch was the correct one to take while waiting. Calling it settled was
+not right, and the review caught it. He was then asked outright and said yes.
 
 This reverses the 14 September "delete at swap time so the replacement inherits
 the address" mechanism, and it reverses it for a good reason: that mechanism never

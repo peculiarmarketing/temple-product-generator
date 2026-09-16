@@ -34,12 +34,7 @@ download, and three garments:
 
 All three are real and purchasable. Draft them if you do not want them sold.
 
-**AWAITING YOUR YES: how replacements get their web address.** You asked whether
-we could just give them new addresses and repoint the Easify links, and I acted on
-it, because the alternative was destroying another listing before you had answered.
-Nothing is lost either way: no listing was deleted, and the hoodie can still be
-moved to the old address later. But it reverses a decision you DID state on
-14 September, so say yes or no before this is treated as settled.
+**You changed how replacements get their web address, and you confirmed it.**
 The old plan deleted each old listing so its replacement could take over its
 address. That never worked: Shopify builds a new product's address from its title
 and ignores whatever address just came free, so the crew's address had to be set by
@@ -255,7 +250,7 @@ replacement was still minted at `classic-temple-crew-sweatshirt`, because Shopif
 builds a new product's address from its title and ignores whatever just came free.
 The crew's address was then set with `productUpdate(handle:)`.
 
-**Evan's decision the same day: stop doing this.** Replacements take their own
+**Evan's decision the same day, asked and confirmed: stop doing this.** Replacements take their own
 address, old listings stay drafted, and the Easify sync repoints the dropdown. The
 Salt Lake crew keeps the inherited address it already has; nothing after it
 inherits one. `delete_old_listing` in `config/tapstitch.json` and the `delete`
@@ -322,8 +317,8 @@ In order, on a new session:
 
 The work up to and including the store pull-down went through the full review
 loop (six specialists plus a final judge, all signed off). **Changes made after
-that review have not been through it**, and that now includes everything from
-15 and 16 September. The 16 September morning work DID go through the full loop
+that review have not been through it.** The 16 September morning work DID go
+through the full loop
 (six specialists plus the judge) and every finding was fixed and signed off, which
 covers `print_areas`, `placement`, the store-product calls, the crew blank config
 and the crew size guide. NOT yet reviewed: the hoodie publish and its blank config,
