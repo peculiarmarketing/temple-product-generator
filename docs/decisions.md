@@ -1062,3 +1062,59 @@ extreme temples:**
   bare numbers. That is what the live tee shipped with on 15 Sep before the
   repo's own section replaced it, and the repo's version says "Measurements
   (inches)".
+
+## 16 September 2026, later (the first crew is live, and handle inheritance is not automatic)
+
+- **"Classic Temple Crew Sweatshirt" is LIVE**, ACTIVE, 10 variants at $64.99,
+  Salt Lake on the back, at `salt-lake-temple-sweatshirt`. The old Printify
+  listing at that address was deleted at swap time, as decided on 14 Sep.
+- **Flower Gray keeps WHITE ink (Evan, on the mockup).** Reasoning: Tapstitch
+  binds one design to one template and the template carries a LIST of colour
+  codes, so a black-ink version of one colourway is a second template and
+  therefore a second listing. There is no per-colourway design the way Printify
+  has colourway groups. CHECKED, not assumed: all 10 variants of the crew's
+  store-product prefill carry the same `templateId` and the same `commitId`, and
+  the production item id is `{templateId}-{commitId}-{colorId}-{size}`. Each
+  variant does carry its own `templateId` field, so mixing two designs in one
+  listing is not structurally impossible, but nothing in the observed flow does
+  it and it has not been tested.
+
+### DELETING THE OLD LISTING IS NOT ENOUGH. The handle must be SET.
+
+This would have broken 90 of 120 replacements quietly and nothing would have
+errored.
+
+The 14 Sep decision says a replacement "inherits the exact address" once the old
+listing is deleted rather than drafted. That is true only when the old handle
+equals what the old title slugs to. **It usually does not.** The handles were
+minted under the pre-22-Aug titles and survived the catalogue rename: the Salt
+Lake crew was titled "Classic Temple Crew Sweatshirt" but lived at
+`salt-lake-temple-sweatshirt`. Measured across the ledger: 90 of 120 rows have an
+old handle that differs from its own title's slug.
+
+Observed on this publish: the old listing was deleted first, and Tapstitch still
+minted the replacement at `classic-temple-crew-sweatshirt`, because Shopify
+derives a new product's handle from its title and not from whatever address just
+came free. The fix is one field: `productUpdate(handle:)` after the product
+appears. `shopify_client.update_product()` already passes arbitrary fields
+through, so no new code was needed, but the RUNNER MUST DO IT. Deleting alone
+frees the address and then leaves it unused.
+
+- **The crew published with an empty `productType`**, exactly as documented, and
+  was set to "Sweatshirt" before any fixup ran.
+- **The colour rename and the colour order both worked on the first pass.**
+  Tapstitch sent "Flower Gray" and "Black"; the fixup renamed Flower Gray to Gray
+  and the page opens on Gray, which is `storefront_first_color`.
+- **The description is the repo's own size guide and nothing else.** Evan's rule
+  is that the size guide must be in the description and imperial. Tapstitch's own
+  IMPERIAL table is bare numbers with no unit label, and its default product
+  blurb is wholesale copy aimed at print-on-demand sellers ("Recommended as a
+  core stock item for essential collections, perfect for custom printing and
+  branding"), which is what the live tee shipped with on 15 Sep. Sending
+  `reference/garment-copy/crew/size-guide.html` as the whole description body
+  gives an imperial guide labelled "Measurements (inches)" and no wholesale copy.
+  The real description comes later; Evan is handling that separately.
+- **Still outstanding on this product**, recorded in the ledger row: the real
+  description, and the art close-up card at gallery position 2. It is also in no
+  collection, matching the tee, so neither live product is browsable from the
+  storefront's own navigation yet.

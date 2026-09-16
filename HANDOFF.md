@@ -12,19 +12,21 @@ What is left is copy, the other two blanks, and one unsolved geometry question.
 
 ## For Evan, in one minute
 
-**Your store is dark except for two things.** All 160 temple listings are still
-hidden (drafted, not deleted). A visitor can buy the Temple Art File download —
-and, since the night of 15 September, **one live tee**: "Essential Heavyweight
-Temple Tee", ACTIVE, 30 variants at $44.99, carrying the Salt Lake back print.
-It was published deliberately, as the end-to-end test of the new route. It is
-real and purchasable. Draft it if you do not want it sold.
+**Your store is dark except for three things.** The remaining temple listings are
+still hidden (drafted, not deleted). A visitor can buy the Temple Art File
+download, and two garments:
 
-Note what that product is NOT: its title names no temple, and its handle
-(`essential-heavyweight-temple-tee`) inherited nothing from a predecessor. The
-real run needs both — the catalogue naming pattern is "Essential Temple Tee
-(West Jordan)", and `delete_old_listing` exists so each replacement takes over
-its predecessor's URL and does not break the Easify dropdown. This test did not
-exercise that.
+- **"Essential Heavyweight Temple Tee"**, live since 15 September, ACTIVE, 30
+  variants at $44.99, Salt Lake on the back. Its title names no temple and its
+  handle (`essential-heavyweight-temple-tee`) inherited nothing, so it does not
+  match the catalogue pattern and is best thought of as the route's first test.
+- **"Classic Temple Crew Sweatshirt"**, live since 16 September, ACTIVE, 10
+  variants at $64.99, Salt Lake on the back, at `salt-lake-temple-sweatshirt`.
+  This one IS the catalogue pattern: the parent title, and the predecessor's own
+  web address, so the Easify dropdown link to it still resolves. The old Printify
+  listing at that address was deleted to make room, which has no undo.
+
+Both are real and purchasable. Draft them if you do not want them sold.
 
 Six products were deleted permanently at your instruction: two stray duplicate
 listings, the three Nauvoo Limited Editions, and Cornerstone Sweatpants.
@@ -146,6 +148,7 @@ for each pair. Do not merge them by hand without checking first.
 | **Tapstitch API client** | `tapstitch_api.py` | **Done and proven against the live account, publish included.** |
 | Traffic capture | `scripts/tapstitch_capture.py` | Done. Records the editor while you work; automates nothing. |
 | Editor automation (click path) | `_selectors_superseded_by_api` | RETIRED 15 Sep 2026. There is no click path any more. |
+| Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: one live crew, 16 Sep 2026. |
 | Catalogue runner | `scripts/tapstitch_publish.py` | Still unwritten. This is the next build. |
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
@@ -158,7 +161,9 @@ the live blocker list.
 against the live account, ending in a real published product. See
 `docs/discovery/2026-09-tapstitch-editor-api.md` for payloads and every trap.
 
-1. **The tee intro** (above). Blocks descriptions for all temples.
+1. **The tee intro** (above). Blocks descriptions for all temples. The crew is
+   in the same position and its size guide IS written; only the intro is missing.
+   Evan is handling descriptions separately as of 16 Sep.
 2. **The crew is exercised; the hoodie is not.** The crew (R00368, DTF) has been
    through create -> upload -> save and Tapstitch rendered mockups from it. Its
    ids, colour codes, print areas and measurements are all recorded. The hoodie
@@ -167,8 +172,12 @@ against the live account, ending in a real published product. See
    lookup is `GET /api/services/site/products/search?q=r00286` and its print areas
    come from a template of its own, the way the crew's did.
 3. **The catalogue runner does not exist yet.** `tapstitch_api.py` is the
-   library; nothing drives it over 135 rows, handles the handle inheritance, or
-   sequences the Shopify fixups.
+   library and every call in it is now proven against the live account, publish
+   included. Nothing drives it over 135 rows, sets each product's inherited
+   handle, or sequences the Shopify fixups. The 16 Sep crew publish is the whole
+   sequence done once by hand and is the thing to turn into the runner:
+   prefill -> payload -> create -> delete the old listing -> distribute -> wait
+   for Shopify -> set handle and productType -> fixups -> ledger.
 
 ### The one that would have failed QUIETLY, now closed
 
@@ -180,6 +189,23 @@ centre, and the scale is the rectangle's height over 700. Checked against the
 15 Sep tee, which it reproduces to within the half pixel the editor rounded away.
 `placement()` also refuses a print file whose shape does not match its print area,
 so the one assumption underneath it is checked rather than silent.
+
+### DELETING THE OLD LISTING DOES NOT MOVE ITS ADDRESS
+
+The 14 Sep plan says a replacement inherits its predecessor's web address once
+the old listing is deleted rather than drafted. That holds only when the old
+address matches the old title. **It usually does not**: the addresses were minted
+under the pre-22-Aug titles and survived the catalogue rename, so the Salt Lake
+crew was titled "Classic Temple Crew Sweatshirt" and lived at
+`salt-lake-temple-sweatshirt`. 90 of the 120 rows that know their old address are
+like that.
+
+Watched happen on the 16 Sep publish: the old listing was deleted FIRST, and the
+replacement was still minted at `classic-temple-crew-sweatshirt`, because Shopify
+builds a new product's address from its title and ignores whatever just came
+free. One field fixes it, `productUpdate(handle:)` once the product appears, and
+`shopify_client.update_product()` already accepts it. **The runner must do it.**
+Deleting alone frees the address and then leaves it unused, and nothing errors.
 
 ### THE SIZE GUIDE UNIT TRAP
 

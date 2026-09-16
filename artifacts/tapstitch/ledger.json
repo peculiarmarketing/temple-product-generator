@@ -1488,7 +1488,7 @@
     {
       "temple": "Salt Lake",
       "garment": "crew",
-      "state": "file-approved",
+      "state": "live",
       "files": {
         "white": "Salt Lake crew white back print (auto).png"
       },
@@ -1496,9 +1496,17 @@
       "old_shopify_handle": "salt-lake-temple-sweatshirt",
       "old_shopify_id": "gid://shopify/Product/15222465266036",
       "old_title": "Classic Temple Crew Sweatshirt",
-      "tapstitch_product_url": null,
-      "shopify_handle": null,
-      "updated_at": "2026-09-15T09:25:39"
+      "tapstitch_product_url": "https://www.tapstitch.com/account/products-pool",
+      "shopify_handle": "salt-lake-temple-sweatshirt",
+      "updated_at": "2026-09-16T09:59:16",
+      "tapstitch_template_id": "1549927528653864960",
+      "tapstitch_store_product_id": "1549932298181431296",
+      "shopify_id": "gid://shopify/Product/15302478102900",
+      "shopify_status": "ACTIVE",
+      "pending": [
+        "real description (size guide only for now)",
+        "art close-up card at gallery position 2"
+      ]
     },
     {
       "temple": "Salt Lake",
@@ -2026,5 +2034,5 @@
       "updated_at": "2026-09-15T09:25:39"
     }
   ],
-  "updated_at": "2026-09-15T09:25:39"
+  "updated_at": "2026-09-16T09:59:16"
 }

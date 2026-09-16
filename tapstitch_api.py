@@ -282,3 +282,69 @@ def distribute(s, store_product_ids):
     return _data(s.post(f"{BASE}/api/services/user/distribution/stores/products/distribute",
                         data=json.dumps({"uniqueIdList": list(store_product_ids)}),
                         headers={"Content-Type": "application/json"}, timeout=300))
+
+
+def store_product_prefill(s, store_id, template_id):
+    """Tapstitch's own draft of the store product for a saved design.
+
+    Worth fetching before anything is published: it names the colours EXACTLY as
+    Tapstitch will send them to Shopify, so the swatch names the Shopify fixups
+    match on can be checked without publishing. It also carries the mockups,
+    variants, costs and shipping profiles, so the create call is this payload
+    edited rather than one built from scratch.
+    """
+    return _data(s.get(f"{BASE}/api/services/user/distribution/stores/{store_id}"
+                       f"/products/templates/{template_id}/new", timeout=60))
+
+
+def store_product_payload(prefill, title, retail_cents, description_html=None,
+                          units="IMPERIAL"):
+    """Turn a prefill into the create call's body.
+
+    TRAP: the size guide is NOT a field in this payload. Tapstitch bakes the
+    chosen table into description.content when the product is created, so the
+    unit choice has to be right here and cannot be repaired afterwards. The
+    prefill comes back with IMPERIAL and METRIC BOTH selected, which publishes
+    inch/cm column pairs; Evan's rule is imperial. Pass description_html to send
+    our own copy instead, in which case no Tapstitch table is added at all.
+
+    Its IMPERIAL table carries no unit label anywhere, just bare numbers, which
+    is why reference/garment-copy/*/size-guide.html is the better body.
+    """
+    if description_html is None:
+        description_html = (prefill["description"]["content"]
+                            + prefill["sizeGuide"]["descriptionHtml"][units])
+    variants = []
+    for v in prefill["variants"]:
+        variants.append({**v, "retailPrice": retail_cents})
+    return {"title": title,
+            "description": {"type": "HTML", "content": description_html},
+            "mockups": prefill["mockups"],
+            "options": prefill["options"],
+            "variants": variants,
+            "costIncludesShipping": prefill["costIncludesShipping"],
+            "shippingProfileIds": [sp["id"] for sp in prefill["shippingProfiles"]
+                                   if sp.get("selected")],
+            "tags": [],
+            "visibility": prefill["visibility"],
+            "collectionIds": [],
+            "distribute": False}
+
+
+def create_store_product(s, store_id, payload):
+    """Create the Shopify-bound store product. Does NOT reach the storefront.
+
+    With distribute False this stays inside Tapstitch, which is what makes the
+    safe order possible: build the product, then delete the old listing to free
+    its handle, then distribute(). The only irreversible step then happens after
+    the replacement is known to exist.
+
+    Returns the STORE-PRODUCT id, which is a third kind of id and the one
+    distribute() wants.
+    """
+    d = _data(s.post(f"{BASE}/api/services/user/distribution/stores/{store_id}/products",
+                     data=json.dumps(payload),
+                     headers={"Content-Type": "application/json"}, timeout=300))
+    if isinstance(d, dict):
+        return d.get("uniqueId") or d.get("id") or d
+    return d
