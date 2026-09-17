@@ -53,13 +53,17 @@ def load_config():
 
 
 def missing_config(cfg):
-    """Every value the editor half still needs. Empty means it can run."""
-    out = []
-    for section in ("urls", "selectors", "values"):
-        for k, v in cfg.get(section, {}).items():
-            if not k.startswith("_") and v is None:
-                out.append(f"{section}.{k}")
-    return out
+    """Config values still unknown. Empty means nothing is blocked here.
+
+    It used to walk `urls`, `selectors` and `values`, the last two describing a
+    web-editor click path. That path was retired on 15 Sep 2026 when the editor
+    turned out to be a JSON API, and the block was deleted on 16 Sep, so those
+    two loops were iterating over sections that no longer exist. `urls` is what
+    is left, and it has no nulls today; the check stays because a future config
+    addition should be reported rather than silently skipped.
+    """
+    return [f"urls.{k}" for k, v in cfg.get("urls", {}).items()
+            if not k.startswith("_") and v is None]
 
 
 def missing_garment_setup():

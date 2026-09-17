@@ -9,7 +9,7 @@
   ],
   "urls": {
     "products_list": "https://www.tapstitch.com/account/products-pool",
-    "_note": "Filled from the address bar 15 Sep 2026. new_product was retired the same night: the observed flow never used one, because a design is created by POSTing the blank's SKU to api.create_template. It is kept in _selectors_superseded_by_api for the record.",
+    "_note": "Filled from the address bar 15 Sep 2026. new_product was retired the same night: the observed flow never used one, because a design is created by POSTing the blank's SKU to api.create_template.",
     "catalog_search": "https://www.tapstitch.com/collections/all?q={sku}"
   },
   "timing": {

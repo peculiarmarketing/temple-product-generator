@@ -172,7 +172,7 @@ for each pair. Do not merge them by hand without checking first.
 | Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Done AND exercised 15 Sep 2026. |
 | **Tapstitch API client** | `tapstitch_api.py` | **Done and proven against the live account, publish included.** |
 | Traffic capture | `scripts/tapstitch_capture.py` | Done. Records the editor while you work; automates nothing. |
-| Editor automation (click path) | `_selectors_superseded_by_api` | RETIRED 15 Sep 2026. There is no click path any more. |
+| Editor automation (click path) | deleted from `config/tapstitch.json` | RETIRED 15 Sep 2026, block DELETED 16 Sep. There is no click path any more; see `_selectors_note`. |
 | Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: a live crew and a live hoodie, 16 Sep 2026. |
 | Variant image repair | `scripts/tapstitch_variant_images.py` | Done, idempotent, REQUIRED after every publish. |
 | Geometry and payload tests | `tests/test_tapstitch_placement.py` | Done. Fixtures are trimmed real responses. |
