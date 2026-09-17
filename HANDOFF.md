@@ -1,15 +1,36 @@
 # Tapstitch migration: where this stands
 
-**Last worked: 16 September 2026, second session.** Read this first if you are picking the
+**Last worked: 16 September 2026, third session.** Read this first if you are picking the
 migration up on another machine, or in a new session.
 
-**The headline: the migration works end to end and THREE products are LIVE**, one
-of each garment. The Tapstitch editor turned out to be a JSON API, it is now driven
-from Python (`tapstitch_api.py`), and a tee, a crew and a hoodie have all been
-published to the storefront through it. All three blanks are exercised and the
-geometry question is closed. The catalogue runner that drives the other 132 rows is
-written (`scripts/tapstitch_run.py`) and reviewed but has never been run with
-`--apply`; the product copy for all three garments is written.
+**The headline: the catalogue is PUBLISHED. 105 products are live**, 35 temples
+across all three garment lines. The Tapstitch editor turned out to be a JSON API,
+it is now driven from Python (`tapstitch_api.py`), and the catalogue runner
+(`scripts/tapstitch_run.py`) has been run with `--apply --publish` over the whole
+ready ledger: 102 products in this session, zero failures, about 38 seconds each.
+All three blanks are exercised, the geometry question is closed, and the product
+copy for all three garments is written.
+
+The store is no longer dark. What remains dark is 30 rows, the 10 temples with no
+researched `temple-facts.html` (Albuquerque, Billings, Burley, Cody, Kirtland,
+Lehi, Logan, Provo, Provo Rock Canyon, Taylorsville). All ten already have their
+line art traced, so history copy is the only thing blocking them.
+
+**Two things need a person, neither urgent:**
+
+1. `artifacts/easify/option-sets.csv` is WRITTEN AND WAITING TO BE IMPORTED into
+   the Easify app by hand. Until that import happens, the Temple dropdown on all
+   105 live pages still links to the old Printify addresses, which are drafted and
+   therefore dead. This is the single highest-value manual step outstanding.
+   After importing, export fresh from Easify and run `easify_options.py reseed
+   --export <file>`: the "Tee - With Date" set still carries placeholder id
+   900001 and that reseed has never been run, so whether Easify matches an
+   existing set by title or creates a second one on each import is still the
+   open question `docs/decisions.md:40` wanted closed.
+2. Five of the ten unpublished temples (Cody, Kirtland, Logan, Provo,
+   Taylorsville) still have dropdown rows pointing at their old drafted pages.
+   The sync reports them and leaves them alone by design, since rows are never
+   deleted. They resolve themselves when those temples publish.
 
 ---
 
@@ -176,7 +197,7 @@ for each pair. Do not merge them by hand without checking first.
 | Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: a live crew and a live hoodie, 16 Sep 2026. |
 | Variant image repair | `scripts/tapstitch_variant_images.py` | Done, idempotent, REQUIRED after every publish. |
 | Geometry and payload tests | `tests/test_tapstitch_placement.py` | Done. Fixtures are trimmed real responses. |
-| Catalogue runner | `scripts/tapstitch_run.py` | WRITTEN 16 Sep 2026, reviewed, never yet run with `--apply`. |
+| Catalogue runner | `scripts/tapstitch_run.py` | RUN 16 Sep 2026: 102 products published, 0 failures. See the post-run defect below. |
 | Runner tests | `tests/test_tapstitch_run.py` | Done. Pins every resume state and both publish gates. |
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
@@ -259,6 +280,55 @@ both were confidently wrong: pairing colours by their order in the variant list
 garment's photo), and splitting the gallery in half (the 15 Sep tee's gallery is
 interleaved, front/back per colour, so the rule corrupts it). The only exact key is
 Tapstitch's own mockup metadata matched by filename.
+
+#### OPEN DEFECT: the post-publish fixups can run before Shopify finishes importing
+
+**Found on the 16 Sep catalogue run and NOT yet fixed. It will recur on the next
+`--apply --publish` run.** One product of the 102, the Saratoga Springs crew,
+came out with its colour still named "Flower Gray" and all 10 variants bound to
+the FRONT mockup, the near-blank logo garment. The run log reported success for
+both steps. It was caught only by checking the live store by hand afterwards, and
+repaired with `tapstitch_variant_images.py --handle ...` plus
+`shopify_fixups.py all --handle ...`.
+
+Mechanism: `wait_for_shopify` returns the moment
+the product RECORD exists, but Tapstitch keeps pushing variants and media after
+that. The ledger shows every row went distribute-to-live in 24 to 42 seconds,
+against the "over a minute" the `wait_for_shopify` docstring measured on 15 Sep,
+so all 102 rows ran their fixups inside that import window. Inside it,
+`rebind()` sees variants with no media, so `bound` is None, so it queues no
+update and returns None, and `finish_half` reads that None as "already on the
+back". The rename lands and is then overwritten, most likely by that same
+continuing import. Every row rolled the same dice; one lost.
+
+Read the evidence precisely, because the fix depends on it. The rebind path
+returning None on media-less variants, and finish_half reading that None as
+success, are both confirmed from the code. That something later rewrote the
+colour name is certain, since "Flower Gray -> Gray" only logs after
+productOptionUpdate returned no errors. That the overwrite came from Tapstitch's
+continuing import is INFERRED and has not been observed directly. So whoever
+fixes this should measure the settle condition on the next publish (watch the
+variant and media counts) rather than assume the window closes at a fixed time.
+
+The dangerous part is that None means two different things: "every variant is
+already correct" and "no variant has an image yet". Nothing reads the product
+back before the ledger is set to `live`.
+
+Suggested fix, for whoever picks this up: make `rebind()` return a distinct note
+when zero variants carry media, poll in `wait_for_shopify` until the variant and
+media counts match what the garment config predicts, and read the colour values
+and variant bindings back before `ledger.set_state(..., "live")`.
+
+Until that lands, audit after any publish run. It takes BOTH commands, because
+the two symptoms need different checks and running one proves nothing about the
+other:
+
+- `scripts/tapstitch_variant_images.py --report-only` checks the image binding
+  against Tapstitch's own mockup metadata. It caught this one and cleared the
+  other 103. It does NOT see a reverted colour name.
+- `scripts/shopify_fixups.py all --report-only` is what catches a reverted
+  rename; it reports "maybe Flower Gray -> Gray" for any product still carrying
+  the old name.
 
 ### DELETING THE OLD LISTING DOES NOT MOVE ITS ADDRESS, WHICH IS WHY IT STOPPED
 
