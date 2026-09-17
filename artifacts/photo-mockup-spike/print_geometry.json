@@ -1,0 +1,35 @@
+{
+ "_what": "Everything the compositor needs, in physical units. Sizing comes from inches, never from ratios measured on a mockup.",
+ "_chain": [
+  "print files are 300 dpi at final size: Salt Lake ink = 11.98 x 14.87 in, location text 0.70 in tall, identical on all three garments",
+  "length_in is the size-guide Length (collar to hem) for the size the model is wearing",
+  "collar and hem are marked on that garment's BASE photo and must be re-measured if the base is regenerated",
+  "px_per_inch = (hem - collar) / length_in; the art is drawn at px_per_inch / 300 of file size"
+ ],
+ "_assumed_size": "L. If the model reads as a different size, change length_in and every dimension rescales.",
+ "_ink_top_note": "Tapstitch's own back print sits roughly 5.5 to 6.6 in below the collar, which is where the ratio method had been putting it. Evan asked for it a few inches higher on 17 Sep 2026, so this is set to 3.0. THE PHOTO NOW SHOWS THE PRINT HIGHER THAN IT ACTUALLY PRINTS. Raise back toward 5.5 to match the real garment.",
+ "tee": {
+  "collar": 530,
+  "hem": 1780,
+  "centre": 1018,
+  "length_in": 28.35,
+  "ink_top_below_collar_in": 3.0
+ },
+ "crew": {
+  "collar": 430,
+  "hem": 1830,
+  "centre": 998,
+  "length_in": 28.35,
+  "ink_top_below_collar_in": 3.0,
+  "_base": "job 16bd6b6d (Evan's choice, 17 Sep 2026). Re-measured because the base changed; the previous base was 7da9d75b."
+ },
+ "hoodie": {
+  "collar": 660,
+  "hem": 1680,
+  "centre": 1024,
+  "length_in": 29.13,
+  "ink_top_below_collar_in": 2.4,
+  "scale_nudge": 1.06
+ },
+ "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Evan asked for the hoodie a teeny bit bigger and a tiny bit higher on 17 Sep 2026, so the hoodie is x1.06 (12.70in) and 2.4in below the collar. If a garment always needs a nudge, suspect length_in: the hoodie reads 35.0 px/in against the tee's 44.1, so its model may not be wearing the assumed size L."
+}

@@ -22,3 +22,20 @@ artifacts/tapstitch/front-logo/
 # work out how the editor saves a design. Redacted at capture time, but a body
 # can still carry account detail, so it never goes in git.
 artifacts/tapstitch/network/
+
+# On-model photo mockup spike. The PNG originals of the base and colourway
+# photos are 96MB; artifacts/photo-mockup-spike/source-photos/ holds the same 19
+# images as quality-95 JPEG at 15MB, which is the recoverable copy. The PNGs
+# stay on disk (this workspace is in iCloud) but do not belong in history, for
+# the same reason the proof sheet and print files above do not.
+artifacts/photo-mockup-spike/bases/
+artifacts/photo-mockup-spike/colourway-photos/
+artifacts/photo-mockup-spike/model_blank.png
+
+# Rebuilt from source-photos plus composite_set.py in about 16 seconds.
+artifacts/photo-mockup-spike/final-set/
+
+# Re-downloadable from Tapstitch. STATE.md records the URL scheme: the version
+# number in a Tapstitch filename is a unix timestamp and the folder it sits in
+# is that timestamp's date, which recovers any asset from its filename alone.
+artifacts/photo-mockup-spike/tapstitch-on-model/
