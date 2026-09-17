@@ -1320,3 +1320,76 @@ enforces. The 15 Sep tee missed two of them, the colour fixups and the variant
 images. That is the argument for the catalogue runner owning the whole sequence
 rather than a person remembering it, and `finish_on_shopify` now at least names
 each step in its action list.
+
+## 16 September 2026, the catalogue runner (and the rename that had to travel with it)
+
+### The tee's configured title now mirrors the live product, because a guard compares titles
+
+`garments/tee.json` said `Essential Temple Tee`. The live product has been
+`Essential Heavyweight Temple Tee` since Evan renamed it by hand. That looked
+cosmetic and was not.
+
+The mechanism: `scripts/tapstitch_run.py` refuses to build a row whose intended
+title already exists on the store, and that check is the guard against publishing
+a second copy of a product that is already live. It compares TITLES, because the
+ledger cannot be trusted to know what is live (its Salt Lake tee row said
+`file-approved` while that product was on the storefront, having been published on
+15 September before the ledger recorded ids). With the config and the store
+disagreeing about the tee's name, the two could never match, and plan mode duly
+reported the already-live Salt Lake tee as ready to build. It would have published
+a duplicate on the first run.
+
+Caught in plan mode, before anything ran. The config now says
+`Essential Heavyweight Temple Tee ({place})`, which both fixes the guard and
+settles what the other 44 tees will be called. The lasting rule: a rename on the
+store has to be mirrored into `garments/*.json`, or the duplicate guard for that
+line silently stops working. The crew and hoodie were renamed the same day
+(`Ultra-soft Temple Sweatshirt`, `Ultra-soft Oversized Temple Hoodie`) and their
+configs match their live products already.
+
+### The Salt Lake tee's ledger row was corrected by hand
+
+It read `file-approved` with no ids. It is live. The row now reads `live` with
+`shopify_handle: essential-heavyweight-temple-tee` and a `problems` note recording
+that its `tapstitch_template_id` is unknown, because the product predates the code
+that records ids. The consequence of that gap is narrow and worth knowing:
+`scripts/tapstitch_variant_images.py` finds its targets through rows carrying BOTH
+a handle and a template id, so that one product cannot be auto-repaired until
+someone reads its template id back out of Tapstitch.
+
+### Why the runner is a third script rather than `tapstitch_publish.py run`
+
+`tapstitch_publish.py` reserved the name and its `cmd_run` raised a SystemExit
+saying the editor click path was unwritten, a question answered on 15 September
+when the editor turned out to be a JSON API. The stub is deleted. The split that
+remains is a real boundary rather than a nominal one: `tapstitch_publish.py` is
+the hand-publish path (`check`, plus `finish` for a product published outside the
+runner) and the shared Shopify tail, and `scripts/tapstitch_run.py` is the
+catalogue loop. Both compose descriptions through `generate.description_for()`,
+which is now the single place that decides whether a description is complete.
+
+### What the six-specialist review caught, none of which plan mode could show
+
+The runner passed plan mode cleanly and would still have failed on its first live
+row. Worth recording because every one of these lives past `distribute()`, the one
+call with no undo:
+
+- `ShopifyClient.find_product_by_title` never selected `handle`, and the runner
+  read `product["handle"]` one line after distribute. Guaranteed `KeyError`, on
+  every row, immediately after the irreversible step, leaving a live product with
+  an empty productType, no fixups, no art card and variants bound to the blank
+  front. Confirmed against the live store before fixing.
+- The recorded template id was never read on resume, so every retry built a second
+  design and overwrote the only record of the first.
+- Nothing marked the gap between calling `distribute()` and confirming it landed,
+  so a lost confirmation could either publish twice or strand the product. The
+  marker is now written BEFORE the call: a distribute Tapstitch accepted but failed
+  to answer is indistinguishable from one that never landed, and polling for a
+  product that was never published is the recoverable error of the two.
+- `tapstitch_variant_images.rebind()` reports failures by RETURNING them, and the
+  runner treated any truthy return as success, so a front-bound product would have
+  been recorded `live`. That is the same fail-quiet class as the 15 Sep tee's
+  missed fixups.
+
+`tests/test_tapstitch_run.py` pins all of it: every resume state, both publish
+gates, and the blocker rules.

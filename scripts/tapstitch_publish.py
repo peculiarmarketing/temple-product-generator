@@ -1,29 +1,34 @@
-"""Create Tapstitch products from the built print files, then finish them on Shopify.
+"""What is blocking a Tapstitch run, and the Shopify half on its own.
 
-Two halves, deliberately separated:
+This file holds two commands and no product creation:
 
-  the TAPSTITCH half  creates the product. Tapstitch has no public API, but the
-                    editor turned out to be one (15 Sep 2026), so this is plain
-                    HTTP through tapstitch_api.py rather than the Playwright
-                    click path originally planned. It needs the dedicated
-                    Chrome's cookies and nothing else.
+  `check`   what still blocks a run: unresolved config, garment setup, and the
+            ledger's current state.
 
-  the SHOPIFY half  everything after Tapstitch pushes the product to the store:
-                    set the product type, write the description, push the art
-                    close-up card to gallery slot 2, run the colour fixups, and
-                    run scripts/tapstitch_variant_images.py. All of it goes
-                    through the Shopify Admin API and none of it depends on the
-                    editor. There is NO delete step: old listings stay DRAFT
-                    (post_publish.delete_old_listing, off since 16 Sep 2026).
+  `finish`  the SHOPIFY half for one product, by handle. Everything after
+            Tapstitch has pushed a product to the store: set the product type,
+            write the description, push the art close-up card to gallery slot 2,
+            run the colour fixups, and name the variant-image repair. All of it
+            goes through the Shopify Admin API. There is NO delete step: old
+            listings stay DRAFT (post_publish.delete_old_listing, off since
+            16 Sep 2026).
 
-Splitting them matters because the editor half is the fragile part. A Tapstitch
-redesign breaks it; none of it can break the description writer, which is proven
-on 158 products.
+THE TAPSTITCH HALF IS NOT HERE. Creating a product is plain HTTP against
+Tapstitch's own JSON API, which lives in tapstitch_api.py, and the loop that
+drives it over the catalogue is scripts/tapstitch_run.py. That runner calls
+finish_on_shopify() below for its Shopify half, so this file is the hand-publish
+path and the shared Shopify tail, not a second route to creating products.
+
+The `run` subcommand that used to be reserved here was deleted on 16 Sep 2026
+when the runner was written: it raised a SystemExit saying the editor click path
+was still unwritten, a question config/tapstitch.json had marked ANSWERED on
+15 Sep, and this repo has already been bitten once by a stale readiness signal
+in this very file.
 
 Usage:
   python scripts/tapstitch_publish.py check                  # what is blocking a run
   python scripts/tapstitch_publish.py finish --handle <h>    # Shopify half only
-  python scripts/tapstitch_publish.py run --temple "Logan"   # both halves
+  python scripts/tapstitch_run.py --apply --publish --limit 1   # the catalogue runner
 """
 
 import argparse
@@ -94,19 +99,16 @@ def cmd_check():
         for m in editor:
             print(f"      {m}")
     else:
-        # Still not "ready" in the sense that matters. The API route is finished
-        # and proven to the point of a live published product, and placement is
-        # now derived rather than copied, but nothing drives it over the
-        # catalogue. Saying "ready" would invite someone to start a 135-row run.
         print("  config ready, and the API route is PROVEN end to end")
         print("  (create_template -> upload -> save_design -> create_store_product")
         print("  -> distribute). Three products live on the storefront as of")
-        print("  16 Sep 2026. Use tapstitch_api.py.")
+        print("  16 Sep 2026.")
         print("  Placement is DERIVED from each garment's own print area")
         print("  (tapstitch_api.print_areas/placement), checked against the tee.")
         print("  All three blanks are known and all three have published.")
-        print("  NOT built: the catalogue runner and fixup sequencing.")
-        print("  create_store_product EXISTS and has run.")
+        print("  The catalogue runner is scripts/tapstitch_run.py (written")
+        print("  16 Sep 2026). Run it with no flags for a plan; it needs --apply")
+        print("  to build in Tapstitch and --publish as well to reach the store.")
         print("  See docs/discovery/2026-09-tapstitch-editor-api.md.")
     print("\nGARMENT SETUP")
     if garments:
@@ -127,9 +129,16 @@ def cmd_check():
     return 0 if not (editor or garments) else 1
 
 
-def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_run=False):
+def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_run=False,
+                      write_description=True):
     """The Shopify half. Order matters: product type FIRST, because every fixup
-    in shopify_fixups is keyed on it and Tapstitch publishes with it empty."""
+    in shopify_fixups is keyed on it and Tapstitch publishes with it empty.
+
+    `write_description` is False for a product created by scripts/tapstitch_run.py,
+    which bakes the description into the Tapstitch create call so the product is
+    complete from birth. Writing it again here would be an identical second write
+    to the same field, and the two compositions could drift apart.
+    """
     import art_images
     from shopify_fixups import fix_published_product
 
@@ -147,17 +156,16 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
             client.update_product(product["id"], productType=ptype)
         actions.append(f"product type set to {ptype!r}")
 
-    facts_path = generate.working_path(temple, "temple-facts.html")
-    fixed = generate.fixed_description(g)
-    if not fixed:
-        actions.append("SKIPPED description: no garment copy written yet")
-    elif not facts_path.exists():
-        actions.append(f"SKIPPED description: no temple-facts.html for {temple}")
+    if not write_description:
+        actions.append("description left as created (written at the Tapstitch create call)")
     else:
-        html = compose_description(fixed, facts_path.read_text())
-        if not dry_run:
-            client.update_product(product["id"], descriptionHtml=html)
-        actions.append(f"description written ({len(html)} bytes)")
+        html, reason = generate.description_for(temple, g)
+        if not html:
+            actions.append(f"SKIPPED description: {reason}")
+        else:
+            if not dry_run:
+                client.update_product(product["id"], descriptionHtml=html)
+            actions.append(f"description written ({len(html)} bytes)")
 
     if not dry_run:
         art_images.push_catalog(only_temple=temple)
@@ -200,28 +208,10 @@ def cmd_finish(handle, temple, garment, dry_run):
         ledger.save(data)
 
 
-def cmd_run(args):
-    cfg = load_config()
-    blocked = missing_config(cfg) + missing_garment_setup()
-    if blocked:
-        print("Cannot run yet. Blocking items:\n")
-        for b in blocked:
-            print(f"  {b}")
-        print("\nRun `check` for the full picture. The editor values need one live "
-              "session with Tapstitch open; the garment items need Evan's blank choices.")
-        return 1
-    raise SystemExit(
-        "The editor steps are configured but not yet written. They are deliberately "
-        "left for the first live session, when the network-traffic question in "
-        "config/tapstitch.json's _first_session_checklist gets answered: if the "
-        "editor's save call carries positions and upload references, a direct call "
-        "replaces the whole click path and none of these selectors are needed.")
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["check", "finish", "run"])
+    ap.add_argument("command", choices=["check", "finish"])
     ap.add_argument("--handle", help="with `finish`: the new Shopify handle")
     ap.add_argument("--temple")
     ap.add_argument("--garment")
@@ -230,12 +220,9 @@ def main():
 
     if a.command == "check":
         sys.exit(cmd_check())
-    if a.command == "finish":
-        if not (a.handle and a.temple and a.garment):
-            raise SystemExit("finish needs --handle, --temple and --garment")
-        cmd_finish(a.handle, a.temple, a.garment, a.dry_run)
-        return
-    sys.exit(cmd_run(a))
+    if not (a.handle and a.temple and a.garment):
+        raise SystemExit("finish needs --handle, --temple and --garment")
+    cmd_finish(a.handle, a.temple, a.garment, a.dry_run)
 
 
 if __name__ == "__main__":

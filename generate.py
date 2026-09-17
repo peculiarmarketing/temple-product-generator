@@ -340,6 +340,58 @@ def fixed_description(garment_cfg):
     return "\n\n".join(parts)
 
 
+FACTS_MARKER = '<section class="temple-facts"'
+
+
+def title_for(temple_name, garment_id, garment_cfg=None):
+    """This temple and garment's product title, place token resolved.
+
+    build_title() is "the one place a product title is composed", but the
+    manifest lookup that feeds it was being inlined at every call site, which
+    is how a third copy ended up in the Tapstitch runner. This is that lookup.
+    """
+    garment_cfg = garment_cfg or load_garment_config(garment_id)
+    manifest = load_manifest(temple_name)
+    place = manifest["place_tokens"].get(garment_id,
+                                         manifest["place_tokens"]["default"])
+    return build_title(garment_cfg, temple_name, place)
+
+
+def description_for(temple_name, garment_cfg):
+    """(html, reason). One of them is always None.
+
+    The one place that decides what a TAPSTITCH product's description is, and
+    whether it is complete enough to publish. Three callers had grown their own
+    version of this by 16 Sep 2026 (generate_one, tapstitch_publish's Shopify
+    half, and the Tapstitch runner's create call), and they had already drifted:
+    two tested `facts_path.exists()` while one stripped the text first, so a
+    blank temple-facts.html was publishable through one path and not another.
+
+    generate_one() deliberately still carries its own inline composition. It is
+    the Printify path, which is retiring, and its rule is different: it publishes
+    the fixed sections alone when a temple has no facts yet, where this refuses.
+    Do not consolidate the two without deciding which rule the Printify path
+    should follow, because tightening it would block regeneration of products
+    that are already live.
+
+    A facts file that exists but carries no facts section is treated as missing.
+    compose_description() returns the fixed sections alone for empty facts, so
+    the difference is invisible downstream: the product would simply publish
+    without the section people actually read.
+    """
+    fixed = fixed_description(garment_cfg)
+    if not fixed:
+        return None, f"garment copy missing ({garment_cfg['garment_copy']})"
+    facts_path = working_path(temple_name, "temple-facts.html")
+    if not facts_path.exists():
+        return None, f"no temple-facts.html for {temple_name}"
+    facts = facts_path.read_text().strip()
+    if FACTS_MARKER not in facts:
+        return None, (f"{facts_path.name} for {temple_name} carries no "
+                      f"{FACTS_MARKER}> section")
+    return compose_description(fixed, facts), None
+
+
 def find_duplicate(c, garment_cfg):
     """Find unclaimed 'Copy of ...' products usable for this garment. Any
     duplicate of the right blueprint/provider works (Evan: 'it doesn't matter

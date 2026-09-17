@@ -81,9 +81,18 @@ class ShopifyClient:
             cursor = block["pageInfo"]["endCursor"]
 
     def find_product_by_title(self, title):
+        """The product with exactly this title, or None when 0 or 2+ match.
+
+        `handle` is in the selection because a caller that has just published a
+        product knows only the title: Shopify derives the address from it and
+        every repair afterwards is addressed by handle. It was added 16 Sep 2026
+        after scripts/tapstitch_run.py read product["handle"] off this and got a
+        KeyError, which would have fired immediately after the one call in the
+        migration that cannot be undone.
+        """
         data = self.gql("""
           query($q: String!) { products(first: 5, query: $q) {
-            nodes { id title media(first: 20) { nodes { id alt ... on MediaImage { image { url } } } } } } }""",
+            nodes { id title handle media(first: 20) { nodes { id alt ... on MediaImage { image { url } } } } } } }""",
             {"q": f'title:"{title}"'})
         exact = [p for p in data["products"]["nodes"] if p["title"].strip() == title]
         return exact[0] if len(exact) == 1 else None

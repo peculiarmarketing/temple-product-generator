@@ -7,8 +7,9 @@ migration up on another machine, or in a new session.
 of each garment. The Tapstitch editor turned out to be a JSON API, it is now driven
 from Python (`tapstitch_api.py`), and a tee, a crew and a hoodie have all been
 published to the storefront through it. All three blanks are exercised and the
-geometry question is closed. What is left is the product copy and the catalogue
-runner that drives the other 132 rows.
+geometry question is closed. The catalogue runner that drives the other 132 rows is
+written (`scripts/tapstitch_run.py`) and reviewed but has never been run with
+`--apply`; the product copy for all three garments is written.
 
 ---
 
@@ -22,13 +23,15 @@ download, and three garments:
   variants at $44.99, Salt Lake on the back. Its title names no temple and its
   handle (`essential-heavyweight-temple-tee`) inherited nothing, so it does not
   match the catalogue pattern and is best thought of as the route's first test.
-- **"Classic Temple Crew Sweatshirt"**, live since 16 September, ACTIVE, 10
+- **"Ultra-soft Temple Sweatshirt"** (renamed from "Classic Temple Crew
+  Sweatshirt" on 16 September), live since 16 September, ACTIVE, 10
   variants at $64.99, Salt Lake on the back, at `salt-lake-temple-sweatshirt`.
   This one IS the catalogue pattern: the parent title, and the predecessor's own
   web address, so the Easify dropdown link to it still resolves. The old Printify
   listing at that address was deleted to make room, which has no undo.
 
-- **"Cloud Temple Hoodie"**, live since 16 September, ACTIVE, 30 variants at
+- **"Ultra-soft Oversized Temple Hoodie"** (renamed from "Cloud Temple Hoodie"
+  on 16 September), live since 16 September, ACTIVE, 30 variants at
   $74.99, Salt Lake on the back, at `cloud-temple-hoodie`. Six colours: Navy Blue,
   Black, Gray, Coffee, Mauve and Royal Blue.
 
@@ -78,19 +81,22 @@ after all. Tapstitch's own API states it: a template's `backSideDpiTip` reads
 "Print area size 2193 x 2758 px (150)DPI", which is exactly `editor_px` and
 `editor_dpi` in `garments/tee.json`, and 14.62 by 18.39 inches.
 
-**Two things are waiting on you:**
+**The descriptions are written, and their shape changed on 16 September.** Every
+product page now reads: the product details (fit, fabric, weight), then the
+founder message under a "From the Founder" heading, then the temple's history.
+The size guide is no longer in the description at all, your call. The three live
+products carry it already. The CC1717 intro could not simply be reused for the
+tee: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7 oz
+(260 gsm) and not garment-dyed, so copying it would have published false claims.
 
-1. **The tee's `product-intro.html`.** It is the single thing between here and
-   descriptions working for every future temple. `fixed_description()` returns
-   EMPTY for the tee until it exists, by design. The CC1717 intro could not be
-   reused: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7
-   oz (260 gsm) and not garment-dyed, so copying it would publish false claims.
-   This is new outward-facing prose, so it goes through the `humanizer` then
-   `structural-humanizer` passes before it ships.
-2. **Whether the size guide gets a new video** or the branded chart images in
-   `Important Elements/`. This is now ONLY about the video — the measurements are
-   settled and written. The CC1717 section embeds a per-blank video showing the
-   wrong garment, so it was omitted rather than reused.
+**One thing is waiting on you:** whether the size guide gets a new video or the
+branded chart images in `Important Elements/`. This matters less now that the
+guide is out of the description; it is about where a size guide lives at all.
+
+**Ten temples cannot publish yet** because they have no researched
+`temple-facts.html`: Albuquerque, Billings, Burley, Cody, Kirtland, Lehi, Logan,
+Provo, Provo Rock Canyon and Taylorsville. The runner blocks those 30 rows rather
+than shipping a listing with the history section missing.
 
 **The thing that would have failed quietly is fixed.** The design placement
 numbers used to be copied from watching one tee. They are now worked out from each
@@ -170,7 +176,8 @@ for each pair. Do not merge them by hand without checking first.
 | Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: a live crew and a live hoodie, 16 Sep 2026. |
 | Variant image repair | `scripts/tapstitch_variant_images.py` | Done, idempotent, REQUIRED after every publish. |
 | Geometry and payload tests | `tests/test_tapstitch_placement.py` | Done. Fixtures are trimmed real responses. |
-| Catalogue runner | `scripts/tapstitch_publish.py` | Still unwritten. This is the next build. |
+| Catalogue runner | `scripts/tapstitch_run.py` | WRITTEN 16 Sep 2026, reviewed, never yet run with `--apply`. |
+| Runner tests | `tests/test_tapstitch_run.py` | Done. Pins every resume state and both publish gates. |
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
 the live blocker list.
@@ -192,16 +199,31 @@ against the live account, ending in a real published product. See
    both read from the catalogue search. It needs no capture session: the blank
    lookup is `GET /api/services/site/products/search?q=r00286` and its print areas
    come from a template of its own, the way the crew's did.
-3. **The catalogue runner does not exist yet.** `tapstitch_api.py` is the
-   library and every call in it is now proven against the live account, publish
-   included. Nothing drives it over the remaining rows or sequences the Shopify
-   fixups. The 16 Sep hoodie publish is the whole sequence done once by hand and
-   is the thing to turn into the runner:
+3. **The catalogue runner is `scripts/tapstitch_run.py`, WRITTEN 16 Sep 2026 and
+   not yet run against the live account.** It drives the sequence the 16 Sep
+   hoodie publish established: create_template -> upload -> save_design ->
    prefill -> payload -> create -> distribute -> wait for Shopify -> set
-   productType -> fixups -> `tapstitch_variant_images.py` -> ledger.
-   There is NO delete step and NO handle step. Both belonged to the retired
+   productType -> fixups -> `tapstitch_variant_images.py` -> ledger. There is NO
+   delete step and NO handle step. Both belonged to the retired
    inherit-the-address plan; the replacement takes its own address, which Shopify
    derives from its title with nothing to set.
+
+   Run it with no flags for a plan (it writes nothing and opens no Tapstitch
+   session). `--apply` permits the Tapstitch-side writes; `--publish` is needed
+   as well before anything reaches the storefront, and it also demands a bound
+   (`--limit` or `--temple`) because distribute() has no undo and there are about
+   a hundred ready rows. THE FIRST LIVE RUN SHOULD BE
+   `--apply --publish --limit 1`, watched.
+
+   A six-specialist review on 16 Sep returned Fail before fixes and is worth
+   reading for what it caught, because none of it was visible in plan mode: a
+   guaranteed KeyError one line after the irreversible distribute (Shopify's
+   title lookup did not select `handle`), a resume path that rebuilt and orphaned
+   a template it had deliberately recorded, a missing marker between calling
+   distribute and confirming it that could either publish twice or strand a live
+   product unfinished, and a variant-image repair whose failures were returned as
+   strings and recorded as success. All are fixed and pinned in
+   `tests/test_tapstitch_run.py`.
 
 ### The one that would have failed QUIETLY, now closed
 

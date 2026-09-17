@@ -53,11 +53,12 @@ Tapstitch only:
 - `flatten.py`: composites one temple into one flattened, print-area-shaped PNG, and validates it.
 - `ledger.py`: the migration ledger, one row per temple per garment.
 - `browser_session.py`, `scripts/tapstitch_login.py`: the dedicated-Chrome session, on port 9223.
-- `config/tapstitch.json`: every editor step as configuration. Nulls need one live session.
+- `config/tapstitch.json`: the API endpoints, blanks, timings and post-publish switches.
 - `scripts/tapstitch_build.py`: build every print file from a scan of the Temples folder.
 - `scripts/tapstitch_preview.py`: the proof sheet Evan reviews before anything uploads.
 - `scripts/tapstitch_status.py`: where the migration has got to.
-- `scripts/tapstitch_publish.py`: the editor half plus the Shopify half.
+- `scripts/tapstitch_publish.py`: `check` (what is blocking a run) and `finish` (the Shopify half for a product published by hand).
+- `scripts/tapstitch_run.py`: the catalogue runner. Plans by default; `--apply` builds in Tapstitch, `--publish` reaches the storefront.
 - `scripts/store_pulldown.py`: take the Printify catalogue off the storefront.
 
 Reserved at project root for later phases (do not create early): `layout.py`, `preview.py`, `generate.py`, `garments/`, `spacing_defaults.json`. Temple manifests will live in the existing `../Temples/{Name}/` folders.
@@ -74,6 +75,8 @@ scripts/tapstitch_build.py --report-only       # validate every design, write no
 scripts/tapstitch_preview.py                   # the proof sheet, for Evan's gate
 scripts/tapstitch_build.py                     # write the print files, once blanks are picked
 scripts/tapstitch_publish.py check             # what is still blocking a run
+scripts/tapstitch_run.py                       # plan: what would be built, what is blocked
+scripts/tapstitch_run.py --apply --publish --limit 1   # one product, watched. LIVE.
 ```
 
 ## Printify end-of-run sequence

@@ -84,35 +84,11 @@
     ],
     "_placement": "DERIVED 16 Sep 2026, no longer copied. get_template()'s craftItemDto.customArea states each side's print-area rectangle on the 700x700 canvas; tapstitch_api.print_areas() reads it and placement() turns it into the editor's geometry. Checked against the 15 Sep tee, which it reproduces to within the half pixel the editor rounded away. The rectangles differ per garment AND per side: tee 260x327 both sides, crew 210x281 back and 209x275 front."
   },
-  "_selectors_superseded_by_api": {
-    "_note": "DEAD as of 15 Sep 2026. These described a click path through the web editor. There is no need to click: every step is a JSON call, proven by replaying them from Python the same evening (a design was created, uploaded to and saved, and Tapstitch rendered four mockups from it). Use tapstitch_api.py. Kept here, not deleted, as the map back to the fallback if the API route ever turns out to have a hole. The FULL path HAS now been driven: the store-product call and distribute both ran on 16 Sep 2026 and put two real products on the live storefront.",
-    "urls.new_product": null,
-    "selectors": {
-      "blank_search_input": null,
-      "blank_result_by_name": null,
-      "start_designing_button": null,
-      "print_area_tab_back": null,
-      "print_area_tab_front": null,
-      "upload_file_input": null,
-      "uploaded_asset_thumbnail": null,
-      "design_size_input": null,
-      "design_size_unit_toggle": null,
-      "product_title_input": null,
-      "save_design_button": null,
-      "publish_button": null,
-      "publish_confirm_button": null,
-      "publish_success_marker": null
-    },
-    "values": {
-      "design_size": null,
-      "_design_size_note": "The one number typed into the size field every run. Because the file is the exact shape of the print area, the same value works for every temple on a given garment. Record it per garment if they differ.",
-      "size_unit": null
-    }
-  },
   "size_guide": {
     "placement": "DESCRIPTION",
     "units": "IMPERIAL",
     "_note": "EVAN'S RULE, 16 Sep 2026: the size guide goes in the description and it is imperial. Not metric, not both. This is a real trap rather than a preference, because Tapstitch's store-product prefill comes back with IMPERIAL and METRIC BOTH selected, so the default behaviour ships inch/cm column pairs. The runner takes sizeGuide.descriptionHtml['IMPERIAL'] from the prefill and appends it to description.content; there is no sizeGuide key in the POST body, the table is baked into the description at create time.",
     "_bare_numbers_caveat": "Tapstitch's IMPERIAL table carries NO unit label anywhere: 'Chest 23.62' with nothing saying inches. reference/garment-copy/*/size-guide.html says 'Measurements (inches)' and is written to Shopify afterwards, which is what the live tee ended up with on 15 Sep."
-  }
+  },
+  "_selectors_note": "The click-path selectors that used to sit here were DELETED 16 Sep 2026. They described driving the Tapstitch web editor by clicking, which stopped being the plan on 15 Sep when the editor turned out to be a plain JSON API (docs/discovery/2026-09-tapstitch-editor-api.md). They were kept as a retired block and that was a mistake: on 16 Sep they were read as live and led to the conclusion that browser automation was still needed before a catalogue run, which was false and had already been false for a day. Product creation is tapstitch_api.py, driven by scripts/tapstitch_run.py. The only thing a browser is still used for is reading the logged-in cookies out of the dedicated Chrome profile (tapstitch_api.session)."
 }
