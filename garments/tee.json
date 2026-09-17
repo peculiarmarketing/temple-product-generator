@@ -65,10 +65,10 @@
   "layout_profile": "back_temple_text",
   "personalized": false,
   "naming": {
-    "title": "Essential Temple Tee ({place})",
-    "title_parent": "Essential Temple Tee"
+    "title": "Essential Heavyweight Temple Tee ({place})",
+    "title_parent": "Essential Heavyweight Temple Tee"
   },
-  "_naming_note": "The tee KEEPS this title, Evan's call 16 Sep 2026, while the crew and hoodie became Cloud Temple lines. The rationale this note used to carry, that the titles are what the store's web addresses were built on and the replacements inherit them, is FALSE and was disproved the same day: Shopify builds a new product's address from its title and ignores whatever address just came free, so every replacement needs its address handled deliberately whatever it is called. See docs/decisions.md, 16 Sep.",
+  "_naming_note": "Was 'Essential Temple Tee' (Evan's 16 Sep 2026 call to keep it while the crew and hoodie were renamed). EVAN, 16 Sep 2026: 'Essential Heavyweight Temple Tee', which is what the live Salt Lake product had already been renamed to by hand. THE MISMATCH WAS NOT COSMETIC: scripts/tapstitch_run.py blocks a row whose intended title already exists on the store, which is the guard against publishing a second copy of a live product, and it compares TITLES. While this config said 'Essential Temple Tee' and the live tee said 'Essential Heavyweight Temple Tee' the two could not match, so the runner reported the already-live Salt Lake tee as ready to build and would have published a duplicate. Caught in plan mode before anything ran. A rename on the store now has to be mirrored here for that guard to keep working. The older note's rationale, that titles were what the store's addresses were built on and replacements inherited them, is FALSE and was disproved 16 Sep: Shopify builds a new product's address from its title and ignores whatever address just came free. See docs/decisions.md, 16 Sep.",
   "spacing_overrides": {
     "vertical_anchor": "center",
     "temple_target_ink_width_in": 12.0,
