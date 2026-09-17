@@ -125,12 +125,24 @@ something a script can generate. A NEW temple folder therefore stops the sweep
 until someone does that research. That is a step in the workflow, not a bug, and
 it is easy to mistake for one.
 
-**THE HISTORY FILES ARE IN NO GIT REPO.** `Temples/` is not version controlled
-and is not tracked by this repo, so the 45 `temple-facts.html` files exist only
-in iCloud. That is the one part of this pipeline a machine cannot regenerate.
-The five recovered on 17 September were retrievable only because their old
-listings still exist as drafts; delete those and that safety net is gone. Worth
-putting under version control.
+**The history files are now BACKED UP IN GIT, as of 17 September.** `Temples/`
+is still not version controlled, so the fragments still live there as the source
+of truth, but `scripts/mirror_facts.py` copies all 45 into
+`artifacts/temple-facts/`, which is tracked. That gives the research version
+history and a second physical location. It is the one part of this pipeline a
+machine cannot regenerate: the five recovered on 17 September were retrievable
+only because their old listings still exist as drafts.
+
+The mirror is one way and `Temples/` stays authoritative; the script never writes
+back. `--check` exits non-zero when the mirror is stale, and a `--apply` run of
+the catalogue runner refreshes it on the way out. Run the script by hand after
+editing a fragment outside a run, and commit the result.
+
+Note while you are in there: fragments belong in the temple's `Working files/`
+folder. `layout.working_path` reads from the folder root as a fallback, so a
+fragment left at the root works and looks fine, which is how ten of them ended up
+in the wrong place on 17 September. The mirror resolves through `working_path`
+for exactly that reason.
 
 **The thing that would have failed quietly is fixed.** The design placement
 numbers used to be copied from watching one tee. They are now worked out from each

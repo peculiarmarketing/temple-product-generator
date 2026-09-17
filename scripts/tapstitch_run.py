@@ -65,6 +65,7 @@ Usage:
 import argparse
 import re
 import sys
+import shutil
 import time
 from datetime import datetime
 from pathlib import Path
@@ -77,6 +78,7 @@ from PIL import Image
 import flatten
 import generate
 import ledger
+import mirror_facts
 import tapstitch_api as T
 import tapstitch_variant_images
 from shopify_client import ShopifyClient
@@ -615,6 +617,21 @@ def main():
             print(f"    FAILED {safe_error(e)}\n")
 
     print(f"{done} finished, {len(failed)} failed.")
+
+    # The facts fragments are the one thing here a machine cannot regenerate and
+    # they live outside git, so back them up on the way out rather than relying
+    # on anyone remembering. Never fatal: a failed backup must not turn a
+    # successful publish run into an error.
+    try:
+        stale = mirror_facts.plan()
+        if stale:
+            mirror_facts.MIRROR_DIR.mkdir(parents=True, exist_ok=True)
+            for _, src, dest, _ in stale:
+                shutil.copy2(src, dest)
+            print(f"Mirrored {len(stale)} temple-facts fragment(s) into "
+                  f"artifacts/temple-facts/. Commit them.")
+    except Exception as e:
+        print(f"Could not mirror the temple-facts fragments: {safe_error(e)}")
     for temple, gid, err in failed:
         print(f"  {temple} {gid}: {err}")
     return 1 if failed else 0
