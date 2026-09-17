@@ -1,26 +1,25 @@
 # Garment copy: tee
 
-**AWAITING BLANK SELECTION. Do not create the HTML files until the blank is picked.**
+`generate.fixed_description()` assembles this folder's fixed sections in this
+order, and `description_html.compose_description()` appends the temple's own
+facts fragment after them:
 
-`generate.fixed_description()` needs two files in this folder:
+1. `product-details.html` - fit, fabric and weight for this blank
+2. `product-intro.html` - the founder message, signed "- Evan"
 
-- `product-intro.html` - the founder intro for this garment
-- `size-guide.html` - the size guide section
+`size-guide.html` is still here and is NOT used. Evan's 16 Sep 2026 call took
+the size guide out of the description entirely. The file stays because it holds
+the blank's real measurements, which is worth keeping; it is simply not assembled
+any more. A garment folder with no `product-details.html` falls back to the older
+`product-intro.html` + `size-guide.html` shape, which is what the retiring
+Printify garments (cc1566, cc1567, cc1717) still use.
 
-They are deliberately absent. While they are absent `fixed_description()` returns
-an empty string, which is the safe behaviour: an empty description beats
-publishing the wrong garment's specifications to a live page. A placeholder file
-would defeat that guard, which is why this is a README and not a stub HTML file.
+THE GUARD: if either `product-details.html` or `product-intro.html` is missing,
+`fixed_description()` returns an EMPTY string rather than a partial description.
+An empty description beats the wrong garment's specifications on a live product
+page, which is why a placeholder file would be worse than no file. Both are
+present for this garment as of 16 Sep 2026.
 
-## When Evan picks the tee blank
-
-1. Write the intro and the size guide from the real blank's specifications.
-2. The size guide needs a decision: the retiring Comfort Colors guides embed a
-   per-blank video (`Important Elements/cc17*-size-guide.mp4`). A new blank needs
-   either a new video or the branded size-chart images already in
-   `Important Elements/` (Signature Heavy Tee, Covenant Crew, Foundation Hoodie,
-   Summit Hoodie, made Aug 2025). Evan's call.
-3. New outward-facing prose goes through the `humanizer` then
-   `structural-humanizer` passes before it ships (project CLAUDE.md).
-4. Once written these are stored assets: copied byte-identical at assembly, never
-   touched again by an editing pass.
+Both files are stored assets: copied byte-identical at assembly and never touched
+by an editing pass. New outward-facing prose goes through the `humanizer` then
+`structural-humanizer` skills before it ships (project CLAUDE.md).

@@ -50,17 +50,27 @@ for gid in tapstitch:
 # --- the empty-description guard --------------------------------------------
 # THE load-bearing behaviour: a garment whose copy has not been written yet must
 # produce an EMPTY description. An empty description beats the wrong garment's
-# specifications on a live product page, so a placeholder here would be worse
-# than nothing. This is why reference/garment-copy/{tee,crew,hoodie}/ hold a
-# README and no HTML.
-for gid in tapstitch:
-    assert fixed_description(load_garment_config(gid)) == "", \
-        f"{gid} has copy written; the empty-description guard is no longer being tested"
-
-# The retiring garments still produce real copy, so the guard is not just
-# returning empty for everything.
-for gid in printify:
+# specifications on a live product page, so a placeholder would be worse than
+# nothing. The synthetic cases below are what test that guard, deliberately: this
+# block used to assert the three Tapstitch garments were still empty, which stopped
+# being a test of the guard and started being a test of how far the copy had got
+# the moment the copy was written (16 Sep 2026).
+for gid in printify + tapstitch:
     assert len(fixed_description(load_garment_config(gid))) > 1000, gid
+
+# --- the two fixed-section shapes -------------------------------------------
+# A garment with a product-details.html assembles details -> intro and drops the
+# size guide (Evan, 16 Sep 2026); one without keeps the older intro -> size-guide
+# shape. Both are checked against synthetic copy directories so the assertions
+# stay true whatever the real garments' copy says.
+for gid in tapstitch:
+    html = fixed_description(load_garment_config(gid))
+    assert html.index('class="product-details"') < html.index('class="product-intro"'), \
+        f"{gid}: the details section must lead, before the founder message"
+    assert "size-guide" not in html, f"{gid}: the size guide must not be in the description"
+for gid in printify:
+    assert "size-guide" in fixed_description(load_garment_config(gid)), \
+        f"{gid}: the retiring garments keep their size guide"
 
 with tempfile.TemporaryDirectory() as tmp:
     tmp = Path(tmp)
@@ -83,6 +93,34 @@ with tempfile.TemporaryDirectory() as tmp:
             "intro present but size guide missing must still yield empty"
         shutil.copy2(real / "size-guide.html", half / "size-guide.html")
         assert fixed_description(cfg) != "", "both files present must yield real copy"
+
+        # Now the details-first shape, in the same directory. A product-details.html
+        # switches the garment to details -> intro; the size guide sitting beside it
+        # must be ignored rather than appended, which is the case the three real
+        # Tapstitch folders are in (their size-guide.html files were written before
+        # the same decision and are still on disk).
+        (half / "product-details.html").write_text(
+            '<section class="product-details"><p>d</p></section>')
+        html = fixed_description(cfg)
+        assert "size-guide" not in html, \
+            "a garment with product-details.html must drop the size guide"
+        assert html.index('class="product-details"') < html.index('class="product-intro"')
+
+        # The details shape must not secretly still REQUIRE the size guide. Every
+        # other case here has one on disk (so do all three real Tapstitch
+        # folders, left over from before the decision), so without this the
+        # branch that drops it is never exercised without it and a regression
+        # re-adding the requirement would block every Tapstitch row instead.
+        (half / "size-guide.html").unlink()
+        html = fixed_description(cfg)
+        assert html and "size-guide" not in html, \
+            "the details shape must not depend on a size-guide.html being present"
+
+        # ...and the guard applies to this shape too: details alone is not a
+        # description, because the founder message is the rest of it.
+        (half / "product-intro.html").unlink()
+        assert fixed_description(cfg) == "", \
+            "details present but intro missing must still yield empty"
     finally:
         shutil.rmtree(half, ignore_errors=True)
 
