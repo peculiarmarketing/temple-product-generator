@@ -29,13 +29,19 @@ artifacts/tapstitch/network/
 # stay on disk (this workspace is in iCloud) but do not belong in history, for
 # the same reason the proof sheet and print files above do not.
 artifacts/photo-mockup-spike/bases/
+# final-set IS tracked on purpose: scripts/build_product_gallery.py uploads
+# from it, so the process cannot run on a fresh clone without it (7MB).
+# colourway-photos and bases stay out at 59MB and 15MB; they are only needed
+# to re-composite a NEW temple, which also needs ../../Temples/ anyway.
 artifacts/photo-mockup-spike/colourway-photos/
 artifacts/photo-mockup-spike/model_blank.png
 
 # Rebuilt from source-photos plus composite_set.py in about 16 seconds.
-artifacts/photo-mockup-spike/final-set/
 
 # Re-downloadable from Tapstitch. STATE.md records the URL scheme: the version
 # number in a Tapstitch filename is a unix timestamp and the folder it sits in
 # is that timestamp's date, which recovers any asset from its filename alone.
 artifacts/photo-mockup-spike/tapstitch-on-model/
+
+# download cache for the flat-mockup classifier, regenerates itself
+artifacts/photo-mockup-spike/.flatcache/

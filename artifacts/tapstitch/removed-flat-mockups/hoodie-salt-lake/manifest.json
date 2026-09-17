@@ -1,0 +1,20 @@
+{
+ "product": "gid://shopify/Product/15302513459572",
+ "keep": {
+  "56152188387700": "navy BACK (lead colour)",
+  "56152188584308": "navy FRONT (logo)",
+  "56158247584116": "art closeup"
+ },
+ "deleted": {
+  "56152188420468": "black back",
+  "56152188453236": "gray back",
+  "56152188486004": "coffee back",
+  "56152188518772": "mauve back",
+  "56152188551540": "royal back",
+  "56152188617076": "black front",
+  "56152188649844": "gray front",
+  "56152188682612": "coffee front",
+  "56152188715380": "mauve front",
+  "56152188748148": "royal front"
+ }
+}

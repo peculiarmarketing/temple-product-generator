@@ -7,29 +7,33 @@
   "px_per_inch = (hem - collar) / length_in; the art is drawn at px_per_inch / 300 of file size"
  ],
  "_assumed_size": "L. If the model reads as a different size, change length_in and every dimension rescales.",
- "_ink_top_note": "Tapstitch's own back print sits roughly 5.5 to 6.6 in below the collar, which is where the ratio method had been putting it. Evan asked for it a few inches higher on 17 Sep 2026, so this is set to 3.0. THE PHOTO NOW SHOWS THE PRINT HIGHER THAN IT ACTUALLY PRINTS. Raise back toward 5.5 to match the real garment.",
+ "_ink_top_note": "Tapstitch's own back print sits roughly 5.5 to 6.6 in below the collar. HOODIE, corrected 17 Sep 2026: its old collar mark (660) sat ~3.2in BELOW the true neckline, so the old '2.4in' setting actually put the print 5.6in below the true neckline - inside the real range by accident. The mark is now correct (540), so 2.4 would raise the print 3.2in. Set to 5.6 to reproduce what Evan approved. TEE and CREW marks are off by only ~0.6in, so their 3.6 is unaffected.",
  "tee": {
-  "collar": 530,
-  "hem": 1780,
-  "centre": 1018,
+  "collar": 470,
+  "hem": 1637,
+  "centre": 1022,
   "length_in": 28.35,
-  "ink_top_below_collar_in": 3.0
+  "ink_top_below_collar_in": 6.2,
+  "scale_nudge": 0.93,
+  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch RT0063 back-view photo; colourways are one more from this base. Two deep, not the three or four that drifted the subject from photographic to rendered. Folds pushed to the sides so the print panel is flat. Grey measured 4 from the true Tapstitch swatch."
  },
  "crew": {
   "collar": 430,
   "hem": 1830,
   "centre": 998,
   "length_in": 28.35,
-  "ink_top_below_collar_in": 3.0,
-  "_base": "job 16bd6b6d (Evan's choice, 17 Sep 2026). Re-measured because the base changed; the previous base was 7da9d75b."
+  "ink_top_below_collar_in": 6.0,
+  "_base": "crew_gray regenerated on kie.ai Sunburst 17 Sep 2026 from the existing crew photo, so the sleeves, model and pose Evan approved carry over and only the central back panel is flattened; the grey's heather marl is a real property of Flower Gray and was deliberately kept. crew_black left as it was: the Sunburst version measured no better (colour 15 from true vs 7, mid-panel 2.32 vs 2.05). Landmarks unchanged - the new grey lands within 2px of the photo it replaced.",
+  "scale_nudge": 0.88
  },
  "hoodie": {
-  "collar": 660,
-  "hem": 1680,
-  "centre": 1024,
+  "collar": 565,
+  "hem": 1630,
+  "centre": 1020,
   "length_in": 29.13,
-  "ink_top_below_collar_in": 2.4,
-  "scale_nudge": 1.06
+  "ink_top_below_collar_in": 5.6,
+  "scale_nudge": 1.06,
+  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch R00286 references; colourways are one more from this base. COLLAR 565 is where the hood's outer edges meet the shoulders, i.e. the neckline - NOT the top of the hood silhouette (~390), which is what 400 was and which both inflated the scale 13% and pushed the print up under the hood. The hood's point at centre back sits at ~720, so the print top at ~770 clears it."
  },
- "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Evan asked for the hoodie a teeny bit bigger and a tiny bit higher on 17 Sep 2026, so the hoodie is x1.06 (12.70in) and 2.4in below the collar. If a garment always needs a nudge, suspect length_in: the hoodie reads 35.0 px/in against the tee's 44.1, so its model may not be wearing the assumed size L."
+ "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Checked 17 Sep 2026 against the size chart and the base photos. CREW: not a size problem - the landmarks are off. Collar 430 is ~30px above the top of the ribbed collar band (~460) and hem 1830 is ~30px below the garment edge (~1800), which inflates the span ~4.5%. Correcting the landmarks would replace this nudge, but moves the print ~0.4in lower, so it is left as a nudge for now. HOODIE: cannot be a size problem. 1.10 implies length_in 26.48in, shorter than size S (27.56). Even assuming S only justifies x1.057. The hoodie's low 35.0 px/in is vertical foreshortening: the thick fleece bows over the back so the straight-line collar-to-hem distance in the photo under-reads the fabric's true 29.13in."
 }
