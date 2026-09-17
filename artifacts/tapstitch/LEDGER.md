@@ -1,20 +1,19 @@
 # Tapstitch migration ledger
 
-Updated 2026-09-16T21:28:43. 135 rows.
+Updated 2026-09-17T08:44:50. 135 rows.
 
 | State | Count |
 |---|---|
-| file-approved | 30 |
-| live | 105 |
+| live | 135 |
 
 | Temple | Garment | State | Old web address | Problems |
 |---|---|---|---|---|
-| Albuquerque | crew | file-approved |  |  |
-| Albuquerque | hoodie | file-approved |  |  |
-| Albuquerque | tee | file-approved |  |  |
-| Billings | crew | file-approved |  |  |
-| Billings | hoodie | file-approved |  |  |
-| Billings | tee | file-approved |  |  |
+| Albuquerque | crew | live |  |  |
+| Albuquerque | hoodie | live |  |  |
+| Albuquerque | tee | live |  |  |
+| Billings | crew | live |  |  |
+| Billings | hoodie | live |  |  |
+| Billings | tee | live |  |  |
 | Boise | crew | live | classic-temple-crew-sweatshirt-boise |  |
 | Boise | hoodie | live | pillar-temple-hoodie-boise |  |
 | Boise | tee | live | essential-temple-tee-boise |  |
@@ -24,15 +23,15 @@ Updated 2026-09-16T21:28:43. 135 rows.
 | Brigham City | crew | live | brigham-city-temple-sweatshirt |  |
 | Brigham City | hoodie | live | brigham-city-temple-hoodie |  |
 | Brigham City | tee | live | brigham-city-temple-tee |  |
-| Burley | crew | file-approved |  |  |
-| Burley | hoodie | file-approved |  |  |
-| Burley | tee | file-approved |  |  |
+| Burley | crew | live |  |  |
+| Burley | hoodie | live |  |  |
+| Burley | tee | live |  |  |
 | Cedar City | crew | live | cedar-city-temple-sweatshirt |  |
 | Cedar City | hoodie | live | cedar-city-temple-hoodie |  |
 | Cedar City | tee | live | cedar-city-temple-tee |  |
-| Cody | crew | file-approved | cody-temple-sweatshirt |  |
-| Cody | hoodie | file-approved | cody-temple-hoodie |  |
-| Cody | tee | file-approved | cody-temple-tee |  |
+| Cody | crew | live | cody-temple-sweatshirt |  |
+| Cody | hoodie | live | cody-temple-hoodie |  |
+| Cody | tee | live | cody-temple-tee |  |
 | Deseret Peak | crew | live | deseret-peak-temple-sweatshirt |  |
 | Deseret Peak | hoodie | live | deseret-peak-temple-hoodie |  |
 | Deseret Peak | tee | live | deseret-peak-temple-tee |  |
@@ -48,21 +47,21 @@ Updated 2026-09-16T21:28:43. 135 rows.
 | Jordan River | crew | live | jordan-river-temple-sweatshirt |  |
 | Jordan River | hoodie | live | jordan-river-temple-hoodie |  |
 | Jordan River | tee | live | jordan-river-temple-tee |  |
-| Kirtland | crew | file-approved | kirtland-temple-sweatshirt |  |
-| Kirtland | hoodie | file-approved | kirtland-temple-hoodie |  |
-| Kirtland | tee | file-approved | kirtland-temple-tee |  |
+| Kirtland | crew | live | kirtland-temple-sweatshirt |  |
+| Kirtland | hoodie | live | kirtland-temple-hoodie |  |
+| Kirtland | tee | live | kirtland-temple-tee |  |
 | Layton | crew | live | layton-temple-sweatshirt |  |
 | Layton | hoodie | live | layton-temple-hoodie |  |
 | Layton | tee | live | layton-temple-tee |  |
-| Lehi* | crew | file-approved |  |  |
-| Lehi* | hoodie | file-approved |  |  |
-| Lehi* | tee | file-approved |  |  |
+| Lehi* | crew | live |  |  |
+| Lehi* | hoodie | live |  |  |
+| Lehi* | tee | live |  |  |
 | Lindon | crew | live | lindon-temple-sweatshirt |  |
 | Lindon | hoodie | live | lindon-temple-hoodie |  |
 | Lindon | tee | live | lindon-temple-tee |  |
-| Logan | crew | file-approved | logan-temple-sweatshirt |  |
-| Logan | hoodie | file-approved | logan-temple-hoodie |  |
-| Logan | tee | file-approved | logan-temple-tee |  |
+| Logan | crew | live | logan-temple-sweatshirt |  |
+| Logan | hoodie | live | logan-temple-hoodie |  |
+| Logan | tee | live | logan-temple-tee |  |
 | Manhattan | crew | live | manhattan-temple-sweatshirt |  |
 | Manhattan | hoodie | live | manhattan-temple-hoodie |  |
 | Manhattan | tee | live | manhattan-temple-tee |  |
@@ -93,15 +92,15 @@ Updated 2026-09-16T21:28:43. 135 rows.
 | Orem | crew | live | classic-temple-crew-sweatshirt-orem |  |
 | Orem | hoodie | live | pillar-temple-hoodie-orem |  |
 | Orem | tee | live | essential-temple-tee-orem |  |
-| Provo | crew | file-approved | provo-temple-sweatshirt |  |
-| Provo | hoodie | file-approved | provo-temple-hoodie |  |
-| Provo | tee | file-approved | provo-temple-tee |  |
+| Provo | crew | live | provo-temple-sweatshirt |  |
+| Provo | hoodie | live | provo-temple-hoodie |  |
+| Provo | tee | live | provo-temple-tee |  |
 | Provo City Center | crew | live | provo-city-center-temple-sweatshirt |  |
 | Provo City Center | hoodie | live | provo-city-center-temple-hoodie |  |
 | Provo City Center | tee | live | provo-city-center-temple-tee |  |
-| Provo Rock Canyon* | crew | file-approved |  |  |
-| Provo Rock Canyon* | hoodie | file-approved |  |  |
-| Provo Rock Canyon* | tee | file-approved |  |  |
+| Provo Rock Canyon* | crew | live |  |  |
+| Provo Rock Canyon* | hoodie | live |  |  |
+| Provo Rock Canyon* | tee | live |  |  |
 | Red Cliffs | crew | live | classic-temple-crew-sweatshirt-red-cliffs |  |
 | Red Cliffs | hoodie | live | pillar-temple-hoodie-red-cliffs |  |
 | Red Cliffs | tee | live | essential-temple-tee-red-cliffs |  |
@@ -132,9 +131,9 @@ Updated 2026-09-16T21:28:43. 135 rows.
 | Syracuse | crew | live | classic-temple-crew-sweatshirt-syracuse |  |
 | Syracuse | hoodie | live | pillar-temple-hoodie-syracuse |  |
 | Syracuse | tee | live | essential-temple-tee-syracuse |  |
-| Taylorsville | crew | file-approved | taylorsville-temple-sweatshirt |  |
-| Taylorsville | hoodie | file-approved | taylorsville-temple-hoodie |  |
-| Taylorsville | tee | file-approved | taylorsville-temple-tee |  |
+| Taylorsville | crew | live | taylorsville-temple-sweatshirt |  |
+| Taylorsville | hoodie | live | taylorsville-temple-hoodie |  |
+| Taylorsville | tee | live | taylorsville-temple-tee |  |
 | Vernal | crew | live | classic-temple-crew-sweatshirt-vernal |  |
 | Vernal | hoodie | live | pillar-temple-hoodie-vernal |  |
 | Vernal | tee | live | essential-temple-tee-vernal |  |

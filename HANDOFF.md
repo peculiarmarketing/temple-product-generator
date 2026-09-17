@@ -3,34 +3,38 @@
 **Last worked: 16 September 2026, third session.** Read this first if you are picking the
 migration up on another machine, or in a new session.
 
-**The headline: the catalogue is PUBLISHED. 105 products are live**, 35 temples
-across all three garment lines. The Tapstitch editor turned out to be a JSON API,
-it is now driven from Python (`tapstitch_api.py`), and the catalogue runner
-(`scripts/tapstitch_run.py`) has been run with `--apply --publish` over the whole
-ready ledger: 102 products in this session, zero failures, about 38 seconds each.
-All three blanks are exercised, the geometry question is closed, and the product
-copy for all three garments is written.
+**The headline: the catalogue is COMPLETE. 135 products are live**, all 45
+temples across all three garment lines, and the migration ledger has no unbuilt
+rows left. The Tapstitch editor turned out to be a JSON API, it is now driven
+from Python (`tapstitch_api.py`), and the catalogue runner
+(`scripts/tapstitch_run.py`) has published every ready row. All three blanks are
+exercised, the geometry question is closed, and the product copy for all three
+garments is written.
 
-The store is no longer dark. What remains dark is 30 rows, the 10 temples with no
-researched `temple-facts.html` (Albuquerque, Billings, Burley, Cody, Kirtland,
-Lehi, Logan, Provo, Provo Rock Canyon, Taylorsville). All ten already have their
-line art traced, so history copy is the only thing blocking them.
+The store is no longer dark, and nothing is waiting on research. The last ten
+temples were unblocked on 17 September: five of them (Logan, Provo, Kirtland,
+Cody, Taylorsville) turned out to have researched facts ALREADY, published on
+their old Printify listings and never saved back to the temple folder, and were
+recovered from the live markup; five (Albuquerque, Billings, Burley, Lehi, Provo
+Rock Canyon) were researched from scratch. Source ledger for all ten:
+`artifacts/description-ledgers/2026-09-16-blocked-ten.txt`.
 
-**Two things need a person, neither urgent:**
+**One thing needs a person:**
 
 1. `artifacts/easify/option-sets.csv` is WRITTEN AND WAITING TO BE IMPORTED into
    the Easify app by hand. Until that import happens, the Temple dropdown on all
-   105 live pages still links to the old Printify addresses, which are drafted and
-   therefore dead. This is the single highest-value manual step outstanding.
+   135 live pages still links to the old Printify addresses, which are drafted and
+   therefore dead. This is the single highest-value manual step outstanding. The
+   17 September sync added the last ten temples and repointed every row, so each
+   of the three sets now carries 46 rows: one default plus 45 temples.
    After importing, export fresh from Easify and run `easify_options.py reseed
    --export <file>`: the "Tee - With Date" set still carries placeholder id
    900001 and that reseed has never been run, so whether Easify matches an
    existing set by title or creates a second one on each import is still the
    open question `docs/decisions.md:40` wanted closed.
-2. Five of the ten unpublished temples (Cody, Kirtland, Logan, Provo,
-   Taylorsville) still have dropdown rows pointing at their old drafted pages.
-   The sync reports them and leaves them alone by design, since rows are never
-   deleted. They resolve themselves when those temples publish.
+
+That is the whole list. Every temple is published, so the sync no longer reports
+any dropdown row pointing at a dead page.
 
 ---
 
@@ -114,10 +118,19 @@ tee: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7 oz
 branded chart images in `Important Elements/`. This matters less now that the
 guide is out of the description; it is about where a size guide lives at all.
 
-**Ten temples cannot publish yet** because they have no researched
-`temple-facts.html`: Albuquerque, Billings, Burley, Cody, Kirtland, Lehi, Logan,
-Provo, Provo Rock Canyon and Taylorsville. The runner blocks those 30 rows rather
-than shipping a listing with the history section missing.
+**Every temple now has a researched `temple-facts.html`, and the runner has no
+blocked rows.** It still blocks any temple that lacks one, which is correct: the
+history section is researched writing judged against a source hierarchy, not
+something a script can generate. A NEW temple folder therefore stops the sweep
+until someone does that research. That is a step in the workflow, not a bug, and
+it is easy to mistake for one.
+
+**THE HISTORY FILES ARE IN NO GIT REPO.** `Temples/` is not version controlled
+and is not tracked by this repo, so the 45 `temple-facts.html` files exist only
+in iCloud. That is the one part of this pipeline a machine cannot regenerate.
+The five recovered on 17 September were retrievable only because their old
+listings still exist as drafts; delete those and that safety net is gone. Worth
+putting under version control.
 
 **The thing that would have failed quietly is fixed.** The design placement
 numbers used to be copied from watching one tee. They are now worked out from each
@@ -141,9 +154,8 @@ light and would have the same problem more severely.
 but the crew sells for $10.00 less. That is $9.43 less gross on a garment that
 costs the same to make. Prices are unchanged and this is flagged, not decided.
 
-**Nothing else needs you.** The five untraced temples (Albuquerque, Billings,
-Burley, Lehi, Provo Rock Canyon) already have your sketches in their folders and
-can be traced whenever.
+**Nothing else needs you.** Every temple in the catalog is traced, researched
+and published.
 
 ---
 
@@ -281,10 +293,11 @@ garment's photo), and splitting the gallery in half (the 15 Sep tee's gallery is
 interleaved, front/back per colour, so the rule corrupts it). The only exact key is
 Tapstitch's own mockup metadata matched by filename.
 
-#### OPEN DEFECT: the post-publish fixups can run before Shopify finishes importing
+#### FIXED 17 Sep 2026: the post-publish fixups could run before Shopify finished importing
 
-**Found on the 16 Sep catalogue run and NOT yet fixed. It will recur on the next
-`--apply --publish` run.** One product of the 102, the Saratoga Springs crew,
+**Found on the 16 Sep catalogue run, FIXED 17 Sep in commit 6a02113.** Kept here
+because the mechanism explains several things in this file and is worth not
+rediscovering. One product of the 102, the Saratoga Springs crew,
 came out with its colour still named "Flower Gray" and all 10 variants bound to
 the FRONT mockup, the near-blank logo garment. The run log reported success for
 both steps. It was caught only by checking the live store by hand afterwards, and
@@ -314,12 +327,42 @@ The dangerous part is that None means two different things: "every variant is
 already correct" and "no variant has an image yet". Nothing reads the product
 back before the ledger is set to `live`.
 
-Suggested fix, for whoever picks this up: make `rebind()` return a distinct note
-when zero variants carry media, poll in `wait_for_shopify` until the variant and
-media counts match what the garment config predicts, and read the colour values
-and variant bindings back before `ledger.set_state(..., "live")`.
+What was done. `wait_for_import()` polls until every variant carries an image and
+the variant and media counts repeat, and `finish_half` runs it before ANY fixup.
+The counts must be seen twice because an import that has delivered only its first
+colourway looks finished; the deadline governs REACHING that state, not
+confirming it. `rebind()` now separates "no variant carries an image yet" from
+"all already on a back". `stale_colorways()` reads the colour values back after
+the rename and raises if a Tapstitch name survived. Both failure paths leave the
+product live and the row short of `live`, so the next run resumes at the Shopify
+half rather than distributing again. Pinned in `tests/test_tapstitch_run.py`.
 
-Until that lands, audit after any publish run. It takes BOTH commands, because
+It costs about 15 seconds a product and is worth it: on the 17 Sep run every
+product needed a real rebind, which is exactly the work the old code skipped
+whenever it lost the race.
+
+Audit anyway after any publish run.
+
+#### TAPSTITCH DROPS CONNECTIONS AFTER A LONG BURST
+
+Measured 17 Sep 2026, and it is the reason to publish in small batches. A
+`--limit 29` run published 12 products at a steady 52 seconds each and then hit a
+wall: 17 ConnectionError failures in a row against www.tapstitch.com, mostly
+RemoteDisconnected and "Max retries exceeded", plus one Shopify read timeout. The
+login session was still valid, and the same calls succeeded again minutes later,
+so read it as rate limiting or a burst cutoff rather than an outage or an expired
+session. Nothing in the run hung: the requests carry timeouts and the failures
+were reported and counted.
+
+It fails at the worst moment. The failures landed AFTER distribute and after the
+Shopify fixups, inside rebind(), so three Kirtland products sat live on the
+storefront with every variant bound to the blank front until the next run resumed
+them. Nothing was lost and the resume path repaired all three, but that window is
+customer-visible.
+
+So: run long catalogues in batches of about five with a gap, not one large
+--limit. Three five-row batches ran clean immediately after the failure. A retry
+with backoff around the Tapstitch calls is the real fix and has not been written. It takes BOTH commands, because
 the two symptoms need different checks and running one proves nothing about the
 other:
 
