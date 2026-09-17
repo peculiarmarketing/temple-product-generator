@@ -1,0 +1,217 @@
+SOURCE LEDGERS - the ten temples that blocked the 16 September 2026 catalogue run
+Research date: September 16, 2026
+
+Why these ten: the Tapstitch catalogue runner refuses a row whose temple has no
+temple-facts.html, so 30 rows would not publish. Five of the ten turned out to
+have researched facts already, published on their old Printify listings and
+never saved back into the temple folder. Those were recovered rather than
+re-researched. Five needed real research and are ledgered below.
+
+================================================================================
+RECOVERED, NOT RE-RESEARCHED
+================================================================================
+
+Logan, Provo, Kirtland, Cody and Taylorsville already carried a complete
+<section class="temple-facts"> in the description of their old (now drafted)
+Shopify products. Recovered by reading the live description, unwrapping the
+collapsed <details> markup with description_html._unwrap, and writing the raw
+fragment back to Temples/{Name}/temple-facts.html.
+
+Each recovery was proved lossless by asserting
+collapse_temple_facts(recovered) == the live section, byte for byte, before the
+file was written. The h3 was matched per temple to avoid the Provo collision:
+"Provo Utah Temple (1972-2024)" is the demolished 1972 building this product
+depicts, NOT "Provo City Center Temple" and NOT the Rock Canyon replacement.
+
+Tiering was done when that copy was first written and is not re-asserted here.
+Nothing in the recovered text was edited.
+
+================================================================================
+SOURCE LEDGER - Albuquerque New Mexico Temple
+================================================================================
+
+VERIFIED
+[T1] Announced April 4, 1997 - thechurchnews.com/almanac/temples/albuquerque-new-mexico/ (also T2, agrees)
+[T1] Groundbreaking June 20, 1998, Elder Lynn A. Mickelsen presided - thechurchnews.com/almanac/temples/albuquerque-new-mexico/; churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T1] Dedicated March 5, 2000 by Gordon B. Hinckley, four sessions, more than 13,500 attended - thechurchnews.com/almanac/temples/albuquerque-new-mexico/
+[T1] Architect Fanning Bard Tatum Architects AIA Limited, Albuquerque - thechurchnews.com/2000/3/11/23246980/facts-and-figures-albuquerque-new-mexico-temple/
+[T1] Desert Rose precast concrete with Texas Pearl granite at the base; reads pink at sunset against the Sandia range - thechurchnews.com/2000/3/11/23246980/...; thechurchnews.com/almanac/temples/albuquerque-new-mexico/
+[T1] First of its design in the Church; region where American Indian, Hispanic and Anglo cultures meet - thechurchnews.com/2000/3/11/23247013/temple-melding-members-of-three-cultures/
+[T1] Covered in the Church's May 2000 conference report alongside six other dedications - churchofjesuschrist.org/study/ensign/2000/05/news-of-the-church/seven-temples-dedicated
+[T2] First temple in New Mexico; 73rd dedicated temple in operation - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T2] 8.5-acre site, 10301 San Francisco Rd NE, elevation 5,729 ft - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T2] Two instruction rooms, three sealing rooms, one baptistry - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T2] Open house February 17-26, 2000, roughly 70,000 visitors - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T2] Original hinged entrance doors replaced with glass sliding doors because of the mountain winds - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+[T2] 2019 renovation converted the kitchen and cafeteria to office space - churchofjesuschristtemples.org/albuquerque-new-mexico-temple/
+
+CONFLICTS RESOLVED
+Floor area - three figures in play: 33,000 (Church News 2000 facts-and-figures),
+34,000 (Church News Almanac), 34,245 (churchofjesuschristtemples.org). Tier 1
+disagrees with itself, so the hierarchy cannot settle it on rank alone. Published
+the Tier 2 figure, 34,245, because it is the one stated to the square foot and
+Tier 2 is explicitly sufficient for spec fields. Worth a re-check before reprint.
+
+VOLATILE (re-check before reprint)
+"73rd dedicated temple in operation" - an operating count, not a fixed ordinal.
+2019 renovation described as the most recent change.
+
+OMITTED
+Exterior ornamented with moons, stars and suns in astronomical order
+(churchofjesuschristtemples.org). Tier 2 only, and a symbolism claim rather than
+a spec field, so it needed Tier 1 or corroboration. Searched Church News and
+Newsroom and found nothing describing it. Dropped rather than hedged. This is a
+good candidate to restore if a Tier 1 description of the exterior surfaces.
+
+================================================================================
+SOURCE LEDGER - Billings Montana Temple
+================================================================================
+
+VERIFIED
+[T1] Announced August 16, 1996 by Gordon B. Hinckley - thechurchnews.com/almanac/temples/billings-montana/
+[T1] Groundbreaking March 28, 1998, Elder Hugh W. Pinnock presided; spring snowstorm; more than 4,800 attended from the US and Canada - thechurchnews.com/almanac/temples/billings-montana/
+[T1] Dedicated November 20 and 21, 1999 by Gordon B. Hinckley, eight sessions, more than 12,000 participated - thechurchnews.com/almanac/temples/billings-montana/
+[T1] Open house October 8-23, 1999, more than 68,450 visitors - thechurchnews.com/almanac/temples/billings-montana/
+[T1] First house of the Lord in Montana - thechurchnews.com/almanac/temples/billings-montana/
+[T1] Nearest temple before Billings was Idaho Falls: up to six hours' drive in summer, eight or more in winter - thechurchnews.com/almanac/temples/billings-montana/
+[T2] 66th dedicated temple in operation; 10-acre site at 3100 Rim Point Dr - churchofjesuschristtemples.org/billings-montana-temple/
+[T2] Wyoming white dolomite precast concrete; 33,800 sq ft; single central spire - churchofjesuschristtemples.org/billings-montana-temple/
+[T2] Two instruction rooms (two-stage progressive), three sealing rooms, one baptistry - churchofjesuschristtemples.org/billings-montana-temple/
+[T2] Stained glass bay window at the west end; clear skylight over the main foyer giving a view up to the angel Moroni; laundry, brides' room, chapel and clothing rental worked into the footprint - churchofjesuschristtemples.org/billings-montana-temple/
+[T2] Grounds planted with more than 250 trees and 4,500 shrubs - churchofjesuschristtemples.org/billings-montana-temple/
+[T2] District served Montana and into Wyoming - churchofjesuschristtemples.org/billings-montana-temple/
+
+CONFLICTS RESOLVED
+Announcement date - Church News Almanac gives 16 August 1996;
+churchofjesuschristtemples.org gives 30 August 1996. Tier 1 wins: published
+August 16, 1996.
+Groundbreaking date - Church News gives March 28, 1998;
+churchofjesuschristtemples.org gives 30 March 1998. Tier 1 wins: published
+March 28, 1998. Both conflicts are two weeks and two days respectively, small
+enough to look like typos in either direction, so they are recorded here rather
+than silently resolved.
+
+VOLATILE (re-check before reprint)
+"66th dedicated temple in operation" - operating count.
+The Montana and Wyoming district description predates the Helena Montana Temple,
+and Missoula Montana has since been announced with a groundbreaking reported in
+April 2026. The district statement is written in the past tense for that reason.
+
+OMITTED
+Nothing material. An aside comparing the open house attendance to the city's
+population was cut as unsourced, and a comparison of its footprint to Utah
+temples of the same decade was cut for the same reason.
+
+================================================================================
+SOURCE LEDGER - Burley Idaho Temple
+================================================================================
+
+VERIFIED
+[T1] Announced April 4, 2021 by Russell M. Nelson, 191st Annual General Conference - churchofjesuschristtemples.org (T2) and newsroom.churchofjesuschrist.org/article/open-house-and-dedication-dates-announced-for-burley-idaho-temple
+[T1] Groundbreaking June 4, 2022, Elder Brent H. Nielson of the Presidency of the Seventy presided - churchofjesuschristtemples.org/burley-idaho-temple/ (T2); newsroom
+[T1] Dedicated January 11, 2026 by President Dallin H. Oaks; his first temple dedication as President of the Church; first dedication of 2026 - newsroom.churchofjesuschrist.org/article/president-oaks-dedicates-burley-idaho-temple; thechurchnews.com/temples/2026/01/11/president-dallin-h-oaks-dedicates-burley-idaho-temple/
+[T1] Oaks selected it because he lived in nearby Twin Falls as a child for about five years; "close to my heart" - newsroom.churchofjesuschrist.org/article/president-oaks-dedicates-burley-idaho-temple
+[T1] Two-story, approximately 45,300 sq ft, 172 ft to the top of the spire, steel frame clad in Bianco Sardo granite fabricated in Millcreek, Utah - newsroom; thechurchnews.com
+[T1] Art glass patterns are the blossoms and leaves of the potato plant; design motifs drawn from the Magic Valley's potato and sugar beet fields; palette of blue, gold, amber, cream, orange, peach and green taken from farmland and open sky - thechurchnews.com/temples/2025/11/03/burley-idaho-temple-opens-for-public-tours/; newsroom
+[T1] Open house November 6-22, 2025; 143 tours in Spanish, nine in American Sign Language, one tactile tour - thechurchnews.com/temples/2026/01/10/burley-idaho-temple-latter-day-saints-have-prepared/
+[T1] Leroy Funk and siblings donated farmland the family had worked for decades; "It is here because of the faithful ones who came before." - thechurchnews.com/temples/2026/01/10/...
+[T1] Susan Young, Twin Falls temple matron 2016-2019, on Burley youth arriving at 3:30 a.m. for baptisms, baptistry full of youth in white, quiet enough to hear a pin drop - thechurchnews.com/temples/2026/01/10/...
+[T1] Latter-day Saints in the Burley area since 1879; first branch of fourteen members organized in a log cabin in May 1880 - thechurchnews.com/temples/2026/01/10/...
+[T1] Travel to the temple went from about 45 minutes (Twin Falls) to about five - thechurchnews.com/temples/2026/01/10/...
+[T1] Unseasonably warm and sunny open house weather; coordinators Dee and Bonnie Jones joking about sunscreen - thechurchnews.com/temples/2026/01/10/...
+[T2] 212th dedicated temple in operation; seventh dedicated in Idaho; 10.12-acre site at 40 S 150 E - churchofjesuschristtemples.org/burley-idaho-temple/
+[T2] Naylor Wentworth Lund Architects; four instruction rooms, three sealing rooms, one baptistry - churchofjesuschristtemples.org/burley-idaho-temple/
+[T2] Interior Botticino Classico marble with Jerusalem Gold and Verde Guatemala accents; artwork around the local landscape and early Burley Saints - churchofjesuschristtemples.org/burley-idaho-temple/
+
+CONFLICTS RESOLVED
+None.
+
+VOLATILE (re-check before reprint)
+"212th dedicated temple in operation" and "seventh dedicated in Idaho" - both
+counts move. Idaho had four more temples in planning or construction at
+dedication.
+"First temple he dedicated as President of the Church" is fixed, but "first
+dedication of 2026" stops being interesting after 2026.
+
+OMITTED
+Open house total attendance: not published in the sources read. The tour-type
+counts were published and are used instead.
+Number of dedicatory sessions: not stated in the Newsroom or Church News
+coverage read, so the row does not claim one.
+
+================================================================================
+SOURCE LEDGER - Lehi Utah Temple
+================================================================================
+
+Handled under the undedicated-temple rules in references/special-cases.md: a
+Status row first, no temple number among dedicated temples, no First Temple
+President, no Rededicated or Changes Over Time, and a deliberately thin design
+section. This entry will need rewriting at groundbreaking, again after the open
+house, and again at dedication.
+
+VERIFIED
+[T1] Announced April 7, 2024 by Russell M. Nelson at the 194th Annual General Conference - newsroom.churchofjesuschrist.org/article/rendering-released-for-lehi-utah-temple; churchofjesuschristtemples.org (T2)
+[T1] No groundbreaking ceremony announced; design work ongoing - thechurchnews.com/temples/2025/08/25/pre-groundbreaking-site-work-begins-for-lehi-utah-temple/
+[T1] Pre-groundbreaking site work began August 2025: underground water, sewer and electricity out to the city's existing utilities, plus grading of the Church's property - newsroom.churchofjesuschrist.org/article/preliminary-work-on-the-lehi-utah-temple-to-begin; thechurchnews.com/temples/2025/08/25/...
+[T1] 22.48-acre site northwest of the intersection of 3950 North and Center Street; multi-story temple of approximately 85,000 sq ft; a new meetinghouse on the same site - thechurchnews.com/temples/2025/08/25/...
+[T2] Exterior rendering released February 24, 2025; single attached central spire; 30th temple announced for Utah - churchofjesuschristtemples.org/lehi-utah-temple/
+
+CONFLICTS RESOLVED
+None, but note churchofjesuschristtemples.org simultaneously lists the
+groundbreaking as "not announced" and the status as including retaining walls and
+parking lot infrastructure. Both are true: that work is pre-groundbreaking, which
+Church News states explicitly. The copy says so rather than implying construction
+has formally begun.
+
+VOLATILE (re-check before reprint)
+The entire Status row. Everything in this entry changes at groundbreaking.
+"30th temple announced for Utah" moves with every new Utah announcement.
+
+OMITTED
+Exterior materials, height, ordinance and sealing room counts, baptistry, first
+temple president, architect, and all interior design detail: not published.
+Rows deleted rather than filled.
+Trivia section: dropped entirely. The two candidates were the origin of the town
+name (general knowledge, not tiered here) and a comparison of its scale to recent
+compact temples (unsourced comparative). Neither shipped, and a short entry is
+correct for a temple at this stage.
+
+================================================================================
+SOURCE LEDGER - Provo Utah Rock Canyon Temple
+================================================================================
+
+Handled under the undedicated-temple rules. Distinct from the "Provo" product,
+which depicts the demolished 1972 Provo Utah Temple and has its own facts file.
+Per references/special-cases.md the two are separate entries with separate
+research, and neither page blends the other's specs.
+
+VERIFIED
+[T1] The Provo Utah Temple was renamed the Provo Utah Rock Canyon Temple and closed February 24, 2024 for reconstruction - newsroom.churchofjesuschrist.org/article/the-provo-temple-will-reopen-as-the-provo-utah-rock-canyon-temple
+[T1] Rebuilt to current seismic codes with reconfigured rooms and new electrical, heating and plumbing systems - newsroom.churchofjesuschrist.org/article/the-provo-temple-will-reopen-as-the-provo-utah-rock-canyon-temple
+[T1] No open house or rededication dates announced as of September 2026 - newsroom.churchofjesuschrist.org/event/temple-open-house-and-dedications
+[T2] 15.4-acre site on Provo's east bench at the mouth of Rock Canyon - churchofjesuschristtemples.org/provo-utah-rock-canyon-temple/
+[T2] Bianco Sardo granite from Sardinia; 163,000 sq ft; 265 ft 6 in; single attached central spire; designed with no angel Moroni - churchofjesuschristtemples.org/provo-utah-rock-canyon-temple/
+[T2] Six instruction rooms, eight sealing rooms, two baptistries - churchofjesuschristtemples.org/provo-utah-rock-canyon-temple/
+[T2] Rebuilt west of the original foundation on flatter ground; third reconstructed temple to be relocated from its original footprint - churchofjesuschristtemples.org/provo-utah-rock-canyon-temple/
+[T2] Current status: cladding and sheathing the exterior, installing windows, landscaping underway - churchofjesuschristtemples.org/provo-utah-rock-canyon-temple/
+
+CONFLICTS RESOLVED
+churchofjesuschristtemples.org lists the announcement as 14 August 1967 and the
+groundbreaking as 15 September 1969 by Hugh B. Brown. Those are the ORIGINAL
+Provo temple's milestones, carried forward because the site lineage is treated as
+continuous. Publishing them on the Rock Canyon page would imply the building
+under construction was announced in 1967. Both rows omitted; the Status row
+carries the lineage in plain words instead.
+
+VOLATILE (re-check before reprint)
+The whole Status row, and the construction progress in particular.
+The absence of an angel Moroni is a Tier 2 design statement about a building not
+yet finished. Confirm against Tier 1 at media day.
+
+OMITTED
+Announced and Groundbreaking rows (see Conflicts Resolved).
+Temple number: set at dedication.
+Interior art glass, palette, and all interior detail: not published.
+First temple president: not called.
+What became of the 1972 building's angel Moroni statue: not stated in any Tier 1
+source read. Not speculated about.

@@ -176,6 +176,19 @@ class FakeClient:
         self.already_live, self.never_appears = already_live, never_appears
         self.visible_after_lookups, self.lookups = visible_after_lookups, 0
 
+    def gql(self, query, variables=None):
+        """Answers the two read-backs finish_half does before it says `live`:
+        wait_for_import's poll and stale_colorways' option read. Both report a
+        finished, correctly renamed product, so these tests keep exercising the
+        sequencing they were written for rather than the race."""
+        if "options" in query:
+            return {"productByHandle": {"options": [
+                {"name": "Color", "values": ["Black"]}]}}
+        return {"productByHandle": {
+            "media": {"nodes": [{"id": "m1"}, {"id": "m2"}]},
+            "variants": {"nodes": [
+                {"id": "v1", "media": {"nodes": [{"id": "m1"}]}}]}}}
+
     def find_product_by_title(self, title):
         self.lookups += 1
         if self.never_appears:
@@ -451,5 +464,80 @@ err = RuntimeError("HTTPSConnectionPool: Max retries with url: "
 assert "Signature" not in tapstitch_run.safe_error(err), tapstitch_run.safe_error(err)
 assert "SECRET" not in tapstitch_run.safe_error(err)
 assert len(tapstitch_run.safe_error(err)) <= 200
+
+# --- the import race that published a near-blank garment on 16 Sep 2026 -----
+# wait_for_shopify returns as soon as the product record exists, but Tapstitch
+# keeps pushing variants and media after that. Running the fixups inside that
+# window cost one product of 102: its colour rename was overwritten and all ten
+# variants stayed bound to the FRONT mockup, and both steps logged success.
+
+class _FakeClient:
+    """Replays a sequence of productByHandle payloads, one per poll."""
+    def __init__(self, payloads):
+        self.payloads, self.calls = list(payloads), 0
+    def gql(self, query, variables=None):
+        i = min(self.calls, len(self.payloads) - 1)
+        self.calls += 1
+        return {"productByHandle": self.payloads[i]}
+
+
+def _product(n_variants, n_bound, n_media):
+    return {"media": {"nodes": [{"id": f"m{i}"} for i in range(n_media)]},
+            "variants": {"nodes": [
+                {"id": f"v{i}",
+                 "media": {"nodes": [{"id": "m0"}] if i < n_bound else []}}
+                for i in range(n_variants)]}}
+
+
+tapstitch_run.SHOPIFY_POLL_S = 0  # no real sleeping in tests
+
+# Settles only after the counts repeat with every variant bound.
+c = _FakeClient([_product(10, 0, 0), _product(10, 4, 2), _product(10, 10, 20),
+                 _product(10, 10, 20)])
+note = tapstitch_run.wait_for_import(c, "h", timeout_s=5)
+assert "settled" in note and "10 variants" in note, note
+assert c.calls == 4, c.calls
+
+# A product whose variants never get images must RAISE, not be called ready.
+c = _FakeClient([_product(10, 0, 0)])
+try:
+    tapstitch_run.wait_for_import(c, "h", timeout_s=0)
+    raise AssertionError("expected a raise for a product still importing")
+except T.TapstitchError as e:
+    assert "still importing" in str(e), e
+
+# One poll where everything looks bound is NOT enough: an import that has
+# delivered the first colourway looks complete when it is not. The counts have
+# to be seen twice, and a change between polls resets the confirmation.
+c = _FakeClient([_product(5, 5, 10), _product(10, 10, 20), _product(10, 10, 20)])
+note = tapstitch_run.wait_for_import(c, "h", timeout_s=5)
+assert "10 variants" in note, note
+assert c.calls == 3, c.calls
+
+# rebind must not report "nothing needed changing" for a product with no images.
+import tapstitch_variant_images
+
+
+class _RebindClient:
+    def __init__(self, variants):
+        self.variants = variants
+    def find_product_by_handle(self, handle):
+        return {"id": "gid://shopify/Product/1"}
+    def gql(self, query, variables=None):
+        return {"product": {"media": {"nodes": [{"id": "m1", "image": {"url": "http://x/front.png"}}]},
+                            "variants": {"nodes": self.variants}}}
+
+
+_saved = tapstitch_variant_images.T.store_product_prefill, tapstitch_variant_images.T.back_for_front_mockups
+tapstitch_variant_images.T.store_product_prefill = lambda *a, **k: {}
+tapstitch_variant_images.T.back_for_front_mockups = lambda pre: {"front.png": "back.png"}
+try:
+    unbound = [{"id": "v1", "title": "Black / L", "media": {"nodes": []}}]
+    out = tapstitch_variant_images.rebind(_RebindClient(unbound), None, "h", "t")
+    assert out is not None, "a variant with no image must not read as 'already correct'"
+    assert "carry no image yet" in out, out
+finally:
+    tapstitch_variant_images.T.store_product_prefill, tapstitch_variant_images.T.back_for_front_mockups = _saved
+
 
 print("all tests passed")

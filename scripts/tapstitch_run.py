@@ -246,6 +246,95 @@ def wait_for_shopify(client, title, timeout_s=None):
         time.sleep(SHOPIFY_POLL_S)
 
 
+def stale_colorways(client, garment_id, handle):
+    """Colour values still carrying their Tapstitch name after the rename ran.
+
+    Reads the rename map from the garment config, the same source
+    shopify_fixups.colorway_renames_by_type builds from, so a colour added or
+    renamed in config is covered here without touching this function.
+    """
+    cfg = generate.load_garment_config(garment_id)
+    tapstitch_names = {c["tapstitch"] for c in cfg.get("colorways", [])
+                       if c.get("tapstitch") and c.get("shopify")
+                       and c["tapstitch"] != c["shopify"]}
+    if not tapstitch_names:
+        return []
+    product = client.gql(
+        "query($h: String!) { productByHandle(handle: $h) { "
+        "options { name values } } }", {"h": handle})["productByHandle"]
+    if not product:
+        return []
+    values = set()
+    for option in product["options"]:
+        if option["name"] == "Color":
+            values.update(option["values"])
+    return sorted(tapstitch_names & values)
+
+
+def wait_for_import(client, handle, timeout_s=None):
+    """Poll until Shopify has finished importing the product from Tapstitch.
+
+    THE RACE THIS CLOSES, measured on the 16 Sep 2026 catalogue run.
+    wait_for_shopify returns the moment the product RECORD exists, but Tapstitch
+    keeps pushing variants and media for up to a minute after that. Every one of
+    the 102 rows reached the fixups 24 to 42 seconds after distribute, inside
+    that window, and one of them lost: the Saratoga Springs crew published with
+    its colour rename overwritten by the continuing import and all 10 variants
+    still bound to the near-blank FRONT mockup, while the run log reported
+    success for both steps.
+
+    Readiness here is every variant carrying an image, then one confirming poll
+    with the variant and media counts unchanged. The counts have to be seen
+    twice because an import that has delivered the first colourway looks
+    complete when it is not.
+
+    Returns a short note for the log. Raises rather than letting a half-imported
+    product reach the fixups, because that is the state that publishes quietly
+    wrong; the row stays at its current state and the next run resumes here.
+    """
+    deadline = time.time() + (SHOPIFY_WAIT_S if timeout_s is None else timeout_s)
+    query = """
+      query($h: String!) { productByHandle(handle: $h) {
+        media(first: 60) { nodes { ... on MediaImage { id } } }
+        variants(first: 100) { nodes { id
+          media(first: 1) { nodes { ... on MediaImage { id } } } } } } }"""
+    previous, waited = None, 0.0
+    while True:
+        product = client.gql(query, {"h": handle})["productByHandle"]
+        ready, counts = False, None
+        if product:
+            variants = product["variants"]["nodes"]
+            counts = (len(variants), len(product["media"]["nodes"]))
+            ready = bool(variants) and not any(not v["media"]["nodes"]
+                                               for v in variants)
+        if ready:
+            if counts == previous:
+                return (f"import settled after {waited:.0f}s: "
+                        f"{counts[0]} variants, {counts[1]} images")
+            # Every variant carries an image, which is the condition that
+            # matters, but the counts have not repeated yet. An import that has
+            # delivered only its first colourway looks exactly like this, so
+            # spend one more poll before believing it. The deadline governs
+            # REACHING this state, not confirming it, or a caller passing a
+            # short timeout would be told a finished product was unfinished.
+            if previous is not None and time.time() >= deadline:
+                return (f"import accepted after {waited:.0f}s while still "
+                        f"settling: {counts[0]} variants, {counts[1]} images")
+            previous = counts
+        else:
+            previous = None
+            if time.time() >= deadline:
+                raise T.TapstitchError(
+                    f"{handle}: Shopify was still importing from Tapstitch after "
+                    f"{waited:.0f}s. Refusing to run the fixups against a partly "
+                    f"imported product, because that is how a product publishes "
+                    f"with the wrong colour name and a blank front image while "
+                    f"the log reports success. The product IS live; re-run to "
+                    f"resume the Shopify half once it settles.")
+        time.sleep(SHOPIFY_POLL_S)
+        waited += SHOPIFY_POLL_S
+
+
 def finish_half(s, client, data, row, handle, template_id, note):
     """The Shopify half, after the product is live. Idempotent and re-runnable.
 
@@ -253,6 +342,9 @@ def finish_half(s, client, data, row, handle, template_id, note):
     the next run instead of going near distribute again.
     """
     temple, garment_id = row["temple"], row["garment"]
+    # Before ANY fixup. The rename and the image rebind both read wrong against
+    # a product Shopify is still importing, and both report success when they do.
+    note(wait_for_import(client, handle))
     # write_description False: the product was created carrying the composed
     # description, so writing it again is a second identical write to the same
     # field through a second composition that could drift from the first.
@@ -270,6 +362,15 @@ def finish_half(s, client, data, row, handle, template_id, note):
     if rebound is not None and "rebound" not in rebound:
         raise T.TapstitchError(f"variant image repair did not run: {rebound}")
     note(rebound or "variant images already on the back")
+
+    # Read the product back rather than trusting the two steps above. Both of
+    # them reported success on the one product of 102 that published wrong.
+    stale = stale_colorways(client, garment_id, handle)
+    if stale:
+        raise T.TapstitchError(
+            f"{handle}: colour(s) {', '.join(stale)} are still the Tapstitch "
+            f"names after the rename ran, which means the import overwrote it. "
+            f"The product IS live; re-run to resume the Shopify half.")
     ledger.set_state(data, temple, garment_id, "live", problems=[])
     ledger.save(data)
     return "live"

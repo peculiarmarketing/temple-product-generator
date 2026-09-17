@@ -97,14 +97,26 @@ def rebind(client, session, handle, template_id, report_only=False):
             name_of[node["id"]] = node["image"]["url"].split("/")[-1].split("?")[0]
     id_of = {name: mid for mid, name in name_of.items()}
 
-    updates = []
+    updates, unbound = [], 0
     for v in data["variants"]["nodes"]:
         bound = (v["media"]["nodes"] or [{}])[0].get("id")
+        if bound is None:
+            # NOT the same thing as "already on a back", and conflating the two
+            # is how a near-blank garment reached the storefront on 16 Sep 2026.
+            # A variant with no image yet means Shopify is still importing from
+            # Tapstitch; queueing nothing for it and returning None reads to the
+            # caller as "nothing needed changing".
+            unbound += 1
+            continue
         back_name = pairs.get(name_of.get(bound))
         # A variant already on a back is not a key in `pairs`, which is what
         # makes this idempotent.
         if back_name and id_of.get(back_name):
             updates.append({"id": v["id"], "mediaId": id_of[back_name]})
+    if unbound:
+        return (f"{handle}: {unbound} of {len(data['variants']['nodes'])} variant(s) "
+                f"carry no image yet, so the back images cannot be paired. Shopify "
+                f"is probably still importing; re-run once it settles.")
     if not updates:
         return None
     if report_only:
