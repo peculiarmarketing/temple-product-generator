@@ -1290,9 +1290,11 @@ would have detached the set from every replacement and removed the dropdown from
 those pages. Rebound to `tee`, `crew` and `hoodie`; `cc1717-dated` stays because
 the dated tee is paused rather than replaced.
 
-Note the sync cannot be run while the store is dark: a populated set whose garment
-has no live products raises SystemExit by design, which is the guard against
-blanking a set on a bad catalogue read.
+Note a populated set whose garment has no live products raises SystemExit, which
+is the guard against blanking a set on a bad catalogue read. A set flagged
+`"paused": true` in sets.json is the one exception and passes through untouched,
+because a paused line has no live products by design; a paused set that does have
+live products is itself an error.
 
 ### Tests
 

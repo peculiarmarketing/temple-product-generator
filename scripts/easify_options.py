@@ -388,6 +388,25 @@ def cmd_sync(report_only):
     for title in set_order:
         if title in cfg_by_title:
             garment = cfg_by_title[title]["garment"]
+            if cfg_by_title[title].get("paused"):
+                # A paused line has no live products BY DESIGN, so the guard
+                # below reads that as a broken catalog and stops the whole
+                # sync, including the sets that DO need repointing. Leave a
+                # paused set exactly as it is instead; untouched sets are
+                # asserted unchanged in validate_output.
+                #
+                # The flag has to stay honest about its own premise. Once the
+                # line relaunches, skipping the set silently would leave its
+                # dropdown pointing at the old drafted handles and say nothing,
+                # so a paused set with live products is an error, not a skip.
+                if expected[garment]:
+                    raise SystemExit(
+                        f"{title}: {garment} is marked paused in sets.json but "
+                        f"{len(expected[garment])} live product(s) were found. "
+                        f"Set paused to false there and rerun.")
+                out_sets[title] = in_sets[title]
+                attention.append(f"{title}: {garment} is paused, set left untouched")
+                continue
             if not expected[garment] and len(in_sets[title]) > 1:
                 # A populated set losing every live product means a broken
                 # catalog read (wrong store, bad filter), not mass retirement.
