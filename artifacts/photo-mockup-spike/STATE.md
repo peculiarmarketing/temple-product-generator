@@ -22,11 +22,220 @@ whole set in `final-set/` is current and came out of one build.
 - `composite.py` / `composite_set.py` : the warp-and-shade engine and the runner
   that places the print at true physical size. Unchanged today.
 - `print_geometry.json` : all placement numbers, in inches.
+- `normalize.py` : puts every gallery image on the garment's gray and crops it to
+  1:1. Read the section below before changing a threshold in it.
+- `backdrop_grays.json` : the measured per-garment backdrop gray.
+- `flat-originals/` : the white Tapstitch flats as downloaded, archived before
+  anything deletes them from Shopify.
 - `tapstitch-on-model/` : real Tapstitch model photos, for fit comparison.
 
 Cleaned out on 17 Sep 2026 and gone for good: `source-photos/` (JPEG copies of
 the superseded old set), the three `base2_*` lifestyle shots, and twelve loose
 diagnostic images nothing referenced. The folder went from 127 MB to 94 MB.
+
+## One backdrop, one shape (18 September 2026)
+
+Evan's call after seeing the three Salt Lake galleries side by side: every image
+in a gallery sits on the same light gray and every image is 1:1. The on-model
+shots already were. Tapstitch's flat lays and the `-D-` fabric close-ups arrived
+on pure white, and the close-ups arrived at 2048x2731. `normalize.py` fixes both
+at upload, so this is pipeline behaviour rather than a Salt Lake touch-up.
+
+**The temple art closeup in slot 3 stays white.** Deliberate, so the design reads
+clearly. Nothing is ever pointed at it.
+
+### The gray is measured, not hardcoded
+
+`backdrop_gray(garment)` reads the left and right margin strips of that garment's
+own `final-set/` shots, trims the darkest and lightest 5% and takes the mean.
+Currently hoodie `#C6C6C8`, tee `#C1C1C5`, crew `#BDBDC2`; cached in
+`backdrop_grays.json`, re-measured with `--grays`.
+
+Per garment, not one value for the set. The crew sits about 10 levels darker
+than the hoodie because `crew_black` came off the older pipeline, and Evan's
+instruction was that the crew's flats match the crew's own shots. Measuring makes
+that fall out rather than being a special case, and a new garment needs no new
+constant. A product page is then internally consistent, which is the only
+comparison anyone actually makes.
+
+Flat fill, not a synthesized gradient. The real backdrop falls from about
+`#C8C7CB` at the top to `#BABABD` at the bottom, but the flat lays are overhead
+shots and a studio wall falloff painted onto one reads as a mistake.
+
+### The fill has to be region-based. This is the important one.
+
+The flat BACK mockups carry the temple printed in near-white ink INSIDE the
+garment silhouette. A colour key on "white" punches holes through the artwork and
+shows gray through the temple. Measured on the hoodie flats: 7,800 to 9,400
+pixels per image are print, not background.
+
+So only white **connected to the frame border** is background. Seeds are strict
+white on the four edges; anything enclosed by garment is never reached. Verified
+per image by `--selftest`, which counts the enclosed near-white before and after
+and fails if any of it was eaten.
+
+### Two thresholds, because the sources are JPEG
+
+Seed at 250, grow through 228. Right beside a dark cutout edge the backdrop
+carries JPEG ringing down to about 228, and a single strict mask leaves a one to
+two pixel necklace of not-quite-white pixels sitting on the new gray.
+
+Solving those as partial coverage makes it worse rather than better: the linear
+model reads a ringing 246 as 96% background and carries the missing nine levels
+through, which measured as a rim **7 to 17 levels darker** than the backdrop.
+Growing the fill through 228 absorbs the ringing into the backdrop proper, where
+it resolves to exactly the target. It removes about 80% of the rim and grows the
+background by 0.02 to 0.06%, which is the ringing and nothing else. The palest
+garment edge ring in the live set is 214 (crew Flower Gray), so 228 clears real
+fabric by 14 levels, and a leak would need a connected path of 228+ pixels
+running from the frame edge into the garment.
+
+### The edge identity, and why there is no halo
+
+An antialiased edge pixel is the garment colour C over the white backdrop,
+`P = (1-b)*C + b*255`. Replacing white with gray G wants `(1-b)*C + b*G`, which
+rearranges to
+
+    out = P + b*(G - 255)
+
+so only b is needed and **C never has to be known**, which means it can never be
+reconstructed wrongly. b comes from the local garment darkness: the darkest
+confidently-garment pixel within a few px sets the scale.
+
+**The band must have no brightness floor.** An earlier cut excluded band pixels
+below 200 as "definitely garment". A pixel that is 20% backdrop over a black
+garment reads about 60, so it was excluded, and its backdrop fifth stayed WHITE
+against a gray surround: a one-pixel light fringe, exactly the halo this exists
+to prevent. The band is held to 2px instead, because real antialiasing is one to
+two pixels and a wider band risks reading a specular highlight as coverage.
+
+Profile across a black flat's edge, before and after, target 198:
+
+    before   255  255  255  255  243   60    9   22   21
+    after    198  198  198  198  198   47    8   22   21
+
+Monotonic into the garment, no overshoot, no undershoot.
+
+### The crop is a pixel slice
+
+`square_crop` takes a window of `min(w, h)` centred on the **content** bbox, not
+the frame, clamped to the frame. No resampling, no upscaling, ever.
+
+Centring on content matters. A plain centre crop of a 2048x2731 close-up takes
+341px off the top and clips the point of the hood. Centring on content takes 0 to
+152px and only off a garment that already bleeds past the frame edge. Two of the
+nine are fully contained, three are full-bleed macros, and the rest lose under 7%
+of content height symmetrically.
+
+`tee/D1` is the one clamped case: its subject sits in the bottom 1,646px, so it
+ends bottom-flush with gray above. The rule is still right, it is the only crop
+that keeps all the content, but it is the one frame where a hand-picked offset
+might compose better.
+
+### A garment can key perfectly and still be invisible
+
+Found on the crew, and it is a separate failure from the one below. Flower Gray
+is the one garment whose flat lay sits at almost exactly its own backdrop
+brightness: body RGB 183 against a backdrop of 189, **seven levels apart**. The
+key worked fine; the sweatshirt simply melted into the background and lost its
+sleeves and hem. The hoodie (navy, 63) and the tee (black, 42) each had over 135
+levels of separation, which is why neither showed it.
+
+The pale-garment guard did NOT catch this. It reported an edge ring of 214
+against a limit of 214 and passed, because it asks whether the key would EAT the
+garment, which is a different question from whether the result is legible.
+
+`separated_gray()` is the answer: if the garment body sits under
+`MIN_SEPARATION` (20) from its backdrop, the backdrop is darkened until it does
+not. Only ever darkened, because lightening moves back toward the white this
+whole change is getting away from, and never past `SEPARATION_FLOOR` (140).
+
+Applied to the flats only, via `for_upload(..., separate=True)`. The fabric
+close-ups have not needed it; the crew's are coffee against a 189 backdrop.
+
+**Both flats of a product share one gray.** The crew's back and front measure a
+few levels apart and solving each independently put them on two different grays.
+`build_product_gallery.py --reface` takes the darkest answer across the pair.
+
+**Nothing currently triggers it, and that is the better fix.** Darkening the
+crew's backdrop to 158 worked but left a visible step between slot 1 and slot 2.
+Evan's answer was to change the subject instead: the crew's flat lays now show
+**Black**, not Flower Gray. A black flat separates by 157 and 183, so it sits on
+the crew's own `#BDBDC2` like everything else and the step is gone. The rule
+stays in place as the guard for the next pale garment.
+
+### Which colourway the flats show
+
+`FLAT` in `build_product_gallery.py`, defaulting to `LEAD[garment]`. The crew is
+the one override: lead Flower Gray for the hero on-model shot at slot 1, Black
+for the two flat lays. Evan, 18 Sep 2026.
+
+The crew's Black flats had been pruned off that product in an earlier session, so
+there was nothing live to pull. `--reface` therefore takes its source from the
+live product if it is there and from `flat-originals/` if it is not, and fails
+loudly naming both if neither has it. This is the second time the archive has
+been the only surviving copy; keep it tracked.
+
+### Stamping a notice on detail shots
+
+The crew's `-D-` shots are a coffee garment, which the crew is not sold in. A
+`_notice` key in that garment's `captions.json` gets stamped across the bottom of
+every detail shot for it. Keys beginning with `_` are directives, not images, and
+both upload paths filter them out.
+
+Currently: `"*Pictured color not currently sold"` on the crew only.
+
+Black text on a band in the garment's backdrop gray, not straight onto the photo.
+The bottom strip of crew/D1 and crew/D2 is tan fleece at luma 109 and 124, where
+black text does not read; only crew/D3 happens to end on the backdrop. The band
+keeps the text black as asked and legible on all three, and it is drawn after the
+crop so it can never be cropped off.
+
+### Pale garments will break this, and the guard says so
+
+The technique needs the garment to be far from white. The guard measures the 99th
+percentile of the ring 2 to 6px **inside** the backdrop boundary, which is the
+only population that can be wrongly swallowed, and raises above 214. A whole-
+garment median is the wrong statistic: a dark garment with a blown highlight at
+its edge is the risky case and a median hides it.
+
+A white, oat or cream colourway will trip this, and that is the intent. Render
+that colourway on a non-white backdrop rather than lowering the number.
+
+### PNG out, not JPEG
+
+The close-ups arrive as JPEG. Re-encoding after a recolour stacks a second lossy
+generation on an image whose whole point is that it lost no quality. Shopify
+re-encodes to WebP for delivery, so the bigger upload costs nothing.
+
+Normalized files are derived at upload and never committed: they are a pure
+function of tracked inputs plus `backdrop_grays.json`, and changing a gray would
+strand every one of them.
+
+### Where it is wired in
+
+- `normalize.py` : the module. `--selftest` proves it on all 20 local images,
+  `--contact-sheet DIR` writes before/after sheets and a 400% edge zoom.
+- `scripts/build_product_gallery.py` : `--add` normalizes fabric details on the
+  way up. New `--reface` stage pulls the live flats down, recolours them and
+  re-uploads them, and replaces any fabric detail still in the old tall shape.
+- `scripts/upload_fabric_details.py` : same hook. It also now reads
+  `captions.json` instead of its own hardcoded list, which only covered the
+  hoodie and disagreed with `build_product_gallery.py` about the other two.
+
+### Two traps in the Shopify half
+
+1. **Archive the original before pruning.** `--reface` writes every downloaded
+   flat to `flat-originals/` first. `.flatcache/` is gitignored as a
+   self-regenerating cache, and it will NOT regenerate once `--prune` has deleted
+   the source from Shopify.
+2. **"No alt text means it is a flat mockup" stopped being true.** A refaced flat
+   carries deterministic alt text, so it leaves the classifier's view. Slots 2
+   and last are now found by alt first, with the classifier as fallback; relying
+   on the classifier alone would have silently rebuilt the gallery with slot 2
+   and the last slot missing. `--prune`'s drop set is also wider now, since a
+   superseded white flat joins it, so the variant-binding guard is the only thing
+   between a re-run and a blanked variant.
 
 ## Generating photos: kie.ai GPT Image 2.5 Sunburst
 

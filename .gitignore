@@ -45,3 +45,10 @@ artifacts/photo-mockup-spike/tapstitch-on-model/
 
 # download cache for the flat-mockup classifier, regenerates itself
 artifacts/photo-mockup-spike/.flatcache/
+
+# Normalized gallery images are derived at upload time from tracked sources
+# (fabric-details/, the flats archived in flat-originals/) plus the per-garment
+# grays in backdrop_grays.json. Committing them would add tens of megabytes of
+# output that a single constant change invalidates.
+artifacts/photo-mockup-spike/normalized/
+artifacts/photo-mockup-spike/normalize-preview/

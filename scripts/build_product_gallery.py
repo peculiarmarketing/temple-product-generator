@@ -11,11 +11,24 @@ Gallery, in order:
   .. fabric and construction details     captioned with the colourway shown
   last flat front mockup with chest logo
 
-Runs in three stages so the destructive one is never a surprise:
+Runs in stages so the destructive ones are never a surprise:
 
   --report   classify what is on the product now and print the plan. Changes nothing.
   --add      upload on-model backs and fabric details, bind variants. Additive only.
-  --prune    delete the surplus flat mockups, then order the gallery.
+  --reface   re-upload the lead flat mockups on the garment's gray. Additive only.
+  --prune    delete the surplus and superseded flat mockups, then order the gallery.
+
+ONE BACKDROP, ONE SHAPE. Per Evan, 18 Sep 2026. The on-model shots sit on a light
+gray studio backdrop; Tapstitch's flat mockups and the fabric close-ups arrive on
+pure white, and the close-ups arrive at 2048x2731 rather than square. Everything
+this uploads now goes through normalize.py first, which puts it on that garment's
+own gray and crops it to 1:1 at native resolution. The one deliberate exception
+is the temple art closeup in slot 3, which stays on white so the design reads
+clearly; nothing here is ever pointed at it.
+
+The flat mockups exist only on Shopify, because Tapstitch publishes them straight
+to the store and they never touch local disk. --reface is the stage that pulls
+them down, recolours them and puts them back.
 
 `--add` is safe to re-run: every image this uploads carries a deterministic alt
 text and anything already present is skipped. `--prune` refuses to touch a media
@@ -38,13 +51,23 @@ import numpy as np
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "artifacts/photo-mockup-spike"))
+import normalize  # noqa: E402
+from PIL import Image  # noqa: E402
 from shopify_client import ShopifyClient  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SPIKE = ROOT / "artifacts/photo-mockup-spike"
 TRUE = json.loads((SPIKE / "true_colors_all.json").read_text())
+ORIGINALS = SPIKE / "flat-originals"
 
 LEAD = {"hoodie": "navy-blue", "tee": "black", "crew": "gray"}
+# Which colourway the two flat lays show. Defaults to the lead colour; the crew
+# is the exception, per Evan 18 Sep 2026. Its lead is Flower Gray, but a Flower
+# Gray flat lay is a light heather that will not separate from any light gray
+# backdrop, so the flats show Black instead. The hero on-model shot at slot 1
+# stays the lead colour.
+FLAT = {"crew": "black"}
 ORDER = {
     "hoodie": ["navy-blue", "gray", "black", "coffee", "mauve", "royal-blue"],
     "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
@@ -62,11 +85,59 @@ def on_model_alt(temple, colour):
     return f"{temple} Temple back print on model - {PRETTY[colour]}"
 
 
-def detail_alts(garment):
+def flat_alt(temple, side, colour):
+    """Alt text for a refaced flat mockup.
+
+    Deliberately NOT prefixed "Temple back print on model - ", which is what
+    bind_variants_to_onmodel.py matches variants against. A flat lay must never
+    be mistaken for an on-model shot there.
+    """
+    what = "back print flat lay" if side == "back" else "chest logo flat lay"
+    return f"{temple} Temple {what} - {PRETTY[colour]}"
+
+
+def flat_colour(garment):
+    return FLAT.get(garment, LEAD[garment])
+
+
+def _captions(garment):
     d = SPIKE / "fabric-details" / garment
-    if not d.exists():
-        return []
-    return sorted(json.loads((d / "captions.json").read_text()).items())
+    return json.loads((d / "captions.json").read_text()) if d.exists() else {}
+
+
+def detail_alts(garment):
+    """(filename, alt) pairs. Keys starting with _ are directives, not images."""
+    return sorted((k, v) for k, v in _captions(garment).items() if not k.startswith("_"))
+
+
+def detail_notice(garment):
+    """Text stamped across the bottom of every detail shot for this garment."""
+    return _captions(garment).get("_notice")
+
+
+def stale_details(media, caps):
+    """Live fabric details still in the old tall shape, by alt -> [media ids].
+
+    A detail that has been normalized is square. Anything carrying a caption alt
+    at 2048x2731 predates this and is the thing being replaced. Shape is the
+    right test here: the alt text is identical before and after, deliberately, so
+    that the gallery ordering and every other script keep working unchanged.
+    """
+    want = {a for _, a in caps}
+    out = {}
+    for m in media:
+        alt, im = m.get("alt"), m.get("image") or {}
+        if alt in want and im.get("width") and im["width"] != im["height"]:
+            out.setdefault(alt, []).append(m["id"])
+    return out
+
+
+def squared_details(media, caps):
+    """Live fabric details already square, by alt -> media id."""
+    want = {a for _, a in caps}
+    return {m["alt"]: m["id"] for m in media
+            if m.get("alt") in want
+            and (m.get("image") or {}).get("width") == (m.get("image") or {}).get("height")}
 
 
 def classify(url, garment, cache):
@@ -108,7 +179,7 @@ def fetch(sc, gid):
     return sc.gql("""
       query($id: ID!) { product(id: $id) {
         title status
-        media(first: 60) { nodes { ... on MediaImage { id alt image { url } } } }
+        media(first: 60) { nodes { ... on MediaImage { id alt image { url width height } } } }
         variants(first: 100) { nodes { id title
           media(first: 1) { nodes { ... on MediaImage { id } } } } } } }""",
         {"id": gid})["product"]
@@ -122,6 +193,7 @@ def main():
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--report", action="store_true")
     g.add_argument("--add", action="store_true")
+    g.add_argument("--reface", action="store_true")
     g.add_argument("--prune", action="store_true")
     args = ap.parse_args()
 
@@ -129,6 +201,7 @@ def main():
     prod = fetch(sc, args.product_gid)
     media = prod["media"]["nodes"]
     lead = LEAD[args.garment]
+    caps = detail_alts(args.garment)
     cache = SPIKE / ".flatcache" / args.garment
     cache.mkdir(parents=True, exist_ok=True)
 
@@ -147,24 +220,46 @@ def main():
         colour, dist, ink = classify(m["image"]["url"], args.garment, cache)
         side = "back" if ink > 0.06 else "front"
         seen[m["id"]] = (colour, side)
-        star = "  <- KEEP" if colour == lead else ""
+        star = "  <- KEEP" if colour == flat_colour(args.garment) else ""
         print(f"  {m['id'].split('/')[-1]:20s} {PRETTY.get(colour, '?'):12s} "
               f"{dist:5.1f} {ink*100:6.2f}  {side}{star}")
 
-    keep = {mid for mid, (c, s) in seen.items() if c == lead}
+    # A lead-colour flat is kept only until its refaced twin exists. Once the
+    # gray version is on the product the white original is superseded and joins
+    # the drop set, which is a WIDER blast radius than this script used to have:
+    # the variant-binding guard below is now the only thing between a re-run and
+    # a blanked variant, so it is checked before anything is deleted.
+    fc = flat_colour(args.garment)
+    superseded = {mid for mid, (c, sd) in seen.items()
+                  if c == fc and flat_alt(args.temple, sd, c) in ours}
+    keep = {mid for mid, (c, sd) in seen.items() if c == fc} - superseded
     drop = [mid for mid in seen if mid not in keep]
+    # A tall fabric detail is superseded once a square one with the same alt is
+    # on the product. Matching on alt alone cannot tell them apart, which is why
+    # shape is the test.
+    sq = squared_details(media, caps)
+    stale_drop = [mid for alt, ids in stale_details(media, caps).items()
+                  if alt in sq for mid in ids]
+    drop += stale_drop
     bound = {(v["media"]["nodes"] or [{}])[0].get("id") for v in prod["variants"]["nodes"]}
     bound.discard(None)
     clash = [m for m in drop if m in bound]
 
-    print(f"\nkeep {len(keep)} flat mockup(s) in the lead colour ({PRETTY[lead]}), drop {len(drop)}")
+    print(f"\nkeep {len(keep)} white flat mockup(s) in {PRETTY[flat_colour(args.garment)]}, "
+          f"drop {len(drop)} ({len(superseded)} superseded flat(s), "
+          f"{len(stale_drop)} superseded detail(s))")
     if clash:
         print(f"  BLOCKED: {len(clash)} of those are still bound to a variant. Run --add first.")
     print(f"art closeup present: {'yes' if art else 'NO'}")
     missing = [c for c in ORDER[args.garment] if on_model_alt(args.temple, c) not in ours]
     print(f"on-model backs missing: {', '.join(missing) if missing else 'none'}")
-    caps = detail_alts(args.garment)
     print(f"fabric details missing: {sum(1 for _, a in caps if a not in ours)} of {len(caps)}")
+    refaced = {s_: (flat_alt(args.temple, s_, flat_colour(args.garment)) in ours)
+               for s_ in ("back", "front")}
+    print("flats refaced onto the gray: " +
+          ", ".join(f"{k} {'yes' if v else 'NO'}" for k, v in refaced.items()))
+    stale = stale_details(media, caps)
+    print(f"fabric details still white and 2048x2731: {len(stale)} of {len(caps)}")
 
     if args.report:
         print("\nREPORT ONLY. Nothing changed.")
@@ -185,11 +280,14 @@ def main():
         for fn, alt in caps:
             if alt in ours:
                 continue
-            mid = sc.upload_media_image(args.product_gid,
-                                        SPIKE / "fabric-details" / args.garment / fn, alt)
+            norm, st = normalize.for_upload(
+                SPIKE / "fabric-details" / args.garment / fn, args.garment,
+                notice=detail_notice(args.garment))
+            mid = sc.upload_media_image(args.product_gid, norm, alt)
             sc.wait_for_media_ready(mid)
             ours[alt] = mid
-            print(f"  uploaded detail {fn}")
+            print(f"  uploaded detail {fn}  {st['src'][0]}x{st['src'][1]} -> "
+                  f"{st['out'][0]}x{st['out'][1]} on {st['gray']}")
         prod = fetch(sc, args.product_gid)
         by_alt = {m.get("alt"): m["id"] for m in prod["media"]["nodes"] if m.get("alt")}
         ups = []
@@ -210,6 +308,104 @@ def main():
         print("\nADD complete. Run --report to check, then --prune.")
         return
 
+    if args.reface:
+        # The flat mockups live only on Shopify. classify() has already pulled
+        # each one into .flatcache, so the bytes are on disk by the time we get
+        # here.
+        ORIGINALS.mkdir(parents=True, exist_ok=True)
+        done = 0
+        want = flat_colour(args.garment)
+
+        # Where the two source flats come from, in order of preference:
+        #   1. live on the product, already pulled into .flatcache by classify()
+        #   2. the tracked archive in flat-originals/
+        # The archive is not a nicety. The crew's flats show Black, but the Black
+        # pair was pruned off that product in an earlier session, so the live
+        # product carries no Black flat to pull. The archived bytes are the only
+        # copy left, and they are what this rebuilds from.
+        sources = {}
+        for m in flats:
+            colour, side = seen.get(m["id"], (None, None))
+            if colour != want:
+                continue
+            src = cache / m["image"]["url"].split("/")[-1].split("?")[0]
+            if src.exists():
+                sources[side] = (src, True)      # True = came off the live product
+        for side in ("back", "front"):
+            if side in sources:
+                continue
+            arch = next(iter(ORIGINALS.glob(f"{args.garment}_{want}_{side}.*")), None)
+            if arch:
+                sources[side] = (arch, False)
+                print(f"  {side:5s}: not on the product, rebuilding from "
+                      f"{arch.relative_to(ROOT)}")
+        missing = [s_ for s_ in ("back", "front") if s_ not in sources]
+        if missing:
+            raise SystemExit(
+                f"no source for the {args.garment} {want} flat {', '.join(missing)}: "
+                f"not on the product and not in {ORIGINALS.relative_to(ROOT)}. "
+                "Re-pull it from Tapstitch.")
+
+        # ONE gray for both flats. A light garment needs its backdrop darkened to
+        # stay visible (see normalize.separated_gray), but the back and the front
+        # measure a few levels apart, so solving each independently would put the
+        # two flats of the same product on two different grays. Take the darkest
+        # answer across the pair and use it for both.
+        flat_gray = normalize.backdrop_gray(args.garment)
+        for side, (src, _live) in sorted(sources.items()):
+            g, rep = normalize.separated_gray(Image.open(src),
+                                              normalize.backdrop_gray(args.garment))
+            if rep.get("adjusted"):
+                print(f"  {side:5s}: garment sits {rep['separation']:.0f} levels "
+                      f"off the backdrop, under {normalize.MIN_SEPARATION}. Darkening.")
+                if sum(g) < sum(flat_gray):
+                    flat_gray = g
+        if tuple(flat_gray) != tuple(normalize.backdrop_gray(args.garment)):
+            print(f"  flats go on {tuple(flat_gray)} instead of "
+                  f"{normalize.backdrop_gray(args.garment)} so the garment reads\n")
+
+        for side, (src, live) in sorted(sources.items()):
+            alt = flat_alt(args.temple, side, want)
+            if alt in ours:
+                print(f"  {side:5s} already refaced, skipping")
+                continue
+            # ARCHIVE BEFORE ANYTHING ELSE. --prune deletes the white original
+            # from Shopify, and .flatcache is gitignored as a self-regenerating
+            # cache which will NOT regenerate once the source URL is gone. This
+            # tracked copy is then the only surviving original.
+            if live:
+                keep_at = ORIGINALS / f"{args.garment}_{want}_{side}{src.suffix}"
+                if not keep_at.exists():
+                    keep_at.write_bytes(src.read_bytes())
+                    print(f"  archived original -> {keep_at.relative_to(ROOT)}")
+            norm, st = normalize.for_upload(src, args.garment, gray=flat_gray,
+                                            cache=SPIKE / "normalized" / args.garment)
+            mid = sc.upload_media_image(args.product_gid, norm, alt)
+            sc.wait_for_media_ready(mid)
+            ours[alt] = mid
+            done += 1
+            print(f"  refaced {side:5s} {want:11s} {st['src'][0]}x{st['src'][1]} "
+                  f"on {st['gray']}, {st['bg_fraction']*100:.0f}% background, "
+                  f"edge ring p99 {st.get('ring_p99', 0):.0f}")
+        # Fabric details already on the product keep their alt text, so --add
+        # skips them by design. Replacing them is this stage's job too.
+        squared = squared_details(media, caps)
+        for fn, alt in caps:
+            if alt not in stale or alt in squared:
+                continue
+            norm, st = normalize.for_upload(
+                SPIKE / "fabric-details" / args.garment / fn, args.garment,
+                notice=detail_notice(args.garment))
+            mid = sc.upload_media_image(args.product_gid, norm, alt)
+            sc.wait_for_media_ready(mid)
+            done += 1
+            print(f"  refaced detail {fn}  {st['src'][0]}x{st['src'][1]} -> "
+                  f"{st['out'][0]}x{st['out'][1]} on {st['gray']}"
+                  + (f'  notice "{st["notice"]}"' if st.get("notice") else ""))
+        print(f"\nREFACE complete, {done} uploaded. Nothing deleted. "
+              "Run --report to check, then --prune.")
+        return
+
     # --prune
     if clash:
         raise SystemExit("refusing to prune: surplus mockups are still variant-bound.")
@@ -225,9 +421,20 @@ def main():
 
     prod = fetch(sc, args.product_gid)
     by_alt = {m.get("alt"): m["id"] for m in prod["media"]["nodes"] if m.get("alt")}
+    # SLOTS 2 AND LAST. Look these up by alt text first. The pixel classifier
+    # only ever sees UNLABELLED media, so once a flat has been refaced it carries
+    # an alt and drops out of `still` entirely: relying on the classifier here
+    # would silently resolve both to None and rebuild the gallery with slot 2 and
+    # the last slot missing. The classifier is a tool for identifying Tapstitch's
+    # unlabelled uploads, not the source of truth for gallery position.
     still = {m["id"] for m in prod["media"]["nodes"] if not m.get("alt")}
-    lead_back = next((m for m in still if seen.get(m, (None, None))[1] == "back"), None)
-    lead_front = next((m for m in still if seen.get(m, (None, None))[1] == "front"), None)
+    lead_back = by_alt.get(flat_alt(args.temple, "back", flat_colour(args.garment))) or \
+        next((m for m in still if seen.get(m, (None, None))[1] == "back"), None)
+    lead_front = by_alt.get(flat_alt(args.temple, "front", flat_colour(args.garment))) or \
+        next((m for m in still if seen.get(m, (None, None))[1] == "front"), None)
+    if not lead_back:
+        raise SystemExit("no flat back mockup for slot 2, refaced or otherwise. "
+                         "Refusing to reorder into a gallery that is missing it.")
     target = [by_alt[on_model_alt(args.temple, lead)]]
     if lead_back:
         target.append(lead_back)
