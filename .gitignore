@@ -52,3 +52,9 @@ artifacts/photo-mockup-spike/.flatcache/
 # output that a single constant change invalidates.
 artifacts/photo-mockup-spike/normalized/
 artifacts/photo-mockup-spike/normalize-preview/
+
+# Catalogue flat originals: 440 PNGs, about 220MB, and unlike the Salt Lake
+# archive these are recoverable. Tapstitch can republish them from the print
+# files in ../Temples/. Kept on disk before any delete, out of git.
+artifacts/photo-mockup-spike/flat-originals/catalog/
+artifacts/photo-mockup-spike/.flatcache/catalog/
