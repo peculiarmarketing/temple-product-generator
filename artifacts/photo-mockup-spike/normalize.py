@@ -178,11 +178,42 @@ def border_fill(mn, seed_level=WHITE, mask_level=LOOSE):
     pixels on the four edges only, so white enclosed by garment is never reached
     no matter how bright it is.
     """
-    white = mn >= mask_level
+    return _fill(mn >= mask_level, mn >= seed_level)
+
+
+def border_region(img, tol=14):
+    """Bool mask of backdrop of ANY flat colour, not just white.
+
+    Added 18 Sep 2026 after a live mistake. Once a flat lay has been recoloured
+    onto the gray, border_fill finds nothing, because the gray is nowhere near
+    white. Anything that then asks "which pixels are garment" by brightness
+    counts the whole backdrop as garment: build_product_gallery's colour
+    classifier did exactly that, matched every flat at a distance of 184, and the
+    fallback it triggered published the Salt Lake flat lay onto the Boise product.
+
+    Samples the frame edge for the backdrop colour and fills from the border
+    through anything within `tol` of it, so it works on white and on gray.
+    """
+    a = np.asarray(img.convert("RGB"), dtype=np.float32) if hasattr(img, "convert") \
+        else np.asarray(img, dtype=np.float32)
+    h, w = a.shape[:2]
+    edge = np.concatenate([a[:4].reshape(-1, 3), a[-4:].reshape(-1, 3),
+                           a[:, :4].reshape(-1, 3), a[:, -4:].reshape(-1, 3)])
+    ref = np.median(edge, axis=0)
+    close = np.abs(a - ref).max(axis=2) <= tol
+    seed = np.zeros_like(close)
+    seed[0, :] = seed[-1, :] = True
+    seed[:, 0] = seed[:, -1] = True
+    return _fill(close, close & seed)
+
+
+def _fill(mask, seed_ok):
+    """Everything in `mask` reachable from a border pixel that is also seed_ok."""
+    white = mask
     h, w = white.shape
     out = np.zeros_like(white)
     stack = deque()
-    seed = white & (mn >= seed_level)
+    seed = white & seed_ok
     for x in range(w):
         if seed[0, x]:
             stack.append((0, x))

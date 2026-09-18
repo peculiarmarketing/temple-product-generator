@@ -31,7 +31,7 @@ FILE_DPI = 300.0
 
 
 def quad_for(art_path, collar, hem, centre, length_in, top_below_collar_in,
-             scale_nudge=1.0):
+             scale_nudge=1.0, centre_below_collar_in=None):
     px_per_in = (hem - collar) / length_in
     # scale_nudge is art direction, not physics. At 1.0 the temple prints at its
     # true 11.98in. Anything else deliberately breaks that, so it is a visible
@@ -46,10 +46,26 @@ def quad_for(art_path, collar, hem, centre, length_in, top_below_collar_in,
 
     cw, ch = art_im.width * scale, art_im.height * scale
     ink_w = (xs.max() - xs.min()) * scale
-    ink_top = collar + top_below_collar_in * px_per_in
+
+    # CENTRE ANCHORED. Place the CANVAS, not the ink bounding box.
+    #
+    # flatten.py already centres each temple's ink inside the 4386x5516 canvas,
+    # within 3px across all 45 print files, and that canvas is the print area
+    # Tapstitch positions. So centring the canvas is what puts the design where
+    # it actually lands on the garment.
+    #
+    # Anchoring the ink bbox top instead, which this did until 18 Sep 2026, threw
+    # that away. Artwork is normalised to ~12in wide but runs from 7.45in tall
+    # (Monticello) to 15.34in (West Jordan), so every short temple was dragged up
+    # under the collar with the whole of its height gone from the bottom. Salt
+    # Lake is 14.87in, near the tall end, which is why it looked right and hid
+    # the bug.
+    centre_below = (centre_below_collar_in if centre_below_collar_in is not None
+                    else top_below_collar_in * px_per_in / px_per_in)
+    canvas_centre = collar + centre_below * px_per_in
 
     left = (centre - ink_w / 2) - xs.min() * scale
-    top = ink_top - ys.min() * scale
+    top = canvas_centre - ch / 2
     quad = [(left, top), (left + cw, top), (left + cw, top + ch), (left, top + ch)]
     return quad, px_per_in, ink_w / px_per_in, (ys.max() - ys.min()) * scale / px_per_in
 
@@ -62,6 +78,8 @@ def main():
     p.add_argument("--temple", default="Salt Lake")
     p.add_argument("--geometry", required=True, help="print_geometry.json")
     p.add_argument("--displace", type=float, default=3.0)
+    p.add_argument("--garments", default="tee,crew,hoodie",
+                   help="comma separated; a catalogue run is usually one garment")
     args = p.parse_args()
 
     geo = json.load(open(args.geometry))
@@ -69,7 +87,7 @@ def main():
     dst.mkdir(parents=True, exist_ok=True)
     td = Path(args.temple_dir)
 
-    for garment in ("tee", "crew", "hoodie"):
+    for garment in [g.strip() for g in args.garments.split(",") if g.strip()]:
         g = geo[garment]
         art = td / f"{args.temple} {garment} white back print (auto).png"
         if not art.exists():
@@ -78,12 +96,13 @@ def main():
         quad, ppi, w_in, h_in = quad_for(
             art, g["collar"], g["hem"], g["centre"],
             g["length_in"], g["ink_top_below_collar_in"],
-            g.get("scale_nudge", 1.0))
+            g.get("scale_nudge", 1.0),
+            g.get("print_centre_below_collar_in"))
         art_arr = load_art(str(art), quad)
         nudge = g.get("scale_nudge", 1.0)
         flag = "" if nudge == 1.0 else f"   nudge x{nudge}"
         print(f"{garment}: {ppi:.2f} px/in  temple {w_in:.2f} x {h_in:.2f} in  "
-              f"top {g['ink_top_below_collar_in']:.1f} in below collar{flag}")
+              f"centred {g['print_centre_below_collar_in']:.2f} in below collar{flag}")
         for f in sorted(src.glob(f"{garment}_*.png")):
             rgb = np.asarray(Image.open(f).convert("RGB"), dtype=np.float64)
             out, _ = build(rgb, art_arr, quad, args.displace, 1.0, 0.35, 0.93, scale=1.0)

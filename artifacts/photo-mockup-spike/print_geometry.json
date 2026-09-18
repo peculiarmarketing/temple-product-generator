@@ -15,7 +15,8 @@
   "length_in": 28.35,
   "ink_top_below_collar_in": 6.2,
   "scale_nudge": 0.93,
-  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch RT0063 back-view photo; colourways are one more from this base. Two deep, not the three or four that drifted the subject from photographic to rendered. Folds pushed to the sides so the print panel is flat. Grey measured 4 from the true Tapstitch swatch."
+  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch RT0063 back-view photo; colourways are one more from this base. Two deep, not the three or four that drifted the subject from photographic to rendered. Folds pushed to the sides so the print panel is flat. Grey measured 4 from the true Tapstitch swatch.",
+  "print_centre_below_collar_in": 13.1161
  },
  "crew": {
   "collar": 430,
@@ -24,7 +25,8 @@
   "length_in": 28.35,
   "ink_top_below_collar_in": 6.0,
   "_base": "crew_gray regenerated on kie.ai Sunburst 17 Sep 2026 from the existing crew photo, so the sleeves, model and pose Evan approved carry over and only the central back panel is flattened; the grey's heather marl is a real property of Flower Gray and was deliberately kept. crew_black left as it was: the Sunburst version measured no better (colour 15 from true vs 7, mid-panel 2.32 vs 2.05). Landmarks unchanged - the new grey lands within 2px of the photo it replaced.",
-  "scale_nudge": 0.88
+  "scale_nudge": 0.88,
+  "print_centre_below_collar_in": 12.544267
  },
  "hoodie": {
   "collar": 565,
@@ -33,7 +35,9 @@
   "length_in": 29.13,
   "ink_top_below_collar_in": 5.6,
   "scale_nudge": 1.06,
-  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch R00286 references; colourways are one more from this base. COLLAR 565 is where the hood's outer edges meet the shoulders, i.e. the neckline - NOT the top of the hood silhouette (~390), which is what 400 was and which both inflated the scale 13% and pushed the print up under the hood. The hood's point at centre back sits at ~720, so the print top at ~770 clears it."
+  "_base": "kie.ai GPT Image 2.5 Sunburst, 2K, 17 Sep 2026. ONE generation from the Tapstitch R00286 references; colourways are one more from this base. COLLAR 565 is where the hood's outer edges meet the shoulders, i.e. the neckline - NOT the top of the hood silhouette (~390), which is what 400 was and which both inflated the scale 13% and pushed the print up under the hood. The hood's point at centre back sits at ~720, so the print top at ~770 clears it.",
+  "print_centre_below_collar_in": 13.482867
  },
- "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Checked 17 Sep 2026 against the size chart and the base photos. CREW: not a size problem - the landmarks are off. Collar 430 is ~30px above the top of the ribbed collar band (~460) and hem 1830 is ~30px below the garment edge (~1800), which inflates the span ~4.5%. Correcting the landmarks would replace this nudge, but moves the print ~0.4in lower, so it is left as a nudge for now. HOODIE: cannot be a size problem. 1.10 implies length_in 26.48in, shorter than size S (27.56). Even assuming S only justifies x1.057. The hoodie's low 35.0 px/in is vertical foreshortening: the thick fleece bows over the back so the straight-line collar-to-hem distance in the photo under-reads the fabric's true 29.13in."
+ "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Checked 17 Sep 2026 against the size chart and the base photos. CREW: not a size problem - the landmarks are off. Collar 430 is ~30px above the top of the ribbed collar band (~460) and hem 1830 is ~30px below the garment edge (~1800), which inflates the span ~4.5%. Correcting the landmarks would replace this nudge, but moves the print ~0.4in lower, so it is left as a nudge for now. HOODIE: cannot be a size problem. 1.10 implies length_in 26.48in, shorter than size S (27.56). Even assuming S only justifies x1.057. The hoodie's low 35.0 px/in is vertical foreshortening: the thick fleece bows over the back so the straight-line collar-to-hem distance in the photo under-reads the fabric's true 29.13in.",
+ "_anchor": "CENTRE ANCHORED, and this is settled, not a preference to be re-derived. Every temple's ink is centred inside the 4386x5516 print canvas by flatten.py, to within 3px across all 45 files. The canvas IS the print area, so placing the CANVAS centre is what reproduces where the design actually lands on the garment. print_centre_below_collar_in holds that position per garment. Temple artwork is normalised to ~12in wide but runs from 7.45in tall (Monticello) to 15.34in (West Jordan), so anchoring the INK BBOX top instead drags every short temple up under the collar and looks wrong. ink_top_below_collar_in is kept only to record what Salt Lake was approved at; the centre values below were derived from it so Salt Lake is unchanged."
 }

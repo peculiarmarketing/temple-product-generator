@@ -1395,3 +1395,28 @@ call with no undo:
 
 `tests/test_tapstitch_run.py` pins all of it: every resume state, both publish
 gates, and the blocker rules.
+
+## The "with personalizable date" tee line is dead (Evan, 18 Sep 2026)
+
+The 40 DRAFT products titled `Essential Temple Tee – with personalizable date
+(...)` are not coming back. Do not normalise them, do not build galleries for
+them, do not count them in coverage. They are a Printify-era line superseded by
+the Tapstitch `Essential Heavyweight Temple Tee (...)` products.
+
+Worth knowing if they are ever revived: unlike the live line, they carry
+near-white colourways that trip `normalize.separated_gray`'s pale-garment guard,
+so they would need a backdrop decision before anything could run on them.
+
+## Temple prints are CENTRE anchored (settled before 18 Sep 2026)
+
+Not open for re-derivation. `flatten.py` centres each temple's ink inside the
+4386x5516 print canvas, within 3px across all 45 tee files, and the canvas is the
+print area. `print_geometry.json` carries `print_centre_below_collar_in` per
+garment and an `_anchor` note explaining it.
+
+`composite_set.py` anchored the ink bounding box TOP until 18 Sep 2026, which
+threw the centring away. Artwork is normalised to ~12in wide but runs 7.45in
+(Monticello) to 15.34in (West Jordan) tall, so every short temple was dragged up
+under the collar. Salt Lake is 14.87in, near the tall end, which is why the pilot
+looked right and hid it. Fixed by anchoring the canvas centre, calibrated so Salt
+Lake is unchanged.

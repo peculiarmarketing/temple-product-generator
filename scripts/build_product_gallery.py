@@ -44,6 +44,7 @@ Both are printed in --report so a human can check before anything is deleted.
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -60,6 +61,18 @@ ROOT = Path(__file__).resolve().parent.parent
 SPIKE = ROOT / "artifacts/photo-mockup-spike"
 TRUE = json.loads((SPIKE / "true_colors_all.json").read_text())
 ORIGINALS = SPIKE / "flat-originals"
+
+
+def originals_dir(temple):
+    """Where this temple's white flat originals live.
+
+    TEMPLE SCOPED, and that is not optional. These files were pooled in one
+    directory until 18 Sep 2026, so --reface's fallback answered a request for
+    Boise's Black flat with Salt Lake's, and published a flat lay reading "SALT
+    LAKE CITY, UTAH" onto the Boise product under a "Boise Temple" alt. The
+    fallback now looks in one temple's directory and nowhere else.
+    """
+    return ORIGINALS / re.sub(r"[^A-Za-z0-9]+", "-", temple).strip("-").lower()
 
 LEAD = {"hoodie": "navy-blue", "tee": "black", "crew": "gray"}
 # Which colourway the two flat lays show. Defaults to the lead colour; the crew
@@ -156,13 +169,23 @@ def classify(url, garment, cache):
     flat = mid.reshape(-1, 3)
     ink = float((flat.min(axis=1) > 200).mean())          # near-white pixels
 
+
     # Colour comes from the MEDIAN of every garment pixel in the whole image, not
     # the mean of the centre. On a back the temple print covers a fifth of the
     # centre and drags the mean badly: all five tee backs read "Dark Gray" at
     # distances up to 57. The median over the whole garment ignores the print and
     # put every one of the ten tee mockups within 9 of its true swatch.
-    allp = a.reshape(-1, 3)
-    body = allp[allp.min(axis=1) <= 200]                  # drops white bg AND white ink
+    #
+    # The backdrop is excluded by REGION, not brightness. "min(RGB) <= 200" was
+    # the old test, and it broke the moment a flat lay was recoloured onto the
+    # gray: at 193 the backdrop passes that test, gets counted as garment, and
+    # every flat on every catalogue tee matched at a distance of 184. That sent
+    # --reface to its archive fallback, which published the Salt Lake flat lay
+    # onto the Boise product on 18 Sep 2026. Caught on the first product; the
+    # archive is now temple-scoped so the fallback cannot cross temples either.
+    bg = normalize.border_region(Image.open(p))
+    allp = a[~bg].reshape(-1, 3)
+    body = allp[allp.min(axis=1) <= 200]                  # drops the near-white ink
     mean = np.median(body, axis=0) if len(body) else flat.mean(axis=0)
     best, bestd = None, 1e9
     for key, name in SWATCH.items():
@@ -189,13 +212,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--product-gid", required=True)
     ap.add_argument("--garment", required=True, choices=sorted(ORDER))
-    ap.add_argument("--temple", default="Salt Lake")
+    ap.add_argument("--temple", default="Salt Lake",
+                    help="the name used in alt text, i.e. how the PRODUCT titles it")
+    ap.add_argument("--onmodel-dir",
+                    help="directory of {garment}_{colour}.jpg on-model shots. Defaults "
+                         "to final-set/, which holds Salt Lake. A catalogue run points "
+                         "this at that temple's folder, whose name can differ from the "
+                         "product's: 'Ogden (original)' on disk is 'Ogden Original' in "
+                         "the title, and alt text has to follow the product.")
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--report", action="store_true")
     g.add_argument("--add", action="store_true")
     g.add_argument("--reface", action="store_true")
     g.add_argument("--prune", action="store_true")
     args = ap.parse_args()
+
+    onmodel = Path(args.onmodel_dir) if args.onmodel_dir else SPIKE / "final-set"
+    if not onmodel.is_dir():
+        raise SystemExit(f"no on-model directory at {onmodel}")
 
     sc = ShopifyClient()
     prod = fetch(sc, args.product_gid)
@@ -215,11 +249,33 @@ def main():
     if flats:
         print("classifying the unlabelled flat mockups:")
         print(f"  {'media':20s} {'colour':12s} {'dist':>5s} {'ink%':>6s}  side")
-    seen = {}
+    # BACK vs FRONT IS DECIDED PAIRWISE, not against a fixed ink threshold.
+    # Tapstitch publishes exactly two flats per colour, and the back carries the
+    # temple while the front carries a small chest logo, so within a colour the
+    # one with more near-white ink in the centre is the back. Full stop.
+    #
+    # The old test was "ink > 6%", tuned on the hoodie where backs ran 12.3-22.8%
+    # and fronts 1.1-1.7%. On the catalogue tees backs measure 5.2-6.0% and
+    # fronts exactly 0.00%, so every back read as a front and slot 2 would have
+    # been built from the chest-logo shot. A ratio between the pair is stable
+    # across garments; an absolute number is tuned to whichever one it was
+    # measured on.
+    measured = {}
     for m in flats:
         colour, dist, ink = classify(m["image"]["url"], args.garment, cache)
-        side = "back" if ink > 0.06 else "front"
-        seen[m["id"]] = (colour, side)
+        measured[m["id"]] = (colour, dist, ink)
+    by_colour = {}
+    for mid, (colour, _d, ink) in measured.items():
+        by_colour.setdefault(colour, []).append((ink, mid))
+    seen = {}
+    for colour, lst in by_colour.items():
+        lst.sort(reverse=True)                       # most ink first
+        for rank, (_ink, mid) in enumerate(lst):
+            seen[mid] = (colour, "back" if rank == 0 and len(lst) > 1 else
+                         ("back" if len(lst) == 1 and _ink > 0.03 else "front"))
+    for m in flats:
+        colour, dist, ink = measured[m["id"]]
+        side = seen[m["id"]][1]
         star = "  <- KEEP" if colour == flat_colour(args.garment) else ""
         print(f"  {m['id'].split('/')[-1]:20s} {PRETTY.get(colour, '?'):12s} "
               f"{dist:5.1f} {ink*100:6.2f}  {side}{star}")
@@ -270,7 +326,7 @@ def main():
             alt = on_model_alt(args.temple, c)
             if alt in ours:
                 continue
-            f = SPIKE / "final-set" / f"{args.garment}_{c}.jpg"
+            f = onmodel / f"{args.garment}_{c}.jpg"
             if not f.exists():
                 raise SystemExit(f"missing {f}")
             mid = sc.upload_media_image(args.product_gid, f, alt)
@@ -334,7 +390,8 @@ def main():
         for side in ("back", "front"):
             if side in sources:
                 continue
-            arch = next(iter(ORIGINALS.glob(f"{args.garment}_{want}_{side}.*")), None)
+            arch = next(iter(originals_dir(args.temple).glob(
+                f"{args.garment}_{want}_{side}.*")), None)
             if arch:
                 sources[side] = (arch, False)
                 print(f"  {side:5s}: not on the product, rebuilding from "
@@ -343,7 +400,8 @@ def main():
         if missing:
             raise SystemExit(
                 f"no source for the {args.garment} {want} flat {', '.join(missing)}: "
-                f"not on the product and not in {ORIGINALS.relative_to(ROOT)}. "
+                f"not on the product and not in "
+                f"{originals_dir(args.temple).relative_to(ROOT)}. "
                 "Re-pull it from Tapstitch.")
 
         # ONE gray for both flats. A light garment needs its backdrop darkened to
@@ -374,7 +432,8 @@ def main():
             # cache which will NOT regenerate once the source URL is gone. This
             # tracked copy is then the only surviving original.
             if live:
-                keep_at = ORIGINALS / f"{args.garment}_{want}_{side}{src.suffix}"
+                keep_at = originals_dir(args.temple) / f"{args.garment}_{want}_{side}{src.suffix}"
+                keep_at.parent.mkdir(parents=True, exist_ok=True)
                 if not keep_at.exists():
                     keep_at.write_bytes(src.read_bytes())
                     print(f"  archived original -> {keep_at.relative_to(ROOT)}")
