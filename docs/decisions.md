@@ -138,7 +138,9 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
 - **`productOptionsReorder` needs every option in the payload**, not just the
   one moving; a partial list fails with MISSING_OPTION_NAME.
 - **The backfill wrote both sides directly, never republished.**
-  `scripts/rename_catalog.py` PUTs the title to Printify and then to Shopify,
+  `scripts/rename_catalog.py` (deleted 18 Sep 2026 once the backfill was long
+  done and nothing in a pipeline run called it; recover it from git history)
+  PUT the title to Printify and then to Shopify,
   addressing Shopify by the product id Printify stores in `external.id` rather
   than by title (two products shared the title "Nauvoo Temple Sweatshirt
   (front logo)"). A republish would re-sync images and variants along with the
@@ -1514,7 +1516,7 @@ dated-tee drafts.
 
 - **A rename has to rewrite the on-model photo's alt text as well**, and this is the part that is easy to miss. `bind_variants_to_onmodel.py` pairs a variant to its photo by matching the variant's colour against the tail of that alt string, so an alt left under the old name leaves the binding looking for a colour that no longer exists and quietly binding nothing on the next re-run. The migration does both edits. `shopify_client.update_media_alt` uses `productUpdateMedia`, not the more obvious `fileUpdate`: `fileUpdate` demands `write_files` or `write_themes` and this app's token carries neither.
 
-- **`colour_names.py` is now the one slug-to-name map.** Three scripts each carried their own copy and every copy said `"gray": "Gray"`, which is how two different garments' greys shipped under one name in the first place. The map is per garment, `upload_onmodel_backs.py`, `build_product_gallery.py` and `restore_flat_colour.py` all read it, and `true_colors_all.json` is deliberately left keyed under the old names (it records a measurement, not a naming decision) with `colour_names.true_rgb` holding the translation.
+- **`colour_names.py` is now the one slug-to-name map.** Three scripts each carried their own copy and every copy said `"gray": "Gray"`, which is how two different garments' greys shipped under one name in the first place. The map is per garment, `upload_onmodel_backs.py` and `build_product_gallery.py` both read it, and `true_colors_all.json` is deliberately left keyed under the old names (it records a measurement, not a naming decision) with `colour_names.true_rgb` holding the translation. `restore_flat_colour.py` was the third copy; it was moved onto the shared map and then deleted along with `scripts/rename_catalog.py` and `scripts/migrate_colour_names.py`, all three being finished one-offs that no pipeline run calls. Git history has them if a future migration wants the same shape, and `restore_flat_colour.py` in particular is worth recovering rather than rewriting if a `--prune` ever eats a set of flats again.
 
 - **The gate is hard, and it is in `finish_on_shopify`**, the Shopify tail both `tapstitch_run.py` and hand-publish go through. It checks three things: that every storefront colour the garment config declares has a hex, that `colour_names` and that config name the same colours, and, after the fixups have run, that the colour names the product actually ended up with all have a hex. The last one catches a colourway Tapstitch shipped that no config knows about and so no rename ever touched. `tapstitch_publish.py check` reports all of it offline as a blocker alongside editor automation and garment setup.
 
