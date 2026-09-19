@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Run the standard gallery build across every live per-temple tee.
+"""Run the standard gallery build across every live per-temple product.
 
 Per Evan, 18 Sep 2026: the Salt Lake tee is the template and this is the process
 for every product from here. Each product ends up with the eleven slots in
@@ -43,7 +43,11 @@ from shopify_client import ShopifyClient  # noqa: E402
 
 PY = str(ROOT / ".venv.nosync/bin/python")
 BUILDER = str(ROOT / "scripts/build_product_gallery.py")
-QUERY = "title:*Heavyweight Temple Tee*"
+# One live product line per garment. Each has 44 per-temple products whose title
+# ends in "(Temple)", plus one bare title which is Salt Lake and is already built.
+QUERY = {"tee": "title:*Heavyweight Temple Tee*",
+         "hoodie": "title:*Temple Hoodie*",
+         "crew": "title:*Temple Sweatshirt*"}
 
 # product-title name -> temple folder name on disk
 ALIASES = {"Ogden Original": "Ogden (original)", "Washington D.C.": "Washington DC"}
@@ -65,7 +69,11 @@ def temple_of(title):
     return m.group(1) if m else "Salt Lake"
 
 
-CATALOG_ARCHIVE = ROOT / "artifacts/photo-mockup-spike/flat-originals/catalog"
+ORIGINALS = ROOT / "artifacts/photo-mockup-spike/flat-originals"
+
+
+def originals_dir(temple):
+    return ORIGINALS / re.sub(r"[^A-Za-z0-9]+", "-", temple).strip("-").lower()
 
 
 def _print_mask(img, size=192):
@@ -88,7 +96,7 @@ def _iou(x, y, t=0.35):
     return float((a & b).sum() / u) if u else 0.0
 
 
-def verify(prod, handle):
+def verify(prod, temple, garment):
     """Prove the BACK flat lay really shows THIS product's temple.
 
     The check that would have caught 18 Sep 2026's mistake on its first product
@@ -107,9 +115,12 @@ def verify(prod, handle):
     Only the back is checked. The front carries the chest logo, which is the same
     on every temple by design, so there is nothing there to tell them apart.
     """
-    arch = sorted((CATALOG_ARCHIVE / handle).glob("*.png"))
+    # Compares against the white original --reface archived for THIS temple.
+    # Background replacement does not touch the print, so a gray live flat still
+    # scores 1.000 against its own white original.
+    arch = sorted(originals_dir(temple).glob(f"{garment}_*_back.*"))
     if not arch:
-        return [f"no archived originals for {handle}, cannot verify"]
+        return [f"no archived back original for {temple}, cannot verify"]
     backs = [m for m in prod["media"]["nodes"]
              if "back print flat lay" in (m.get("alt") or "")]
     if not backs:
@@ -130,7 +141,9 @@ def verify(prod, handle):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--composites", required=True, help="dir of {Temple}/tee_{colour}.jpg")
+    ap.add_argument("--garment", required=True, choices=sorted(QUERY))
+    ap.add_argument("--composites", required=True,
+                    help="dir of {Temple}/{garment}_{colour}.jpg")
     ap.add_argument("--temple", action="append")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--dry-run", action="store_true")
@@ -143,7 +156,7 @@ def main():
     sc = ShopifyClient()
     prods = [n for n in sc.gql(
         "query($c:String){products(first:250,query:$c){nodes{id title status handle}}}",
-        {"c": QUERY})["products"]["nodes"] if n["status"] == "ACTIVE"]
+        {"c": QUERY[args.garment]})["products"]["nodes"] if n["status"] == "ACTIVE"]
 
     todo = []
     for n in sorted(prods, key=lambda x: x["title"]):
@@ -161,14 +174,14 @@ def main():
         todo = todo[:args.limit]
 
     stages = [s.strip() for s in args.stages.split(",") if s.strip()]
-    print(f"{len(todo)} product(s), stages: {', '.join(stages)}\n")
+    print(f"{len(todo)} {args.garment} product(s), stages: {', '.join(stages)}\n")
     t0, failed = time.time(), []
     for i, (n, temple, folder) in enumerate(todo, 1):
         print(f"[{i}/{len(todo)}] {n['title']}")
         if args.verify:
             pr = sc.gql("""query($id:ID!){product(id:$id){media(first:60){nodes{alt
               ... on MediaImage{image{url}}}}}}""", {"id": n["id"]})["product"]
-            probs = verify(pr, n["handle"])
+            probs = verify(pr, temple, args.garment)
             print("    " + ("OK" if not probs else "\n    ".join(probs)))
             if probs:
                 failed.append((n["title"], "verify"))
@@ -177,7 +190,7 @@ def main():
             print(f"    temple {temple!r}  composites {folder}")
             continue
         for st in stages:
-            cmd = [PY, BUILDER, "--product-gid", n["id"], "--garment", "tee",
+            cmd = [PY, BUILDER, "--product-gid", n["id"], "--garment", args.garment,
                    "--temple", temple, "--onmodel-dir", str(folder), f"--{st}"]
             r = subprocess.run(cmd, capture_output=True, text=True)
             if r.returncode != 0:
