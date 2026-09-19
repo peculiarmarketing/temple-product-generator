@@ -1420,3 +1420,84 @@ threw the centring away. Artwork is normalised to ~12in wide but runs 7.45in
 under the collar. Salt Lake is 14.87in, near the tall end, which is why the pilot
 looked right and hid it. Fixed by anchoring the canvas centre, calibrated so Salt
 Lake is unchanged.
+
+## Care instructions are a collapsed row on every current product (Evan, 18 Sep 2026)
+
+Every product on the three Tapstitch lines carries a Care Instructions section
+between the garment specs and the founder message, collapsed into the same
+`<details>` row the temple facts use. Evan pasted the first one onto the
+Albuquerque crew by hand; this is that block, made a row and made the default.
+
+Three calls behind it:
+
+- **One shared care file, not one per line.** `reference/garment-copy/care-instructions.html`,
+  referenced by `generate.CARE_COPY`. The five instructions and the symbol strip
+  are the same for the 350gsm fleece and the 7.7oz cotton tee, and one file means
+  a wash temperature can never be right on the crew and stale on the tee. A line
+  that needs its own wording drops a `care-instructions.html` into its own garment
+  folder, which wins; none does today.
+- **The symbol strip stays**, with real alt text. It is served at 248x43 from a
+  461x80 file, so it is already retina-sharp. It is pure black line art: if the
+  theme ever goes dark, the icons disappear and the file needs a light variant.
+  The five bullets say exactly what the five symbols say, so nothing is lost if
+  it is ever dropped.
+- **The retiring Printify lines get nothing.** The 40 dated-tee drafts and the two
+  line-parent products are out of scope, and the shape test that selects targets
+  (`<section class="product-details">` plus `<section class="product-intro">`)
+  excludes them on its own.
+
+The row styling generalised to do it. `description_html.FACTS_STYLE` is now
+`_row_style("temple-facts")` and is asserted byte-identical to the string every
+live product already carries; `collapse_fixed_sections()` scopes each collapsed
+section's style and block class to that section's OWN class, so a section
+collapses and styles itself wherever it sits. The style is emitted per section
+rather than once at the top of the description on purpose: a description has no
+`<head>`, and a leading style block would stop the dated tee's description
+starting with the visible Personalization section, which `is_broken()` checks,
+marking every dated tee broken forever.
+
+The 133 live pages were backfilled by `scripts/collapse_live_sections.py`, which
+SPLICES the section in rather than recomposing the description. Recomposing is
+what `write_description.py` does for the Printify line, and it is wrong here: the
+live Tapstitch pages have drifted from the repo's assets by hand (the Albuquerque
+crew carried inline font-family styles on its Weight row from an admin edit), and
+published copy is not retroactively rewritten unless Evan asks. That script also
+cuts out the hand-pasted Albuquerque block first, so that page ends with one row
+rather than two care blocks.
+
+## From the Founder is a collapsed row too (Evan, 18 Sep 2026)
+
+Same day, same mechanism, one more entry in `COLLAPSIBLE_FIXED_HEADINGS`. The
+product page now opens as the garment specs followed by seven closed rows: Care
+Instructions, From the Founder, and the five temple facts blocks.
+
+Evan chose CLOSED by default, asked directly, over an `<details open>` variant
+that would have given the row structure while leaving the founder message
+visible on load. Worth knowing if conversion data ever argues the other way: the
+change is one attribute in `_details_block()`, and re-running
+`scripts/collapse_live_sections.py` would not undo it, because a section that is
+already collapsed no longer matches the collapse regex. Flipping it back across
+the catalogue would need its own pass.
+
+NOTHING KEEPS THE RETIRING LINES OUT BUT THE HEADING TEXT. `COLLAPSIBLE_FIXED_HEADINGS`
+matches on `<h3>` text, and the CC1566/1567/1717 `product-intro.html` files open
+with `<h3>The Tee</h3>` (or The Sweatshirt, The Hoodie) rather than
+`<h3>From the Founder</h3>`. Same section class, same file name, different
+heading, so the current lines collapse and the retiring ones do not, with no
+garment check anywhere in the code. `tests/test_description_html.py` pins both
+halves of that, which is the test that catches it if those headings are ever
+harmonised.
+
+The backfill script generalised rather than multiplying. `add_care_instructions.py`
+became `scripts/collapse_live_sections.py`, which now runs two passes over each
+live description: SPLICE the sections the pipeline composes that a page predates,
+then COLLAPSE everything listed in `COLLAPSIBLE_FIXED_HEADINGS` that is still
+open. The collapse pass is `collapse_fixed_sections()` itself, applied to live
+HTML instead of to the repo's assets, which is what makes a backfilled page and
+a freshly built one byte-identical. Both passes are idempotent: an already
+collapsed section fails the regex and is left alone rather than double-wrapped.
+
+Measured on the live catalogue: 133 written, 0 visible characters of copy added
+or removed. The only products out of scope are the two line-parent products
+(their section wrappers were stripped by an old admin save) and the 40 dead
+dated-tee drafts.

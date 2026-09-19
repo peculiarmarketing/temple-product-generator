@@ -308,13 +308,28 @@ def fixed_description(garment_cfg):
 
     Copy lives per garment in reference/garment-copy/{garment_id}/ rather than
     inside a per-blank description skill. Two shapes exist. Garments with a
-    product-details.html assemble as details -> intro (Evan, 16 Sep 2026: the
-    product-specific details lead, the size guide drops out of the description
-    entirely, and compose_description() still appends temple facts last).
+    product-details.html assemble as details -> care -> intro (Evan, 16 Sep 2026:
+    the product-specific details lead, the size guide drops out of the
+    description entirely, and compose_description() still appends temple facts
+    last; care instructions joined the shape 18 Sep 2026, between the specs and
+    the founder message, which is where Evan first placed them by hand).
     Garments without one -- the retiring Printify CC1566/1567/1717 configs --
-    keep the older intro -> size-guide shape they were built with. A garment
-    whose copy is missing still returns empty, which is the point: an empty
-    description beats the wrong garment's specifications on a live page."""
+    keep the older intro -> size-guide shape they were built with and get NO
+    care section, because those lines are retiring and their live listings are
+    not rewritten for presentation.
+
+    CARE_COPY is shared by all three current lines rather than duplicated per
+    garment (Evan, 18 Sep 2026): the five instructions and the symbol strip are
+    the same for the 350gsm fleece and the 7.7oz cotton tee. A line that needs
+    its own wording gets a care-instructions.html in its own folder and two
+    lines here; nothing else changes.
+
+    A garment whose copy is missing still returns empty, which is the point: an
+    empty description beats the wrong garment's specifications on a live page.
+    A MISSING care file is the one case that hard-stops instead, like a missing
+    description_prefix: it is one checked-in file shared by every line, so it
+    cannot go missing for one garment, and blanking the catalogue over it would
+    be a wildly disproportionate answer to a file that is simply not there."""
     assets = PROJECT_ROOT / (garment_cfg.get("garment_copy")
                              or f"reference/garment-copy/{garment_cfg['garment_id']}")
     intro = assets / "product-intro.html"
@@ -323,7 +338,14 @@ def fixed_description(garment_cfg):
     if details.exists():
         if not intro.exists():
             return ""  # empty beats a wrong temple's history on a live page
-        fixed_parts = [details.read_text().strip(), intro.read_text().strip()]
+        care = assets / "care-instructions.html"
+        if not care.exists():
+            care = PROJECT_ROOT / CARE_COPY
+        if not care.exists():
+            raise SystemExit(f"{garment_cfg['garment_id']}: {CARE_COPY} is missing; "
+                             f"refusing to write a description with no care instructions.")
+        fixed_parts = [details.read_text().strip(), care.read_text().strip(),
+                       intro.read_text().strip()]
     else:
         if not (intro.exists() and guide.exists()):
             return ""  # empty beats a wrong temple's history on a live page
@@ -338,6 +360,11 @@ def fixed_description(garment_cfg):
         parts.append(prefix_path.read_text().strip())
     parts += fixed_parts
     return "\n\n".join(parts)
+
+
+# The care instructions every current line shares. A garment folder may still
+# carry its own care-instructions.html, which wins; none does today.
+CARE_COPY = "reference/garment-copy/care-instructions.html"
 
 
 FACTS_MARKER = '<section class="temple-facts"'

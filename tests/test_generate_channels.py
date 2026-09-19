@@ -72,6 +72,27 @@ for gid in printify:
     assert "size-guide" in fixed_description(load_garment_config(gid)), \
         f"{gid}: the retiring garments keep their size guide"
 
+# Care instructions (Evan, 18 Sep 2026) ride the details shape only, shared from
+# one file by all three current lines, and sit between the specs and the founder
+# message. The retiring lines must not gain a care section: their live listings
+# are not being rewritten, so copy they would never receive should not compose.
+for gid in tapstitch:
+    html = fixed_description(load_garment_config(gid))
+    assert html.index('class="product-details"') < html.index('class="care-instructions"') \
+        < html.index('class="product-intro"'), \
+        f"{gid}: care instructions belong between the specs and the founder message"
+    assert html.count('class="care-instructions"') == 1, f"{gid}: exactly one care section"
+for gid in printify:
+    assert "care-instructions" not in fixed_description(load_garment_config(gid)), \
+        f"{gid}: the retiring garments get no care section"
+
+# One shared file, byte-identical on every line, is the whole point of CARE_COPY:
+# a wash temperature can never be right on the crew and stale on the tee.
+care = (generate.PROJECT_ROOT / generate.CARE_COPY).read_text().strip()
+for gid in tapstitch:
+    assert care in fixed_description(load_garment_config(gid)), \
+        f"{gid}: must carry the shared care file verbatim"
+
 with tempfile.TemporaryDirectory() as tmp:
     tmp = Path(tmp)
     real = generate.PROJECT_ROOT / "reference" / "garment-copy" / "cc1717"
@@ -123,6 +144,23 @@ with tempfile.TemporaryDirectory() as tmp:
             "details present but intro missing must still yield empty"
     finally:
         shutil.rmtree(half, ignore_errors=True)
+
+# A details-shape garment whose care file has gone missing must hard-stop too,
+# rather than quietly ship a page with no care instructions on it. Unlike the
+# copy guard above this does NOT degrade to empty: one missing shared file must
+# not blank an entire catalogue of live descriptions.
+_care = generate.PROJECT_ROOT / generate.CARE_COPY
+_saved = _care.read_text()
+try:
+    _care.unlink()
+    try:
+        fixed_description(load_garment_config("crew"))
+        raise AssertionError("a missing care file must refuse, not degrade")
+    except SystemExit:
+        pass
+finally:
+    _care.write_text(_saved)
+assert fixed_description(load_garment_config("crew")), "care file must be restored"
 
 # A dated-style garment whose description_prefix is missing must hard-stop
 # rather than publish a partial description.

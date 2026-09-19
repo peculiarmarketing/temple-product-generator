@@ -18,12 +18,21 @@ returned unchanged, never corrupted.
 
 import re
 
-# Fixed sections to collapse, keyed by their <h3> text. Empty means the fixed
-# sections stay open (Evan's 26 Aug 2026 scope: temple facts only; widening
-# to e.g. ("Size Guide",) is a one-line flip). "Personalization" must never
-# be listed: is_broken() requires dated descriptions to START with that
-# section, visible.
-COLLAPSIBLE_FIXED_HEADINGS = ()
+# Fixed sections to collapse, keyed by their <h3> text. Each one collapses in
+# place inside its own <section> and carries its own scoped row style, so a
+# listed section renders as a row whether or not the product also has temple
+# facts. Evan's 26 Aug 2026 scope was facts only; Care Instructions joined it
+# 18 Sep 2026 and From the Founder the same day.
+#
+# Matching is by heading text, not by section class, which is what keeps the
+# retiring Printify lines out of this: their product-intro.html opens with
+# <h3>The Tee</h3> (or The Sweatshirt, The Hoodie) rather than From the Founder,
+# so the same section class collapses on the current lines and is left alone on
+# theirs, with no garment check anywhere.
+#
+# "Personalization" must never be listed: is_broken() requires dated
+# descriptions to START with that section, visible.
+COLLAPSIBLE_FIXED_HEADINGS = ("Care Instructions", "From the Founder")
 
 _FACTS_SECTION_RE = re.compile(
     r'^(<section class="temple-facts">)\n?(.*)(</section>)\s*$', re.S)
@@ -32,26 +41,40 @@ _HEADING_RE = re.compile(r'\s*(<h([34])[^>]*>.*?</h\2>)', re.S)
 _VIDEO_TAG_RE = re.compile(r'<video [^>]*>')
 _SIZE_GUIDE_TAIL_RE = re.compile(
     r'(<section class="size-guide">.*?</video>).*?(</section>)', re.S)
-_STYLE_RE = re.compile(r'<style class="temple-facts__style">.*?</style>\n?', re.S)
+# Any row style this module emits, whatever section it is scoped to, so
+# _unwrap() can strip them all back off before rewrapping.
+_STYLE_RE = re.compile(r'<style class="[a-z-]+__style">.*?</style>\n?', re.S)
 
-# Scoped styling for the collapsed rows, shipped inside the facts section so
-# it rides every description without theme work. Evan's theme hides the
-# default disclosure markers and gives headings tall margins, so this adds
-# dividing lines, tight row padding, and a +/- indicator. Literal characters
-# only: the Printify connector decodes entities on push.
-FACTS_STYLE = (
-    '<style class="temple-facts__style">'
-    'section.temple-facts details{border-top:1px solid #d8d8d8}'
-    'section.temple-facts details:last-of-type{border-bottom:1px solid #d8d8d8}'
-    'section.temple-facts summary{cursor:pointer;display:flex;'
-    'justify-content:space-between;align-items:center;gap:12px;'
-    'padding:12px 0;list-style:none}'
-    'section.temple-facts summary::-webkit-details-marker{display:none}'
-    'section.temple-facts summary::after{content:"+";flex:none;'
-    'font-size:1.5em;line-height:1}'
-    'section.temple-facts details[open]>summary::after{content:"−"}'
-    'section.temple-facts summary h3,section.temple-facts summary h4{margin:0}'
-    '</style>')
+
+def _row_style(scope):
+    """Scoped styling for one section's collapsed rows, shipped inside that
+    section so it rides every description without theme work. Evan's theme
+    hides the default disclosure markers and gives headings tall margins, so
+    this adds dividing lines, tight row padding, and a +/- indicator. Literal
+    characters only: the Printify connector decodes entities on push.
+
+    Scoped per section rather than written once at the top of the description,
+    because a description has no <head> and the dated tee's must START with the
+    visible Personalization section (is_broken()); a leading style block would
+    mark every dated tee broken forever."""
+    return (
+        f'<style class="{scope}__style">'
+        f'section.{scope} details{{border-top:1px solid #d8d8d8}}'
+        f'section.{scope} details:last-of-type{{border-bottom:1px solid #d8d8d8}}'
+        f'section.{scope} summary{{cursor:pointer;display:flex;'
+        'justify-content:space-between;align-items:center;gap:12px;'
+        'padding:12px 0;list-style:none}'
+        f'section.{scope} summary::-webkit-details-marker{{display:none}}'
+        f'section.{scope} summary::after{{content:"+";flex:none;'
+        'font-size:1.5em;line-height:1}'
+        f'section.{scope} details[open]>summary::after{{content:"−"}}'
+        f'section.{scope} summary h3,section.{scope} summary h4{{margin:0}}'
+        '</style>')
+
+
+# Byte-identical to the string this module has shipped since 26 Aug 2026: every
+# live product carries it, and --normalize compares against it.
+FACTS_STYLE = _row_style("temple-facts")
 
 
 def fix_size_guide_video(html):
@@ -92,8 +115,8 @@ def _unwrap(body):
     return body
 
 
-def _details_block(heading, rest):
-    return ('<details class="temple-facts__block">'
+def _details_block(heading, rest, scope="temple-facts"):
+    return (f'<details class="{scope}__block">'
             f'<summary>{heading}</summary>\n'
             f'{rest}\n</details>')
 
@@ -128,19 +151,31 @@ def collapse_temple_facts(fragment):
 
 def collapse_fixed_sections(html):
     """Collapse fixed sections whose <h3> text is listed in
-    COLLAPSIBLE_FIXED_HEADINGS. A no-op while that tuple is empty."""
+    COLLAPSIBLE_FIXED_HEADINGS. A no-op while that tuple is empty, and a no-op
+    for any garment whose copy has no such section (the retiring Printify
+    lines carry no Care Instructions file, so their descriptions are untouched).
+
+    The row is scoped to the section's OWN class, not to temple-facts: the
+    style and the block class are both derived from it, so a section collapses
+    and styles itself wherever it sits in the description. Fails open, like
+    every transform here: copy that does not match the expected shape (an <h3>
+    on its own line directly after the section tag) is returned unchanged and
+    simply ships open rather than corrupted."""
     if not COLLAPSIBLE_FIXED_HEADINGS:
         return html
     if "Personalization" in COLLAPSIBLE_FIXED_HEADINGS:
         raise ValueError("Personalization must stay visible: is_broken() "
                          "requires dated descriptions to start with it.")
     for title in COLLAPSIBLE_FIXED_HEADINGS:
-        pattern = re.compile(r'(<section class="[^"]*">\n)(<h3>' + re.escape(title)
+        pattern = re.compile(r'(<section class="([a-z-]+)">\n)(<h3>' + re.escape(title)
                              + r'</h3>)\n(.*?)(\n</section>)', re.S)
-        html = pattern.sub(
-            lambda m: m.group(1) + _details_block(m.group(2), _unwrap(m.group(3)).strip())
-                      + m.group(4),
-            html)
+
+        def wrap(m):
+            scope = m.group(2)
+            block = _details_block(m.group(3), _unwrap(m.group(4)).strip(), scope)
+            return m.group(1) + _row_style(scope) + "\n" + block + m.group(5)
+
+        html = pattern.sub(wrap, html)
     return html
 
 
