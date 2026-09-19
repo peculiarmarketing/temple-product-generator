@@ -439,19 +439,28 @@ shows first.
 
 N is the number of colours that garment comes in.
 
+**Reordered 18 Sep 2026, per Evan.** The flat lays now lead and the on-model run
+follows the design card. Slot 1 is what Shopify features, so the flat back lay is
+the collection-page and search thumbnail: it shows the temple bigger and flatter
+than a worn shot, which is what survives being shrunk to a grid cell.
+
 | Slot | Image | Count | Size | Backdrop | Source |
 |---|---|---|---|---|---|
-| 1 | **On-model back, lead colour** | 1 | 2048² | gray | Base 1, recoloured, temple composited. The hero. |
-| 2 | Flat back mockup, flat colour | 1 | 1400² | gray | Tapstitch blank + temple, refaced. Clean design view. |
+| 1 | **Flat back mockup, flat colour** | 1 | 1400² | gray | Tapstitch blank + temple, refaced. **The thumbnail.** |
+| 2 | Flat front mockup with chest logo | 1 | 1400² | gray | Tapstitch blank + the 6in chest logo |
 | 3 | Temple art closeup | 1 | 2048² | **white** | Existing `art_images.py` card, unchanged |
-| 4 | Lifestyle shot | 1 | 2048² | gray | Base 2, second person, a non-lead colour, temple composited |
-| 5... | On-model back, every other colour | N-1 | 2048² | gray | Base 1, recoloured. Each binds to its variant. |
-| next | Flat front mockup | 1 | 1400² | gray | Tapstitch blank + the 6in chest logo. One colour is enough. |
+| 4... | On-model back, every colour | N | 2048² | gray | Base 1, recoloured, temple composited. Lead first, each binds to its variant. |
 | last | Fabric and construction details | 3 | 2048² | gray | Tapstitch `-D-` shots, cropped square, captioned with the colourway |
 
-The flat lays show the lead colour except on the crew, where they show **Black**:
-its lead, Flower Gray, is a light heather that will not separate from any light
-gray backdrop. `FLAT` in `build_product_gallery.py` holds the override.
+The lifestyle shot that used to hold slot 4 is still not built, and the new order
+no longer reserves a gap for it.
+
+**Flat lay colour is independent of the lead colour.** `FLAT` in
+`build_product_gallery.py`: crew Black, because its lead Flower Gray is a light
+heather that will not separate from a light gray backdrop; tee Maroon, chosen on
+how it reads as a thumbnail; hoodie defaults to its lead, Navy Blue. Changing one
+means the old flat lays must be replaced, and `--prune` now drops a flat lay in a
+retired colour even though it carries alt text.
 
 **Every slot is 1:1 and every slot is on the garment's own light gray, with one
 deliberate exception: the temple art closeup at slot 3 stays on white** so the

@@ -147,6 +147,11 @@ def main():
     ap.add_argument("--temple", action="append")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--include-salt-lake", action="store_true",
+                    help="also process the bare-titled Salt Lake product. Its "
+                         "on-model shots live in final-set/ rather than under "
+                         "--composites, so it is skipped by default; a reorder "
+                         "needs no composites and can safely include it.")
     ap.add_argument("--stages", default="add,reface,prune")
     ap.add_argument("--verify", action="store_true",
                     help="check each finished gallery instead of building it")
@@ -161,11 +166,13 @@ def main():
     todo = []
     for n in sorted(prods, key=lambda x: x["title"]):
         t = temple_of(n["title"])
-        if t == "Salt Lake":
-            continue                       # already built, and its own product
+        if t == "Salt Lake" and not args.include_salt_lake:
+            continue          # built first and separately; opt in to touch it
         if args.temple and t not in args.temple:
             continue
         folder = folder_for(comps, t)
+        if folder is None and t == "Salt Lake":
+            folder = ROOT / "artifacts/photo-mockup-spike/final-set"
         if folder is None:
             print(f"  !! {t}: no composites under {comps}")
             continue

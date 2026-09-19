@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 """Build one product's gallery to the agreed layout. THE process, per Evan, 17 Sep 2026.
 
-Gallery, in order:
+Gallery, in order. Evan, 18 Sep 2026, superseding the on-model-first order:
 
-  1  on-model back, lead colour          the hero
-  2  flat back mockup, lead colour       clean design view
+  1  flat back mockup, flat colour       the design, read clearly. THE THUMBNAIL.
+  2  flat front mockup with chest logo
   3  temple art closeup                  the design card
-  4  lifestyle shot                      NOT BUILT YET, slot left for it
-  5+ on-model back, every other colour   each bound to its variant
+  4+ on-model back, every colour         lead first, each bound to its variant
   .. fabric and construction details     captioned with the colourway shown
-  last flat front mockup with chest logo
+
+Slot 1 is what Shopify features, so it is the image on collection pages and in
+search. The flat lay is there deliberately: it shows the temple bigger and
+flatter than a worn shot does, which is what survives being shrunk to a grid
+thumbnail.
 
 Runs in stages so the destructive ones are never a surprise:
 
@@ -75,12 +78,16 @@ def originals_dir(temple):
     return ORIGINALS / re.sub(r"[^A-Za-z0-9]+", "-", temple).strip("-").lower()
 
 LEAD = {"hoodie": "navy-blue", "tee": "black", "crew": "gray"}
-# Which colourway the two flat lays show. Defaults to the lead colour; the crew
-# is the exception, per Evan 18 Sep 2026. Its lead is Flower Gray, but a Flower
-# Gray flat lay is a light heather that will not separate from any light gray
-# backdrop, so the flats show Black instead. The hero on-model shot at slot 1
-# stays the lead colour.
-FLAT = {"crew": "black"}
+# Which colourway the two flat lays show, independent of the lead colour used for
+# the on-model run. Per Evan, 18 Sep 2026:
+#   crew   Black,  because its lead Flower Gray is a light heather that will not
+#          separate from any light gray backdrop
+#   tee    Maroon, chosen on how it reads as the collection thumbnail
+#   hoodie defaults to its lead, Navy Blue
+# Changing one of these means the previous flat lays have to be replaced, which
+# --prune handles: a flat lay in the wrong colour is dropped even though it
+# carries alt text, unlike the unlabelled Tapstitch ones.
+FLAT = {"crew": "black", "tee": "maroon"}
 ORDER = {
     "hoodie": ["navy-blue", "gray", "black", "coffee", "mauve", "royal-blue"],
     "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
@@ -297,13 +304,22 @@ def main():
     stale_drop = [mid for alt, ids in stale_details(media, caps).items()
                   if alt in sq for mid in ids]
     drop += stale_drop
+    # A flat lay in a colour we no longer use. These carry alt text, so they are
+    # invisible to the unlabelled-flat classifier above and would otherwise
+    # survive a change to FLAT forever, leaving two flat lays in two colours.
+    want_suffix = f"- {PRETTY[fc]}"
+    wrong_colour = [m["id"] for m in media
+                    if "flat lay" in (m.get("alt") or "")
+                    and not (m.get("alt") or "").endswith(want_suffix)]
+    drop += wrong_colour
     bound = {(v["media"]["nodes"] or [{}])[0].get("id") for v in prod["variants"]["nodes"]}
     bound.discard(None)
     clash = [m for m in drop if m in bound]
 
     print(f"\nkeep {len(keep)} white flat mockup(s) in {PRETTY[flat_colour(args.garment)]}, "
           f"drop {len(drop)} ({len(superseded)} superseded flat(s), "
-          f"{len(stale_drop)} superseded detail(s))")
+          f"{len(stale_drop)} superseded detail(s), "
+          f"{len(wrong_colour)} flat lay(s) in a retired colour)")
     if clash:
         print(f"  BLOCKED: {len(clash)} of those are still bound to a variant. Run --add first.")
     print(f"art closeup present: {'yes' if art else 'NO'}")
@@ -494,19 +510,22 @@ def main():
     if not lead_back:
         raise SystemExit("no flat back mockup for slot 2, refaced or otherwise. "
                          "Refusing to reorder into a gallery that is missing it.")
-    target = [by_alt[on_model_alt(args.temple, lead)]]
+    target = []
     if lead_back:
         target.append(lead_back)
+    if lead_front:
+        target.append(lead_front)
     if art:
         target.append(art[0]["id"])
+    # ORDER already starts with the lead colour, so the on-model run keeps the
+    # lead first without a special case.
     for c in ORDER[args.garment]:
-        if c != lead:
-            target.append(by_alt[on_model_alt(args.temple, c)])
+        mid = by_alt.get(on_model_alt(args.temple, c))
+        if mid:
+            target.append(mid)
     for _, alt in caps:
         if alt in by_alt:
             target.append(by_alt[alt])
-    if lead_front:
-        target.append(lead_front)
     for idx, mid in enumerate(target):
         sc.move_media_to_position(args.product_gid, mid, idx)
     print("\nFINAL GALLERY:")
