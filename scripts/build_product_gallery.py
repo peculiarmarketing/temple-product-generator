@@ -56,13 +56,16 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "artifacts/photo-mockup-spike"))
+import colour_names  # noqa: E402
 import normalize  # noqa: E402
 from PIL import Image  # noqa: E402
 from shopify_client import ShopifyClient  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SPIKE = ROOT / "artifacts/photo-mockup-spike"
-TRUE = json.loads((SPIKE / "true_colors_all.json").read_text())
+# The measured fabric colours are read through colour_names.true_rgb, which
+# knows that true_colors_all.json predates the 18 Sep 2026 renames and still
+# keys the tee's Charcoal under "Dark Gray".
 ORIGINALS = SPIKE / "flat-originals"
 
 
@@ -93,19 +96,18 @@ ORDER = {
     "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
     "crew": ["gray", "black"],
 }
-PRETTY = {"navy-blue": "Navy Blue", "royal-blue": "Royal Blue", "dark-gray": "Dark Gray",
-          "gray": "Gray", "black": "Black", "coffee": "Coffee", "mauve": "Mauve",
-          "maroon": "Maroon"}
-SWATCH = {"navy-blue": "Navy Blue", "royal-blue": "Royal Blue", "dark-gray": "Dark Gray",
-          "gray": "Gray", "black": "Black", "coffee": "Coffee", "mauve": "Mauve",
-          "maroon": "Maroon"}
+# The slug-to-name map lives in colour_names, not here. It used to be two local
+# dicts that both said "gray": "Gray", which cannot be right: crew_gray.jpg and
+# hoodie_gray.jpg are different colours, and a colour name on this store buys one
+# swatch hex for every product that uses it. Every alt text below therefore takes
+# a garment.
 
 
-def on_model_alt(temple, colour):
-    return f"{temple} Temple back print on model - {PRETTY[colour]}"
+def on_model_alt(temple, garment, colour):
+    return f"{temple} Temple back print on model - {colour_names.name_for(garment, colour)}"
 
 
-def flat_alt(temple, side, colour):
+def flat_alt(temple, garment, side, colour):
     """Alt text for a refaced flat mockup.
 
     Deliberately NOT prefixed "Temple back print on model - ", which is what
@@ -113,7 +115,7 @@ def flat_alt(temple, side, colour):
     be mistaken for an on-model shot there.
     """
     what = "back print flat lay" if side == "back" else "chest logo flat lay"
-    return f"{temple} Temple {what} - {PRETTY[colour]}"
+    return f"{temple} Temple {what} - {colour_names.name_for(garment, colour)}"
 
 
 def flat_colour(garment):
@@ -195,8 +197,8 @@ def classify(url, garment, cache):
     body = allp[allp.min(axis=1) <= 200]                  # drops the near-white ink
     mean = np.median(body, axis=0) if len(body) else flat.mean(axis=0)
     best, bestd = None, 1e9
-    for key, name in SWATCH.items():
-        ref = TRUE.get(garment, {}).get(name)
+    for key in colour_names.NAMES.get(garment, {}):
+        ref = colour_names.true_rgb(garment, key)
         if not ref:
             continue
         dist = float(np.linalg.norm(mean - np.array(ref, dtype=float)))
@@ -284,7 +286,7 @@ def main():
         colour, dist, ink = measured[m["id"]]
         side = seen[m["id"]][1]
         star = "  <- KEEP" if colour == flat_colour(args.garment) else ""
-        print(f"  {m['id'].split('/')[-1]:20s} {PRETTY.get(colour, '?'):12s} "
+        print(f"  {m['id'].split('/')[-1]:20s} {(colour_names.NAMES[args.garment].get(colour) or '?'):12s} "
               f"{dist:5.1f} {ink*100:6.2f}  {side}{star}")
 
     # A lead-colour flat is kept only until its refaced twin exists. Once the
@@ -294,7 +296,7 @@ def main():
     # a blanked variant, so it is checked before anything is deleted.
     fc = flat_colour(args.garment)
     superseded = {mid for mid, (c, sd) in seen.items()
-                  if c == fc and flat_alt(args.temple, sd, c) in ours}
+                  if c == fc and flat_alt(args.temple, args.garment, sd, c) in ours}
     keep = {mid for mid, (c, sd) in seen.items() if c == fc} - superseded
     drop = [mid for mid in seen if mid not in keep]
     # A tall fabric detail is superseded once a square one with the same alt is
@@ -307,7 +309,7 @@ def main():
     # A flat lay in a colour we no longer use. These carry alt text, so they are
     # invisible to the unlabelled-flat classifier above and would otherwise
     # survive a change to FLAT forever, leaving two flat lays in two colours.
-    want_suffix = f"- {PRETTY[fc]}"
+    want_suffix = f"- {colour_names.name_for(args.garment, fc)}"
     wrong_colour = [m["id"] for m in media
                     if "flat lay" in (m.get("alt") or "")
                     and not (m.get("alt") or "").endswith(want_suffix)]
@@ -316,17 +318,17 @@ def main():
     bound.discard(None)
     clash = [m for m in drop if m in bound]
 
-    print(f"\nkeep {len(keep)} white flat mockup(s) in {PRETTY[flat_colour(args.garment)]}, "
+    print(f"\nkeep {len(keep)} white flat mockup(s) in {colour_names.name_for(args.garment, flat_colour(args.garment))}, "
           f"drop {len(drop)} ({len(superseded)} superseded flat(s), "
           f"{len(stale_drop)} superseded detail(s), "
           f"{len(wrong_colour)} flat lay(s) in a retired colour)")
     if clash:
         print(f"  BLOCKED: {len(clash)} of those are still bound to a variant. Run --add first.")
     print(f"art closeup present: {'yes' if art else 'NO'}")
-    missing = [c for c in ORDER[args.garment] if on_model_alt(args.temple, c) not in ours]
+    missing = [c for c in ORDER[args.garment] if on_model_alt(args.temple, args.garment, c) not in ours]
     print(f"on-model backs missing: {', '.join(missing) if missing else 'none'}")
     print(f"fabric details missing: {sum(1 for _, a in caps if a not in ours)} of {len(caps)}")
-    refaced = {s_: (flat_alt(args.temple, s_, flat_colour(args.garment)) in ours)
+    refaced = {s_: (flat_alt(args.temple, args.garment, s_, flat_colour(args.garment)) in ours)
                for s_ in ("back", "front")}
     print("flats refaced onto the gray: " +
           ", ".join(f"{k} {'yes' if v else 'NO'}" for k, v in refaced.items()))
@@ -339,7 +341,7 @@ def main():
 
     if args.add:
         for c in ORDER[args.garment]:
-            alt = on_model_alt(args.temple, c)
+            alt = on_model_alt(args.temple, args.garment, c)
             if alt in ours:
                 continue
             f = onmodel / f"{args.garment}_{c}.jpg"
@@ -365,8 +367,8 @@ def main():
         ups = []
         for v in prod["variants"]["nodes"]:
             colour = v["title"].split(" / ")[0]
-            key = next((k for k, p in PRETTY.items() if p == colour), None)
-            target = by_alt.get(on_model_alt(args.temple, key)) if key else None
+            key = colour_names.slug_for(args.garment, colour)
+            target = by_alt.get(on_model_alt(args.temple, args.garment, key)) if key else None
             cur = (v["media"]["nodes"] or [{}])[0].get("id")
             if target and cur != target:
                 ups.append({"id": v["id"], "mediaId": target})
@@ -439,7 +441,7 @@ def main():
                   f"{normalize.backdrop_gray(args.garment)} so the garment reads\n")
 
         for side, (src, live) in sorted(sources.items()):
-            alt = flat_alt(args.temple, side, want)
+            alt = flat_alt(args.temple, args.garment, side, want)
             if alt in ours:
                 print(f"  {side:5s} already refaced, skipping")
                 continue
@@ -503,9 +505,9 @@ def main():
     # the last slot missing. The classifier is a tool for identifying Tapstitch's
     # unlabelled uploads, not the source of truth for gallery position.
     still = {m["id"] for m in prod["media"]["nodes"] if not m.get("alt")}
-    lead_back = by_alt.get(flat_alt(args.temple, "back", flat_colour(args.garment))) or \
+    lead_back = by_alt.get(flat_alt(args.temple, args.garment, "back", flat_colour(args.garment))) or \
         next((m for m in still if seen.get(m, (None, None))[1] == "back"), None)
-    lead_front = by_alt.get(flat_alt(args.temple, "front", flat_colour(args.garment))) or \
+    lead_front = by_alt.get(flat_alt(args.temple, args.garment, "front", flat_colour(args.garment))) or \
         next((m for m in still if seen.get(m, (None, None))[1] == "front"), None)
     if not lead_back:
         raise SystemExit("no flat back mockup for slot 2, refaced or otherwise. "
@@ -520,7 +522,7 @@ def main():
     # ORDER already starts with the lead colour, so the on-model run keeps the
     # lead first without a special case.
     for c in ORDER[args.garment]:
-        mid = by_alt.get(on_model_alt(args.temple, c))
+        mid = by_alt.get(on_model_alt(args.temple, args.garment, c))
         if mid:
             target.append(mid)
     for _, alt in caps:

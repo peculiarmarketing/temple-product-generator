@@ -58,3 +58,10 @@ artifacts/photo-mockup-spike/normalize-preview/
 # files in ../Temples/. Kept on disk before any delete, out of git.
 artifacts/photo-mockup-spike/flat-originals/catalog/
 artifacts/photo-mockup-spike/.flatcache/catalog/
+
+# settings_data.json snapshots taken by scripts/swatches.py push before it writes
+# the live theme. Kept on disk as the revert path for a bad swatch list, out of
+# git for the same reason the captured editor traffic above is: the file carries
+# the Shrine theme's own licence blobs, and a new timestamped copy lands on every
+# push, so history would accumulate them for no gain.
+artifacts/swatches/

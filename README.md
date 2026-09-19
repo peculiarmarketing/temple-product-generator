@@ -41,6 +41,12 @@ Shared by both channels:
 - `generate.py`: temple manifests, art detection, description assembly. Also the Printify pipeline.
 - `description_html.py`, `shopify_client.py`: description assembly and the Shopify Admin API.
 - `reference/garment-copy/{garment_id}/`: each garment's product intro and size guide.
+- `config/swatches.json` and `scripts/swatches.py`: the colour swatch registry, one hex
+  per storefront colour name. The live theme paints a swatch only for names it has been
+  given a hex for, and a name it does not know renders a white circle on the product
+  page. `swatches.py render` prints the block to paste into the theme; `swatches.py
+  check` verifies the live store (and the live theme, given a `read_themes` token)
+  against the registry. The publish path enforces it; see docs/decisions.md, 18 Sep.
 
 Printify only:
 

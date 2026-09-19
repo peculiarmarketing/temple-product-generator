@@ -316,6 +316,31 @@ class ShopifyClient:
                 return node["id"]
         return None
 
+    def update_media_alt(self, product_gid, media_gid, alt):
+        """Rewrite one product image's alt text.
+
+        The alt text on an on-model photo is not decoration: it is the only
+        record of which colourway the photo shows, and
+        bind_variants_to_onmodel.py pairs a variant to its photo by matching the
+        variant's colour name against the tail of that string. Rename a colour
+        on the storefront without rewriting the alt and the binding silently
+        stops finding a photo for that colour on the next re-run.
+
+        productUpdateMedia, not fileUpdate: fileUpdate is the more obvious
+        mutation for an alt text but it demands write_files or write_themes,
+        and this app's token carries neither. productUpdateMedia does the same
+        job under write_products, which the token already has."""
+        data = self.gql("""
+          mutation($productId: ID!, $media: [UpdateMediaInput!]!) {
+            productUpdateMedia(productId: $productId, media: $media) {
+              media { ... on MediaImage { id alt } }
+              mediaUserErrors { field message } } }""",
+            {"productId": product_gid, "media": [{"id": media_gid, "alt": alt}]})
+        errs = data["productUpdateMedia"]["mediaUserErrors"]
+        if errs:
+            raise ShopifyError(str(errs))
+        return data["productUpdateMedia"]["media"][0]["alt"]
+
     def upload_media_image(self, product_gid, png_path, alt):
         """Staged upload then attach to the product. Returns the new media id."""
         png_path = Path(png_path)

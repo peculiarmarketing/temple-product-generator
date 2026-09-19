@@ -38,12 +38,16 @@ ROOT = Path(__file__).resolve().parent.parent
 SPIKE = ROOT / "artifacts/photo-mockup-spike"
 sys.path.insert(0, str(SPIKE))
 sys.path.insert(0, str(ROOT))
+import colour_names  # noqa: E402
 import normalize  # noqa: E402
 from shopify_client import ShopifyClient  # noqa: E402
 
-PRETTY = {"navy-blue": "Navy Blue", "royal-blue": "Royal Blue", "dark-gray": "Dark Gray",
-          "gray": "Gray", "black": "Black", "coffee": "Coffee", "mauve": "Mauve",
-          "maroon": "Maroon"}
+# No local slug-to-name map here any more. It said "gray": "Gray" for every
+# garment, and crew_gray.jpg and hoodie_gray.jpg are different colours; see
+# colour_names. Nothing below needs the storefront name at all, in fact: the
+# colour classifier now matches on the file slug, which is what the filenames on
+# disk are keyed by, so the naming and the matching cannot drift apart.
+ALL_SLUGS = sorted({s for m in colour_names.NAMES.values() for s in m})
 QUERY = {"tee": "title:*Heavyweight Temple Tee*", "hoodie": "title:*Temple Hoodie*",
          "crew": "title:*Temple Sweatshirt*"}
 
@@ -72,12 +76,20 @@ def measure(path, swatches):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--garment", required=True, choices=sorted(QUERY))
-    ap.add_argument("--colour", required=True, choices=sorted(PRETTY))
+    ap.add_argument("--colour", required=True, choices=ALL_SLUGS)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    swatches = json.loads((SPIKE / "true_colors_all.json").read_text())[args.garment]
-    want = PRETTY[args.colour]
+    if args.colour not in colour_names.NAMES[args.garment]:
+        raise SystemExit(f"the {args.garment} has no {args.colour!r} colourway. "
+                         f"It sells: {', '.join(sorted(colour_names.NAMES[args.garment]))}")
+
+    # Keyed by SLUG, not by storefront name. true_colors_all.json predates the
+    # 18 Sep 2026 renames and still calls the tee's Charcoal "Dark Gray";
+    # colour_names.true_rgb is what knows that, so nothing here has to.
+    swatches = {slug: rgb for slug in colour_names.NAMES[args.garment]
+                if (rgb := colour_names.true_rgb(args.garment, slug))}
+    want = args.colour
 
     sc = ShopifyClient()
     prods = [n for n in sc.gql(

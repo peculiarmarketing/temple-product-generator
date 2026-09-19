@@ -39,6 +39,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import colour_names
 import generate
 import ledger
 from description_html import compose_description
@@ -92,6 +93,30 @@ def missing_garment_setup():
     return out
 
 
+def missing_swatches():
+    """[(garment_id, colour name), ...] the theme could not paint.
+
+    Config side only, so `check` stays offline. The store side is
+    `python scripts/swatches.py check`, and the publish path enforces both."""
+    from swatches import load_registry, missing_for
+    out = []
+    for path in sorted((PROJECT_ROOT / "garments").glob("*.json")):
+        cfg = generate.load_garment_config(path.stem)
+        if cfg.get("channel") != "tapstitch" or cfg.get("retired"):
+            continue
+        colors, _ = load_registry()
+        names = [c["shopify"] for c in cfg.get("colorways", []) if c.get("shopify")]
+        out += [(path.stem, name) for name in missing_for(colors, names)]
+    return out
+
+
+def colour_name_drift():
+    """Where colour_names.NAMES and the garment configs disagree. Empty is good."""
+    garments = [p.stem for p in sorted((PROJECT_ROOT / "garments").glob("*.json"))
+                if p.stem in colour_names.NAMES]
+    return colour_names.check_against_garments(generate.load_garment_config, garments)
+
+
 def cmd_check():
     cfg = load_config()
     editor = missing_config(cfg)
@@ -114,6 +139,27 @@ def cmd_check():
         print("  16 Sep 2026). Run it with no flags for a plan; it needs --apply")
         print("  to build in Tapstitch and --publish as well to reach the store.")
         print("  See docs/discovery/2026-09-tapstitch-editor-api.md.")
+    print("\nCOLOUR SWATCHES")
+    swatch_missing = missing_swatches()
+    if swatch_missing:
+        print(f"  blocked: {len(swatch_missing)} storefront colour(s) have no swatch hex.")
+        print("  shrine-theme-pro paints a swatch only for names in its predefined")
+        print("  list, and a name it does not know renders a WHITE CIRCLE on the")
+        print("  live product page. finish_on_shopify refuses to publish these:")
+        for garment_id, name in swatch_missing:
+            print(f"      {name!r} (garments/{garment_id}.json)")
+        print("  Fix: add it to config/swatches.json, then")
+        print("  `python scripts/swatches.py render` and paste into the theme.")
+    else:
+        print("  ready: every storefront colour in every garment config has a hex.")
+        print("  `python scripts/swatches.py check` verifies the live store too.")
+    drift = colour_name_drift()
+    if drift:
+        print("  blocked: the photo map and the garment configs name different colours.")
+        print("  A product whose two disagree binds no image for that colour:")
+        for line in drift:
+            print(f"      {line}")
+
     print("\nGARMENT SETUP")
     if garments:
         print(f"  blocked: {len(garments)} items need Evan's blank choices:")
@@ -145,9 +191,29 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
     """
     import art_images
     from shopify_fixups import fix_published_product
+    from swatches import assert_ready, load_registry
 
     post = load_config().get("post_publish", {})
     g = generate.load_garment_config(garment_id)
+
+    # SWATCH GATE, before anything writes. shrine-theme-pro paints a colour
+    # swatch only for names in its predefined list, and a name it does not know
+    # renders a white circle on the live product page with nothing in the
+    # product data to show for it. Checked against the storefront names this
+    # garment will carry after the fixups rename them, not the Tapstitch names
+    # the product is still wearing at this point.
+    swatch_colors, _ = load_registry()
+    assert_ready(swatch_colors,
+                 [c["shopify"] for c in g.get("colorways", []) if c.get("shopify")],
+                 f"garments/{garment_id}.json")
+    # And the photo half. colour_names names the on-model PHOTO of a colourway
+    # and the garment config names the product OPTION; a product whose two
+    # disagree binds no image for that colour, silently.
+    drift = colour_names.check_against_garments(generate.load_garment_config, [garment_id])
+    if drift:
+        raise SystemExit("SWATCH GATE: colour names disagree between the photo map "
+                         "and the garment config:\n  " + "\n  ".join(drift))
+
     product = client.find_product_by_handle(handle)
     if not product:
         raise SystemExit(f"No Shopify product at handle {handle!r}. Did the Tapstitch "
@@ -174,6 +240,20 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
     if not dry_run:
         art_images.push_catalog(only_temple=temple)
         actions += fix_published_product(client, product["id"], ptype)
+        # Second half of the swatch gate, after the renames. The check above
+        # trusts the garment config; this one reads what the product actually
+        # ended up with, which is the only thing that catches a colourway
+        # Tapstitch shipped that the config has never heard of and so no rename
+        # ever touched.
+        live = client.gql("""
+          query($id: ID!) { product(id: $id) {
+            options { name optionValues { name } } } }""",
+            {"id": product["id"]})["product"]
+        assert_ready(swatch_colors,
+                     [v["name"] for o in live["options"] if o["name"] == "Color"
+                      for v in o["optionValues"]],
+                     f"the published product {handle!r}")
+        actions.append(f"swatch gate passed ({len(swatch_colors)} colours defined)")
     else:
         actions.append("would push the art card and run the Shopify fixups")
 

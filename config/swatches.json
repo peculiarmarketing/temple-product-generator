@@ -1,0 +1,32 @@
+{
+  "_comment": "Storefront colour name -> the hex the theme paints its swatch with. Single source of truth for the shrine-theme-pro setting Theme settings > Color swatches > Predefined custom colors. Generate the paste block with `python scripts/swatches.py render`; verify the live store and live theme against it with `python scripts/swatches.py check`.",
+  "_mechanism": "snippets/product-variant-options.liquid splits settings.swatches_predefined_colors_list on '</p><p>', splits each line on '=', strips both halves, and compares the left half to the option value name with Liquid ==, which is exact and case sensitive. No match leaves custom_color empty, the swatch renders style='--bg-color: ' and the circle comes out white. That, not any product data, is why Navy Blue, Coffee and Dark Gray were blank while Black and Maroon worked: the setting had never been touched and still held the theme's factory default of twenty generic CSS colours, which contains Black and Maroon and not the rest.",
+  "_why_one_hex_per_name": "The list is global and keyed on the name alone, so a colour name carries the same hex on every product on the store and nothing per-product can override it. Two garments may not hold the same name for different colours. That is what forced the 18 Sep 2026 rename: three different greys across the catalogue had only two names between them.",
+  "_provenance": "Every hex is the median fabric colour of the REAL Tapstitch mockup for that colourway, white print excluded, from artifacts/photo-mockup-spike/true_colors_all.json and documented in docs/photo-mockup-plan.md. NOT sampled from the on-model photos: those are AI recolours of a lit base shot and read several points lighter, which would put every swatch off its own garment in the same direction. Where two garments share a name the value is the mean of their readings and _samples keeps both, so a future change is judged against the readings rather than re-derived; the widest disagreement is Black at under 10 units of RGB distance.",
+  "colors": {
+    "Black": "#191919",
+    "Charcoal": "#56575B",
+    "Gray": "#6E7168",
+    "Heather Gray": "#B4B3B5",
+    "Coffee": "#58402E",
+    "Navy Blue": "#283243",
+    "Royal Blue": "#374FC0",
+    "Maroon": "#6D1E24",
+    "Mauve": "#C4A3AB"
+  },
+  "_samples": {
+    "Black": {"tee": "#1F1F1F", "crew": "#151515", "hoodie": "#181818"},
+    "Charcoal": {"tee": "#56575B"},
+    "Gray": {"hoodie": "#6E7168"},
+    "Heather Gray": {"crew": "#B4B3B5"},
+    "Coffee": {"tee": "#594033", "hoodie": "#57402A"},
+    "Navy Blue": {"tee": "#2A2D41", "hoodie": "#263645"},
+    "Royal Blue": {"hoodie": "#374FC0"},
+    "Maroon": {"tee": "#6D1E24"},
+    "Mauve": {"hoodie": "#C4A3AB"}
+  },
+  "_retired": {
+    "_note": "Names carried only by the 40 DRAFT personalizable-date tees, a dead line that is never published. Listed so `swatches.py check` reports them as knowingly ignored rather than as missing swatches.",
+    "names": ["Moss", "Brick", "Graphite", "Ice Blue", "Khaki", "Orchid", "True Navy", "Ivory"]
+  }
+}

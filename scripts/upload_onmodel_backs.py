@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import colour_names  # noqa: E402
 from shopify_client import ShopifyClient  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -29,13 +30,14 @@ COLOUR_ORDER = {
     "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
     "crew": ["gray", "black"],
 }
-PRETTY = {"navy-blue": "Navy Blue", "royal-blue": "Royal Blue", "dark-gray": "Dark Gray",
-          "gray": "Gray", "black": "Black", "coffee": "Coffee", "mauve": "Mauve",
-          "maroon": "Maroon"}
-
-
 def alt_for(temple, garment, colour):
-    return f"{temple} Temple back print on model - {PRETTY[colour]}"
+    """The alt text every on-model photo carries.
+
+    The colour name comes from colour_names, the one map in the repo, because
+    this string is not decoration: bind_variants_to_onmodel.py pairs a variant
+    to its photo by matching the variant's colour against its tail, so an alt
+    written under a stale name silently binds nothing."""
+    return f"{temple} Temple back print on model - {colour_names.name_for(garment, colour)}"
 
 
 def main():
