@@ -36,13 +36,25 @@ COLOURS = {
         "royal-blue": "a royal blue, a strong but not electric cobalt, clearly much brighter and bluer than navy yet slightly muted rather than neon",
         "mauve":      "a muted dusty mauve, a greyed mauve-taupe with a soft rose cast, a mid-tone and NOT a pale pastel pink",
         "coffee":     "a warm mid coffee brown, a rich earthy chocolate brown with a warm reddish cast, clearly brown rather than grey or black",
+        "eden-green": "a deep but CLEARLY SATURATED forest green, a rich emerald-pine green with real colour intensity in it, obviously and vividly green at a glance; it must NOT be greyed down, muted, dusty, olive, sage, khaki or washed out, and must not drift toward grey-green or brown-green: the green channel clearly dominates the red",
     },
 }
 
 SWATCH = {"tee": {"dark-gray": "Dark Gray", "black": "Black", "navy-blue": "Navy Blue",
                   "maroon": "Maroon", "coffee": "Coffee"},
           "hoodie": {"gray": "Gray", "black": "Black", "navy-blue": "Navy Blue",
-                     "royal-blue": "Royal Blue", "mauve": "Mauve", "coffee": "Coffee"}}
+                     "royal-blue": "Royal Blue", "mauve": "Mauve", "coffee": "Coffee",
+                     "eden-green": "Eden Green"}}
+
+# A flat, print-free patch photographed off the real Tapstitch garment, hosted so
+# kie.ai can take it as a second reference. Naming the hex alone was not enough:
+# wording-only passes landed 11.0 then 8.0 deltaE from the real fabric, and adding
+# this patch as an explicit colour sample brought it to 5.7. Measured 22 Sep 2026.
+COLOUR_REF = {
+    "hoodie": {
+        "eden-green": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/eden_colour_reference.png?v=1790107975",
+    },
+}
 
 POSES = [
     "his weight rests a little more on his LEFT leg and his arms hang a fraction further forward",
@@ -75,9 +87,16 @@ def prompt_for(garment, colour, pose):
         f"same hair and haircut, the same skin tone, the same black trousers, the same framing from "
         f"above the top of the head down to mid-thigh, the same light neutral gray seamless studio "
         f"backdrop, the same soft even studio lighting from the front left. He wears the SAME {noun} "
-        f"as in the reference in every structural respect: {cut}. "
-        f"CHANGE THE COLOUR: the {noun} is {COLOURS[garment][colour]}, approximately RGB "
-        f"{rgb[0]},{rgb[1]},{rgb[2]}. Match that colour closely. "
+        f"as in the reference in every structural respect: {cut}. " +
+        (f"CHANGE THE COLOUR: the {noun} must be EXACTLY the colour of the SECOND reference "
+         f"image, a flat patch photographed from the real garment in this colourway. That second "
+         f"image is a COLOUR SAMPLE ONLY: take nothing else from it, not its framing, lighting, "
+         f"shape, texture scale or composition. The colour is RGB {rgb[0]},{rgb[1]},{rgb[2]}. Match "
+         f"it precisely, including its saturation and depth. Do not lighten it, do not grey it down, "
+         f"and do not let it drift toward olive, sage, khaki, grey-green or brown-green. "
+         if COLOUR_REF.get(garment, {}).get(colour) else
+         f"CHANGE THE COLOUR: the {noun} is {COLOURS[garment][colour]}, approximately RGB "
+         f"{rgb[0]},{rgb[1]},{rgb[2]}. Match that colour closely. ") +
         f"KEEP THE FABRIC EXACTLY AS IN THE REFERENCE: the central back panel stays broad and flat, "
         f"with every fold, crease and wave pushed out to the outer sides, the armholes and sleeves, "
         f"and low near the hem. Nothing creases across the middle of the back. The surface is smooth, "
@@ -98,7 +117,11 @@ def main():
     for garment, base_url in bases.items():
         for i, colour in enumerate(COLOURS[garment]):
             p = prompt_for(garment, colour, POSES[i % len(POSES)])
-            r = kie.create(p, [base_url], resolution="2K", aspect_ratio="1:1")
+            refs = [base_url]
+            extra = COLOUR_REF.get(garment, {}).get(colour)
+            if extra:
+                refs.append(extra)
+            r = kie.create(p, refs, resolution="2K", aspect_ratio="1:1")
             tid = (r.get("data") or {}).get("taskId")
             jobs[f"{garment}_{colour}"] = tid
             print(f"submitted {garment}_{colour}: {tid}")

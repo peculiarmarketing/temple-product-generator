@@ -76,6 +76,12 @@ def originals_dir(temple):
     return ORIGINALS / re.sub(r"[^A-Za-z0-9]+", "-", temple).strip("-").lower()
 
 
+def back_panel(h, w):
+    """(rows, cols) slices of the central back panel, where the print sits.
+    One definition for every pixel check that has to agree about it."""
+    return slice(int(h * .25), int(h * .80)), slice(int(w * .25), int(w * .75))
+
+
 def _print_mask(img, size=192):
     """Binary mask of the near-white print inside the central back panel."""
     sys.path.insert(0, str(ROOT / "artifacts/photo-mockup-spike"))
@@ -84,7 +90,7 @@ def _print_mask(img, size=192):
     bg = normalize.border_region(img)
     h, w = a.shape[:2]
     box = np.zeros((h, w), bool)
-    box[int(h * .25):int(h * .80), int(w * .25):int(w * .75)] = True
+    box[back_panel(h, w)] = True
     m = (a.min(axis=2) > 170) & (~bg) & box
     return np.asarray(Image.fromarray((m * 255).astype(np.uint8)).resize((size, size)),
                       dtype=np.float32) / 255.0

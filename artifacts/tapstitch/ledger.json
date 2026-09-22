@@ -129,19 +129,21 @@
     {
       "temple": "Boise",
       "garment": "hoodie",
-      "state": "live",
+      "state": "description-written",
       "files": {
         "white": "Boise hoodie white back print (auto).png"
       },
-      "problems": [],
+      "problems": [
+        "Eden Green added 22 Sep 2026. distribute() of a NEW store product created a NEW Shopify product (15314349818228) instead of updating 15303563510132. The old product is DRAFT at handle ultra-soft-oversized-temple-hoodie-boise-retired-2026-09-22; the new one took the clean handle and its tags, metafields and SEO. Gallery is still Tapstitch defaults: build_product_gallery --add has not been run."
+      ],
       "old_shopify_handle": "pillar-temple-hoodie-boise",
       "old_shopify_id": "gid://shopify/Product/15252601110900",
       "old_title": "Pillar Temple Hoodie (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-boise",
-      "updated_at": "2026-09-16T20:25:43",
+      "updated_at": "2026-09-22T14:54:18",
       "tapstitch_template_id": "1550090208450658304",
-      "tapstitch_store_product_id": "1550090248472637440",
+      "tapstitch_store_product_id": "1552164524071727104",
       "distribute_started_at": "2026-09-16T20:25:14"
     },
     {
@@ -193,9 +195,9 @@
       "old_title": "Pillar Temple Hoodie (Bountiful)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-bountiful",
-      "updated_at": "2026-09-16T20:29:14",
+      "updated_at": "2026-09-22T16:08:09",
       "tapstitch_template_id": "1550091106581168128",
-      "tapstitch_store_product_id": "1550091142207516672",
+      "tapstitch_store_product_id": "1552199108201164800",
       "distribute_started_at": "2026-09-16T20:28:47"
     },
     {
@@ -2442,5 +2444,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-09-17T08:44:50"
+  "updated_at": "2026-09-22T16:08:09"
 }

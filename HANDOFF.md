@@ -1,3 +1,43 @@
+# IN PROGRESS, 22 Sep 2026: the Eden Green hoodie rollout. Read this block first.
+
+Eden Green (Tapstitch 6655) is going onto all 45 temple hoodies. Tapstitch cannot
+add a colour to a listing, so each temple is a swap: a new Shopify product takes
+the old one's address, and the old one is hidden at `<address>-retired-<date>`.
+One script does all of it: `scripts/eden_green_rollout.py`. Its docstring is the
+full sequence and the traps. Progress per temple lives in
+`artifacts/tapstitch/eden-green-rollout.json`.
+
+**Done:** Bountiful, proven live end to end on 22 Sep and re-verified by read-back.
+**Next:** the other 44, which includes the Boise repair (its seven on-model photos
+are the Salt Lake temple, fixed by the script's gallery step). Evan runs:
+
+```bash
+./.venv.nosync/bin/python scripts/eden_green_rollout.py                          # plan: who is next
+./.venv.nosync/bin/python scripts/eden_green_rollout.py --apply --publish --limit 5
+./.venv.nosync/bin/python scripts/eden_green_rollout.py --verify                 # read-only check
+```
+
+Claude cannot run `--publish` itself: Claude Code's auto-mode classifier blocks
+the live publish, correctly. Claude reads the pasted output after each batch and
+checks it. Batches of five, because Tapstitch drops connections on long bursts.
+
+**Decided (Evan, 22 Sep):** Eden Green stays third in the colour swatches, where
+Tapstitch puts it. Do not reorder.
+
+**After the last temple:** Evan re-imports `artifacts/easify/option-sets.csv` in
+the Easify app. Easify binds the Temple dropdown to a product's internal id, so
+every swapped hoodie is missing it until then.
+
+**Known, harmless:** the 44 old hoodies lost their image alt text at 19:37 UTC on
+22 Sep when their Tapstitch designs were edited. Pictures are intact; those
+listings are being retired anyway. Tees and crews are untouched.
+
+**Also outstanding:** the storefront overhaul doc
+(https://claude.ai/artifact/RhgF4QLwLjQhhKmYnMYrd2, rev 52) still says Boise is
+finished; update its "State as of" section once the rollout lands.
+
+---
+
 # Tapstitch migration: where this stands
 
 **Last worked: 16 September 2026, third session.** Read this first if you are picking the

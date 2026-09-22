@@ -34,7 +34,8 @@ NAMES = {
             "maroon": "Maroon", "coffee": "Coffee"},
     "crew": {"gray": "Heather Gray", "black": "Black"},
     "hoodie": {"navy-blue": "Navy Blue", "gray": "Gray", "black": "Black",
-               "coffee": "Coffee", "mauve": "Mauve", "royal-blue": "Royal Blue"},
+               "coffee": "Coffee", "mauve": "Mauve", "royal-blue": "Royal Blue",
+               "eden-green": "Eden Green"},
 }
 
 # The key a colourway carries inside true_colors_all.json, where it differs from

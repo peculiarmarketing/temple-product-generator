@@ -135,6 +135,12 @@
       "shopify": "Royal Blue",
       "ink": "white",
       "code": 6654
+    },
+    {
+      "tapstitch": "Eden Green",
+      "shopify": "Eden Green",
+      "ink": "white",
+      "code": 6655
     }
   ],
   "_colorways_note": "EVAN, 16 Sep 2026, chosen off real mockups. Six colourways, all US-fulfilled. SUPERSEDES a lineup that was STALE AND PARTLY IMPOSSIBLE: it listed 'Dark Gray' and 'Dark Green', neither of which exists on R00286 in any colour range. Those names belonged to the RW0041 blank this one replaced on 14 Sep, and the crew was updated for its own blank change that day while the hoodie was not. Verified against the live catalogue search, so every name here is one Tapstitch really has. Two are renamed on the storefront: Dark Purple shows as Mauve and Klein Blue as Royal Blue, driven by shopify_fixups.colorway_renames_by_type() from this table, which runs AFTER publish and must be re-run after any variant re-sync. CONTRAST, raised to Evan with the mockup: Dark Purple is RGB(178,156,175) and renders as a light dusty pink, so white art on it is the softest of the six, softer than the crew's Flower Gray. Kept at white deliberately; a black-ink version would be a separate product, because a Tapstitch template binds ONE design to a LIST of colour codes. COLOUR NAMES SPLIT 18 Sep 2026, Evan's call, and the reason is the theme, not the copy. shrine-theme-pro paints a colour swatch from ONE global list keyed on the option value NAME, so a name carries the same hex on every product on the store and nothing per-product can override it. The catalogue had three different greys and two names between them: the crew's Flower Gray #B4B3B5 (light heather) and the hoodie's Gray #6E7168 (warm sage) both published as plain 'Gray', and the tee's Dark Gray #56575B (cool charcoal) was a third colour again. Those hexes are the median fabric colour of the real Tapstitch mockups, print excluded, from artifacts/photo-mockup-spike/true_colors_all.json. Settled: crew -> Heather Gray, hoodie keeps Gray, tee -> Charcoal. The tee moved rather than the hoodie because a warm sage and a cool charcoal are genuinely different and folding either into the other would have put one swatch visibly off its own garment. Hex registry: config/swatches.json. Enforced at publish by scripts/swatches.py via finish_on_shopify.",

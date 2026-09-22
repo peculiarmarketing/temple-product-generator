@@ -1,0 +1,46 @@
+{
+  "temples": {
+    "Albuquerque": {
+      "built": "2026-09-22T16:10:49-06:00",
+      "distribute_started_at": "2026-09-22T16:10:49-06:00",
+      "distributed": "2026-09-22T16:11:05-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-albuquerque",
+      "new_id": "gid://shopify/Product/15314442387828",
+      "old_id": "gid://shopify/Product/15303826702708",
+      "resolved": "2026-09-22T16:10:46-06:00",
+      "store_product_id": "1552200546998439936",
+      "title": "Ultra-soft Oversized Temple Hoodie (Albuquerque)"
+    },
+    "Boise": {
+      "_seeded": "Done by hand on 22 Sep 2026 before scripts/eden_green_rollout.py existed. Ids from the ledger row and the store. finish, gallery and verify are left open on purpose: its seven on-model photos are the Salt Lake temple and its description drifted by one blank line, and those steps repair both.",
+      "built": "2026-09-22T14:20:00-06:00",
+      "cutover": "2026-09-22T14:54:18-06:00",
+      "distribute_started_at": "2026-09-22T14:21:00-06:00",
+      "distributed": "2026-09-22T14:22:01-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-boise",
+      "hidden": "2026-09-22T14:22:01-06:00",
+      "new_id": "gid://shopify/Product/15314349818228",
+      "old_id": "gid://shopify/Product/15303563510132",
+      "resolved": "2026-09-22T14:20:00-06:00",
+      "store_product_id": "1552164524071727104",
+      "title": "Ultra-soft Oversized Temple Hoodie (Boise)"
+    },
+    "Bountiful": {
+      "built": "2026-09-22T16:05:06-06:00",
+      "cutover": "2026-09-22T16:08:07-06:00",
+      "distribute_started_at": "2026-09-22T16:05:57-06:00",
+      "distributed": "2026-09-22T16:06:13-06:00",
+      "finished": "2026-09-22T16:06:37-06:00",
+      "gallery": "2026-09-22T16:08:02-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-bountiful",
+      "hidden": "2026-09-22T16:06:29-06:00",
+      "new_id": "gid://shopify/Product/15314440028532",
+      "old_id": "gid://shopify/Product/15303573897588",
+      "resolved": "2026-09-22T16:05:03-06:00",
+      "store_product_id": "1552199108201164800",
+      "title": "Ultra-soft Oversized Temple Hoodie (Bountiful)",
+      "verified": "2026-09-22T16:08:09-06:00"
+    }
+  },
+  "updated_at": "2026-09-22T16:11:05-06:00"
+}

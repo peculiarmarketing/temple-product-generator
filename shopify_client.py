@@ -341,6 +341,19 @@ class ShopifyClient:
             raise ShopifyError(str(errs))
         return data["productUpdateMedia"]["media"][0]["alt"]
 
+    def delete_media(self, product_gid, media_gids):
+        """productDeleteMedia. Returns the deleted ids; raises on any media error.
+        Callers must check first that no variant is bound to what they delete:
+        a variant whose image is deleted shows no image on the storefront."""
+        data = self.gql("""
+          mutation($pid: ID!, $ids: [ID!]!) {
+            productDeleteMedia(productId: $pid, mediaIds: $ids) {
+              deletedMediaIds mediaUserErrors { message } } }""",
+            {"pid": product_gid, "ids": list(media_gids)})["productDeleteMedia"]
+        if data["mediaUserErrors"]:
+            raise ShopifyError(str(data["mediaUserErrors"]))
+        return data["deletedMediaIds"]
+
     def upload_media_image(self, product_gid, png_path, alt):
         """Staged upload then attach to the product. Returns the new media id."""
         png_path = Path(png_path)

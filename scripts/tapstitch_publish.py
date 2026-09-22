@@ -180,7 +180,7 @@ def cmd_check():
 
 
 def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_run=False,
-                      write_description=True):
+                      write_description=True, push_art_card=True):
     """The Shopify half. Order matters: product type FIRST, because every fixup
     in shopify_fixups is keyed on it and Tapstitch publishes with it empty.
 
@@ -188,6 +188,11 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
     which bakes the description into the Tapstitch create call so the product is
     complete from birth. Writing it again here would be an identical second write
     to the same field, and the two compositions could drift apart.
+
+    `push_art_card` is False for scripts/eden_green_rollout.py, which cards the
+    one new product itself. art_images.push_catalog works by temple, so it would
+    also card the old product being replaced, which shares the title and lost its
+    card's alt text in the 22 Sep 2026 re-sync.
     """
     import art_images
     from shopify_fixups import fix_published_product
@@ -238,7 +243,8 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
             actions.append(f"description written ({len(html)} bytes)")
 
     if not dry_run:
-        art_images.push_catalog(only_temple=temple)
+        if push_art_card:
+            art_images.push_catalog(only_temple=temple)
         actions += fix_published_product(client, product["id"], ptype)
         # Second half of the swatch gate, after the renames. The check above
         # trusts the garment config; this one reads what the product actually

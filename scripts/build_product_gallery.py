@@ -92,7 +92,7 @@ LEAD = {"hoodie": "navy-blue", "tee": "black", "crew": "gray"}
 # carries alt text, unlike the unlabelled Tapstitch ones.
 FLAT = {"crew": "black", "tee": "maroon"}
 ORDER = {
-    "hoodie": ["navy-blue", "gray", "black", "coffee", "mauve", "royal-blue"],
+    "hoodie": ["navy-blue", "gray", "black", "coffee", "mauve", "royal-blue", "eden-green"],
     "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
     "crew": ["gray", "black"],
 }
@@ -210,7 +210,7 @@ def classify(url, garment, cache):
 def fetch(sc, gid):
     return sc.gql("""
       query($id: ID!) { product(id: $id) {
-        title status
+        title status options { name values }
         media(first: 60) { nodes { ... on MediaImage { id alt image { url width height } } } }
         variants(first: 100) { nodes { id title
           media(first: 1) { nodes { ... on MediaImage { id } } } } } } }""",
@@ -340,9 +340,14 @@ def main():
         return
 
     if args.add:
+        # Only the colours this product sells. ORDER is the whole line, and during
+        # the Eden Green rollout (22 Sep 2026) most hoodies still sell six of its
+        # seven: uploading the seventh would show a colour nobody can buy.
+        sold = {colour_names.slug_for(args.garment, v) for o in prod["options"]
+                if o["name"] == "Color" for v in o["values"]}
         for c in ORDER[args.garment]:
             alt = on_model_alt(args.temple, args.garment, c)
-            if alt in ours:
+            if alt in ours or c not in sold:
                 continue
             f = onmodel / f"{args.garment}_{c}.jpg"
             if not f.exists():

@@ -68,10 +68,10 @@
         "specialProcessTags": [
           "DTF"
         ],
-        "colorCodes": "6674,5720,6645,6657,6650,6654",
+        "colorCodes": "6674,5720,6645,6657,6650,6654,6655",
         "lead_colorCode": 6674,
         "name": "Oversize Fleeced Hoodie",
-        "_colour_note": "6674 Navy Blue, 5720 Black, 6645 Gray, 6657 Coffee, 6650 Dark Purple (shown as Mauve), 6654 Klein Blue (shown as Royal Blue). Evan's lineup off real mockups, 16 Sep 2026, and CONFIRMED against the store-product prefill, which named all six exactly as garments/hoodie.json does. It replaced a lineup that was stale and partly impossible: the config had listed 'Dark Gray' and 'Dark Green', neither of which exists on R00286. Navy Blue leads because it is the storefront_first_color."
+        "_colour_note": "6674 Navy Blue, 5720 Black, 6645 Gray, 6657 Coffee, 6650 Dark Purple (shown as Mauve), 6654 Klein Blue (shown as Royal Blue). Evan's lineup off real mockups, 16 Sep 2026, and CONFIRMED against the store-product prefill, which named all six exactly as garments/hoodie.json does. It replaced a lineup that was stale and partly impossible: the config had listed 'Dark Gray' and 'Dark Green', neither of which exists on R00286. Navy Blue leads because it is the storefront_first_color. EDEN GREEN 6655 ADDED 22 Sep 2026, Evan's call. US-fulfilled (LA). Its catalogue chip is RGB(5,57,45), which is the DYE SAMPLE and far darker than the photographed garment; true_colors_all.json carries RGB(46,97,75), measured off a real Tapstitch mockup the way every other entry was. Generating from the chip would have produced a near-black hoodie."
       }
     },
     "_status": "PROVEN END TO END for all three garments. create_template, the signed OSS upload, save_design, create_store_product and distribute have all run against the live account; a crew and a hoodie were published to the live Shopify storefront on 16 Sep 2026. distribute takes a LIST of STORE-PRODUCT ids (a third id kind), so a batch is one call.",
