@@ -31,9 +31,9 @@
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-albuquerque",
-      "updated_at": "2026-09-16T22:16:13",
+      "updated_at": "2026-09-22T16:13:31",
       "tapstitch_template_id": "1550117952546881536",
-      "tapstitch_store_product_id": "1550117993638416384",
+      "tapstitch_store_product_id": "1552200546998439936",
       "distribute_started_at": "2026-09-16T22:15:29"
     },
     {
@@ -85,9 +85,9 @@
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-billings",
-      "updated_at": "2026-09-16T22:18:49",
+      "updated_at": "2026-09-22T16:16:09",
       "tapstitch_template_id": "1550118611115524096",
-      "tapstitch_store_product_id": "1550118650218958848",
+      "tapstitch_store_product_id": "1552201235828985856",
       "distribute_started_at": "2026-09-16T22:18:06"
     },
     {
@@ -129,19 +129,17 @@
     {
       "temple": "Boise",
       "garment": "hoodie",
-      "state": "description-written",
+      "state": "live",
       "files": {
         "white": "Boise hoodie white back print (auto).png"
       },
-      "problems": [
-        "Eden Green added 22 Sep 2026. distribute() of a NEW store product created a NEW Shopify product (15314349818228) instead of updating 15303563510132. The old product is DRAFT at handle ultra-soft-oversized-temple-hoodie-boise-retired-2026-09-22; the new one took the clean handle and its tags, metafields and SEO. Gallery is still Tapstitch defaults: build_product_gallery --add has not been run."
-      ],
+      "problems": [],
       "old_shopify_handle": "pillar-temple-hoodie-boise",
       "old_shopify_id": "gid://shopify/Product/15252601110900",
       "old_title": "Pillar Temple Hoodie (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-boise",
-      "updated_at": "2026-09-22T14:54:18",
+      "updated_at": "2026-09-22T16:17:16",
       "tapstitch_template_id": "1550090208450658304",
       "tapstitch_store_product_id": "1552164524071727104",
       "distribute_started_at": "2026-09-16T20:25:14"
@@ -249,9 +247,9 @@
       "old_title": "Pillar Temple Hoodie (Brigham City)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-brigham-city",
-      "updated_at": "2026-09-16T20:30:56",
+      "updated_at": "2026-09-22T16:19:44",
       "tapstitch_template_id": "1550091533229965312",
-      "tapstitch_store_product_id": "1550091568801787904",
+      "tapstitch_store_product_id": "1552202181447405568",
       "distribute_started_at": "2026-09-16T20:30:29"
     },
     {
@@ -303,9 +301,9 @@
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-burley",
-      "updated_at": "2026-09-16T22:21:27",
+      "updated_at": "2026-09-22T16:22:14",
       "tapstitch_template_id": "1550119262386077696",
-      "tapstitch_store_product_id": "1550119304685572096",
+      "tapstitch_store_product_id": "1552202798228197376",
       "distribute_started_at": "2026-09-16T22:20:42"
     },
     {
@@ -2444,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-09-22T16:08:09"
+  "updated_at": "2026-09-22T16:22:14"
 }

@@ -2,14 +2,35 @@
   "temples": {
     "Albuquerque": {
       "built": "2026-09-22T16:10:49-06:00",
+      "cutover": "2026-09-22T16:13:28-06:00",
       "distribute_started_at": "2026-09-22T16:10:49-06:00",
       "distributed": "2026-09-22T16:11:05-06:00",
+      "finished": "2026-09-22T16:11:45-06:00",
+      "gallery": "2026-09-22T16:13:24-06:00",
       "handle": "ultra-soft-oversized-temple-hoodie-albuquerque",
+      "hidden": "2026-09-22T16:11:36-06:00",
       "new_id": "gid://shopify/Product/15314442387828",
       "old_id": "gid://shopify/Product/15303826702708",
       "resolved": "2026-09-22T16:10:46-06:00",
       "store_product_id": "1552200546998439936",
-      "title": "Ultra-soft Oversized Temple Hoodie (Albuquerque)"
+      "title": "Ultra-soft Oversized Temple Hoodie (Albuquerque)",
+      "verified": "2026-09-22T16:13:31-06:00"
+    },
+    "Billings": {
+      "built": "2026-09-22T16:13:33-06:00",
+      "cutover": "2026-09-22T16:16:07-06:00",
+      "distribute_started_at": "2026-09-22T16:13:33-06:00",
+      "distributed": "2026-09-22T16:13:49-06:00",
+      "finished": "2026-09-22T16:14:29-06:00",
+      "gallery": "2026-09-22T16:16:00-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-billings",
+      "hidden": "2026-09-22T16:14:20-06:00",
+      "new_id": "gid://shopify/Product/15314445042036",
+      "old_id": "gid://shopify/Product/15303834894708",
+      "resolved": "2026-09-22T16:13:31-06:00",
+      "store_product_id": "1552201235828985856",
+      "title": "Ultra-soft Oversized Temple Hoodie (Billings)",
+      "verified": "2026-09-22T16:16:09-06:00"
     },
     "Boise": {
       "_seeded": "Done by hand on 22 Sep 2026 before scripts/eden_green_rollout.py existed. Ids from the ledger row and the store. finish, gallery and verify are left open on purpose: its seven on-model photos are the Salt Lake temple and its description drifted by one blank line, and those steps repair both.",
@@ -17,13 +38,16 @@
       "cutover": "2026-09-22T14:54:18-06:00",
       "distribute_started_at": "2026-09-22T14:21:00-06:00",
       "distributed": "2026-09-22T14:22:01-06:00",
+      "finished": "2026-09-22T16:16:12-06:00",
+      "gallery": "2026-09-22T16:17:08-06:00",
       "handle": "ultra-soft-oversized-temple-hoodie-boise",
       "hidden": "2026-09-22T14:22:01-06:00",
       "new_id": "gid://shopify/Product/15314349818228",
       "old_id": "gid://shopify/Product/15303563510132",
       "resolved": "2026-09-22T14:20:00-06:00",
       "store_product_id": "1552164524071727104",
-      "title": "Ultra-soft Oversized Temple Hoodie (Boise)"
+      "title": "Ultra-soft Oversized Temple Hoodie (Boise)",
+      "verified": "2026-09-22T16:17:16-06:00"
     },
     "Bountiful": {
       "built": "2026-09-22T16:05:06-06:00",
@@ -40,7 +64,39 @@
       "store_product_id": "1552199108201164800",
       "title": "Ultra-soft Oversized Temple Hoodie (Bountiful)",
       "verified": "2026-09-22T16:08:09-06:00"
+    },
+    "Brigham City": {
+      "built": "2026-09-22T16:17:18-06:00",
+      "cutover": "2026-09-22T16:19:41-06:00",
+      "distribute_started_at": "2026-09-22T16:17:18-06:00",
+      "distributed": "2026-09-22T16:17:35-06:00",
+      "finished": "2026-09-22T16:18:14-06:00",
+      "gallery": "2026-09-22T16:19:33-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-brigham-city",
+      "hidden": "2026-09-22T16:18:05-06:00",
+      "new_id": "gid://shopify/Product/15314448646516",
+      "old_id": "gid://shopify/Product/15303577534836",
+      "resolved": "2026-09-22T16:17:16-06:00",
+      "store_product_id": "1552202181447405568",
+      "title": "Ultra-soft Oversized Temple Hoodie (Brigham City)",
+      "verified": "2026-09-22T16:19:44-06:00"
+    },
+    "Burley": {
+      "built": "2026-09-22T16:19:45-06:00",
+      "cutover": "2026-09-22T16:22:11-06:00",
+      "distribute_started_at": "2026-09-22T16:19:45-06:00",
+      "distributed": "2026-09-22T16:20:17-06:00",
+      "finished": "2026-09-22T16:20:41-06:00",
+      "gallery": "2026-09-22T16:22:04-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-burley",
+      "hidden": "2026-09-22T16:20:33-06:00",
+      "new_id": "gid://shopify/Product/15314449531252",
+      "old_id": "gid://shopify/Product/15303840432500",
+      "resolved": "2026-09-22T16:19:44-06:00",
+      "store_product_id": "1552202798228197376",
+      "title": "Ultra-soft Oversized Temple Hoodie (Burley)",
+      "verified": "2026-09-22T16:22:14-06:00"
     }
   },
-  "updated_at": "2026-09-22T16:11:05-06:00"
+  "updated_at": "2026-09-22T16:22:14-06:00"
 }

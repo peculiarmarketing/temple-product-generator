@@ -1,11 +1,10 @@
 # Tapstitch migration ledger
 
-Updated 2026-09-22T16:08:09. 135 rows.
+Updated 2026-09-22T16:22:14. 135 rows.
 
 | State | Count |
 |---|---|
-| description-written | 1 |
-| live | 134 |
+| live | 135 |
 
 | Temple | Garment | State | Old web address | Problems |
 |---|---|---|---|---|
@@ -16,7 +15,7 @@ Updated 2026-09-22T16:08:09. 135 rows.
 | Billings | hoodie | live |  |  |
 | Billings | tee | live |  |  |
 | Boise | crew | live | classic-temple-crew-sweatshirt-boise |  |
-| Boise | hoodie | description-written | pillar-temple-hoodie-boise | Eden Green added 22 Sep 2026. distribute() of a NEW store product created a NEW Shopify product (15314349818228) instead of updating 15303563510132. The old product is DRAFT at handle ultra-soft-oversized-temple-hoodie-boise-retired-2026-09-22; the new one took the clean handle and its tags, metafields and SEO. Gallery is still Tapstitch defaults: build_product_gallery --add has not been run. |
+| Boise | hoodie | live | pillar-temple-hoodie-boise |  |
 | Boise | tee | live | essential-temple-tee-boise |  |
 | Bountiful | crew | live | bountiful-temple-sweatshirt |  |
 | Bountiful | hoodie | live | bountiful-temple-hoodie |  |
