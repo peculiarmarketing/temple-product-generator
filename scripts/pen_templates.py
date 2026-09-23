@@ -15,8 +15,9 @@ goes straight after the main product section.
 Every write is checked first: the new layout is compared with the live one key by key,
 and nothing is sent if anything beyond the intended change would move. golive saves both
 live files to artifacts/pen_templates/<timestamp>/ before writing, and revert restores
-the newest save. Unlike config/settings_data.json in swatches.py, these layouts are
-re-serialised whole: adding a section is a structural edit, and the key-by-key check is
+the newest save, but only if the live layouts are still exactly that save plus golive's
+change; an edit made in the theme editor since then makes it refuse rather than wipe it.
+Unlike config/settings_data.json in swatches.py, these layouts are re-serialised whole: adding a section is a structural edit, and the key-by-key check is
 what guarantees nothing else changed. Do not run golive or revert with the theme editor
 open on the live theme; the editor saves whole files and the last save wins.
 """
@@ -105,15 +106,31 @@ def verify(before, after, expected):
                          f"{sorted(expected)}. Nothing sent.")
 
 
+EXPECTED = {"templates/index.json": EXPECTED_INDEX, "templates/product.json": EXPECTED_PRODUCT}
+
+
+def revert_check(live_doc, saved_doc, expected):
+    """Refuse a revert unless the live layout is exactly the saved one plus golive's change.
+    Anything else (an edit made in the theme editor since golive) would be wiped."""
+    moved = changed_paths(saved_doc, live_doc)
+    if moved != expected:
+        extra = sorted(moved - expected)
+        raise SystemExit(f"the live layout has changed since golive at {extra or sorted(expected - moved)}. "
+                         f"Reverting would wipe that. Nothing sent; remove the pp_ sections in the "
+                         f"theme editor instead, or save that edit elsewhere first.")
+
+
 def planned(client, link):
-    """[(target filename, live banner, live doc, new doc, expected paths)] for both layouts."""
+    """[(filename, live raw content, live banner, new doc)] for both layouts, each verified.
+    The raw content is what golive backs up, so the backup is the exact file that was checked."""
     out = []
-    for name, fn, expected in (("templates/index.json", lambda d: add_showcase(d, link), EXPECTED_INDEX),
-                               ("templates/product.json", add_band, EXPECTED_PRODUCT)):
-        banner, doc = split_banner(theme_file(client, name)[1])
+    for name, fn in (("templates/index.json", lambda d: add_showcase(d, link)),
+                     ("templates/product.json", add_band)):
+        content = theme_file(client, name)[1]
+        banner, doc = split_banner(content)
         new = fn(doc)
-        verify(doc, new, expected)
-        out.append((name, banner, doc, new))
+        verify(doc, new, EXPECTED[name])
+        out.append((name, content, banner, new))
     return out
 
 
@@ -121,7 +138,7 @@ def cmd_preview(args):
     client = ShopifyClient()
     theme_gid = main_theme_id(client)
     files = {}
-    for name, _banner, _doc, new in planned(client, args.link):
+    for name, _content, _banner, new in planned(client, args.link):
         target = name.replace(".json", ".pen-preview.json")
         files[target] = join_banner("", new).encode()
         print(f"{target}: {len(new['order'])} sections, first {new['order'][:2]}")
@@ -141,7 +158,7 @@ def cmd_golive(args):
     client = ShopifyClient()
     theme_gid = main_theme_id(client)
     plans = planned(client, args.link)
-    for name, _b, _d, new in plans:
+    for name, _c, _b, new in plans:
         print(f"{name}: order becomes {new['order'][:3]} ...")
     if args.dry_run:
         print("\nDRY RUN, nothing sent.")
@@ -149,12 +166,12 @@ def cmd_golive(args):
     stamp = BACKUP_DIR / time.strftime("%Y%m%d-%H%M%S")
     stamp.mkdir(parents=True)
     files = {}
-    for name, banner, doc, new in plans:
-        (stamp / Path(name).name).write_text(theme_file(client, name)[1])
+    for name, content, banner, new in plans:
+        (stamp / Path(name).name).write_text(content)
         files[name] = join_banner(banner, new).encode()
     print(f"live layouts saved to {stamp.relative_to(PROJECT_ROOT)}")
     upsert_theme_files(client, theme_gid, files)
-    for name, _b, _d, new in plans:
+    for name, _c, _b, new in plans:
         _, live = split_banner(theme_file(client, name)[1])
         if live != new:
             raise SystemExit(f"{name} read back different from what was sent. Run revert.")
@@ -169,6 +186,9 @@ def cmd_revert(_args):
     latest = saves[-1]
     files = {f"templates/{p.name}": p.read_bytes() for p in sorted(latest.glob("*.json"))}
     client = ShopifyClient()
+    for name, body in files.items():
+        live = split_banner(theme_file(client, name)[1])[1]
+        revert_check(live, split_banner(body.decode())[1], EXPECTED[name])
     upsert_theme_files(client, main_theme_id(client), files)
     for name, body in files.items():  # content, not bytes: Shopify may reformat on save
         if split_banner(theme_file(client, name)[1])[1] != split_banner(body.decode())[1]:

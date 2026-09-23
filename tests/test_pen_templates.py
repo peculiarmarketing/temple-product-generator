@@ -59,4 +59,27 @@ try:
 except SystemExit:
     pass
 
+
+# verify also catches an expected change that is MISSING (old slideshow left switched on)
+from scripts.pen_templates import EXPECTED_INDEX, EXPECTED_PRODUCT, revert_check  # noqa: E402
+half = copy.deepcopy(home)
+del half["sections"]["hero"]["disabled"]
+try:
+    verify(index, half, EXPECTED_INDEX)
+    raise AssertionError("verify accepted a golive that left the slideshow on")
+except SystemExit:
+    pass
+
+# revert puts back the saved layout only when the live one is exactly "saved + golive";
+# anything edited in the theme editor since golive would be wiped, so it refuses.
+revert_check(home, index, EXPECTED_INDEX)
+revert_check(prod, product, EXPECTED_PRODUCT)
+edited = copy.deepcopy(home)
+edited["sections"]["faq"]["settings"]["heading"] = "Edited after golive"
+try:
+    revert_check(edited, index, EXPECTED_INDEX)
+    raise AssertionError("revert would wipe an edit made after golive")
+except SystemExit as e:
+    assert "faq" in str(e), e
+
 print("ok")

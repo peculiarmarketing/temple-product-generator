@@ -42,4 +42,63 @@ remote = {"assets/a.json": md5(b"one"), "assets/b.webp": md5(b"old"), "assets/zz
 assert plan_uploads(local, remote) == ["assets/b.webp", "assets/c.js"], plan_uploads(local, remote)
 assert plan_uploads(local, {k: md5(v) for k, v in local.items()}) == []
 
+
+# --- build: retry ladder, and nothing (not even an old copy) survives a failed gate ---
+import json as _json  # noqa: E402
+import shutil  # noqa: E402
+import tempfile  # noqa: E402
+import types  # noqa: E402
+
+import scripts.web_drawings as wds  # noqa: E402
+
+GOOD = {"strokes": 1, "uncovered_pct": 0.1, "json_gz_bytes": 10, "image_bytes": 10}
+BAD = {**GOOD, "uncovered_pct": 5.0}
+
+
+def fake_build(pass_from):
+    calls = []
+
+    def build(svg, city, trace_width, art_px):
+        calls.append((trace_width, art_px))
+        ok = len(calls) >= pass_from
+        return {"data": {"city": city}, "image": b"webp", "stats": GOOD if ok else BAD}
+    return build, calls
+
+
+real_build, real_out = wds.web_drawing.build, wds.OUT_DIR
+tmp = Path(tempfile.mkdtemp())
+try:
+    wds.OUT_DIR = tmp
+    wds.web_drawing.build, calls = fake_build(pass_from=2)
+    _, problems, used = wds.build_one("Logan")
+    assert problems == [] and used == wds.ATTEMPTS[1] and calls == wds.ATTEMPTS[:2], (problems, used, calls)
+
+    # a previous good build of Logan is on disk; a new build fails every gate
+    (tmp / "pp-temple-logan.json").write_text("{}")
+    (tmp / "pp-temple-logan.webp").write_bytes(b"old")
+    (tmp / "build-report.json").write_text(_json.dumps({"logan": {"folder": "Logan"}}))
+    wds.web_drawing.build, _ = fake_build(pass_from=99)
+    rc = wds.cmd_build(types.SimpleNamespace(all=False, temple=["Logan"]))
+    assert rc == 1
+    assert not list(tmp.glob("pp-temple-logan.*")), "a failed build left the old drawing to be pushed"
+    assert "logan" not in _json.loads((tmp / "build-report.json").read_text())
+
+    # push only picks up the temples asked for, plus the theme code
+    for slug in ("logan", "rome"):
+        (tmp / f"pp-temple-{slug}.json").write_text("{}")
+        (tmp / f"pp-temple-{slug}.webp").write_bytes(b"x")
+    files = wds.local_theme_files({"logan"})
+    assert set(files) == set(wds.THEME_CODE) | set(drawing_files("logan")), sorted(files)
+finally:
+    wds.web_drawing.build, wds.OUT_DIR = real_build, real_out
+    shutil.rmtree(tmp, ignore_errors=True)
+
+# a mistyped folder gets the same readable message from build and push
+assert wds.slugs_for_folders(["Logan", "Salt Lake"]) == {"logan": "Logan", "salt-lake": "Salt Lake"}
+try:
+    wds.slugs_for_folders(["Salt Lake City"])
+    raise AssertionError("an unknown folder should be refused")
+except SystemExit as e:
+    assert "Salt Lake City" in str(e)
+
 print("ok")

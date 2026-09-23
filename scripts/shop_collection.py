@@ -19,7 +19,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from shopify_client import ShopifyClient  # noqa: E402
+from shopify_client import ShopifyClient, ShopifyError  # noqa: E402
 
 HANDLE = "shop"
 TITLE = "Shop"
@@ -58,6 +58,7 @@ def main(argv=None):
         if errs:
             raise SystemExit(f"tagging {handle} failed: {errs}")
 
+    cid = existing["id"] if existing else None
     if not existing:
         res = c.gql("""mutation($input: CollectionInput!) { collectionCreate(input: $input) {
             collection { id } userErrors { field message } } }""",
@@ -66,22 +67,36 @@ def main(argv=None):
         if res["userErrors"]:
             raise SystemExit(f"collectionCreate failed: {res['userErrors']}")
         cid = res["collection"]["id"]
-        pubs = c.gql("{ publications(first: 20) { nodes { id name } } }")["publications"]["nodes"]
-        store = [p["id"] for p in pubs if p["name"] == "Online Store"]
-        try:
-            errs = c.gql("""mutation($id: ID!, $p: [PublicationInput!]!) { publishablePublish(id: $id,
-                input: $p) { userErrors { message } } }""",
-                {"id": cid, "p": [{"publicationId": pid} for pid in store]})["publishablePublish"]["userErrors"]
-        except Exception as exc:  # most likely a missing write_publications scope
-            errs = [str(exc)]
-        if errs or not store:
-            print(f"created, but NOT published to the Online Store ({errs or 'no Online Store channel'}).")
-            print("Evan: Shopify admin > Products > Collections > Shop > Sales channels > Online Store.")
+
+    # Publish on every --apply, not just on creation, so a run that could not publish
+    # can be finished later. The app's token has no publications scope today, so this
+    # usually ends in the manual step below rather than a crash.
+    problem = publish_to_online_store(c, cid)
+    if problem:
+        print(f"Shop exists but is NOT published to the Online Store ({problem}).")
+        print("Until it is, it shows as a missing page. Evan: Shopify admin > Products > "
+              "Collections > Shop > Sales channels > Online Store.")
+        return 1
 
     after = c.gql("""query($h: String!) { collectionByHandle(handle: $h) {
         products(first: 50) { nodes { title } } } }""", {"h": HANDLE})["collectionByHandle"]
     print("Shop now holds:", [n["title"] for n in after["products"]["nodes"]])
     return 0
+
+
+def publish_to_online_store(c, cid):
+    """None when published; otherwise the reason it could not be."""
+    try:
+        pubs = c.gql("{ publications(first: 20) { nodes { id name } } }")["publications"]["nodes"]
+        store = [p["id"] for p in pubs if p["name"] == "Online Store"]
+        if not store:
+            return "no Online Store channel found"
+        errs = c.gql("""mutation($id: ID!, $p: [PublicationInput!]!) { publishablePublish(id: $id,
+            input: $p) { userErrors { message } } }""",
+            {"id": cid, "p": [{"publicationId": pid} for pid in store]})["publishablePublish"]["userErrors"]
+    except ShopifyError as exc:  # most likely the missing read/write_publications scope
+        return str(exc)[:160]
+    return f"{errs}" if errs else None
 
 
 if __name__ == "__main__":

@@ -756,7 +756,7 @@ Create `theme/dev/harness.html`. It mirrors the rendered markup of both sections
 <!DOCTYPE html>
 <!-- Local test page for assets/pp-pen-draw.js. Mirrors the markup the two Liquid
      sections render. Serve from the repo root:
-       ./.venv.nosync/bin/python -m http.server 8765
+       ./.venv.nosync/bin/python -m http.server 8765 --bind 127.0.0.1
      then open http://localhost:8765/theme/dev/harness.html (add ?reduced=1 to
      simulate a phone set to reduce motion). -->
 <html lang="en">
@@ -834,7 +834,7 @@ Create `theme/dev/harness.html`. It mirrors the rendered markup of both sections
 
 - [ ] **Step 2: Serve it and confirm it fails**
 
-Run in the background: `./.venv.nosync/bin/python -m http.server 8765` from the repo root.
+Run in the background: `./.venv.nosync/bin/python -m http.server 8765 --bind 127.0.0.1` from the repo root.
 Open `http://localhost:8765/theme/dev/harness.html` in the Browser pane, which must be visible, because hidden pages don't run animations.
 Expected: the unstyled page, and a console 404 for `pp-pen-draw.js` and `.css`.
 

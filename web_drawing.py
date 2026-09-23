@@ -259,7 +259,7 @@ def build(svg_text, location_line, trace_width=1024, art_max_px=840):
 
     ordered = pen_order(strokes, img.height)
     to_vb = [[(round(vb[0] + x * scale), round(vb[1] + y * scale)) for x, y in s] for s in ordered]
-    to_vb = [s if len(s) > 1 else s * 2 for s in to_vb]
+    assert all(len(s) > 1 for s in to_vb), "every stroke needs two points to draw"
 
     ys, xs = np.nonzero(art)
     x0, x1, y0, y1 = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1

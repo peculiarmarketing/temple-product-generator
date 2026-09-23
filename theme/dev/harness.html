@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <!-- Local test page for assets/pp-pen-draw.js. Mirrors the markup the two Liquid
      sections render. Serve from the repo root:
-       ./.venv.nosync/bin/python -m http.server 8765
-     then open http://localhost:8765/theme/dev/harness.html (add ?reduced=1 to
-     simulate a phone set to reduce motion). -->
+       ./.venv.nosync/bin/python -m http.server 8765 --bind 127.0.0.1
+     Keep the --bind: without it the whole repo, .env and its store keys included, is
+     served to anyone on the same network.
+     Then open http://localhost:8765/theme/dev/harness.html. Options:
+       ?reduced=1    simulate a phone set to reduce motion
+       ?selftest=1   run checks 8-11 and print PASS/FAIL (keep the tab visible)
+       ?flaky=1      the first request for each drawing fails once, like a bad connection
+       ?old=1        remove Element.replaceChildren, as on iOS 13 and older
+       ?corrupt=1    every drawing file loads but is unusable: both pieces must hide, not hang -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pp-pen harness</title>
 <script>
+  const qs = new URLSearchParams(location.search);
+  if (qs.has('old')) delete Element.prototype.replaceChildren;
+  if (qs.has('corrupt')) {  // every drawing file loads but is unusable
+    const realFetch = window.fetch.bind(window);
+    window.fetch = (url, ...rest) => String(url).includes('pp-temple-')
+      ? realFetch(url, ...rest).then((r) => (r.ok ? new Response('{"version":1}', { status: 200 }) : r))
+      : realFetch(url, ...rest);
+  }
+  if (qs.has('flaky')) {
+    const realFetch = window.fetch.bind(window), failed = new Set();
+    window.fetch = (url, ...rest) => {
+      if (String(url).includes('pp-temple-') && !failed.has(String(url))) {
+        failed.add(String(url));
+        return Promise.reject(new TypeError('Failed to fetch (simulated)'));
+      }
+      return realFetch(url, ...rest);
+    };
+  }
   if (new URLSearchParams(location.search).has('reduced')) {
     const real = window.matchMedia.bind(window);
     window.matchMedia = (q) => q.includes('prefers-reduced-motion') ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : real(q);
   }
 </script>
-<link rel="stylesheet" href="../assets/pp-pen-draw.css">
+<script>
+  // Always load the current files: a cached stylesheet once made a check test old code.
+  document.write(`<link rel="stylesheet" href="../assets/pp-pen-draw.css?t=${Date.now()}">`);
+</script>
 <!-- Copied from shrine-theme-pro assets/base.css: the theme hides every empty div. The
      drawing box and city line start empty, so the harness must include this rule. -->
 <style>div:empty { display: none; }</style>
@@ -75,6 +102,45 @@
 </section>
 
 <div class="gap">end</div>
-<script src="../assets/pp-pen-draw.js" defer></script>
+<script>document.write(`<script src="../assets/pp-pen-draw.js?t=${Date.now()}" defer><\/script>`);</script>
+<script>
+  // Checks 8-11 (the regressions found while building this). Results land in
+  // window.__ppSelftest and the console as PASS/FAIL lines.
+  if (new URLSearchParams(location.search).has('selftest')) window.addEventListener('load', async () => {
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const $ = (s) => document.querySelector(s);
+    const h = (s) => Math.round($(s).getBoundingClientRect().height);
+    const res = window.__ppSelftest = {};
+    const report = (name, ok, detail) => { res[name] = { ok, detail }; console.log(`${ok ? 'PASS' : 'FAIL'} ${name}`, detail); };
+    const art = $('#band-saratoga .pp-pen__art').getBoundingClientRect();
+    const cityShown = getComputedStyle($('#band-saratoga .pp-pen__city')).display !== 'none';
+    report('8 box reserved before load', art.width > 0 && art.height > 0 && cityShown, { w: art.width, h: art.height, cityShown });
+    const missing = $('#band-missing');
+    const navy = getComputedStyle(missing).backgroundImage !== 'none' && !missing.classList.contains('is-ready');
+    report('10 no navy box before a missing drawing is known', !navy, getComputedStyle(missing).backgroundImage.slice(0, 40));
+    const before = { band: h('#band-saratoga'), show: h('#showcase') };
+    $('#band-saratoga').scrollIntoView();
+    const t0 = performance.now();
+    while (performance.now() - t0 < 20000) {
+      const c = $('#band-saratoga .pp-pen__city');
+      if (c.children.length && c.querySelectorAll('.is-on').length === c.children.length) break;
+      await wait(100);
+    }
+    const mid = { band: h('#band-saratoga'), show: h('#showcase') };
+    report('9 heights steady while drawing', before.band === mid.band && before.show === mid.show, { before, mid });
+    // The bad slug is dropped once its 404 comes back; with ?flaky=1 every drawing fails
+    // once first, so allow a full extra lap. Real temples must never be dropped (never < 6).
+    window.scrollTo(0, 0);
+    let dots = 0, lowest = 99;
+    const t1 = performance.now();
+    while (performance.now() - t1 < 90000) {
+      dots = document.querySelectorAll('#showcase .pp-showcase__dots span').length;
+      if (dots) lowest = Math.min(lowest, dots);
+      if (dots === 6) break;
+      await wait(250);
+    }
+    report('11 real temples all still cycling (6 dots)', dots === 6 && lowest >= 6, { dots, lowest });
+  });
+</script>
 </body>
 </html>

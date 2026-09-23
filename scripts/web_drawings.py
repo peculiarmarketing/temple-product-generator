@@ -75,6 +75,15 @@ def temple_folders():
     return found
 
 
+def slugs_for_folders(names):
+    """{slug: folder} for the named temple folders; unknown names stop with a readable message."""
+    by_folder = {f: s for s, f in temple_folders().items()}
+    missing = [n for n in names if n not in by_folder]
+    if missing:
+        raise SystemExit(f"no temple folder with a manifest and white art: {missing}")
+    return {by_folder[n]: n for n in names}
+
+
 def drawing_files(slug):
     return (f"assets/pp-temple-{slug}.json", f"assets/pp-temple-{slug}.webp")
 
@@ -91,15 +100,7 @@ def build_one(folder):
 
 
 def cmd_build(args):
-    folders = temple_folders()
-    if args.all:
-        chosen = folders
-    else:
-        by_folder = {f: s for s, f in folders.items()}
-        missing = [t for t in args.temple if t not in by_folder]
-        if missing:
-            raise SystemExit(f"no temple folder with a manifest and white art: {missing}")
-        chosen = {by_folder[t]: t for t in args.temple}
+    chosen = temple_folders() if args.all else slugs_for_folders(args.temple)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     report_path = OUT_DIR / "build-report.json"
@@ -111,11 +112,16 @@ def cmd_build(args):
         st = result["stats"]
         line = (f"{folder:22} {st['strokes']:5} strokes  {st['uncovered_pct']:.2f}% left  "
                 f"{(st['json_gz_bytes'] + st['image_bytes']) // 1024:4} KB  {time.time() - t0:4.1f}s")
+        json_name, webp_name = drawing_files(slug)
         if problems:
+            # Drop any earlier good build too: push uploads whatever is on disk, and an
+            # old drawing of art that has since changed must not reach the theme.
+            for name in (json_name, webp_name):
+                (OUT_DIR / Path(name).name).unlink(missing_ok=True)
+            report.pop(slug, None)
             failed.append(folder)
             print(f"{line}  FAILED: {'; '.join(problems)}")
             continue
-        json_name, webp_name = drawing_files(slug)
         (OUT_DIR / Path(json_name).name).write_text(
             json.dumps(result["data"], separators=(",", ":")))
         (OUT_DIR / Path(webp_name).name).write_bytes(result["image"])
@@ -123,7 +129,8 @@ def cmd_build(args):
         print(line + ("" if used == ATTEMPTS[0] else f"  (needed {used})"))
     report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     if failed:
-        print(f"\n{len(failed)} temple(s) not written: {failed}. They get no band until fixed.")
+        print(f"\n{len(failed)} temple(s) not written: {failed}. The live theme keeps whatever it "
+              f"had for them until a passing build is pushed.")
         return 1
     return 0
 
@@ -199,8 +206,7 @@ PATTERNS = ["assets/pp-*", "sections/pp-*"]
 def cmd_push(args):
     slugs = None
     if args.temple:
-        folders = {f: s for s, f in temple_folders().items()}
-        slugs = {folders[t] for t in args.temple}
+        slugs = set(slugs_for_folders(args.temple))
     local = local_theme_files(slugs)
     client = ShopifyClient()
     theme_gid = main_theme_id(client)

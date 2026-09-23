@@ -15,18 +15,30 @@
   const FADE_MS = 700;    // showcase cross-fade between temples
   const EXACT_MS = 600;   // unmasked art fades in at the end
   const LETTER_MS = 45;
+  const RETRY_MS = 4000;  // after a failed download that was not a missing file
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
   const cache = new Map();
   let uid = 0;
 
-  // JSON and image together; a missing file rejects, and the rejection is cached.
+  // Element.replaceChildren is missing on iOS 13 and older; this does the same job.
+  function setKids(el, kids) {
+    el.textContent = '';
+    kids.forEach((k) => el.appendChild(k));
+  }
+
+  // JSON and image together. A failure is not cached, so a dropped connection is retried
+  // later; err.missing marks a 404, the only failure treated as "no drawing exists".
   function load(item) {
     if (!cache.has(item.json)) {
-      cache.set(item.json, Promise.all([
+      const p = Promise.all([
         fetch(item.json).then((r) => {
-          if (!r.ok) throw new Error(`pp-pen: ${r.status} ${item.json}`);
+          if (!r.ok) {
+            const err = new Error(`pp-pen: ${r.status} ${item.json}`);
+            err.missing = r.status === 404;
+            throw err;
+          }
           return r.json();
         }),
         new Promise((resolve, reject) => {
@@ -35,7 +47,9 @@
           img.onerror = () => reject(new Error(`pp-pen: image failed ${item.img}`));
           img.src = item.img;
         }),
-      ]).then(([data]) => data));
+      ]).then(([data]) => data);
+      p.catch(() => cache.delete(item.json));
+      cache.set(item.json, p);
     }
     return cache.get(item.json);
   }
@@ -65,7 +79,7 @@
     tip.appendChild(svgEl('circle', { r: data.penWidth * 1.6, fill: '#F58000', opacity: '0.25' }));
     tip.appendChild(svgEl('circle', { r: data.penWidth * 0.55, fill: '#F58000' }));
     svg.append(defs, drawn, exact, tip);
-    artEl.replaceChildren(svg);
+    setKids(artEl, [svg]);
     return { paths, exact, tip };
   }
 
@@ -76,7 +90,7 @@
       s.textContent = c === ' ' ? '\u00a0' : c;
       return s;
     });
-    cityEl.replaceChildren(...letters);
+    setKids(cityEl, letters);
     if (REDUCED) {
       letters.forEach((s) => s.classList.add('is-on'));
       return Promise.resolve();
@@ -87,7 +101,7 @@
 
   async function draw(stage, data, imgUrl, live) {
     const cityEl = stage.querySelector('.pp-pen__city');
-    cityEl.replaceChildren();
+    setKids(cityEl, []);
     const { paths, exact, tip } = mount(stage.querySelector('.pp-pen__art'), data, imgUrl);
     if (REDUCED) {
       tip.remove();
@@ -157,7 +171,19 @@
       const mine = ++run;
       const live = () => visible && run === mine;
       try {
-        const data = await load(item);
+        let data;
+        try {
+          data = await load(item);
+        } catch (err) {
+          console.warn(err);
+          if (err.missing) {  // no drawing uploaded for this temple: remove the band
+            finished = true;
+            section.remove();
+          } else {            // a bad connection: stay hidden and try again shortly
+            await wait(RETRY_MS);
+          }
+          return;
+        }
         section.classList.add('is-ready');
         while (live()) {
           await draw(stage, data, item.img, live);
@@ -165,6 +191,7 @@
           if (live()) await wait(HOLD_MS);
         }
       } catch (err) {
+        // The drawing itself would not draw: take the band away rather than retry it.
         finished = true;
         section.remove();
         console.warn(err);
@@ -182,7 +209,7 @@
     const dotsEl = section.querySelector('.pp-showcase__dots');
     const items = [...section.querySelectorAll('[data-pp-pen-item]')]
       .map((n) => ({ json: n.dataset.json, img: n.dataset.img }));
-    const renderDots = (active) => dotsEl.replaceChildren(...items.map((_, j) => {
+    const renderDots = (active) => setKids(dotsEl, items.map((_, j) => {
       const dot = document.createElement('span');
       if (j === active) dot.className = 'is-on';
       return dot;
@@ -191,9 +218,10 @@
     let visible = false;
     let run = 0;
     let running = false;
+    let broken = false;
     if (items.length) load(items[0]).catch(() => {});  // above the fold: fetch now
     const start = async () => {
-      if (running) return;
+      if (running || broken) return;
       running = true;
       const mine = ++run;
       const live = () => visible && run === mine;
@@ -206,7 +234,8 @@
             data = await load(item);
           } catch (err) {
             console.warn(err);
-            items.splice(idx, 1);
+            if (err.missing) items.splice(idx, 1);  // no such drawing: drop it for good
+            else { idx++; await wait(RETRY_MS); }   // bad connection: move on, retry next lap
             continue;
           }
           if (!live()) break;
@@ -222,9 +251,15 @@
           idx++;
         }
         if (!items.length) section.querySelector('.pp-showcase__stage').hidden = true;
+      } catch (err) {
+        // Anything unexpected: stop and hide the drawing rather than retrying at once,
+        // which would spin without ever letting the page repaint.
+        broken = true;
+        section.querySelector('.pp-showcase__stage').hidden = true;
+        console.warn(err);
       } finally {
         running = false;
-        if (visible && items.length > 1) start();
+        if (visible && !broken && items.length > 1) start();
       }
     };
     whenVisible(section, (v) => { visible = v; if (v) start(); else run++; });
