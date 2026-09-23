@@ -29,6 +29,18 @@ Tapstitch puts it. Do not reorder.
 the Easify app. Easify binds the Temple dropdown to a product's internal id, so
 every swapped hoodie is missing it until then.
 
+**Waiting on that import: one product per garment for hoodies and All Temples.**
+Evan's decision, 23 Sep: garment collections show only the parent (Salt Lake),
+and shoppers reach every other temple through the Easify dropdown. Tees and
+Sweatshirts already work this way: the Salt Lake tee and crew carry the tag
+`listing:parent`, and `temple-tees` / `temple-crewnecks` require `garment:<x>`
+AND `listing:parent`. Hoodies were held back because the Salt Lake hoodie has no
+dropdown until the import, so it would be a dead end. After the import: tag
+`cloud-temple-hoodie` with `listing:parent`, give `temple-hoodies` the same two
+rules, and change `all-temples` to the single rule `listing:parent`. The homepage
+"The temples" row reads all-temples, so it drops to the three parents; that is
+intended. Utah, Idaho and California collections stay as they are (Evan).
+
 **Done 23 Sep, after the rollout:** the two held-back hoodie passes ran
 (`swap_care_image.py --garment hoodie`, `fix_facts_typos.py --hoodie`), and the
 Salt Lake hoodie got its care section. All 135 garments now show care-symbols.svg,
