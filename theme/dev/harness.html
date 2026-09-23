@@ -9,7 +9,9 @@
        ?selftest=1   run checks 8-11 and print PASS/FAIL (keep the tab visible)
        ?flaky=1      the first request for each drawing fails once, like a bad connection
        ?old=1        remove Element.replaceChildren, as on iOS 13 and older
-       ?corrupt=1    every drawing file loads but is unusable: both pieces must hide, not hang -->
+       ?corrupt=1    every drawing file loads but is unusable: both pieces must hide, not hang
+       ?noimage=1    Saratoga's .json exists but its .webp does not (a half-finished push):
+                     the band must give up after a few tries, not retry forever -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -102,6 +104,11 @@
 </section>
 
 <div class="gap">end</div>
+<script>
+  if (new URLSearchParams(location.search).has('noimage')) {
+    document.getElementById('band-saratoga').dataset.img = '/artifacts/web_drawings/pp-temple-no-such-image.webp';
+  }
+</script>
 <script>document.write(`<script src="../assets/pp-pen-draw.js?t=${Date.now()}" defer><\/script>`);</script>
 <script>
   // Checks 8-11 (the regressions found while building this). Results land in

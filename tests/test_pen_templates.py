@@ -82,4 +82,22 @@ try:
 except SystemExit as e:
     assert "faq" in str(e), e
 
+
+# ...and a section reorder made after golive (order is one list, which golive changes
+# anyway) must also refuse, or revert would quietly put the old order back.
+moved = copy.deepcopy(home)
+rest = [k for k in moved["order"] if k != SHOWCASE_ID]
+rest[-1], rest[-2] = rest[-2], rest[-1]
+moved["order"] = [SHOWCASE_ID] + rest
+try:
+    revert_check(moved, index, EXPECTED_INDEX)
+    raise AssertionError("revert would wipe a section reorder made after golive")
+except SystemExit:
+    pass
+
+
+# a layout that is already back to the saved copy needs no revert (and must not block the other)
+assert revert_check(index, index, EXPECTED_INDEX) is False
+assert revert_check(home, index, EXPECTED_INDEX) is True
+
 print("ok")

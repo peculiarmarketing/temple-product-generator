@@ -16,6 +16,7 @@
   const EXACT_MS = 600;   // unmasked art fades in at the end
   const LETTER_MS = 45;
   const RETRY_MS = 4000;  // after a failed download that was not a missing file
+  const MAX_TRIES = 3;    // then give up: a half-uploaded drawing must not retry forever
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
@@ -165,6 +166,7 @@
     let run = 0;
     let running = false;
     let finished = false;
+    let failures = 0;
     const start = async () => {
       if (running || finished) return;
       running = true;
@@ -176,10 +178,10 @@
           data = await load(item);
         } catch (err) {
           console.warn(err);
-          if (err.missing) {  // no drawing uploaded for this temple: remove the band
+          if (err.missing || ++failures >= MAX_TRIES) {  // no usable drawing: remove the band
             finished = true;
             section.remove();
-          } else {            // a bad connection: stay hidden and try again shortly
+          } else {  // a bad connection: stay hidden and try again shortly
             await wait(RETRY_MS);
           }
           return;
@@ -234,10 +236,12 @@
             data = await load(item);
           } catch (err) {
             console.warn(err);
-            if (err.missing) items.splice(idx, 1);  // no such drawing: drop it for good
-            else { idx++; await wait(RETRY_MS); }   // bad connection: move on, retry next lap
+            item.failures = (item.failures || 0) + 1;
+            if (err.missing || item.failures >= MAX_TRIES) items.splice(idx, 1);  // drop it for good
+            else { idx++; await wait(RETRY_MS); }  // bad connection: move on, retry next lap
             continue;
           }
+          item.failures = 0;  // only failures in a row count toward giving up
           if (!live()) break;
           renderDots(idx);
           stage.classList.remove('is-faded');

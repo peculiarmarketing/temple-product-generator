@@ -77,6 +77,17 @@ for s, ln in zip(d["strokes"], d["lens"]):
     assert abs(wd.polyline_length(pts) - ln) < 0.1, (s[:40], ln)
     assert all(x <= px <= x + w and y <= py <= y + h for px, py in pts), "stroke outside box"
 
+# The finished-art image must sit exactly on the strokes: its drawn area, mapped into
+# box units, matches the strokes' extent to within one pen width on every edge.
+ax0, ay0, ax1, ay1 = img.split()[3].point(lambda v: 255 if v > 100 else 0).getbbox()
+img_edges = (x + ax0 * w / img.width, y + ay0 * h / img.height,
+             x + ax1 * w / img.width, y + ay1 * h / img.height)
+all_pts = [(float(a), float(b)) for s in d["strokes"] for a, b in re.findall(r"[ML](-?[\d.]+) (-?[\d.]+)", s)]
+stroke_edges = (min(p[0] for p in all_pts), min(p[1] for p in all_pts),
+                max(p[0] for p in all_pts), max(p[1] for p in all_pts))
+for e_img, e_st in zip(img_edges, stroke_edges):
+    assert abs(e_img - e_st) <= d["penWidth"], (img_edges, stroke_edges, d["penWidth"])
+
 # pen order: long structural strokes before short details, even when a detail is nearer
 # the bottom-left start; a long horizontal line is drawn left to right.
 order = wd.pen_order([[(150, 390), (160, 390)], [(10, 20), (200, 20)]], 400)

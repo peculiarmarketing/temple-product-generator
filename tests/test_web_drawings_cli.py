@@ -44,6 +44,8 @@ assert plan_uploads(local, {k: md5(v) for k, v in local.items()}) == []
 
 
 # --- build: retry ladder, and nothing (not even an old copy) survives a failed gate ---
+import contextlib  # noqa: E402
+import io  # noqa: E402
 import json as _json  # noqa: E402
 import shutil  # noqa: E402
 import tempfile  # noqa: E402
@@ -78,7 +80,8 @@ try:
     (tmp / "pp-temple-logan.webp").write_bytes(b"old")
     (tmp / "build-report.json").write_text(_json.dumps({"logan": {"folder": "Logan"}}))
     wds.web_drawing.build, _ = fake_build(pass_from=99)
-    rc = wds.cmd_build(types.SimpleNamespace(all=False, temple=["Logan"]))
+    with contextlib.redirect_stdout(io.StringIO()):  # keep the FAILED line out of the test output
+        rc = wds.cmd_build(types.SimpleNamespace(all=False, temple=["Logan"]))
     assert rc == 1
     assert not list(tmp.glob("pp-temple-logan.*")), "a failed build left the old drawing to be pushed"
     assert "logan" not in _json.loads((tmp / "build-report.json").read_text())

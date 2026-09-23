@@ -111,14 +111,21 @@ EXPECTED = {"templates/index.json": EXPECTED_INDEX, "templates/product.json": EX
 
 
 def revert_check(live_doc, saved_doc, expected):
-    """Refuse a revert unless the live layout is exactly the saved one plus golive's change.
-    Anything else (an edit made in the theme editor since golive) would be wiped."""
+    """True when the live layout is exactly the saved one plus golive's change (safe to
+    revert), False when it is already back to the saved copy. Anything else, such as an
+    edit or a section reorder made in the theme editor since golive, stops with nothing
+    sent, because restoring the saved copy would wipe it."""
     moved = changed_paths(saved_doc, live_doc)
-    if moved != expected:
-        extra = sorted(moved - expected)
-        raise SystemExit(f"the live layout has changed since golive at {extra or sorted(expected - moved)}. "
+    if not moved:
+        return False
+    added = {p[1] for p in expected if p[0] == "sections" and len(p) == 2}
+    reordered = [k for k in live_doc.get("order", []) if k not in added] != saved_doc.get("order")
+    if moved != expected or reordered:
+        extra = sorted(moved - expected) or (["order"] if reordered else sorted(expected - moved))
+        raise SystemExit(f"the live layout has changed since golive at {extra}. "
                          f"Reverting would wipe that. Nothing sent; remove the pp_ sections in the "
                          f"theme editor instead, or save that edit elsewhere first.")
+    return True
 
 
 def planned(client, link):
@@ -187,9 +194,14 @@ def cmd_revert(_args):
     latest = saves[-1]
     files = {f"templates/{p.name}": p.read_bytes() for p in sorted(latest.glob("*.json"))}
     client = ShopifyClient()
-    for name, body in files.items():
+    for name in list(files):
         live = split_banner(theme_file(client, name)[1])[1]
-        revert_check(live, split_banner(body.decode())[1], EXPECTED[name])
+        if not revert_check(live, split_banner(files[name].decode())[1], EXPECTED[name]):
+            print(f"{name} is already the saved copy; left alone.")
+            del files[name]
+    if not files:
+        print("nothing to revert.")
+        return 0
     upsert_theme_files(client, main_theme_id(client), files)
     for name, body in files.items():  # content, not bytes: Shopify may reformat on save
         if split_banner(theme_file(client, name)[1])[1] != split_banner(body.decode())[1]:
