@@ -18,8 +18,9 @@ THE TEMPLE / THE DRAWING. homepage_layout and product_layout hold the full list.
 Every write is checked first: the new layout is compared with the live one key by key,
 and nothing is sent if anything beyond the intended change would move. golive saves both
 live files to artifacts/pen_templates/<timestamp>/ before writing, and revert restores
-the newest save, but only if the live layouts are still exactly that save plus golive's
-change; an edit made in the theme editor since then makes it refuse rather than wipe it.
+the newest save, but only if the live layouts are still exactly what golive sent (saved
+beside the backup as *.after.json); an edit made in the theme editor since then makes it
+refuse rather than wipe it.
 Unlike config/settings_data.json in swatches.py, these layouts are re-serialised whole:
 adding a section is a structural edit, and the key-by-key check is what guarantees
 nothing else changed. Do not run golive or revert with the theme editor
@@ -66,17 +67,11 @@ def join_banner(banner, doc):
     return banner + json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
 
 
-def _block_id(blocks, block_type):
-    ids = [k for k, b in blocks.items() if b.get("type") == block_type]
+def _only_id(entries, entry_type):
+    """The id of the one block or section of this type; refuse to guess between several."""
+    ids = [k for k, e in entries.items() if e.get("type") == entry_type]
     if len(ids) != 1:
-        raise ValueError(f"expected one {block_type} block, found {len(ids)}")
-    return ids[0]
-
-
-def _section_id(doc, section_type):
-    ids = [k for k, sec in doc["sections"].items() if sec.get("type") == section_type]
-    if len(ids) != 1:
-        raise ValueError(f"expected one {section_type} section, found {len(ids)}")
+        raise ValueError(f"expected one {entry_type}, found {len(ids)}")
     return ids[0]
 
 
@@ -84,7 +79,8 @@ def homepage_layout(index_doc, link=COLLECTION_LINK):
     """The showcase goes first and the old slideshow is switched off (kept, not deleted).
     "The temples" row shows the Temple Design Products collection, the Browse row (whose
     state-collection cards died with those collections) is switched off, and the other
-    orange buttons turn navy so Add to Cart is the only orange one."""
+    orange buttons turn navy so Add to Cart is the only orange one. The before/after labels
+    go to capitals and the What you get cards turn navy with white text."""
     doc = copy.deepcopy(index_doc)
     if SHOWCASE_ID in doc["sections"]:
         raise ValueError("this homepage already has the showcase")
@@ -107,6 +103,9 @@ def homepage_layout(index_doc, link=COLLECTION_LINK):
     sections["featured_products"]["settings"]["collection"] = COLLECTION
     for sec in NAVY_BUTTON_SECTIONS:
         sections[sec]["settings"]["custom_colors_solid_button_background"] = NAVY
+    before_after = sections["process"]["settings"]
+    before_after["before_label"], before_after["after_label"] = "THE TEMPLE", "THE DRAWING"
+    sections["what_you_get"]["settings"]["cards_color_scheme"] = "accent-1"  # navy, white text
     return doc
 
 
@@ -120,13 +119,13 @@ def product_layout(product_doc):
     doc["sections"][BAND_ID] = {"type": "pp-temple-drawing", "settings": {}}
     doc["order"].insert(doc["order"].index("main") + 1, BAND_ID)
     details = doc["sections"]["main"]["blocks"]["Details"]["blocks"]
-    buy = details[_block_id(details, "product_buy-buttons")]["settings"]
+    buy = details[_only_id(details, "product_buy-buttons")]["settings"]
     buy["enable_custom_color"] = True
     buy["custom_color"] = ORANGE
-    sticky = details[_block_id(details, "product_sticky-atc")]["settings"]
+    sticky = details[_only_id(details, "product_sticky-atc")]["settings"]
     sticky["enable_custom_btn_color"] = True
     sticky["custom_btn_color"] = ORANGE
-    slider = doc["sections"][_section_id(doc, "comparison-slider")]["settings"]
+    slider = doc["sections"][_only_id(doc["sections"], "comparison-slider")]["settings"]
     slider["before_label"], slider["after_label"] = "THE TEMPLE", "THE DRAWING"
     return doc
 
@@ -148,13 +147,6 @@ def collection_problem(link, domain, get=None):
             f"Online Store. Nothing sent.")
 
 
-def expected_paths(name, before_doc):
-    """Every setting golive is allowed to change in this layout, and nothing else.
-    Settings already at their new value do not change, so they drop out."""
-    after = homepage_layout(before_doc) if name.endswith("index.json") else product_layout(before_doc)
-    return changed_paths(before_doc, after)
-
-
 def changed_paths(a, b, prefix=()):
     if isinstance(a, dict) and isinstance(b, dict):
         out = set()
@@ -174,22 +166,53 @@ def verify(before, after, expected):
                          f"{sorted(expected)}. Nothing sent.")
 
 
-def revert_check(live_doc, saved_doc, expected):
-    """True when the live layout is exactly the saved one plus golive's change (safe to
-    revert), False when it is already back to the saved copy. Anything else, such as an
-    edit or a section reorder made in the theme editor since golive, stops with nothing
+def revert_check(live_doc, saved_doc, sent_doc):
+    """True when the live layout is still exactly what golive sent (safe to put the saved
+    copy back), False when it is already the saved copy. Anything else, such as a setting,
+    colour or section order changed in the theme editor since golive, stops with nothing
     sent, because restoring the saved copy would wipe it."""
-    moved = changed_paths(saved_doc, live_doc)
-    if not moved:
+    if live_doc == saved_doc:
         return False
-    added = {p[1] for p in expected if p[0] == "sections" and len(p) == 2}
-    reordered = [k for k in live_doc.get("order", []) if k not in added] != saved_doc.get("order")
-    if moved != expected or reordered:
-        extra = sorted(moved - expected) or (["order"] if reordered else sorted(expected - moved))
-        raise SystemExit(f"the live layout has changed since golive at {extra}. "
+    if live_doc != sent_doc:
+        raise SystemExit(f"the live layout has changed since golive at {sorted(changed_paths(sent_doc, live_doc))}. "
                          f"Reverting would wipe that. Nothing sent; remove the pp_ sections in the "
                          f"theme editor instead, or save that edit elsewhere first.")
     return True
+
+
+def allowed_paths(name, doc):
+    """What golive may change in this layout, written out independently of the transforms
+    above, so a transform that touches anything else is refused (the swatches.py habit:
+    declare the change, then prove nothing beyond it moved)."""
+    sections = ("sections",)
+    if name == "templates/index.json":
+        return {("order",), sections + (SHOWCASE_ID,), sections + ("hero", "disabled"),
+                sections + ("browse", "disabled"),
+                sections + ("featured_products", "settings", "collection"),
+                sections + ("process", "settings", "custom_colors_solid_button_background"),
+                sections + ("suggest_form", "settings", "custom_colors_solid_button_background"),
+                sections + ("process", "settings", "before_label"),
+                sections + ("process", "settings", "after_label"),
+                sections + ("what_you_get", "settings", "cards_color_scheme")}
+    details = doc["sections"]["main"]["blocks"]["Details"]["blocks"]
+    d = sections + ("main", "blocks", "Details", "blocks")
+    buy, sticky = _only_id(details, "product_buy-buttons"), _only_id(details, "product_sticky-atc")
+    slider = _only_id(doc["sections"], "comparison-slider")
+    return {("order",), sections + (BAND_ID,),
+            d + (buy, "settings", "enable_custom_color"), d + (buy, "settings", "custom_color"),
+            d + (sticky, "settings", "enable_custom_btn_color"), d + (sticky, "settings", "custom_btn_color"),
+            sections + (slider, "settings", "before_label"), sections + (slider, "settings", "after_label")}
+
+
+def guard(name, before, after):
+    """Refuse unless the new section was added and nothing outside allowed_paths moved."""
+    added = SHOWCASE_ID if name == "templates/index.json" else BAND_ID
+    moved = changed_paths(before, after)
+    required = {("order",), ("sections", added)}
+    extra = moved - allowed_paths(name, before)
+    if extra or not required <= moved:
+        raise SystemExit(f"{name}: the edit would change {sorted(extra) or 'too little'}; "
+                         f"allowed only {sorted(allowed_paths(name, before))}. Nothing sent.")
 
 
 def planned(client, link):
@@ -201,7 +224,7 @@ def planned(client, link):
         content = theme_file(client, name)[1]
         banner, doc = split_banner(content)
         new = fn(doc)
-        verify(doc, new, expected_paths(name, doc))
+        guard(name, doc, new)
         out.append((name, content, banner, new))
     return out
 
@@ -232,9 +255,12 @@ def cmd_golive(args):
     plans = planned(client, args.link)
     for name, _c, _b, new in plans:
         print(f"{name}: order becomes {new['order'][:3]} ...")
-    problem = collection_problem(args.link, client.url.split("/")[2])
-    if problem:
-        raise SystemExit(problem)
+    # Both the button's link and "The temples" row must point at a published collection.
+    domain = client.gql("{ shop { primaryDomain { host } } }")["shop"]["primaryDomain"]["host"]
+    for link in dict.fromkeys((COLLECTION_LINK, args.link)):
+        problem = collection_problem(link, domain)
+        if problem:
+            raise SystemExit(problem)
     if args.dry_run:
         print("\nDRY RUN, nothing sent.")
         return 0
@@ -242,8 +268,10 @@ def cmd_golive(args):
     stamp.mkdir(parents=True)
     files = {}
     for name, content, banner, new in plans:
-        (stamp / Path(name).name).write_text(content)
+        (stamp / Path(name).name).write_text(content)  # what was live: revert puts this back
         files[name] = join_banner(banner, new).encode()
+        # what golive sent: revert only runs while the live file still matches it exactly
+        (stamp / Path(name).name.replace(".json", ".after.json")).write_bytes(files[name])
     print(f"live layouts saved to {stamp.relative_to(PROJECT_ROOT)}")
     upsert_theme_files(client, theme_gid, files)
     for name, _c, _b, new in plans:
@@ -259,12 +287,14 @@ def cmd_revert(_args):
     if not saves:
         raise SystemExit("no golive backup found in artifacts/pen_templates/.")
     latest = saves[-1]
-    files = {f"templates/{p.name}": p.read_bytes() for p in sorted(latest.glob("*.json"))}
+    files = {f"templates/{p.name}": p.read_bytes() for p in sorted(latest.glob("*.json"))
+             if not p.name.endswith(".after.json")}
     client = ShopifyClient()
     for name in list(files):
         live = split_banner(theme_file(client, name)[1])[1]
         saved = split_banner(files[name].decode())[1]
-        if not revert_check(live, saved, expected_paths(name, saved)):
+        sent = split_banner((latest / Path(name).name.replace(".json", ".after.json")).read_text())[1]
+        if not revert_check(live, saved, sent):
             print(f"{name} is already the saved copy; left alone.")
             del files[name]
     if not files:

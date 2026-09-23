@@ -199,6 +199,9 @@ These replace the matching earlier decisions.
   button stays orange.
 - **Product page slider labels:** `THE TEMPLE` and `THE DRAWING`, in capitals like
   before, replacing `REFERENCE` and `FINAL DRAWING`.
+- **Homepage extras (Evan, later the same day):** the homepage before/after slider labels
+  in capitals too (`THE TEMPLE` / `THE DRAWING`), and the grey "What you get" cards
+  become navy with white text (the theme's `accent-1` card scheme).
 - **Collections:** one collection, "Temple Design Products" (handle
   `temple-design-products`), replaces the Shop idea. It holds the Salt Lake tee,
   sweatshirt and hoodie plus the Temple Art File: tag `listing:parent` OR

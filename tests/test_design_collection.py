@@ -77,11 +77,12 @@ for exists in (False, True):
     rc, out = run(FakeShopify(exists=exists, can_publish=True), ["--apply"])
     assert rc == 0 and "Temple Design Products now holds" in out, out
 
-# The dry run writes nothing.
+# The dry run writes nothing, not even the pending hoodie tag.
 fake = FakeShopify(exists=False)
 rc, out = run(fake, [])
-assert rc == 0 and "DRY RUN" in out
-assert not any(("collectionCreate" in q or "publishablePublish" in q) for q in fake.calls)
+assert rc == 0 and "DRY RUN" in out and "cloud-temple-hoodie: listing:parent" in out
+assert not any(w in q for q in fake.calls for w in ("collectionCreate", "publishablePublish", "tagsAdd"))
+assert fake.added == []
 
 
 # The collection is Temple Design Products: parents (tee, sweatshirt, hoodie) plus
@@ -92,5 +93,23 @@ assert fake.created["title"] == "Temple Design Products" and fake.created["handl
 conds = {r["condition"] for r in fake.created["ruleSet"]["rules"]}
 assert conds == {"listing:parent", "listing:standalone"} and fake.created["ruleSet"]["appliedDisjunctively"]
 assert fake.added == [("gid://shopify/Product/cloud-temple-hoodie", ["listing:parent"])], fake.added
+
+
+# The art file gets listing:standalone when it lacks it (never listing:parent).
+fake = FakeShopify(exists=True, can_publish=True)
+fake.tags["temple-art-file"] = []
+rc, out = run(fake, ["--apply"])
+assert ("gid://shopify/Product/temple-art-file", ["listing:standalone"]) in fake.added, fake.added
+
+# A required product that no longer exists stops the run, naming it, before any write.
+fake = FakeShopify(exists=False, can_publish=True)
+real_gql = fake.gql
+fake.gql = lambda q, v=None: {"productByHandle": None} if "productByHandle" in q and v["h"] == "temple-art-file" else real_gql(q, v)
+try:
+    run(fake, ["--apply"])
+    raise AssertionError("a missing product should stop the run")
+except SystemExit as e:
+    assert "temple-art-file" in str(e)
+assert fake.added == [] and not hasattr(fake, "created")
 
 print("ok")

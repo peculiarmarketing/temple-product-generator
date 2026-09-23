@@ -151,11 +151,16 @@
     const bg = getComputedStyle($('#showcase')).backgroundColor;
     const bandBg = getComputedStyle($('#band-saratoga')).backgroundColor;
     const btn = getComputedStyle($('#showcase .pp-showcase__btn'));
-    const tip = $('#showcase .pp-pen__tip circle:last-child');
-    report('12 black, no dots, white tip, navy button', bg === 'rgb(18, 18, 18)' && bandBg === 'rgb(18, 18, 18)'
-      && !$('#showcase .pp-showcase__dots') && (!tip || tip.getAttribute('fill') === '#ffffff')
-      && btn.backgroundColor === 'rgb(0, 26, 88)' && btn.borderTopColor === 'rgb(255, 255, 255)' && btn.borderTopWidth !== '0px',
-      { bg, bandBg, dots: !!$('#showcase .pp-showcase__dots'), tip: tip && tip.getAttribute('fill'), btn: [btn.backgroundColor, btn.borderTopColor, btn.borderTopWidth] });
+    // Catch the pen mid-drawing: the tip only exists while a temple is being drawn.
+    let tip = null;
+    for (let t0 = performance.now(); !tip && performance.now() - t0 < 20000; await wait(100)) {
+      tip = $('#showcase .pp-pen__tip:not(.is-off) circle:last-child');
+    }
+    report('12 black, no dots, white tip, navy capitals button', bg === 'rgb(18, 18, 18)' && bandBg === 'rgb(18, 18, 18)'
+      && !$('#showcase .pp-showcase__dots span') && !!tip && tip.getAttribute('fill') === '#ffffff'
+      && btn.backgroundColor === 'rgb(0, 26, 88)' && btn.borderTopColor === 'rgb(255, 255, 255)' && btn.borderTopWidth !== '0px'
+      && btn.textTransform === 'uppercase',
+      { bg, bandBg, dots: !!$('#showcase .pp-showcase__dots'), tip: tip && tip.getAttribute('fill'), btn: [btn.backgroundColor, btn.borderTopColor, btn.borderTopWidth, btn.textTransform] });
   });
 </script>
 </body>

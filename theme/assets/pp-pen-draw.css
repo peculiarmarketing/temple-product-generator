@@ -70,7 +70,8 @@
   background: var(--pp-navy);
   color: #fff;
   font-weight: 700;
-  letter-spacing: .03em;
+  letter-spacing: .06em;
+  text-transform: uppercase;  /* FIND YOUR TEMPLE, like ADD TO CART; the setting keeps Evan's wording */
   text-decoration: none;
 }
 .pp-showcase__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
