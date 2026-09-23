@@ -29,16 +29,12 @@ Tapstitch puts it. Do not reorder.
 the Easify app. Easify binds the Temple dropdown to a product's internal id, so
 every swapped hoodie is missing it until then.
 
-**Still open, now unblocked:** two hoodie passes that were held back so they would
-not disturb the swap's copy-and-compare step (tees and crews got both on 23 Sep):
-
-```bash
-./.venv.nosync/bin/python scripts/swap_care_image.py --garment hoodie --apply
-./.venv.nosync/bin/python scripts/fix_facts_typos.py --apply --hoodie
-```
-
-The Salt Lake hoodie also gets the care section the other hoodies have, once its
-remake lands (the Salt Lake crew got its own on 23 Sep).
+**Done 23 Sep, after the rollout:** the two held-back hoodie passes ran
+(`swap_care_image.py --garment hoodie`, `fix_facts_typos.py --hoodie`), and the
+Salt Lake hoodie got its care section. All 135 garments now show care-symbols.svg,
+confirmed by a read-back count. A `--verify` of the rollout will now report
+description differences between each new hoodie and its retired draft; that is
+these fixes, not a regression.
 
 **Known, harmless:** the 44 old hoodies lost their image alt text at 19:37 UTC on
 22 Sep when their Tapstitch designs were edited. Pictures are intact; those
