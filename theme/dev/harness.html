@@ -16,6 +16,9 @@
   }
 </script>
 <link rel="stylesheet" href="../assets/pp-pen-draw.css">
+<!-- Copied from shrine-theme-pro assets/base.css: the theme hides every empty div. The
+     drawing box and city line start empty, so the harness must include this rule. -->
+<style>div:empty { display: none; }</style>
 <style>body { margin: 0; font-family: Arial, sans-serif; } .gap { height: 120vh; display: grid; place-items: center; color: #999; }</style>
 </head>
 <body>

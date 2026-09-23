@@ -17,6 +17,11 @@
 .pp-pen { width: 100%; display: flex; flex-direction: column; align-items: center; transition: opacity .7s ease; }
 .pp-pen.is-faded { opacity: 0; }
 .pp-pen__art { position: relative; width: 100%; aspect-ratio: 1 / 1; }
+/* The theme's base.css hides every empty div (div:empty { display: none }). Both of
+   these start empty, so without this the band grows ~360px when drawing starts and
+   shoves the page down. Two classes outrank div:empty. */
+.pp-pen > .pp-pen__art,
+.pp-pen > .pp-pen__city { display: block; }
 /* Out of flow, so a tall drawing cannot stretch the square box it sits in. */
 .pp-pen__art svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
 .pp-pen__exact { opacity: 0; transition: opacity .6s ease; }
@@ -26,7 +31,8 @@
 .pp-pen__tip.is-off { opacity: 0; }
 .pp-pen__city {
   margin-top: 14px;
-  min-height: 1.4em;
+  height: 1.4em;       /* fixed, so typing the line in never moves the page */
+  line-height: 1.4;
   font-family: var(--font-heading-family, Montserrat), Arial, sans-serif;
   font-weight: 700;
   font-size: 15px;
@@ -67,7 +73,7 @@
   text-decoration: none;
 }
 .pp-showcase__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.pp-showcase__dots { display: flex; gap: 8px; min-height: 8px; margin-top: 14px; }
+.pp-showcase .pp-showcase__dots { display: flex; gap: 8px; min-height: 8px; margin-top: 14px; }
 .pp-showcase__dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .3); transition: background .3s; }
 .pp-showcase__dots span.is-on { background: var(--pp-orange); }
 
