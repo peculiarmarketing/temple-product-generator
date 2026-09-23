@@ -1,0 +1,44 @@
+{%- comment -%}
+  Peculiar People product band: this product's temple, drawn by pen.
+  Finds its drawing from the product's `temple:` tag. No tag (the Temple Art File):
+  renders nothing. A tag whose drawing is not uploaded yet: pp-pen-draw.js removes
+  the band, so a shopper never sees an empty box. Files come from
+  scripts/web_drawings.py.
+{%- endcomment -%}
+{%- liquid
+  assign slug = ''
+  for tag in product.tags
+    assign head = tag | slice: 0, 7
+    if head == 'temple:'
+      assign slug = tag | remove_first: 'temple:'
+      break
+    endif
+  endfor
+  assign temple_name = product.metafields.peculiar.temple_name.value
+-%}
+{%- if slug != blank -%}
+  {{ 'pp-pen-draw.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'pp-pen-draw.js' | asset_url }}" defer></script>
+  <section class="pp-band" data-pp-pen-band
+    data-json="{{ 'pp-temple-' | append: slug | append: '.json' | asset_url }}"
+    data-img="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}">
+    <div class="pp-band__inner">
+      {%- if temple_name != blank -%}
+        <h2 class="pp-band__name">{{ temple_name | escape }}</h2>
+      {%- endif -%}
+      <div class="pp-pen" role="img" aria-label="{{ temple_name | default: product.title | escape }}">
+        <div class="pp-pen__art"></div>
+        <div class="pp-pen__city" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "PP temple drawing",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [],
+  "presets": [{ "name": "PP temple drawing" }]
+}
+{% endschema %}

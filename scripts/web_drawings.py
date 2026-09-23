@@ -40,6 +40,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 import web_drawing  # noqa: E402
 from layout import TEMPLES_DIR, working_path  # noqa: E402
+from shopify_client import ShopifyClient  # noqa: E402
 
 OUT_DIR = PROJECT_ROOT / "artifacts/web_drawings"
 THEME_DIR = PROJECT_ROOT / "theme"
@@ -127,6 +128,131 @@ def cmd_build(args):
     return 0
 
 
+def md5(b):
+    return hashlib.md5(b).hexdigest()
+
+
+def main_theme_id(client):
+    nodes = client.gql("{ themes(first: 1, roles: [MAIN]) { nodes { id name } } }")["themes"]["nodes"]
+    if not nodes:
+        raise SystemExit("no published theme found.")
+    return nodes[0]["id"]
+
+
+def remote_checksums(client, theme_gid, patterns):
+    """{filename: md5} for live theme files matching the patterns (Shopify wildcards)."""
+    out, after = {}, None
+    while True:
+        theme = client.gql("""
+          query($id: ID!, $f: [String!], $after: String) { theme(id: $id) {
+            files(filenames: $f, first: 250, after: $after) {
+              nodes { filename checksumMd5 }
+              pageInfo { hasNextPage endCursor } } } }""",
+            {"id": theme_gid, "f": patterns, "after": after})["theme"]
+        page = theme["files"]
+        out.update({n["filename"]: n["checksumMd5"] for n in page["nodes"]})
+        if not page["pageInfo"]["hasNextPage"]:
+            return out
+        after = page["pageInfo"]["endCursor"]
+
+
+def upsert_theme_files(client, theme_gid, files):
+    """Write {filename: bytes} into the theme, 10 per call. Text as TEXT, images as BASE64."""
+    names = sorted(files)
+    for i in range(0, len(names), 10):
+        batch = []
+        for name in names[i:i + 10]:
+            body = files[name]
+            if name.endswith(".webp"):
+                batch.append({"filename": name, "body": {"type": "BASE64",
+                              "value": base64.b64encode(body).decode()}})
+            else:
+                batch.append({"filename": name, "body": {"type": "TEXT", "value": body.decode()}})
+        result = client.gql("""
+          mutation($themeId: ID!, $files: [OnlineStoreThemeFilesUpsertFileInput!]!) {
+            themeFilesUpsert(themeId: $themeId, files: $files) {
+              upsertedThemeFiles { filename }
+              userErrors { filename code message } } }""",
+            {"themeId": theme_gid, "files": batch})["themeFilesUpsert"]
+        if result["userErrors"]:
+            raise SystemExit(f"theme write refused: {result['userErrors']}")
+
+
+def plan_uploads(local, remote):
+    return sorted(n for n, b in local.items() if remote.get(n) != md5(b))
+
+
+def local_theme_files(slugs=None):
+    files = {name: (THEME_DIR / name).read_bytes() for name in THEME_CODE}
+    for path in sorted(OUT_DIR.glob("pp-temple-*")):
+        if path.suffix not in (".json", ".webp"):
+            continue
+        slug = path.stem[len("pp-temple-"):]
+        if slugs is None or slug in slugs:
+            files[f"assets/{path.name}"] = path.read_bytes()
+    return files
+
+
+PATTERNS = ["assets/pp-*", "sections/pp-*"]
+
+
+def cmd_push(args):
+    slugs = None
+    if args.temple:
+        folders = {f: s for s, f in temple_folders().items()}
+        slugs = {folders[t] for t in args.temple}
+    local = local_theme_files(slugs)
+    client = ShopifyClient()
+    theme_gid = main_theme_id(client)
+    todo = plan_uploads(local, remote_checksums(client, theme_gid, PATTERNS))
+    print(f"theme  : {theme_gid}")
+    print(f"local  : {len(local)} files, {len(todo)} new or changed")
+    for name in todo:
+        print(f"  {name}  {len(local[name]) // 1024} KB")
+    if not todo:
+        print("the live theme already has all of these. Nothing to do.")
+        return 0
+    if args.dry_run:
+        print("\nDRY RUN, nothing sent.")
+        return 0
+    upsert_theme_files(client, theme_gid, {n: local[n] for n in todo})
+    after = remote_checksums(client, theme_gid, PATTERNS)
+    wrong = [n for n in todo if after.get(n) != md5(local[n])]
+    if wrong:
+        raise SystemExit(f"read-back mismatch on {wrong}. Re-run push; if it persists, stop.")
+    print(f"written and read back: {len(todo)} files.")
+    return 0
+
+
+def live_temple_slugs(client):
+    slugs, after = set(), None
+    while True:
+        page = client.gql("""
+          query($after: String) { products(first: 250, after: $after, query: "status:active") {
+            nodes { tags } pageInfo { hasNextPage endCursor } } }""", {"after": after})["products"]
+        for node in page["nodes"]:
+            slugs |= {t[len("temple:"):] for t in node["tags"] if t.startswith("temple:")}
+        if not page["pageInfo"]["hasNextPage"]:
+            return slugs
+        after = page["pageInfo"]["endCursor"]
+
+
+def cmd_check(_args):
+    client = ShopifyClient()
+    theme_gid = main_theme_id(client)
+    remote = remote_checksums(client, theme_gid, PATTERNS)
+    slugs = live_temple_slugs(client)
+    missing = sorted(s for s in slugs if not all(f in remote for f in drawing_files(s)))
+    code_missing = [n for n in THEME_CODE if n not in remote]
+    print(f"live temples: {len(slugs)}   with drawings in the theme: {len(slugs) - len(missing)}")
+    if code_missing:
+        print(f"theme code missing: {code_missing}")
+    if missing:
+        print(f"no drawing yet (their product band stays hidden): {missing}")
+        print("fix: web_drawings.py build --temple '<folder>' && web_drawings.py push")
+    return 1 if (missing or code_missing) else 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -134,8 +260,12 @@ def main(argv=None):
     g = b.add_mutually_exclusive_group(required=True)
     g.add_argument("--all", action="store_true")
     g.add_argument("--temple", action="append", help="temple folder name, e.g. 'Salt Lake'")
+    p = sub.add_parser("push")
+    p.add_argument("--temple", action="append", help="limit drawings to these folders")
+    p.add_argument("--dry-run", action="store_true")
+    sub.add_parser("check")
     args = ap.parse_args(argv)
-    return {"build": cmd_build}[args.cmd](args)
+    return {"build": cmd_build, "push": cmd_push, "check": cmd_check}[args.cmd](args)
 
 
 if __name__ == "__main__":

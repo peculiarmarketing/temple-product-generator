@@ -1,0 +1,66 @@
+{%- comment -%}
+  Peculiar People homepage showcase: temples drawn by pen, one after another.
+  Drawing files are built and uploaded by scripts/web_drawings.py as
+  pp-temple-<slug>.json and .webp. "Temples" takes the temple tag names (the part
+  after `temple:`), comma separated, in the order they draw. A name with no uploaded
+  drawing is skipped.
+{%- endcomment -%}
+{{ 'pp-pen-draw.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-pen-draw.js' | asset_url }}" defer></script>
+{%- assign slugs = section.settings.temples | split: ',' -%}
+<section class="pp-showcase" data-pp-pen-showcase>
+  <div class="pp-showcase__inner">
+    <div class="pp-showcase__stage">
+      <div class="pp-pen" role="img" aria-label="{{ section.settings.drawing_label | escape }}">
+        <div class="pp-pen__art"></div>
+        <div class="pp-pen__city" aria-hidden="true"></div>
+      </div>
+      <div class="pp-showcase__dots" aria-hidden="true"></div>
+      {%- for s in slugs -%}
+        {%- assign slug = s | strip | downcase -%}
+        {%- if slug != blank -%}
+          <span hidden data-pp-pen-item
+            data-json="{{ 'pp-temple-' | append: slug | append: '.json' | asset_url }}"
+            data-img="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}"></span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="pp-showcase__copy">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="pp-showcase__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="pp-showcase__text">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank and section.settings.link != blank -%}
+        <a class="pp-showcase__btn" href="{{ section.settings.link }}">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP temple showcase",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "subheading", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    {
+      "type": "text",
+      "id": "temples",
+      "label": "Temples",
+      "info": "Temple tag names (after temple:), comma separated, in the order they draw.",
+      "default": "salt-lake, kirtland, nauvoo, logan, mexico-city, rome"
+    },
+    {
+      "type": "text",
+      "id": "drawing_label",
+      "label": "Drawing description for screen readers",
+      "default": "Line drawings of temples, drawn one after another"
+    }
+  ],
+  "presets": [{ "name": "PP temple showcase" }]
+}
+{% endschema %}

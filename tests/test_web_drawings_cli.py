@@ -35,4 +35,11 @@ assert folders["washington-d-c"] == "Washington DC"
 
 assert drawing_files("logan") == ("assets/pp-temple-logan.json", "assets/pp-temple-logan.webp")
 
+from scripts.web_drawings import md5, plan_uploads  # noqa: E402
+
+local = {"assets/a.json": b"one", "assets/b.webp": b"two", "assets/c.js": b"three"}
+remote = {"assets/a.json": md5(b"one"), "assets/b.webp": md5(b"old"), "assets/zzz.json": "x"}
+assert plan_uploads(local, remote) == ["assets/b.webp", "assets/c.js"], plan_uploads(local, remote)
+assert plan_uploads(local, {k: md5(v) for k, v in local.items()}) == []
+
 print("ok")
