@@ -1,34 +1,35 @@
-# IN PROGRESS, 22 Sep 2026: the Eden Green hoodie rollout. Read this block first.
+# DONE 23 Sep 2026: the Eden Green hoodie rollout. Follow-ups below still open.
 
-Eden Green (Tapstitch 6655) is going onto all 45 temple hoodies. Tapstitch cannot
-add a colour to a listing, so each temple is a swap: a new Shopify product takes
-the old one's address, and the old one is hidden at `<address>-retired-<date>`.
-One script does all of it: `scripts/eden_green_rollout.py`. Its docstring is the
-full sequence and the traps. Progress per temple lives in
-`artifacts/tapstitch/eden-green-rollout.json`.
+All 45 temple hoodies are live with seven colours, Eden Green (Tapstitch 6655)
+included, and a full read-only `--verify` passed on all 45. Tapstitch cannot add a
+colour to a listing, so each temple was a swap: a new Shopify product took the old
+one's address, and the old one is DRAFT at `<address>-retired-<date>`. The driver
+is `scripts/eden_green_rollout.py` (its docstring holds the sequence and traps);
+per-temple ids and timestamps are in `artifacts/tapstitch/eden-green-rollout.json`.
+Boise's wrong-temple photos were repaired along the way.
 
-**Done:** Bountiful, proven live end to end on 22 Sep and re-verified by read-back.
-**Next:** the other 44, which includes the Boise repair (its seven on-model photos
-are the Salt Lake temple, fixed by the script's gallery step). Evan runs:
+Re-check any time, read-only:
 
 ```bash
-./.venv.nosync/bin/python scripts/eden_green_rollout.py                          # plan: who is next
-./.venv.nosync/bin/python scripts/eden_green_rollout.py --apply --publish --limit 5
-./.venv.nosync/bin/python scripts/eden_green_rollout.py --verify                 # read-only check
+./.venv.nosync/bin/python scripts/eden_green_rollout.py --verify
 ```
 
-Claude cannot run `--publish` itself: Claude Code's auto-mode classifier blocks
-the live publish, correctly. Claude reads the pasted output after each batch and
-checks it. Batches of five, because Tapstitch drops connections on long bursts.
+A transient Shopify CDN 503 while it downloads an image shows as a failure;
+re-run that temple alone before treating it as real (Ogden Original, 23 Sep).
+
+Publishing from Claude needed a standing permission for exactly
+`./.venv.nosync/bin/python scripts/eden_green_rollout.py --apply --publish`, which
+Evan added to `.claude/settings.local.json` on his MacBook Air on 23 Sep. That
+file is per machine and untracked.
 
 **Decided (Evan, 22 Sep):** Eden Green stays third in the colour swatches, where
 Tapstitch puts it. Do not reorder.
 
-**After the last temple:** Evan re-imports `artifacts/easify/option-sets.csv` in
+**Still open, Evan:** re-import `artifacts/easify/option-sets.csv` in
 the Easify app. Easify binds the Temple dropdown to a product's internal id, so
 every swapped hoodie is missing it until then.
 
-Also after the last temple, two hoodie passes that were held back so they would
+**Still open, now unblocked:** two hoodie passes that were held back so they would
 not disturb the swap's copy-and-compare step (tees and crews got both on 23 Sep):
 
 ```bash
@@ -45,7 +46,7 @@ listings are being retired anyway. Tees and crews are untouched.
 
 **Also outstanding:** the storefront overhaul doc
 (https://claude.ai/artifact/RhgF4QLwLjQhhKmYnMYrd2, rev 52) still says Boise is
-finished; update its "State as of" section once the rollout lands.
+finished; its "State as of" section needs the completed rollout.
 
 ---
 
