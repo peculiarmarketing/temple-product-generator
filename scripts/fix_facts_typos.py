@@ -3,7 +3,7 @@
 
 Evan asked for every typo on the site fixed. A full read of all 45 facts
 sections found three wrong words, two British spellings and 17 dates missing
-the comma after the year. Each edit is fixed in the temple's
+the comma after the year. It also drops one false Smithfield trivia line. Each edit is fixed in the temple's
 temple-facts.html (the source of truth, so the next rebuild keeps it) and in
 the live product descriptions. Dates sit inside <time> tags, so the patterns
 allow for them. Every pattern must match exactly once or that temple is
@@ -50,6 +50,8 @@ EDITS={
  ("Red Cliffs","red-cliffs"):[W("great grandfather","great-grandfather")],
  ("Albuquerque","albuquerque"):[W("a colour the","a color the")],
  ("Burley","burley"):[W("The colour palette","The color palette")],
+ # Not a typo: a false claim. Evan, 23 Sep: the two are not the same size (Lindon is 83,140 sq ft).
+ ("Smithfield","smithfield"):[W("\n<li>At 81,000 square feet, the temple matches the floor area of the Lindon Utah Temple exactly.</li>","")],
 }
 sc=ShopifyClient()
 def fix(text,edits,label):
@@ -62,6 +64,8 @@ def fix(text,edits,label):
 
 def _done(text,pat,rep):
     """True when the fixed form is already there, so a re-run skips it."""
+    if not rep:                                              # a deletion is done once it is gone
+        return True
     if rep.startswith("\\1"):                                  # year comma
         year, nxt = re.match(r"\((\d{4})\(\?:</time>\)\?\) \((.*)\)$", pat).groups()
         return re.search(rf"{year}(?:</time>)?, {nxt}", text) is not None
