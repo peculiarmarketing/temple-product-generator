@@ -21,8 +21,9 @@ Agreed in the mockup rounds (23 Sep 2026):
 
 - Pen style: centre-line strokes in pen order, orange pen tip, about 8 seconds per
   drawing, gentle pacing. Once the city line has finished appearing, the finished
-  drawing holds for 3 seconds before the loop moves on. Same everywhere. The last half second fades in the exact art, so every
-  drawing finishes identical to the stored file.
+  drawing holds for 3 seconds before the loop moves on. Same everywhere. The last
+  half second fades in the exact art, so every drawing finishes identical to the
+  stored file.
 - Background `#001A58`, with a subtle lift to `#0a2873` behind the temple. Never
   darker than `#001A58`.
 - No "45 temples and counting" line.
@@ -37,13 +38,15 @@ products; the one without is the Temple Art File, which gets no band). All garme
 use the one default product template, `templates/product.json`.
 
 - Each temple's drawing is stored once as two small files in the theme, named from
-  its temple name: `pp-temple-salt-lake-temple.json` (pen strokes, city line) and
-  `pp-temple-salt-lake-temple.webp` (the finished art).
+  the product's `temple:` tag, which every live garment carries (`temple:salt-lake`,
+  `temple:washington-d-c`): `pp-temple-salt-lake.json` (pen strokes, city line) and
+  `pp-temple-salt-lake.webp` (the finished art). The tag is used because the
+  `temple_name` values are long and irregular (`Provo Utah Temple (1972–2024)`).
 - The band is added to `product.json` once. On each page it reads the product's
-  `temple_name`, turns it into that file name, and loads the matching drawing.
-- The city line comes from `temples.json` `location_line`, the same line printed on
-  the garment. It does not come from the `temple_city` metafield, which would print
-  `Washington` where the shirt says `KENSINGTON, MARYLAND`.
+  `temple:` tag and loads the matching drawing. `temple_name` supplies the heading.
+- The city line comes from the temple's print manifest `location_line`, the exact
+  line printed on the garment. It does not come from the `temple_city` metafield,
+  which would print `Washington` where the shirt says `KENSINGTON, MARYLAND`.
 - No label, or no drawing file yet: the band stays hidden. A shopper never sees an
   empty box or the wrong temple.
 - Salt Lake's parent products (bare titles) work the same way, because they carry the
@@ -69,7 +72,7 @@ checks, same backup-before-write habit.
   for each temple into `artifacts/web_drawings/`. Takes about 5 seconds per temple.
   The tracer comes from the mockup prototype: centre lines, scraps rejoined into
   continuous strokes, then patch strokes wherever art is still uncovered.
-- `check`: fails if any live `temple_name` has no drawing in the theme, if any
+- `check`: fails if any live `temple:` tag has no drawing in the theme, if any
   drawing leaves more than 1% of its art uncovered before the final fade, or if any
   drawing is over the 250 KB budget.
 - `push [--temple X | --all]`: uploads only changed files to the live theme, then
@@ -147,8 +150,8 @@ editor saves whole files, and whichever save lands last wins.
    for now. The showcase copies them over word for word, so no new copy is written
    and no humanizer pass is needed. Revisit later.
 2. **Homepage temples, in this order:** Salt Lake, Kirtland, Nauvoo, Logan, Mexico
-   City, Rome. All six have white SVGs and verified location lines in
-   `temples.json`: `SALT LAKE CITY, UTAH`, `KIRTLAND, OHIO`, `NAUVOO, ILLINOIS`,
+   City, Rome. All six have white SVGs and verified location lines:
+   `SALT LAKE CITY, UTAH`, `KIRTLAND, OHIO`, `NAUVOO, ILLINOIS`,
    `LOGAN, UTAH`, `MEXICO CITY, MEXICO`, `ROME, ITALY`. The list stays editable in
    the theme editor.
 3. **The button goes to a new "one of each" collection**, not All Temples, which is
