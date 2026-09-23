@@ -67,6 +67,12 @@ assert st["json_gz_bytes"] == len(gzip.compress(json.dumps(d, separators=(",", "
 r2 = wd.build(logan, "LOGAN, UTAH")
 assert r2["data"] == d and r2["image"] == r["image"], "tracer output is not deterministic"
 
+# Temples whose line weights vary: the thickest lines must still be covered by the pen.
+# Cody failed the gate at 1.85% when the pen was sized from the mean line width alone.
+cody = (TEMPLES_DIR / "Cody" / "Cody Wyoming Temple white.svg").read_text()
+cst = wd.build(cody, "CODY, WYOMING")["stats"]
+assert cst["uncovered_pct"] < wd.UNCOVERED_LIMIT_PCT, cst
+
 try:
     wd.build('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"></svg>', "X")
     raise AssertionError("an SVG with no viewBox should be refused")

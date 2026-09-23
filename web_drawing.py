@@ -28,6 +28,7 @@ from PIL import Image, ImageDraw, ImageFilter
 UNCOVERED_LIMIT_PCT = 1.0   # at most this share of art pixels left for the final fade
 BUDGET_BYTES = 250_000      # gzipped strokes + image, per temple
 PEN_WIDTH_FACTOR = 2.4      # pen width as a multiple of the average line width
+THICK_PERCENTILE = 97       # ...and at least wide enough for all but the thickest 3% of line
 PATCH_GROW_PX = 2           # misses this close to the pen are soft edge pixels
 PAD_FRACTION = 0.03         # breathing room around the art, as a share of its width
 ALPHA_CUTOFF = 100
@@ -150,6 +151,18 @@ def chain(pieces):
     return out
 
 
+def half_widths(mask, skeleton):
+    """Half the line width at each skeleton pixel: how many 3x3 erosions it survives."""
+    depth = np.zeros(mask.shape, np.int32)
+    cur = mask.copy()
+    while cur.any():
+        depth += cur
+        p = np.pad(cur, 1)
+        cur = np.logical_and.reduce([p[1 + dy:p.shape[0] - 1 + dy, 1 + dx:p.shape[1] - 1 + dx]
+                                     for dy in (-1, 0, 1) for dx in (-1, 0, 1)])
+    return depth[skeleton]
+
+
 def rdp(points, eps):
     """Ramer-Douglas-Peucker simplification, iterative so long strokes cannot overflow the stack."""
     if len(points) < 3:
@@ -227,7 +240,11 @@ def build(svg_text, location_line, trace_width=1024, art_max_px=840):
         raise DrawingError("the SVG renders empty")
 
     skeleton = thin(art)
-    pen_px = float(art.sum()) / max(1, int(skeleton.sum())) * PEN_WIDTH_FACTOR
+    # Sized from the average line, the pen leaves a sliver along the thickest lines of
+    # temples whose line weight varies (Cody left 2%). Cover those too.
+    mean_pen = float(art.sum()) / max(1, int(skeleton.sum())) * PEN_WIDTH_FACTOR
+    thick_pen = 2 * float(np.percentile(half_widths(art, skeleton), THICK_PERCENTILE)) + 2
+    pen_px = max(mean_pen, thick_pen)
 
     def simplified(pieces):
         return [[(x, y) for y, x in rdp(s, 0.6)] for s in pieces]
