@@ -1,12 +1,12 @@
 /* Peculiar People: pen-drawn temples. Styles for sections/pp-temple-showcase.liquid
    and sections/pp-temple-drawing.liquid. Behaviour lives in pp-pen-draw.js. */
 
+/* Store black, flat, so the banner runs straight out of the black header. */
 .pp-showcase,
 .pp-band {
+  --pp-black: #121212;
   --pp-navy: #001A58;
-  --pp-lift: #0a2873;
-  --pp-orange: #F58000;
-  background: radial-gradient(90% 80% at 50% 38%, var(--pp-lift) 0%, var(--pp-navy) 75%);
+  background: var(--pp-black);
   color: #fff;
 }
 
@@ -65,17 +65,15 @@
   justify-content: center;
   min-height: 48px;
   padding: 0 26px;
+  border: 2px solid #fff;  /* navy alone nearly vanishes on black */
   border-radius: 4px;
-  background: var(--pp-orange);
+  background: var(--pp-navy);
   color: #fff;
   font-weight: 700;
   letter-spacing: .03em;
   text-decoration: none;
 }
 .pp-showcase__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-.pp-showcase .pp-showcase__dots { display: flex; gap: 8px; min-height: 8px; margin-top: 14px; }
-.pp-showcase__dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .3); transition: background .3s; }
-.pp-showcase__dots span.is-on { background: var(--pp-orange); }
 
 /* Product band */
 .pp-band__inner { display: flex; flex-direction: column; align-items: center; max-width: 1200px; margin: 0 auto; padding: 48px 24px; }

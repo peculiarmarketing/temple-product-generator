@@ -1,15 +1,18 @@
 #!/usr/bin/env python
-"""The Shop collection behind the homepage button: one card per garment, plus designs
-that are not a single temple's.
+"""Temple Design Products: the one collection shoppers browse. One card per garment (the
+Salt Lake parent, whose Temple dropdown reaches every other temple), plus products that
+are not a single temple's garment. It replaces Temple Tees, Temple Crewnecks, Temple
+Hoodies and All Temples (Evan, 23 Sep 2026).
 
-  python scripts/shop_collection.py            # dry run: what exists and what would change
-  python scripts/shop_collection.py --apply    # create and publish it, tag the art file
+  python scripts/design_collection.py            # dry run: what exists and what would change
+  python scripts/design_collection.py --apply    # tag, create, publish
 
-Rules (any of): tag listing:parent (the Salt Lake tee, crew and, after the Easify
-re-import, hoodie; their Temple dropdown reaches every other temple) or tag
-listing:standalone (products with no dropdown: the Temple Art File now, future
-non-temple designs later). The two tags stay separate so the planned parents-only All
-Temples collection never picks up the art file.
+Rules (any of): tag listing:parent (the Salt Lake tee, sweatshirt and hoodie, and any
+future garment's parent) or tag listing:standalone (products with no Temple dropdown: the
+Temple Art File now). --apply makes sure the Salt Lake hoodie and the art file carry
+their tag, then creates the collection if needed and tries to publish it. The app token
+cannot publish (no publications scope), so that normally ends in a one-click step for
+Evan in Shopify admin, which the script prints.
 """
 
 import argparse
@@ -21,11 +24,13 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from shopify_client import ShopifyClient, ShopifyError  # noqa: E402
 
-HANDLE = "shop"
-TITLE = "Shop"
-STANDALONE = "listing:standalone"
-STANDALONE_PRODUCTS = ["temple-art-file"]
-RULES = [{"column": "TAG", "relation": "EQUALS", "condition": "listing:parent"},
+HANDLE = "temple-design-products"
+TITLE = "Temple Design Products"
+PARENT, STANDALONE = "listing:parent", "listing:standalone"
+# Products that must carry a tag for the collection to hold them. The tee and sweatshirt
+# parents already carry listing:parent; the hoodie waited on the Easify re-import.
+REQUIRED_TAGS = {"cloud-temple-hoodie": PARENT, "temple-art-file": STANDALONE}
+RULES = [{"column": "TAG", "relation": "EQUALS", "condition": PARENT},
          {"column": "TAG", "relation": "EQUALS", "condition": STANDALONE}]
 
 
@@ -38,23 +43,23 @@ def main(argv=None):
     existing = c.gql("""query($h: String!) { collectionByHandle(handle: $h) { id title
         products(first: 50) { nodes { title } } } }""", {"h": HANDLE})["collectionByHandle"]
     todo_tags = []
-    for handle in STANDALONE_PRODUCTS:
+    for handle, tag in REQUIRED_TAGS.items():
         p = c.gql("""query($h: String!) { productByHandle(handle: $h) { id tags } }""",
                   {"h": handle})["productByHandle"]
         if p is None:
             raise SystemExit(f"no product with handle {handle}")
-        if STANDALONE not in p["tags"]:
-            todo_tags.append((handle, p["id"]))
+        if tag not in p["tags"]:
+            todo_tags.append((handle, p["id"], tag))
 
     print(f"collection {HANDLE}: {'exists' if existing else 'to create'}")
-    print(f"tag {STANDALONE} to add on: {[h for h, _ in todo_tags] or 'nothing'}")
+    print(f"tags to add: {[f'{h}: {t}' for h, _, t in todo_tags] or 'nothing'}")
     if not args.apply:
         print("\nDRY RUN. Re-run with --apply after Evan's go.")
         return 0
 
-    for handle, gid in todo_tags:
+    for handle, gid, tag in todo_tags:
         errs = c.gql("""mutation($id: ID!, $t: [String!]!) { tagsAdd(id: $id, tags: $t) {
-            userErrors { message } } }""", {"id": gid, "t": [STANDALONE]})["tagsAdd"]["userErrors"]
+            userErrors { message } } }""", {"id": gid, "t": [tag]})["tagsAdd"]["userErrors"]
         if errs:
             raise SystemExit(f"tagging {handle} failed: {errs}")
 
@@ -73,14 +78,14 @@ def main(argv=None):
     # usually ends in the manual step below rather than a crash.
     problem = publish_to_online_store(c, cid)
     if problem:
-        print(f"Shop exists but is NOT published to the Online Store ({problem}).")
+        print(f"Temple Design Products exists but is NOT published to the Online Store ({problem}).")
         print("Until it is, it shows as a missing page. Evan: Shopify admin > Products > "
-              "Collections > Shop > Sales channels > Online Store.")
+              "Collections > Temple Design Products > Sales channels > Online Store.")
         return 1
 
     after = c.gql("""query($h: String!) { collectionByHandle(handle: $h) {
         products(first: 50) { nodes { title } } } }""", {"h": HANDLE})["collectionByHandle"]
-    print("Shop now holds:", [n["title"] for n in after["products"]["nodes"]])
+    print("Temple Design Products now holds:", [n["title"] for n in after["products"]["nodes"]])
     return 0
 
 

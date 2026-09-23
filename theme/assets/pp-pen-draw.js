@@ -77,8 +77,8 @@
     const drawn = image({ mask: `url(#${id})` });
     const exact = image({ class: 'pp-pen__exact' });
     const tip = svgEl('g', { class: 'pp-pen__tip' });
-    tip.appendChild(svgEl('circle', { r: data.penWidth * 1.6, fill: '#F58000', opacity: '0.25' }));
-    tip.appendChild(svgEl('circle', { r: data.penWidth * 0.55, fill: '#F58000' }));
+    tip.appendChild(svgEl('circle', { r: data.penWidth * 1.6, fill: '#ffffff', opacity: '0.2' }));
+    tip.appendChild(svgEl('circle', { r: data.penWidth * 0.55, fill: '#ffffff' }));
     svg.append(defs, drawn, exact, tip);
     setKids(artEl, [svg]);
     return { paths, exact, tip };
@@ -208,14 +208,11 @@
   // Homepage showcase: each temple in turn. Entries whose files are missing are dropped.
   function initShowcase(section) {
     const stage = section.querySelector('.pp-pen');
-    const dotsEl = section.querySelector('.pp-showcase__dots');
     const items = [...section.querySelectorAll('[data-pp-pen-item]')]
       .map((n) => ({ json: n.dataset.json, img: n.dataset.img }));
-    const renderDots = (active) => setKids(dotsEl, items.map((_, j) => {
-      const dot = document.createElement('span');
-      if (j === active) dot.className = 'is-on';
-      return dot;
-    }));
+    // How many temples are still in the cycle (read by the harness self-test).
+    const setCount = () => { section.dataset.ppTemples = String(items.length); };
+    setCount();
     let idx = 0;
     let visible = false;
     let run = 0;
@@ -243,7 +240,7 @@
           }
           item.failures = 0;  // only failures in a row count toward giving up
           if (!live()) break;
-          renderDots(idx);
+          setCount();
           stage.classList.remove('is-faded');
           if (items.length > 1) load(items[(idx + 1) % items.length]).catch(() => {});
           await draw(stage, data, item.img, live);

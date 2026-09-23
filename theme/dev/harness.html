@@ -6,7 +6,7 @@
      served to anyone on the same network.
      Then open http://localhost:8765/theme/dev/harness.html. Options:
        ?reduced=1    simulate a phone set to reduce motion
-       ?selftest=1   run checks 8-11 and print PASS/FAIL (keep the tab visible)
+       ?selftest=1   run checks 8-12 and print PASS/FAIL (keep the tab visible)
        ?flaky=1      the first request for each drawing fails once, like a bad connection
        ?old=1        remove Element.replaceChildren, as on iOS 13 and older
        ?corrupt=1    every drawing file loads but is unusable: both pieces must hide, not hang
@@ -58,7 +58,6 @@
         <div class="pp-pen__art"></div>
         <div class="pp-pen__city" aria-hidden="true"></div>
       </div>
-      <div class="pp-showcase__dots" aria-hidden="true"></div>
       <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-salt-lake.json" data-img="/artifacts/web_drawings/pp-temple-salt-lake.webp"></span>
       <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-not-a-temple.json" data-img="/artifacts/web_drawings/pp-temple-not-a-temple.webp"></span>
       <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-kirtland.json" data-img="/artifacts/web_drawings/pp-temple-kirtland.webp"></span>
@@ -111,7 +110,7 @@
 </script>
 <script>document.write(`<script src="../assets/pp-pen-draw.js?t=${Date.now()}" defer><\/script>`);</script>
 <script>
-  // Checks 8-11 (the regressions found while building this). Results land in
+  // Checks 8-12 (regressions found while building this, and the round 2 look). Results land in
   // window.__ppSelftest and the console as PASS/FAIL lines.
   if (new URLSearchParams(location.search).has('selftest')) window.addEventListener('load', async () => {
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -138,15 +137,25 @@
     // The bad slug is dropped once its 404 comes back; with ?flaky=1 every drawing fails
     // once first, so allow a full extra lap. Real temples must never be dropped (never < 6).
     window.scrollTo(0, 0);
-    let dots = 0, lowest = 99;
+    const count = () => Number($('#showcase').dataset.ppTemples || 0);
+    let temples = 0, lowest = 99;
     const t1 = performance.now();
     while (performance.now() - t1 < 90000) {
-      dots = document.querySelectorAll('#showcase .pp-showcase__dots span').length;
-      if (dots) lowest = Math.min(lowest, dots);
-      if (dots === 6) break;
+      temples = count();
+      if (temples) lowest = Math.min(lowest, temples);
+      if (temples === 6) break;
       await wait(250);
     }
-    report('11 real temples all still cycling (6 dots)', dots === 6 && lowest >= 6, { dots, lowest });
+    report('11 real temples all still cycling (6)', temples === 6 && lowest >= 6, { temples, lowest });
+    // Round 2 look: store black, no dots, white pen tip, navy button with a white border.
+    const bg = getComputedStyle($('#showcase')).backgroundColor;
+    const bandBg = getComputedStyle($('#band-saratoga')).backgroundColor;
+    const btn = getComputedStyle($('#showcase .pp-showcase__btn'));
+    const tip = $('#showcase .pp-pen__tip circle:last-child');
+    report('12 black, no dots, white tip, navy button', bg === 'rgb(18, 18, 18)' && bandBg === 'rgb(18, 18, 18)'
+      && !$('#showcase .pp-showcase__dots') && (!tip || tip.getAttribute('fill') === '#ffffff')
+      && btn.backgroundColor === 'rgb(0, 26, 88)' && btn.borderTopColor === 'rgb(255, 255, 255)' && btn.borderTopWidth !== '0px',
+      { bg, bandBg, dots: !!$('#showcase .pp-showcase__dots'), tip: tip && tip.getAttribute('fill'), btn: [btn.backgroundColor, btn.borderTopColor, btn.borderTopWidth] });
   });
 </script>
 </body>

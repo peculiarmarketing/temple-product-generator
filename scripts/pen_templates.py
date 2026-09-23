@@ -2,15 +2,18 @@
 """Wire the pen-drawn temple sections into the live theme's page layouts.
 
   python scripts/pen_templates.py preview [--dry-run]   # preview-only layouts, ?view=pen-preview
-  python scripts/pen_templates.py golive [--dry-run] [--link shopify://collections/shop]
+  python scripts/pen_templates.py golive [--dry-run] [--link shopify://collections/<handle>]
   python scripts/pen_templates.py revert                # put back what the last golive replaced
 
 preview writes templates/index.pen-preview.json and templates/product.pen-preview.json,
 which Shopify serves only when an address carries ?view=pen-preview, so customers never
-see them. golive makes the same two changes to the real templates/index.json and
-templates/product.json, and only after Evan's go at the review gate: the showcase goes
-first on the homepage with the old slideshow disabled (not deleted), and the drawing band
-goes straight after the main product section.
+see them. golive makes the same changes to the real templates/index.json and
+templates/product.json, and only after Evan's go at the review gate. Homepage: the
+showcase goes first, the old slideshow and the Browse row are switched off (not deleted),
+"The temples" row shows Temple Design Products, and the remaining orange buttons turn
+navy. Product page: the drawing band goes straight after the main product section, Add to
+Cart (buy buttons and sticky bar) turns orange, and the before/after slider labels become
+THE TEMPLE / THE DRAWING. homepage_layout and product_layout hold the full list.
 
 Every write is checked first: the new layout is compared with the live one key by key,
 and nothing is sent if anything beyond the intended change would move. golive saves both
@@ -31,6 +34,8 @@ import sys
 import time
 from pathlib import Path
 
+import requests
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -40,12 +45,15 @@ from scripts.web_drawings import main_theme_id, upsert_theme_files  # noqa: E402
 
 SHOWCASE_ID = "pp_temple_showcase"
 BAND_ID = "pp_temple_drawing"
-INTERIM_LINK = "shopify://collections/temple-tees"
+COLLECTION = "temple-design-products"
+COLLECTION_LINK = f"shopify://collections/{COLLECTION}"
 HOME_TEMPLES = "salt-lake, kirtland, nauvoo, logan, mexico-city, rome"
+ORANGE = "#F58000"  # Add to Cart only
+NAVY = "#001A58"    # every other button
+# Homepage sections whose orange button turns navy.
+NAVY_BUTTON_SECTIONS = ("process", "suggest_form")
 BACKUP_DIR = PROJECT_ROOT / "artifacts/pen_templates"
 BANNER = re.compile(r"^\s*/\*.*?\*/\s*", re.S)
-EXPECTED_INDEX = {("order",), ("sections", SHOWCASE_ID), ("sections", "hero", "disabled")}
-EXPECTED_PRODUCT = {("order",), ("sections", BAND_ID)}
 
 
 def split_banner(content):
@@ -58,13 +66,32 @@ def join_banner(banner, doc):
     return banner + json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
 
 
-def add_showcase(index_doc, link=INTERIM_LINK):
+def _block_id(blocks, block_type):
+    ids = [k for k, b in blocks.items() if b.get("type") == block_type]
+    if len(ids) != 1:
+        raise ValueError(f"expected one {block_type} block, found {len(ids)}")
+    return ids[0]
+
+
+def _section_id(doc, section_type):
+    ids = [k for k, sec in doc["sections"].items() if sec.get("type") == section_type]
+    if len(ids) != 1:
+        raise ValueError(f"expected one {section_type} section, found {len(ids)}")
+    return ids[0]
+
+
+def homepage_layout(index_doc, link=COLLECTION_LINK):
+    """The showcase goes first and the old slideshow is switched off (kept, not deleted).
+    "The temples" row shows the Temple Design Products collection, the Browse row (whose
+    state-collection cards died with those collections) is switched off, and the other
+    orange buttons turn navy so Add to Cart is the only orange one."""
     doc = copy.deepcopy(index_doc)
     if SHOWCASE_ID in doc["sections"]:
         raise ValueError("this homepage already has the showcase")
-    hero = doc["sections"]["hero"]
+    sections = doc["sections"]
+    hero = sections["hero"]
     slide = hero["blocks"][hero["block_order"][0]]["settings"]
-    doc["sections"][SHOWCASE_ID] = {
+    sections[SHOWCASE_ID] = {
         "type": "pp-temple-showcase",
         "settings": {
             "heading": slide["heading"],
@@ -76,16 +103,56 @@ def add_showcase(index_doc, link=INTERIM_LINK):
     }
     doc["order"].insert(0, SHOWCASE_ID)
     hero["disabled"] = True
+    sections["browse"]["disabled"] = True
+    sections["featured_products"]["settings"]["collection"] = COLLECTION
+    for sec in NAVY_BUTTON_SECTIONS:
+        sections[sec]["settings"]["custom_colors_solid_button_background"] = NAVY
     return doc
 
 
-def add_band(product_doc):
+def product_layout(product_doc):
+    """The drawing band goes straight after the main product section. Add to Cart, in the
+    buy buttons and the sticky bar, turns orange (it was blue #0035B2); the before/after
+    slider says THE TEMPLE / THE DRAWING."""
     doc = copy.deepcopy(product_doc)
     if BAND_ID in doc["sections"]:
         raise ValueError("this product layout already has the drawing band")
     doc["sections"][BAND_ID] = {"type": "pp-temple-drawing", "settings": {}}
     doc["order"].insert(doc["order"].index("main") + 1, BAND_ID)
+    details = doc["sections"]["main"]["blocks"]["Details"]["blocks"]
+    buy = details[_block_id(details, "product_buy-buttons")]["settings"]
+    buy["enable_custom_color"] = True
+    buy["custom_color"] = ORANGE
+    sticky = details[_block_id(details, "product_sticky-atc")]["settings"]
+    sticky["enable_custom_btn_color"] = True
+    sticky["custom_btn_color"] = ORANGE
+    slider = doc["sections"][_section_id(doc, "comparison-slider")]["settings"]
+    slider["before_label"], slider["after_label"] = "THE TEMPLE", "THE DRAWING"
     return doc
+
+
+def collection_problem(link, domain, get=None):
+    """Why golive must wait, or None. A button to a collection that is not on the Online
+    Store is a link to a missing page, and "The temples" row would show Shopify's
+    placeholder products. The admin token cannot read publishing, so this asks the
+    storefront itself."""
+    m = re.fullmatch(r"shopify://collections/([\w-]+)", link)
+    if not m:
+        return None
+    get = get or (lambda url: requests.get(url, timeout=20).status_code)
+    status = get(f"https://{domain}/collections/{m.group(1)}")  # products.json answers 200 for anything
+    if status == 200:
+        return None
+    return (f"collection '{m.group(1)}' is not on the Online Store yet (storefront said {status}). "
+            f"Publish it first: Shopify admin > Products > Collections > it > Sales channels > "
+            f"Online Store. Nothing sent.")
+
+
+def expected_paths(name, before_doc):
+    """Every setting golive is allowed to change in this layout, and nothing else.
+    Settings already at their new value do not change, so they drop out."""
+    after = homepage_layout(before_doc) if name.endswith("index.json") else product_layout(before_doc)
+    return changed_paths(before_doc, after)
 
 
 def changed_paths(a, b, prefix=()):
@@ -105,9 +172,6 @@ def verify(before, after, expected):
     if moved != expected:
         raise SystemExit(f"the edit would change {sorted(moved)}, expected exactly "
                          f"{sorted(expected)}. Nothing sent.")
-
-
-EXPECTED = {"templates/index.json": EXPECTED_INDEX, "templates/product.json": EXPECTED_PRODUCT}
 
 
 def revert_check(live_doc, saved_doc, expected):
@@ -132,12 +196,12 @@ def planned(client, link):
     """[(filename, live raw content, live banner, new doc)] for both layouts, each verified.
     The raw content is what golive backs up, so the backup is the exact file that was checked."""
     out = []
-    for name, fn in (("templates/index.json", lambda d: add_showcase(d, link)),
-                     ("templates/product.json", add_band)):
+    for name, fn in (("templates/index.json", lambda d: homepage_layout(d, link)),
+                     ("templates/product.json", product_layout)):
         content = theme_file(client, name)[1]
         banner, doc = split_banner(content)
         new = fn(doc)
-        verify(doc, new, EXPECTED[name])
+        verify(doc, new, expected_paths(name, doc))
         out.append((name, content, banner, new))
     return out
 
@@ -168,6 +232,9 @@ def cmd_golive(args):
     plans = planned(client, args.link)
     for name, _c, _b, new in plans:
         print(f"{name}: order becomes {new['order'][:3]} ...")
+    problem = collection_problem(args.link, client.url.split("/")[2])
+    if problem:
+        raise SystemExit(problem)
     if args.dry_run:
         print("\nDRY RUN, nothing sent.")
         return 0
@@ -196,7 +263,8 @@ def cmd_revert(_args):
     client = ShopifyClient()
     for name in list(files):
         live = split_banner(theme_file(client, name)[1])[1]
-        if not revert_check(live, split_banner(files[name].decode())[1], EXPECTED[name]):
+        saved = split_banner(files[name].decode())[1]
+        if not revert_check(live, saved, expected_paths(name, saved)):
             print(f"{name} is already the saved copy; left alone.")
             del files[name]
     if not files:
@@ -216,7 +284,7 @@ def main(argv=None):
     for cmd in ("preview", "golive"):
         p = sub.add_parser(cmd)
         p.add_argument("--dry-run", action="store_true")
-        p.add_argument("--link", default=INTERIM_LINK, help="the showcase button's link")
+        p.add_argument("--link", default=COLLECTION_LINK, help="the showcase button's link")
     sub.add_parser("revert")
     args = ap.parse_args(argv)
     return {"preview": cmd_preview, "golive": cmd_golive, "revert": cmd_revert}[args.cmd](args)

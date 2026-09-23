@@ -183,6 +183,37 @@ switch is one field in the theme editor.
 Creating the collection and tagging the art file are live store changes. They run
 only with Evan's confirmation, like the other rollout steps.
 
+## Round 2 changes (Evan, 23 Sep 2026, after the first preview)
+
+These replace the matching earlier decisions.
+
+- **Background:** flat store black `#121212` for the homepage banner and the product
+  band, matching the header. This replaces navy with a lifted centre.
+- **Pen tip:** white. Orange is reserved for Add to Cart.
+- **No dots:** the six temples flow one into the next like a single video.
+- **Buttons:** Add to Cart is the only orange (`#F58000`) button on the storefront, on
+  the product page and in the sticky bar. It replaces the product page's blue
+  `#0035B2`. The other orange buttons (the homepage before/after section and the
+  "suggest a temple" form) become navy `#001A58`. The banner button is navy with a
+  thin white border, because plain navy on black is nearly invisible. Checkout's Pay
+  button stays orange.
+- **Product page slider labels:** `THE TEMPLE` and `THE DRAWING`, in capitals like
+  before, replacing `REFERENCE` and `FINAL DRAWING`.
+- **Collections:** one collection, "Temple Design Products" (handle
+  `temple-design-products`), replaces the Shop idea. It holds the Salt Lake tee,
+  sweatshirt and hoodie plus the Temple Art File: tag `listing:parent` OR
+  `listing:standalone`. Every other temple is reached through the Temple dropdown on
+  the product page. The Easify import is done, so the Salt Lake hoodie
+  (`cloud-temple-hoodie`) gets `listing:parent` now.
+- **Homepage:** the banner button and "The temples" row point to the new collection.
+  The "Browse" row (garment cards plus the dead state-collection cards Evan deleted)
+  is switched off.
+- **Evan, in Shopify admin:** publish the new collection to the Online Store; point the
+  menus at it; delete Temple Tees, Temple Crewnecks, Temple Hoodies and All Temples;
+  redirect their old addresses to the new collection. The app token can do none of
+  these: it has no menu or publication scope, and deleting store data stays with Evan.
+- All of this ships through the same preview (`?view=pen-preview`), then golive.
+
 ## Out of scope
 
 - The character-art version for social posts (possibly Bailee's, later).
