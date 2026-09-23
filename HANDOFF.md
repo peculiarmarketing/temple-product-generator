@@ -1,3 +1,141 @@
+# IN FLIGHT 23 Sep 2026: pen-drawn temples on the storefront (branch `pen-drawn-temples`)
+
+Start here in a fresh session. Read, in order: this section, the spec
+`docs/superpowers/specs/2026-09-23-pen-drawn-temples-design.md` (its "Round 2 changes"
+section overrides earlier decisions), and the plan
+`docs/superpowers/plans/2026-09-23-pen-drawn-temples.md`. The working ledger with every
+ruling is `.superpowers/sdd/2026-09-23-pen-drawn-temples/progress.md` (gitignored).
+Work is on branch `pen-drawn-temples`, 15 commits ahead of `main`, not merged or pushed.
+
+## What it is
+
+The homepage banner draws six temples one after another, like a pen sketch (Salt Lake,
+Kirtland, Nauvoo, Logan, Mexico City, Rome). Each product page draws that product's own
+temple in a black band below the description. Everything is built from the stored
+temple art, so no building is invented.
+
+## State right now
+
+- **Customers see nothing new.** The real `templates/index.json` and
+  `templates/product.json` are untouched.
+- **Live in the theme, but not used by any real page:** 90 drawing files (all 45
+  temples) plus `pp-pen-draw.js`, `pp-pen-draw.css` and the two sections. Check with
+  `./.venv.nosync/bin/python scripts/web_drawings.py check`, which should say 45 of 45.
+- **Preview, visible only with `?view=pen-preview`:**
+  https://peculiarpeopleco.com/?view=pen-preview and any product page, for example
+  https://peculiarpeopleco.com/products/ultra-soft-oversized-temple-hoodie-logan?view=pen-preview
+- **Collection "Temple Design Products"** (`temple-design-products`) is created live and
+  holds the Salt Lake tee, sweatshirt and hoodie plus the Temple Art File (rule: tag
+  `listing:parent` OR `listing:standalone`). It is **not published**: the app token has
+  no publications scope. Until Evan publishes it, "The temples" row in the preview
+  shows Shopify placeholder products. That is expected.
+- **Tags added 23 Sep:** `cloud-temple-hoodie` has `listing:parent` (Easify import is
+  done), and `temple-art-file` has `listing:standalone`.
+- **Everything golive will change** (read `homepage_layout` / `product_layout` and
+  `allowed_paths` in `scripts/pen_templates.py`):
+  - **Homepage:**
+    - the showcase goes first;
+    - the old slideshow and the "Browse" row are switched off (the Browse row still
+      shows dead cards for the deleted state collections, live, today);
+    - "The temples" row points to Temple Design Products;
+    - the "Send" and before/after buttons go navy;
+    - the before/after labels become THE TEMPLE / THE DRAWING;
+    - the "What you get" cards turn navy with white text.
+  - **Product page:**
+    - the drawing band goes right after the main section;
+    - Add to Cart (main and sticky bar) goes orange `#F58000`, from blue `#0035B2`;
+    - the before/after labels become THE TEMPLE / THE DRAWING.
+- **Look:**
+  - flat store black `#121212`, white pen tip, no dots;
+  - banner button navy `#001A58` with a white border, text in capitals;
+  - Add to Cart is the only orange button (checkout's Pay button stays orange, Evan's
+    call).
+- **Tests:** `tests/test_web_drawing.py`, `test_web_drawings_cli.py`,
+  `test_pen_templates.py` and `test_design_collection.py` all print `ok`.
+  - Browser checks live in `theme/dev/harness.html`: serve the repo with
+    `./.venv.nosync/bin/python -m http.server 8765 --bind 127.0.0.1` (keep `--bind`;
+    `.env` is in the repo root). Open
+    `http://localhost:8765/theme/dev/harness.html?selftest=1`. Checks 8 to 12 all passed
+    on 23 Sep. Other modes: `?flaky=1`, `?old=1`, `?corrupt=1`, `?noimage=1`, `?reduced=1`.
+  - `tests/test_eden_green_rollout.py` fails on `main` too. That is unrelated and
+    offered as a separate task.
+
+## Review status
+
+- **Round 1** (the whole build): six specialist reviewers plus a final reviewer. Verdict
+  PASS at commit `a99efd6`.
+- **Round 2** (Evan's changes, commit `67f5383`): six reviews came back with findings.
+  All were fixed in `ff4a8f1`: the circular golive guard became an independent allow
+  list; revert now compares against the exact copy golive sent; the collection check
+  also covers the homepage row; plus added tests. The review loop's **sign-off step
+  was not run** on those fixes.
+  - **First job next session:** run the `review-loop` skill on `67f5383..HEAD` (fresh
+    dispatch; the earlier agent ids are gone) and get a PASS before golive.
+
+## Remaining steps, in this order
+
+1. **Claude:** review-loop sign-off on `67f5383..HEAD` (see above).
+2. **Claude:** two small checks the acceptance reviewer asked for:
+   - look for any other orange buttons on a collection page and in the cart drawer;
+   - ask Evan whether the collection title should be "Temple Design Products" (as
+     built) or "Temple design products" (as he typed it).
+3. **Claude, ask Evan:** the navy "LIMITED TIME" announcement bar sits between the
+   black header and the black banner, so the banner does not quite flow out of the
+   header. Keep it, or change the bar?
+4. **Evan, in Shopify admin:** Products > Collections > Temple Design Products > Sales
+   channels > tick Online Store. Then check the preview's "The temples" row shows the
+   real four products.
+5. **Evan:** look at the preview on phone and computer and say go.
+6. **Claude:** make sure nobody has the theme editor open on the live theme, then run
+   `./.venv.nosync/bin/python scripts/pen_templates.py golive --dry-run`, then the same
+   command without `--dry-run`.
+   - It refuses while the collection is unpublished.
+   - It backs up both layouts, plus the exact copies it sent, to
+     `artifacts/pen_templates/<stamp>/`.
+   - Undo: `./.venv.nosync/bin/python scripts/pen_templates.py revert`. It refuses
+     rather than wipe any theme-editor edit made after golive.
+7. **Evan, only after golive:**
+   - Online Store > Navigation: point the menus at Temple Design Products; they still
+     link to Temple Tees, Temple Crewnecks, Temple Hoodies and All Temples.
+   - Delete those four collections. Claude may not permanently delete store data.
+   - Online Store > Navigation > URL redirects: send `/collections/temple-tees`,
+     `/collections/temple-crewnecks`, `/collections/temple-hoodies` and
+     `/collections/all-temples` to `/collections/temple-design-products`.
+   - Deleting All Temples before golive would break the live homepage row, which still
+     reads it until golive.
+8. **Claude, docs (plan Task 9):**
+   - README Tapstitch sequence gains `web_drawings.py build --temple` / `push` /
+     `check` for new temples.
+   - The temple-product-generator SKILL.md gets the same.
+   - `docs/decisions.md` gets a dated section.
+   - This HANDOFF section gets rewritten as DONE, and the older "Waiting on that
+     import" section below gets rewritten too (superseded: those collections are being
+     deleted, not re-ruled).
+   - `shopify_client.py` docstring (still says the token lacks write_themes).
+   - `BRAND.md` section 8: buttons are now navy, and Add to Cart is the only orange
+     button.
+   - `../project-sync/pipeline-and-tools.md`, then push BRAND.md and pipeline-and-tools
+     to the claude.ai Project, per the parent CLAUDE.md.
+9. **Claude:** finish the branch (superpowers:finishing-a-development-branch): merge or
+   PR as Evan prefers.
+
+## Traps learned this session
+
+- **A hidden Browser pane pauses animations** and the "on screen" signal. Take a
+  screenshot to wake it before timing anything.
+- **The theme scrolls product pages back to the top** while they load. Wait about 6
+  seconds before scrolling to the band.
+- **The theme's base.css hides every empty div** (`div:empty`). The CSS outranks it;
+  keep the harness copy of that rule.
+- **After a same-size edit made within the same second,** Python can run a stale
+  `__pycache__` copy. Clear it after mutation tests.
+- **Storefront `products.json` answers 200 for any collection handle.** The collection
+  page itself (404 until published) is the honest check.
+- **The app token cannot read menus or publications, or delete anything.** Those are
+  Evan's clicks.
+
+---
+
 # DONE 23 Sep 2026: the Eden Green hoodie rollout. Follow-ups below still open.
 
 All 45 temple hoodies are live with seven colours, Eden Green (Tapstitch 6655)
