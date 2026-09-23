@@ -17,8 +17,9 @@ and nothing is sent if anything beyond the intended change would move. golive sa
 live files to artifacts/pen_templates/<timestamp>/ before writing, and revert restores
 the newest save, but only if the live layouts are still exactly that save plus golive's
 change; an edit made in the theme editor since then makes it refuse rather than wipe it.
-Unlike config/settings_data.json in swatches.py, these layouts are re-serialised whole: adding a section is a structural edit, and the key-by-key check is
-what guarantees nothing else changed. Do not run golive or revert with the theme editor
+Unlike config/settings_data.json in swatches.py, these layouts are re-serialised whole:
+adding a section is a structural edit, and the key-by-key check is what guarantees
+nothing else changed. Do not run golive or revert with the theme editor
 open on the live theme; the editor saves whole files and the last save wins.
 """
 
