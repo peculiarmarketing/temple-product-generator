@@ -656,7 +656,71 @@
       "store_product_id": "1552459843363852288",
       "title": "Ultra-soft Oversized Temple Hoodie (Syracuse)",
       "verified": "2026-09-23T09:23:21-06:00"
+    },
+    "Taylorsville": {
+      "built": "2026-09-23T09:24:44-06:00",
+      "cutover": "2026-09-23T09:26:49-06:00",
+      "distribute_started_at": "2026-09-23T09:24:44-06:00",
+      "distributed": "2026-09-23T09:25:00-06:00",
+      "finished": "2026-09-23T09:25:24-06:00",
+      "gallery": "2026-09-23T09:26:44-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-taylorsville",
+      "hidden": "2026-09-23T09:25:16-06:00",
+      "new_id": "gid://shopify/Product/15317421326708",
+      "old_id": "gid://shopify/Product/15305810542964",
+      "resolved": "2026-09-23T09:24:42-06:00",
+      "store_product_id": "1552460741309816832",
+      "title": "Ultra-soft Oversized Temple Hoodie (Taylorsville)",
+      "verified": "2026-09-23T09:26:51-06:00"
+    },
+    "Vernal": {
+      "built": "2026-09-23T09:26:53-06:00",
+      "cutover": "2026-09-23T09:29:04-06:00",
+      "distribute_started_at": "2026-09-23T09:26:53-06:00",
+      "distributed": "2026-09-23T09:27:09-06:00",
+      "finished": "2026-09-23T09:27:33-06:00",
+      "gallery": "2026-09-23T09:29:00-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-vernal",
+      "hidden": "2026-09-23T09:27:25-06:00",
+      "new_id": "gid://shopify/Product/15317422047604",
+      "old_id": "gid://shopify/Product/15303672463732",
+      "resolved": "2026-09-23T09:26:52-06:00",
+      "store_product_id": "1552461282555387904",
+      "title": "Ultra-soft Oversized Temple Hoodie (Vernal)",
+      "verified": "2026-09-23T09:29:06-06:00"
+    },
+    "Washington DC": {
+      "built": "2026-09-23T09:29:08-06:00",
+      "cutover": "2026-09-23T09:31:15-06:00",
+      "distribute_started_at": "2026-09-23T09:29:08-06:00",
+      "distributed": "2026-09-23T09:29:24-06:00",
+      "finished": "2026-09-23T09:29:48-06:00",
+      "gallery": "2026-09-23T09:31:11-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-washington-dc",
+      "hidden": "2026-09-23T09:29:40-06:00",
+      "new_id": "gid://shopify/Product/15317424177524",
+      "old_id": "gid://shopify/Product/15303673741684",
+      "resolved": "2026-09-23T09:29:07-06:00",
+      "store_product_id": "1552461849520427008",
+      "title": "Ultra-soft Oversized Temple Hoodie (Washington D.C.)",
+      "verified": "2026-09-23T09:31:18-06:00"
+    },
+    "West Jordan*": {
+      "built": "2026-09-23T09:31:20-06:00",
+      "cutover": "2026-09-23T09:33:41-06:00",
+      "distribute_started_at": "2026-09-23T09:31:20-06:00",
+      "distributed": "2026-09-23T09:31:38-06:00",
+      "finished": "2026-09-23T09:32:02-06:00",
+      "gallery": "2026-09-23T09:33:33-06:00",
+      "handle": "ultra-soft-oversized-temple-hoodie-west-jordan",
+      "hidden": "2026-09-23T09:31:54-06:00",
+      "new_id": "gid://shopify/Product/15317428207988",
+      "old_id": "gid://shopify/Product/15303674626420",
+      "resolved": "2026-09-23T09:31:18-06:00",
+      "store_product_id": "1552462404611395584",
+      "title": "Ultra-soft Oversized Temple Hoodie (West Jordan)",
+      "verified": "2026-09-23T09:33:43-06:00"
     }
   },
-  "updated_at": "2026-09-23T09:23:21-06:00"
+  "updated_at": "2026-09-23T09:40:38-06:00"
 }
