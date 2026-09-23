@@ -1705,9 +1705,9 @@
       "old_title": "Pillar Temple Hoodie (Red Cliffs)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-red-cliffs",
-      "updated_at": "2026-09-16T21:07:51",
+      "updated_at": "2026-09-23T08:58:56",
       "tapstitch_template_id": "1550100811990921216",
-      "tapstitch_store_product_id": "1550100847629848576",
+      "tapstitch_store_product_id": "1552453641313636352",
       "distribute_started_at": "2026-09-16T21:07:21"
     },
     {
@@ -1759,9 +1759,9 @@
       "old_title": "Pillar Temple Hoodie (Rome)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-rome",
-      "updated_at": "2026-09-16T21:09:56",
+      "updated_at": "2026-09-23T09:01:17",
       "tapstitch_template_id": "1550101284487643136",
-      "tapstitch_store_product_id": "1550101322513141760",
+      "tapstitch_store_product_id": "1552454259797315584",
       "distribute_started_at": "2026-09-16T21:09:15"
     },
     {
@@ -1818,11 +1818,11 @@
       "old_title": "Pillar Temple Hoodie",
       "tapstitch_product_url": "https://www.tapstitch.com/account/products-pool",
       "shopify_handle": "cloud-temple-hoodie",
-      "updated_at": "2026-09-16T10:54:04",
+      "updated_at": "2026-09-23T09:03:32",
       "shopify_status": "ACTIVE",
       "shopify_id": "gid://shopify/Product/15302513459572",
       "tapstitch_template_id": "1549938476965916672",
-      "tapstitch_store_product_id": "1549941216953643008",
+      "tapstitch_store_product_id": "1552454849516457984",
       "old_listing_kept": "salt-lake-temple-hoodie left DRAFT, not deleted. Evan's 16 Sep decision, asked and confirmed: replacements take their own address and nothing is permanently deleted.",
       "pending": [
         "real description (size guide only for now)",
@@ -1878,9 +1878,9 @@
       "old_title": "Pillar Temple Hoodie (San Antonio)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-san-antonio",
-      "updated_at": "2026-09-16T21:11:41",
+      "updated_at": "2026-09-23T09:05:45",
       "tapstitch_template_id": "1550101780959019008",
-      "tapstitch_store_product_id": "1550101813657743360",
+      "tapstitch_store_product_id": "1552455413910396928",
       "distribute_started_at": "2026-09-16T21:11:12"
     },
     {
@@ -1932,9 +1932,9 @@
       "old_title": "Pillar Temple Hoodie (San Diego)",
       "tapstitch_product_url": null,
       "shopify_handle": "ultra-soft-oversized-temple-hoodie-san-diego",
-      "updated_at": "2026-09-16T21:13:31",
+      "updated_at": "2026-09-23T09:08:17",
       "tapstitch_template_id": "1550102243573972992",
-      "tapstitch_store_product_id": "1550102286263529472",
+      "tapstitch_store_product_id": "1552455976223952896",
       "distribute_started_at": "2026-09-16T21:13:04"
     },
     {
@@ -2442,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-09-23T08:54:53"
+  "updated_at": "2026-09-23T09:08:17"
 }
