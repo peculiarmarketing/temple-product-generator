@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- Local test page for assets/pp-pen-draw.js. Mirrors the markup the two Liquid
+     sections render. Serve from the repo root:
+       ./.venv.nosync/bin/python -m http.server 8765
+     then open http://localhost:8765/theme/dev/harness.html (add ?reduced=1 to
+     simulate a phone set to reduce motion). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pp-pen harness</title>
+<script>
+  if (new URLSearchParams(location.search).has('reduced')) {
+    const real = window.matchMedia.bind(window);
+    window.matchMedia = (q) => q.includes('prefers-reduced-motion') ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : real(q);
+  }
+</script>
+<link rel="stylesheet" href="../assets/pp-pen-draw.css">
+<style>body { margin: 0; font-family: Arial, sans-serif; } .gap { height: 120vh; display: grid; place-items: center; color: #999; }</style>
+</head>
+<body>
+<section class="pp-showcase" data-pp-pen-showcase id="showcase">
+  <div class="pp-showcase__inner">
+    <div class="pp-showcase__stage">
+      <div class="pp-pen" role="img" aria-label="Line drawings of temples, drawn one after another">
+        <div class="pp-pen__art"></div>
+        <div class="pp-pen__city" aria-hidden="true"></div>
+      </div>
+      <div class="pp-showcase__dots" aria-hidden="true"></div>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-salt-lake.json" data-img="/artifacts/web_drawings/pp-temple-salt-lake.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-not-a-temple.json" data-img="/artifacts/web_drawings/pp-temple-not-a-temple.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-kirtland.json" data-img="/artifacts/web_drawings/pp-temple-kirtland.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-nauvoo.json" data-img="/artifacts/web_drawings/pp-temple-nauvoo.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-logan.json" data-img="/artifacts/web_drawings/pp-temple-logan.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-mexico-city.json" data-img="/artifacts/web_drawings/pp-temple-mexico-city.webp"></span>
+      <span hidden data-pp-pen-item data-json="/artifacts/web_drawings/pp-temple-rome.json" data-img="/artifacts/web_drawings/pp-temple-rome.webp"></span>
+    </div>
+    <div class="pp-showcase__copy">
+      <h1 class="pp-showcase__heading">Made to start the conversation</h1>
+      <p class="pp-showcase__text">Premium apparel for Latter-day Saints, printed to order in the United States.</p>
+      <a class="pp-showcase__btn" href="#">Find your temple</a>
+    </div>
+  </div>
+</section>
+
+<div class="gap">scroll</div>
+
+<section class="pp-band" data-pp-pen-band id="band-saratoga"
+  data-json="/artifacts/web_drawings/pp-temple-saratoga-springs.json"
+  data-img="/artifacts/web_drawings/pp-temple-saratoga-springs.webp">
+  <div class="pp-band__inner">
+    <h2 class="pp-band__name">Saratoga Springs Utah Temple</h2>
+    <div class="pp-pen" role="img" aria-label="Saratoga Springs Utah Temple">
+      <div class="pp-pen__art"></div>
+      <div class="pp-pen__city" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<div class="gap">scroll</div>
+
+<section class="pp-band" data-pp-pen-band id="band-missing"
+  data-json="/artifacts/web_drawings/pp-temple-brand-new.json"
+  data-img="/artifacts/web_drawings/pp-temple-brand-new.webp">
+  <div class="pp-band__inner">
+    <h2 class="pp-band__name">A temple with no drawing yet</h2>
+    <div class="pp-pen" role="img" aria-label="A temple with no drawing yet">
+      <div class="pp-pen__art"></div>
+      <div class="pp-pen__city" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<div class="gap">end</div>
+<script src="../assets/pp-pen-draw.js" defer></script>
+</body>
+</html>

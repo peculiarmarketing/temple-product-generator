@@ -1,0 +1,88 @@
+/* Peculiar People: pen-drawn temples. Styles for sections/pp-temple-showcase.liquid
+   and sections/pp-temple-drawing.liquid. Behaviour lives in pp-pen-draw.js. */
+
+.pp-showcase,
+.pp-band {
+  --pp-navy: #001A58;
+  --pp-lift: #0a2873;
+  --pp-orange: #F58000;
+  background: radial-gradient(90% 80% at 50% 38%, var(--pp-lift) 0%, var(--pp-navy) 75%);
+  color: #fff;
+}
+
+.pp-showcase *, .pp-band * { box-sizing: border-box; }
+
+/* Full width, so the drawing area's percentage width has something to resolve
+   against. Shrink-to-fit here collapsed the drawing to 0 x 0. */
+.pp-pen { width: 100%; display: flex; flex-direction: column; align-items: center; transition: opacity .7s ease; }
+.pp-pen.is-faded { opacity: 0; }
+.pp-pen__art { position: relative; width: 100%; aspect-ratio: 1 / 1; }
+/* Out of flow, so a tall drawing cannot stretch the square box it sits in. */
+.pp-pen__art svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+.pp-pen__exact { opacity: 0; transition: opacity .6s ease; }
+.pp-pen__exact.is-on { opacity: 1; }
+.pp-pen__exact.is-instant { transition: none; }
+.pp-pen__tip { transition: opacity .5s ease; }
+.pp-pen__tip.is-off { opacity: 0; }
+.pp-pen__city {
+  margin-top: 14px;
+  min-height: 1.4em;
+  font-family: var(--font-heading-family, Montserrat), Arial, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .18em;
+  white-space: nowrap;
+  text-align: center;
+}
+.pp-pen__city span { opacity: 0; transition: opacity .25s ease; }
+.pp-pen__city span.is-on { opacity: 1; }
+
+/* Homepage showcase */
+.pp-showcase__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 24px;
+  max-width: 1200px;
+  min-height: 520px;
+  margin: 0 auto;
+  padding: 48px 40px;
+}
+.pp-showcase__stage { order: 2; display: flex; flex-direction: column; align-items: center; }
+.pp-showcase__stage .pp-pen__art { width: min(420px, 100%); }
+.pp-showcase__copy { order: 1; }
+.pp-showcase__heading { margin: 0 0 14px; color: #fff; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; }
+.pp-showcase__text { margin: 0 0 22px; max-width: 440px; color: rgba(255, 255, 255, .8); line-height: 1.5; }
+.pp-showcase__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 26px;
+  border-radius: 4px;
+  background: var(--pp-orange);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-decoration: none;
+}
+.pp-showcase__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.pp-showcase__dots { display: flex; gap: 8px; min-height: 8px; margin-top: 14px; }
+.pp-showcase__dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .3); transition: background .3s; }
+.pp-showcase__dots span.is-on { background: var(--pp-orange); }
+
+/* Product band */
+.pp-band__inner { display: flex; flex-direction: column; align-items: center; max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+.pp-band__name { margin: 0 0 18px; color: #fff; font-size: 20px; text-align: center; }
+.pp-band .pp-pen__art { width: min(440px, 100%); }
+.pp-band:not(.is-ready) .pp-pen { visibility: hidden; }
+
+@media (max-width: 749px) {
+  .pp-showcase__inner { grid-template-columns: 1fr; min-height: 0; gap: 10px; padding: 24px 20px 32px; }
+  .pp-showcase__stage { order: 1; }
+  .pp-showcase__copy { order: 2; margin-top: 8px; }
+  .pp-showcase__stage .pp-pen__art { width: auto; height: min(42vh, 300px); max-width: 100%; }
+  .pp-showcase__btn { display: flex; width: 100%; }
+  .pp-band__inner { padding: 32px 20px; }
+  .pp-pen__city { font-size: 12.5px; letter-spacing: .14em; }
+}
