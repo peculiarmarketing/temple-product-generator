@@ -1,3 +1,49 @@
+# OPEN, 1 October 2026: upload the rebuilt pen drawings (needs the Mac)
+
+The pen-drawing animation on the homepage showcase and product band now draws
+each temple in drawing order: outline, inner structure, windows and doors one at
+a time, small marks. Evan approved the samples and all 45 temples are rebuilt.
+**They are not on the store yet.** The Claude store connector cannot write to
+the live theme ("Copy of shrine-theme-pro", id 193770258804), so the upload
+has to be done from the Mac.
+
+To finish it:
+
+1. Get this branch, which is not on `main` yet:
+   `git fetch origin && git checkout claude/recent-website-changes-hbgeu4`
+2. From `temple-product-generator/`, push only these files:
+
+       shopify theme push --path theme --theme 193770258804 --nodelete \
+         --only 'assets/pp-pen-draw.js' --only 'assets/pp-temple-*.json'
+
+   Keep `--nodelete`. Without it the push deletes every theme file not in
+   `theme/`. Upload the JS together with the JSON files.
+3. Check `?view=pen-preview` on the homepage and on a product page.
+4. Delete this section, and merge the branch to `main`.
+
+No Mac: in Shopify admin, Online Store > Themes > "Copy of shrine-theme-pro" >
+Edit code > assets, upload `theme/assets/pp-pen-draw.js` and the 45
+`theme/assets/pp-temple-*.json` files, replacing the existing ones.
+
+The animation is still preview-only after the upload. Making it live (adding
+the sections to `templates/index.json` and `templates/product.json`) is a
+separate decision for Evan. Two notes for that decision: the homepage showcase
+breaks rule H14 in the 2 September store audit (nothing above the fold moves),
+and its heading and text are new customer-facing copy that needs the humanizer
+passes before it ships.
+
+Details: `theme/README.md`. Rollback: `theme-backup/2026-09-23-original/`.
+
+**Also found on 1 October and not in git:** the 22 to 24 September hoodie
+rebuild (45 new hoodies with Royal Blue added, old ones drafted with
+`-retired-2026-09-23` handles) and `scripts/web_drawings.py`, which made the
+original drawing files. Both were run from a machine whose work was never pushed.
+Commit them from that machine. The Easify option-set CSV below predates the
+hoodie rebuild, so check that its hoodie rows point at the new handles before
+you import it.
+
+---
+
 # Tapstitch migration: where this stands
 
 **Last worked: 16 September 2026, third session.** Read this first if you are picking the
