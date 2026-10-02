@@ -1,3 +1,27 @@
+# Pen-drawn temples: live since 2 October 2026
+
+The pen-drawing animation draws each temple in drawing order: outline, inner
+structure, windows and doors one at a time, then small marks. Stroke files
+come from `scripts/pen_strokes.py`. Evan uploaded the 45 rebuilt
+`pp-temple-<slug>.json` files and `pp-pen-draw.js` to the **"Claude Code V2"**
+theme (`gid://shopify/OnlineStoreTheme/194242150772`) and published it. The
+homepage showcase is on `templates/index.json` and the product band is on
+`templates/product.json`. The old live theme (id 193770258804) is unpublished
+and now named "Claude code original".
+
+Details and the rebuild command: `theme/README.md`. Rollback files:
+`theme-backup/2026-09-23-original/`.
+
+**Found on 1 October and still not in git:** the 22 to 24 September hoodie
+rebuild (45 new hoodies with Royal Blue added, old ones drafted with
+`-retired-2026-09-23` handles) and `scripts/web_drawings.py`, which made the
+original drawing files. Both were run from a machine whose work was never pushed.
+Commit them from that machine. The Easify option-set CSV below predates the
+hoodie rebuild, so check that its hoodie rows point at the new handles before
+you import it.
+
+---
+
 # Tapstitch migration: where this stands
 
 **Last worked: 16 September 2026, third session.** Read this first if you are picking the
