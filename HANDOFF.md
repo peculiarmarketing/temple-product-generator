@@ -138,9 +138,9 @@ products carry it already. The CC1717 intro could not simply be reused for the
 tee: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7 oz
 (260 gsm) and not garment-dyed, so copying it would have published false claims.
 
-**One thing is waiting on you:** whether the size guide gets a new video or the
-branded chart images in `Important Elements/`. This matters less now that the
-guide is out of the description; it is about where a size guide lives at all.
+**Decided 2 October 2026: the size guide stays as is for now.** No new video
+and no branded chart images from `Important Elements/` for the moment; the
+guide stays out of the description. Revisit only if Evan raises it.
 
 **Every temple now has a researched `temple-facts.html`, and the runner has no
 blocked rows.** It still blocks any temple that lacks one, which is correct: the
@@ -188,7 +188,8 @@ light and would have the same problem more severely.
 **Worth a second look on price:** the crew blank costs more than the hoodie blank
 ($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
 but the crew sells for $10.00 less. That is $9.43 less gross on a garment that
-costs the same to make. Prices are unchanged and this is flagged, not decided.
+costs the same to make. **Decided 2 October 2026: the crew price stays as is**
+($64.99). This is settled, not an open question.
 
 **Nothing else needs you.** Every temple in the catalog is traced, researched
 and published.
