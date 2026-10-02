@@ -1,0 +1,108 @@
+{%- comment -%}
+  Peculiar People homepage: what is printed on the shirt, front and back, with
+  callouts whose leader lines draw out to their labels when the section scrolls
+  into view (pp-home.js). Each callout's anchor is a percentage of its image, set
+  below, so a new mockup only needs its numbers moved. Phones get numbered marks
+  on the images and the labels as a list underneath. With JavaScript off or
+  reduced motion on, everything is simply shown.
+{%- endcomment -%}
+{{ 'pp-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-home.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  assign front_alt = s.front_image.alt | default: 'Front of the shirt'
+  assign back_alt = s.back_image.alt | default: 'Back of the shirt'
+-%}
+<section class="pp-anatomy" data-pp-anatomy>
+  <div class="pp-anatomy__inner">
+    <div class="pp-anatomy__intro">
+      {%- if s.heading != blank -%}
+        <h2 class="h2 pp-anatomy__heading">{{ s.heading }}</h2>
+      {%- endif -%}
+      {%- if s.text != blank -%}
+        <div class="pp-anatomy__text">{{ s.text }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="pp-anatomy__stage">
+      <figure class="pp-anatomy__fig pp-anatomy__fig--front">
+        <div class="pp-anatomy__media">
+          {%- if s.front_image != blank -%}
+            {{ s.front_image | image_url: width: 1100 | image_tag: loading: 'lazy', widths: '360, 550, 720, 900, 1100', sizes: '(min-width: 990px) 440px, (min-width: 750px) 40vw, 100vw', alt: front_alt, class: 'pp-anatomy__img' }}
+          {%- else -%}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'pp-anatomy__img placeholder-svg' }}
+          {%- endif -%}
+          <div class="pp-callout pp-callout--left" style="--x: {{ s.logo_x }}%; --y: {{ s.logo_y }}%; --i: 0;">
+            <span class="pp-callout__dot" aria-hidden="true"><span class="pp-callout__num">1</span></span>
+            <span class="pp-callout__line" aria-hidden="true"></span>
+            <span class="pp-callout__label">
+              <span class="pp-callout__eyebrow">{{ s.logo_eyebrow | escape }}</span>
+              {{ s.logo_label | escape }}
+            </span>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="pp-anatomy__fig pp-anatomy__fig--back">
+        <div class="pp-anatomy__media">
+          {%- if s.back_image != blank -%}
+            {{ s.back_image | image_url: width: 1100 | image_tag: loading: 'lazy', widths: '360, 550, 720, 900, 1100', sizes: '(min-width: 990px) 440px, (min-width: 750px) 40vw, 100vw', alt: back_alt, class: 'pp-anatomy__img' }}
+          {%- else -%}
+            {{ 'product-apparel-1' | placeholder_svg_tag: 'pp-anatomy__img placeholder-svg' }}
+          {%- endif -%}
+          <div class="pp-callout pp-callout--right" style="--x: {{ s.temple_x }}%; --y: {{ s.temple_y }}%; --i: 1;">
+            <span class="pp-callout__dot" aria-hidden="true"><span class="pp-callout__num">2</span></span>
+            <span class="pp-callout__line" aria-hidden="true"></span>
+            <span class="pp-callout__label">
+              <span class="pp-callout__eyebrow">{{ s.temple_eyebrow | escape }}</span>
+              {{ s.temple_label | escape }}
+            </span>
+          </div>
+          <div class="pp-callout pp-callout--right pp-callout--below" style="--x: {{ s.city_x }}%; --y: {{ s.city_y }}%; --i: 2;">
+            <span class="pp-callout__dot" aria-hidden="true"><span class="pp-callout__num">3</span></span>
+            <span class="pp-callout__line" aria-hidden="true"></span>
+            <span class="pp-callout__label">
+              <span class="pp-callout__eyebrow">{{ s.city_eyebrow | escape }}</span>
+              {{ s.city_label | escape }}
+            </span>
+          </div>
+        </div>
+      </figure>
+    </div>
+
+    {%- comment -%} Phones: the same three labels as a list. Hidden (display: none) on wider screens, so a screen reader meets each label once. {%- endcomment -%}
+    <ol class="pp-anatomy__list">
+      <li><span class="pp-anatomy__list-num" aria-hidden="true">1</span><span><span class="pp-callout__eyebrow">{{ s.logo_eyebrow | escape }}</span>{{ s.logo_label | escape }}</span></li>
+      <li><span class="pp-anatomy__list-num" aria-hidden="true">2</span><span><span class="pp-callout__eyebrow">{{ s.temple_eyebrow | escape }}</span>{{ s.temple_label | escape }}</span></li>
+      <li><span class="pp-anatomy__list-num" aria-hidden="true">3</span><span><span class="pp-callout__eyebrow">{{ s.city_eyebrow | escape }}</span>{{ s.city_label | escape }}</span></li>
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP garment anatomy",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "image_picker", "id": "front_image", "label": "Front of the garment" },
+    { "type": "image_picker", "id": "back_image", "label": "Back of the garment" },
+    { "type": "header", "content": "Callout 1: front logo" },
+    { "type": "text", "id": "logo_eyebrow", "label": "Small label", "default": "Front" },
+    { "type": "text", "id": "logo_label", "label": "Label", "default": "Our logo, 6 inches wide" },
+    { "type": "range", "id": "logo_x", "label": "Point across the front image (%)", "min": 0, "max": 100, "step": 1, "default": 38 },
+    { "type": "range", "id": "logo_y", "label": "Point down the front image (%)", "min": 0, "max": 100, "step": 1, "default": 37 },
+    { "type": "header", "content": "Callout 2: the temple" },
+    { "type": "text", "id": "temple_eyebrow", "label": "Small label", "default": "Back" },
+    { "type": "text", "id": "temple_label", "label": "Label", "default": "The temple, up to 12 inches across" },
+    { "type": "range", "id": "temple_x", "label": "Point across the back image (%)", "min": 0, "max": 100, "step": 1, "default": 65 },
+    { "type": "range", "id": "temple_y", "label": "Point down the back image (%)", "min": 0, "max": 100, "step": 1, "default": 45 },
+    { "type": "header", "content": "Callout 3: the city line" },
+    { "type": "text", "id": "city_eyebrow", "label": "Small label", "default": "City line" },
+    { "type": "text", "id": "city_label", "label": "Label", "default": "Printed under the temple" },
+    { "type": "range", "id": "city_x", "label": "Point across the back image (%)", "min": 0, "max": 100, "step": 1, "default": 59 },
+    { "type": "range", "id": "city_y", "label": "Point down the back image (%)", "min": 0, "max": 100, "step": 1, "default": 67 }
+  ],
+  "presets": [{ "name": "PP garment anatomy" }]
+}
+{% endschema %}

@@ -1,0 +1,80 @@
+{%- comment -%}
+  Peculiar People homepage: the founder's letter. A navy band with the pull quote,
+  then the letter beside an image.
+
+  The letter is protected founder voice (BRAND.md section 11). It is stored in the
+  template exactly as Evan wrote it and printed here unchanged; nothing in this
+  section rewrites, trims or styles its words.
+
+  Until a real photo is picked, the image is one temple's white line art on navy
+  (assets/pp-temple-<slug>.webp, "Fallback temple" below).
+{%- endcomment -%}
+{{ 'pp-home.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+<section class="pp-founder">
+  {%- if s.quote != blank -%}
+    <div class="pp-founder__band">
+      <figure class="pp-founder__quote">
+        <span class="pp-founder__mark" aria-hidden="true">&ldquo;</span>
+        <blockquote class="pp-founder__quote-text">
+          <p>{{ s.quote | escape }}</p>
+        </blockquote>
+      </figure>
+    </div>
+  {%- endif -%}
+
+  {%- assign has_media = true -%}
+  {%- if s.image == blank and s.fallback_temple == blank -%}{%- assign has_media = false -%}{%- endif -%}
+  <div class="pp-founder__split{% unless has_media %} pp-founder__split--solo{% endunless %}">
+    {%- if has_media -%}
+    <div class="pp-founder__media{% if s.image == blank %} pp-founder__media--art{% endif %}">
+      {%- if s.image != blank -%}
+        {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1200', sizes: '(min-width: 990px) 540px, 100vw', class: 'pp-founder__img' }}
+      {%- elsif s.fallback_temple != blank -%}
+        {%- assign slug = s.fallback_temple | strip | downcase -%}
+        <img class="pp-founder__art"
+          src="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}"
+          alt="{{ s.fallback_alt | escape }}"
+          width="400" height="400" loading="lazy" decoding="async">
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+    <div class="pp-founder__letter">
+      {%- if s.heading != blank -%}
+        <h2 class="h2 pp-founder__heading">{{ s.heading }}</h2>
+      {%- endif -%}
+      <div class="pp-founder__body rte">{{ s.letter }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP founder letter",
+  "settings": [
+    { "type": "text", "id": "quote", "label": "Pull quote" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading" },
+    {
+      "type": "richtext",
+      "id": "letter",
+      "label": "Letter",
+      "info": "Protected founder voice. Do not edit without Evan."
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "text",
+      "id": "fallback_temple",
+      "label": "Fallback temple",
+      "info": "Shown on navy until an image is picked. Temple tag name (after temple:).",
+      "default": "salt-lake"
+    },
+    {
+      "type": "text",
+      "id": "fallback_alt",
+      "label": "Fallback description for screen readers",
+      "default": "Line drawing of the Salt Lake Temple"
+    }
+  ],
+  "presets": [{ "name": "PP founder letter" }]
+}
+{% endschema %}

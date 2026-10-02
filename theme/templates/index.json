@@ -131,60 +131,25 @@
         "padding_bottom": 36
       }
     },
-    "intro": {
-      "type": "rich-text",
-      "blocks": {
-        "intro_heading": {
-          "type": "heading",
-          "settings": {
-            "visibility": "always-display",
-            "title": "\"What's on your shirt?\"",
-            "heading_tag": "h2",
-            "heading_size": "h2",
-            "alignment": "center",
-            "mobile_alignment": "mobile-center",
-            "title_highlight_1": "solid-color",
-            "title_highlight_1_color": "#001A58",
-            "highlighted-1_border_color": "#001A58",
-            "title_highlight_1_underline-color": "#001A58",
-            "title_highlight_1_handwritten-color": "#001A58",
-            "title_highlight_2_color": "#001A58",
-            "highlighted-2_border_color": "#001A58",
-            "title_highlight_2_underline-color": "#001A58",
-            "title_highlight_2_handwritten-color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
-          }
-        },
-        "intro_text": {
-          "type": "text",
-          "settings": {
-            "visibility": "always-display",
-            "text": "<p>That question is the whole point. Every piece is a temple you know, drawn in line and printed heavy, so the person who asks gets to hear why it matters to you.</p>",
-            "alignment": "center",
-            "mobile_alignment": "mobile-center",
-            "text_size": 16,
-            "bold_solid_color": "#001A58",
-            "italic_solid_color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
-          }
-        }
-      },
-      "block_order": [
-        "intro_heading",
-        "intro_text"
-      ],
+    "anatomy": {
+      "type": "pp-garment-anatomy",
       "settings": {
-        "visibility": "always-display",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "full_width": true,
-        "color_scheme": "background-1",
-        "pattern_color": "#001A58",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "heading": "\"What's on your shirt?\"",
+        "text": "<p>That question is the whole point. Every piece is a temple you know, drawn in line and printed heavy, so the person who asks gets to hear why it matters to you.</p>",
+        "front_image": "shopify://shop_images/tee_maroon_front_a5158ca2-e038-4d3c-8776-df03465c5daf.png",
+        "back_image": "shopify://shop_images/tee_maroon_back_07efa526-ea41-4e95-8dce-17db485426c5.png",
+        "logo_eyebrow": "Front",
+        "logo_label": "Our logo, 6 inches wide",
+        "logo_x": 38,
+        "logo_y": 37,
+        "temple_eyebrow": "Back",
+        "temple_label": "The temple, up to 12 inches across",
+        "temple_x": 65,
+        "temple_y": 45,
+        "city_eyebrow": "City line",
+        "city_label": "Printed under the temple",
+        "city_x": 59,
+        "city_y": 67
       }
     },
     "process": {
@@ -308,59 +273,24 @@
       }
     },
     "founder": {
-      "type": "rich-text",
-      "blocks": {
-        "intro_heading": {
-          "type": "heading",
-          "settings": {
-            "visibility": "always-display",
-            "title": "From the Founder",
-            "heading_tag": "h2",
-            "heading_size": "h2",
-            "alignment": "left",
-            "mobile_alignment": "mobile-left",
-            "title_highlight_1": "solid-color",
-            "title_highlight_1_color": "#001A58",
-            "highlighted-1_border_color": "#001A58",
-            "title_highlight_1_underline-color": "#001A58",
-            "title_highlight_1_handwritten-color": "#001A58",
-            "title_highlight_2_color": "#001A58",
-            "highlighted-2_border_color": "#001A58",
-            "title_highlight_2_underline-color": "#001A58",
-            "title_highlight_2_handwritten-color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
-          }
-        },
-        "intro_text": {
-          "type": "text",
-          "settings": {
-            "visibility": "always-display",
-            "text": "<p>You put on a Peculiar People shirt because it reminds you why we're all here. Because that building is where you were sealed to your spouse, where you got an answer to a prayer you'd been carrying for years, where you first felt something you couldn't explain away. A stepping stone. A day you'll never forget.</p><p>You put it on because you want to share that with someone. Because gospel conversations are hard to start. Harder than they were on your mission, when the whole day was built around them.</p><p>It's the new white shirt and tie. The new dress. The new name tag you don't need a calling to wear. A shirt you may even feel prompted to wear some days.</p><p>That's why I started this company. It doesn't take much for someone who has been prepared to tap you on the shoulder and ask a question that changes the direction of their life. No argument, no pitch, no lesson plan. Just an opening.</p><p>- Evan</p>",
-            "alignment": "left",
-            "mobile_alignment": "mobile-left",
-            "text_size": 16,
-            "bold_solid_color": "#001A58",
-            "italic_solid_color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
-          }
-        }
-      },
-      "block_order": [
-        "intro_heading",
-        "intro_text"
-      ],
+      "type": "pp-founder",
       "settings": {
-        "visibility": "always-display",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "full_width": false,
-        "color_scheme": "background-1",
-        "pattern_color": "#001A58",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "quote": "It's the new white shirt and tie.",
+        "heading": "From the Founder",
+        "letter": "<p>You put on a Peculiar People shirt because it reminds you why we're all here. Because that building is where you were sealed to your spouse, where you got an answer to a prayer you'd been carrying for years, where you first felt something you couldn't explain away. A stepping stone. A day you'll never forget.</p><p>You put it on because you want to share that with someone. Because gospel conversations are hard to start. Harder than they were on your mission, when the whole day was built around them.</p><p>It's the new white shirt and tie. The new dress. The new name tag you don't need a calling to wear. A shirt you may even feel prompted to wear some days.</p><p>That's why I started this company. It doesn't take much for someone who has been prepared to tap you on the shoulder and ask a question that changes the direction of their life. No argument, no pitch, no lesson plan. Just an opening.</p><p>- Evan</p>",
+        "fallback_temple": "salt-lake",
+        "fallback_alt": "Line drawing of the Salt Lake Temple"
+      }
+    },
+    "marquee": {
+      "type": "pp-temple-marquee",
+      "settings": {
+        "collection": "temple-tees",
+        "heading": "",
+        "seconds_per_temple": 4,
+        "label": "Temple designs",
+        "pause_label": "Pause",
+        "play_label": "Play"
       }
     },
     "what_you_get": {
@@ -636,10 +566,11 @@
     "hero",
     "featured_products",
     "browse",
-    "intro",
-    "founder",
-    "what_you_get",
+    "anatomy",
     "process",
+    "founder",
+    "marquee",
+    "what_you_get",
     "faq",
     "suggest_heading",
     "suggest_form"
