@@ -1,11 +1,11 @@
 # Theme files for the pen-drawn temples
 
 Copies of the Shopify theme assets behind the pen-drawing animation on the
-homepage showcase (`sections/pp-temple-showcase.liquid`) and the product page
-band (`sections/pp-temple-drawing.liquid`). Before 1 October 2026 these lived
-only in the theme. The live theme is "Copy of shrine-theme-pro"
-(`gid://shopify/OnlineStoreTheme/193770258804`), and for now only the
-`pen-preview` templates use these assets.
+homepage showcase (`sections/pp-temple-showcase.liquid`, on `templates/index.json`)
+and the product page band (`sections/pp-temple-drawing.liquid`, on
+`templates/product.json`). Before 1 October 2026 these lived only in the theme.
+The live theme since 2 October 2026 is "Claude Code V2"
+(`gid://shopify/OnlineStoreTheme/194242150772`).
 
 - `assets/pp-pen-draw.js`, `assets/pp-pen-draw.css`: the animation.
 - `assets/pp-temple-<slug>.json`: stroke files, version 2, built by
@@ -27,7 +27,7 @@ The store connector used from Claude sessions cannot write to the live theme,
 so uploads are done from a machine with Shopify CLI logged in to the store:
 
     cd temple-product-generator
-    shopify theme push --path theme --theme 193770258804 --nodelete \
+    shopify theme push --path theme --theme 194242150772 --nodelete \
       --only 'assets/pp-pen-draw.js' --only 'assets/pp-temple-*.json'
 
 `--nodelete` matters: without it a push removes every theme file that is not in
