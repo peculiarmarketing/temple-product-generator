@@ -491,26 +491,70 @@ In order, on a new session:
    distribute, wait for Shopify, set productType, run the fixups, run
    `tapstitch_variant_images.py`, update the ledger.
 
-## Not yet reviewed
+## Review of 2 October 2026
 
-The work up to and including the store pull-down went through the full review
-loop (six specialists plus a final judge, all signed off). **Changes made after
-that review have not been through it.** The 16 September morning work DID go
-through the full loop
-(six specialists plus the judge) and every finding was fixed and signed off, which
-covers `print_areas`, `placement`, the store-product calls, the crew blank config
-and the crew size guide. NOT yet reviewed: the hoodie publish and its blank config,
-`scripts/tapstitch_variant_images.py`, the Easify `sets.json` rebind, the hoodie
-size guide, `tests/test_tapstitch_placement.py` and its fixtures, and the
-`post_publish` wiring in `finish_on_shopify`. Also still unreviewed from 15
-September: `scripts/tapstitch_capture.py` and the retired selector block. The API client has been exercised against
-the live account but never reviewed. Also: the blank specs and colour configs, the
-`colorway_renames_by_type` mechanism in `scripts/shopify_fixups.py`, the centring
-and 0.8in spacing, the `kept`-records change in `scripts/store_pulldown.py`, and
-several test rewrites. Run `review-loop` over the delta before any of it drives
-the live editor.
+The whole "not yet reviewed" list went through review on 2 October 2026: the
+hoodie publish and blank configs, `tapstitch_variant_images.py`, the Easify
+`sets.json` rebind, the hoodie size guide, `test_tapstitch_placement.py` and its
+fixtures, the `post_publish` wiring, `tapstitch_capture.py` and the retired
+selector block, `tapstitch_api.py`, the blank specs and colour configs,
+`colorway_renames_by_type`, centring and spacing (the value is 0.7in, settled
+in docs/decisions.md; "0.8in" was a stale label), the `kept`-records change, and
+the test rewrites. Also reviewed: `scripts/pen_strokes.py` and
+`theme/assets/pp-pen-draw.js`. Six reviewers, one per area, then a judge who
+checked every finding against the code. Nothing touched Tapstitch or the store.
 
-All six test files pass as of this commit:
+**Fixed (clearly broken):**
+- `tapstitch_publish.py check` printed "blocked" for missing swatches and colour
+  name drift but exited 0. It now exits 1.
+- `tapstitch_capture.py` truncated a body before redacting it, so a JSON body
+  over 200KB was no longer JSON and was written unredacted. It now redacts first.
+  The console line also printed the unredacted URL.
+- `store_pulldown.py delete` would permanently delete the Temple Art File (a
+  snapshot `kept` record passes every other guard). Titles in
+  `KEEP_LIVE_TITLES` are now refused.
+- `pen_strokes.py` printed a leftover debug line on every run.
+
+**Open, for a decision or live evidence (nothing here is broken today):**
+- *Fails quietly:* `rebind()` returns "nothing to change" when a variant's
+  front is not in the pairs or its back is not in the product's media, and the
+  row goes live with the shopper on the near-blank front. It needs a check that
+  every variant ends on a back; that needs real filenames from a publish.
+- *Duplicate risk:* `create_store_product` is a POST with no "create started"
+  marker. A lost response then a re-run makes a second store product inside
+  Tapstitch. Add a marker like `distribute_started_at`, and never wrap this
+  call in retries.
+- *Evan's call:* `first_colors_by_type` lets the Tapstitch tee's first colour
+  (Black) lead on retired Printify tees too, against the Moss decision in
+  docs/decisions.md. Also: the crew's `lead_colorCode` is Black while its
+  storefront first colour is Heather Gray.
+- *Second entry point:* `tapstitch_publish.py finish` skips the import wait,
+  the rebind and the stale-colour check, and leaves the row in a state the
+  runner never resumes. Retire it or make it call the runner's finish.
+- *Guard text:* the hoodie copy README says a missing `product-details.html`
+  blocks the publish; the code falls back to intro + size guide instead.
+  `missing_garment_setup` should check `product-details.html`.
+- *Unknown type:* `mockups_back_first` compares Tapstitch's `colorId` with an int;
+  if it arrives as a string the lead-colour sort silently does nothing.
+  Normalise both with `str()`.
+- *Store pulldown:* whether any `kept` record should be deletable at all. Only
+  the Temple Art File is blocked now; the other four are Tapstitch test products.
+- *Pen drawing script* (`pp-pen-draw.js`, live): an error inside an animation
+  frame freezes the showcase; one bad temple hides the whole showcase rather
+  than dropping that temple; no load timeouts; a failed load after a fade
+  leaves the stage blank about 5s per retry; old iOS (before 15) collapses the
+  drawing box; reduced motion still cycles the showcase. None is triggered by
+  the current files. Fixing them means a theme upload.
+- *Pen strokes:* 54 of 20,314 committed `lens` values are off by up to 0.22
+  units (two different roundings); it crashes on art with no lines or one line
+  weight; manti takes 43s. Fix at the next regeneration.
+- Smaller: stale comments and docstrings (old colour names, the size-guide
+  description block, "NOT yet replayed"), a few vacuous or mislabelled tests
+  (`test_store_pulldown.py` "two live garments disagreeing", the Easify paused
+  set, the landscape truncation case), no kept-record test.
+
+Five test files pass here. The other four need the sibling `../Temples/` art
+folder, which a cloud session does not have; run them on the Mac:
 
 ```bash
 for t in tests/test_*.py; do ./.venv.nosync/bin/python "$t"; done

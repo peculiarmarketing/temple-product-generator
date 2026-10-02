@@ -322,6 +322,9 @@ def cmd_delete(client, handle, confirm_handle):
     if not match:
         raise SystemExit(f"{handle!r} is not in the snapshot. Refusing to delete a product "
                          f"this migration never recorded.")
+    if match.get("title") in KEEP_LIVE_TITLES:
+        raise SystemExit(f"{handle!r} is {match['title']!r}, which stays live by design "
+                         f"(KEEP_LIVE_TITLES). Nothing done.")
 
     row = next((r for r in ledger.load()["rows"]
                 if r.get("old_shopify_handle") == handle), None)

@@ -867,8 +867,6 @@ def build(art_path, old_json_path, debug_path=None):
             cv2.polylines(dbg, [L[i]['pts'].round().astype(np.int32)], False, c, thickness=2 * UP)
         Image.fromarray(dbg).resize((W, H), Image.LANCZOS).save(debug_path.replace('.png', '-strokes.png'))
 
-    import collections
-    print('why:', collections.Counter(L[i].get('why', '-') for i, _ in ordered if L[i]['tier'] == 4))
     counts = defaultdict(int)
     for t in tiers:
         counts[t] += 1

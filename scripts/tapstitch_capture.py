@@ -199,7 +199,7 @@ class Capture:
             "kind": "navigation",
             "url": redact_url(url),
         })
-        print(f"  -- now at {url[:130]}", flush=True)
+        print(f"  -- now at {redact_url(url)[:130]}", flush=True)
 
     def bind(self, ctx, page, target_id):
         if target_id in self.bound:
@@ -250,7 +250,7 @@ class Capture:
             "url": safe,
             "resource_type": rtype,
             "headers": redact_headers(req.get("headers")),
-            "body": redact_body(body[:MAX_BODY]) if body else None,
+            "body": redact_body(body)[:MAX_BODY] if body else None,  # redact first: a cut body is no longer JSON
         })
         if method != "GET" and INTERESTING.search(safe):
             self.interesting.append((method, safe))
