@@ -94,7 +94,7 @@
   },
   "costs_usd": {
     "all_in_per_unit": 19.57,
-    "_all_in_note": "EVAN'S FIGURE, 14 Sep 2026, and the one to trust. Includes the blank, printing both sides, shipping, custom neck tag, hangtag, order insert, and payment gateway fees. Revised for USA fulfillment. The per-shipment line items that used to sit here were international rates and are gone rather than left to mislead; nothing below sums to all_in_per_unit.",
+    "_all_in_note": "EVAN'S FIGURE, 14 Sep 2026, and the one to trust. Includes the blank, printing both sides, shipping, custom neck tag, hangtag, order insert, and payment gateway fees. Revised for USA fulfillment. FLAGGED 2 Oct 2026: custom neck labels and hang tags are no longer used, so this figure overstates the real cost by their per-unit cost, which was never recorded. Recalculate when Evan has it; do not guess. The per-shipment line items that used to sit here were international rates and are gone rather than left to mislead; nothing below sums to all_in_per_unit.",
     "blank": 5.99,
     "_blank_note": "International list price, 14 Sep 2026. The US price was not read; the two fleece blanks price identically either way.",
     "print_per_frame": 2.99,
