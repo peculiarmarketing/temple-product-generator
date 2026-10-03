@@ -97,3 +97,17 @@ of a theme that is not [live].
 Then in the theme editor on that theme: Add section, pick each "PP" section, and set
 its images. Suggested order on the homepage: scroll zoom after the hero, spec overlay
 in place of (or after) garment anatomy, why chain just before the founder letter.
+
+## Deployed 3 October 2026 (unpublished "Claude Code V2" only)
+
+Pushed from a Claude session through the Shopify connector (it can write unpublished
+themes only; the live theme is blocked). Not published.
+
+- The six files above, read back from the theme and byte-identical to this folder.
+- Images in Content > Files: `pp-jersey-black-macro.jpg`, `pp-fleece-black-fold.jpg`.
+- `templates/index.json` (copy here): adds `pp_scroll_zoom` after the hidden slideshow,
+  `pp_spec_overlay` after garment anatomy, `pp_why_chain` before the founder letter.
+  Garment anatomy is set `"disabled": true` (hidden, not deleted). Every other section
+  and the founder letter are byte-identical to the pulled template.
+- Preview: https://peculiarpeopleco.com/?preview_theme_id=194242150772
+- Screenshots of that preview: `../artifacts/quality-sections/qa/live-preview/`.

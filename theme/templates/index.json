@@ -150,7 +150,8 @@
         "city_label": "Printed under the temple",
         "city_x": 59,
         "city_y": 67
-      }
+      },
+      "disabled": true
     },
     "process": {
       "type": "comparison-slider",
@@ -557,15 +558,175 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "pp_scroll_zoom": {
+      "type": "pp-scroll-zoom",
+      "blocks": {
+        "stop_1": {
+          "type": "stop",
+          "settings": {
+            "text": "Look closer.",
+            "zoom": 1,
+            "x": 50,
+            "y": 48
+          }
+        },
+        "stop_2": {
+          "type": "stop",
+          "settings": {
+            "text": "The whole temple, up to 12 inches across the back.",
+            "tags": "Up to 12 in across",
+            "zoom": 2.3,
+            "x": 50,
+            "y": 51
+          }
+        },
+        "stop_3": {
+          "type": "stop",
+          "settings": {
+            "text": "260 GSM cotton. You'll notice the weight the first time you put it on.",
+            "tags": "260 GSM, 7.7 oz",
+            "zoom": 4,
+            "x": 40,
+            "y": 66,
+            "show_macro": true
+          }
+        },
+        "stop_4": {
+          "type": "stop",
+          "settings": {
+            "text": "SARATOGA SPRINGS, UTAH. Under every temple, the city it actually stands in.",
+            "tags": "Real city line",
+            "zoom": 3.4,
+            "x": 50,
+            "y": 61
+          }
+        }
+      },
+      "block_order": [
+        "stop_1",
+        "stop_2",
+        "stop_3",
+        "stop_4"
+      ],
+      "settings": {
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff",
+        "garment_image": "shopify://shop_images/tee_black_68c7ee89-a942-4c3e-871b-390824e49e06.jpg",
+        "macro_image": "shopify://shop_images/pp-jersey-black-macro.jpg"
+      }
+    },
+    "pp_spec_overlay": {
+      "type": "pp-spec-overlay",
+      "blocks": {
+        "callout_1": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "350 GSM · 10.3 oz",
+            "label": "Heavyweight fleece.",
+            "side": "left",
+            "x": 38,
+            "y": 56
+          }
+        },
+        "callout_2": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Up to 12 in across",
+            "label": "The full temple, centred on the back.",
+            "side": "right",
+            "x": 50,
+            "y": 41
+          }
+        },
+        "callout_3": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Printed in the USA",
+            "label": "Ships in 4 to 7 days.",
+            "side": "left",
+            "x": 45,
+            "y": 75
+          }
+        },
+        "callout_4": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "City line",
+            "label": "Nauvoo, Illinois. The city the temple stands in.",
+            "side": "right",
+            "x": 50,
+            "y": 65
+          }
+        }
+      },
+      "block_order": [
+        "callout_1",
+        "callout_2",
+        "callout_3",
+        "callout_4"
+      ],
+      "settings": {
+        "background": "#0d0e11",
+        "text_color": "#ffffff",
+        "accent": "#F58000",
+        "image": "shopify://shop_images/hoodie_black_162cc38b-7a8d-4791-94be-54ab39cd587b.jpg"
+      }
+    },
+    "pp_why_chain": {
+      "type": "pp-why-chain",
+      "blocks": {
+        "line_1": {
+          "type": "line",
+          "settings": {
+            "text": "Comfortable from the first wear."
+          }
+        },
+        "line_2": {
+          "type": "line",
+          "settings": {
+            "text": "So it's the one you grab."
+          }
+        },
+        "line_3": {
+          "type": "line",
+          "settings": {
+            "text": "So people see it."
+          }
+        },
+        "line_4": {
+          "type": "line",
+          "settings": {
+            "text": "<b>So someone asks what's on your shirt.</b>"
+          }
+        }
+      },
+      "block_order": [
+        "line_1",
+        "line_2",
+        "line_3",
+        "line_4"
+      ],
+      "settings": {
+        "overlay": 45,
+        "text_color": "#ffffff",
+        "height": "medium",
+        "alignment": "left",
+        "image": "shopify://shop_images/pp-fleece-black-fold.jpg"
+      }
     }
   },
   "order": [
     "pp_temple_showcase",
     "hero",
+    "pp_scroll_zoom",
     "featured_products",
     "browse",
     "anatomy",
+    "pp_spec_overlay",
     "process",
+    "pp_why_chain",
     "founder",
     "marquee",
     "what_you_get",
