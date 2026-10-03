@@ -229,6 +229,9 @@
         big: el.dataset.src,
         small: el.dataset.srcSmall || el.dataset.src,
         next: n.length === 3 && n.every((v) => v >= 0) ? { x: n[0] / 100, y: n[1] / 100, w: n[2] / 100 } : null,
+        // Where the screen-shaped window sits inside this square photo (0..1).
+        fx: clamp((parseFloat(el.dataset.focusX) || 50) / 100, 0, 1),
+        fy: clamp((parseFloat(el.dataset.focusY) || 50) / 100, 0, 1),
         img: null,
       };
     });
@@ -245,16 +248,20 @@
     const sctx = scratch.getContext('2d');
     const state = { active: -1, dots: null };
     const last = frames.length - 1;
-    let C = 0;
+    let CW = 0;
+    let CH = 0;
     let pos = 0;
     let want = 'big';
 
     function size() {
-      const css = stage.clientWidth;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      C = Math.max(1, Math.min(2400, Math.round(css * dpr)));
-      if (canvas.width !== C) { canvas.width = C; canvas.height = C; scratch.width = C; scratch.height = C; }
-      want = css * dpr < 900 ? 'small' : 'big';
+      const k = Math.min(1, 2560 / Math.max(1, stage.clientWidth * dpr, stage.clientHeight * dpr));
+      CW = Math.max(1, Math.round(stage.clientWidth * dpr * k));
+      CH = Math.max(1, Math.round(stage.clientHeight * dpr * k));
+      if (canvas.width !== CW || canvas.height !== CH) {
+        canvas.width = CW; canvas.height = CH; scratch.width = CW; scratch.height = CH;
+      }
+      want = Math.max(CW, CH) < 1000 ? 'small' : 'big';
     }
 
     function load(i) {
@@ -271,7 +278,7 @@
 
     function draw(d) {
       pos = d;
-      if (!C) return;
+      if (!CW) return;
       const k = Math.min(Math.floor(d), last - 1);
       const t = clamp(d - k, 0, 1);
       const a = frames[k];
@@ -284,27 +291,40 @@
       const fy = r.y / (1 - r.w);
       const ox = fx * (1 - sz);
       const oy = fy * (1 - sz);
+      // The screen is rarely square, so it sees a screen-shaped window inside that
+      // square: as wide as the square on a wide screen, as tall on a tall one. The
+      // window is placed by a focus point that glides from this photo's focus to the
+      // next photo's (in square-relative terms), so at the hand-off it is exactly
+      // the window the next photo starts with.
+      const aspect = CW / CH;
+      const vw = aspect >= 1 ? sz : sz * aspect;
+      const vh = aspect >= 1 ? sz / aspect : sz;
+      const g = t * t * (3 - 2 * t);
+      const qx = a.fx + (b.fx - a.fx) * g;
+      const qy = a.fy + (b.fy - a.fy) * g;
+      const vx = clamp(ox + qx * sz - vw / 2, ox, ox + sz - vw);
+      const vy = clamp(oy + qy * sz - vh / 2, oy, oy + sz - vh);
       ctx.imageSmoothingQuality = 'high';
       ctx.globalAlpha = 1;
       if (a.img) {
         const nw = a.img.naturalWidth;
         const nh = a.img.naturalHeight;
-        ctx.drawImage(a.img, ox * nw, oy * nh, sz * nw, sz * nh, 0, 0, C, C);
+        ctx.drawImage(a.img, vx * nw, vy * nh, vw * nw, vh * nh, 0, 0, CW, CH);
       } else {
         ctx.fillStyle = getComputedStyle(section).getPropertyValue('--pp-dive-bg') || '#000';
-        ctx.fillRect(0, 0, C, C);
+        ctx.fillRect(0, 0, CW, CH);
       }
       const alpha = clamp((t - 0.22) / 0.55, 0, 1);
       if (b.img && alpha > 0) {
-        const u = C / sz;
-        const dx = (r.x - ox) * u;
-        const dy = (r.y - oy) * u;
+        const u = CW / vw;
+        const dx = (r.x - vx) * u;
+        const dy = (r.y - vy) * u;
         const ds = r.w * u;
         // Soft edges while the close-up is still smaller than the frame; they
         // narrow to nothing as it grows to fill it, so the hand-off is exact.
         const f = Math.max(0, 0.14 * (1 - t)) * ds;
         sctx.globalCompositeOperation = 'source-over';
-        sctx.clearRect(0, 0, C, C);
+        sctx.clearRect(0, 0, CW, CH);
         sctx.imageSmoothingQuality = 'high';
         sctx.drawImage(b.img, dx, dy, ds, ds);
         if (f > 0.5) {

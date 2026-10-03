@@ -115,3 +115,47 @@ dive photos `pp-dive-slc-1-temple-square.jpg` to `pp-dive-slc-4-yarn.jpg`, film 
 above. `qa/`: `live4-desk.jpg` (live preview; film row shows the still fallback
 because the test Chromium cannot decode H.264), `dive2-desk.jpg` (local sweep, no
 seams), `film2-strip.jpg`, `logo-size-vs-tapstitch.jpg`.
+
+# Round 3: the real temple wall, full screen, text over the picture (3 Oct 2026)
+
+Evan chose the photo chain (the dive) over the film. The film section stays in the
+theme but is set `"disabled": true` on the homepage.
+
+## What Temple Square looks like now
+
+Checked against the Church's own update, "Temple Square Renovation Update: June
+2026" (newsroom.churchofjesuschrist.org), photos dated 23 to 25 June 2026: the
+ground right at the temple's east towers is a new plaza of grey granite pavers
+over snowmelt tubing (being laid in June), the walls are the rough-dressed granite
+with deep arched windows and portals, the restored oak east doors went back in on
+23 to 25 June, and trees and gardens sit further out. There are no lawns or flower
+beds against the walls, so round 2's opening shot was wrong for the spot. The
+renovation is not finished: construction is expected to wrap at the end of 2026,
+and the rededication period is 5 April to 1 October 2027 (open house 2027). The
+new shot shows the paving finished and without workers, which is how it will look
+rather than how it looked in June.
+
+Reference used (as a model reference only; the Church's photo is not stored here):
+https://newsroom.churchofjesuschrist.org/download/WP5-Paving-work-in-front-of-east-towers-with-snow-melt-tubing.jpg
+
+## Chain (`chain3/`), photos `web3/`
+
+| Frame | What | Square for the next frame (px of 2048) | Focus (x, y %) |
+|---|---|---|---|
+| K0 | In front of the east wall (`wall/w3.png`, job 6cd18519) | 788, 860, 500 | 50, 42 |
+| K1 | Collar and logo (job 60116621) | 943, 992, 440 | 50, 55 |
+| K2 | DTG print (job a7233b0a) | 900, 1556, 488 | 50, 50 |
+| K3 | Yarn (job 302ce472) | (last) | 50, 50 |
+
+Logo set the round 2 way: collar outer width 387 px, logo 0.73 of it (283 px, about
+47 px per inch), top 0.59 logo widths below the collar band.
+
+## Full screen
+
+`pp-zoom-dive` now fills the pinned band edge to edge with the words over the
+picture (bottom left, on a soft shade; progress dots on the right edge). The
+photos stay square: the screen sees a screen-shaped window inside each one, placed
+by a per-step focus point that glides to the next photo's focus, so the window at
+the end of a zoom is exactly the window the next photo starts with, on any screen
+shape. Local sweep: no jumps at hand-offs on 1440x900 or 390x844.
+`qa/live5-desk.jpg`, `qa/live5-mob.jpg`: the store preview.

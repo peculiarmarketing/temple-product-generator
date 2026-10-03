@@ -1,6 +1,7 @@
 {%- comment -%}
   Peculiar People homepage: the dive. One continuous zoom from a lifestyle shot of
-  the tee down to the yarn, driven by scroll. Each step is a photo that is a
+  the tee down to the yarn, driven by scroll, filling the screen with the words laid
+  over it. Each step is a photo that is a
   close-up of a square inside the step before it (the step names where that square
   sits), plus the words shown while it is on screen. pp-quality.js draws the zoom on
   a canvas and fades each close-up in over the square it came from, so the photos
@@ -63,6 +64,8 @@
                   data-src-small="{{ b.image | image_url: width: 1100 }}"
                 {% endif %}
                 data-next="{{ next }}"
+                data-focus-x="{{ b.focus_x }}"
+                data-focus-y="{{ b.focus_y }}"
                 {{ block.shopify_attributes }}
               >
                 {%- if b.image != blank -%}
@@ -87,8 +90,8 @@
               </li>
             {%- endfor -%}
           </ol>
-          <div class="pp-dive__dots" data-pp-dive-dots></div>
         </div>
+        <div class="pp-dive__dots" data-pp-dive-dots></div>
       </div>
     </div>
   </div>
@@ -133,7 +136,14 @@
         },
         { "type": "number", "id": "next_x", "label": "Left edge (%)", "default": 37.5 },
         { "type": "number", "id": "next_y", "label": "Top edge (%)", "default": 37.5 },
-        { "type": "number", "id": "next_size", "label": "Size (%)", "default": 25 }
+        { "type": "number", "id": "next_size", "label": "Size (%)", "default": 25 },
+        {
+          "type": "header",
+          "content": "Focus on wide and tall screens",
+          "info": "The zoom fills the screen, so a wide or tall screen sees part of this square photo. This is the point it stays centred on, in percent of this photo."
+        },
+        { "type": "range", "id": "focus_x", "label": "Across (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "focus_y", "label": "Down (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
       ]
     }
   ],

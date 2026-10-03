@@ -723,42 +723,50 @@
         "step_1": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-slc-1-temple-square.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-1-temple.jpg",
             "eyebrow": "The blank",
             "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
-            "next_x": 38.4277,
-            "next_y": 44.1895,
-            "next_size": 22.4609
+            "next_x": 38.4766,
+            "next_y": 41.9922,
+            "next_size": 24.4141,
+            "focus_x": 50,
+            "focus_y": 42
           }
         },
         "step_2": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-slc-2-collar.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-2-collar.jpg",
             "eyebrow": "Ribbed collar",
             "text": "Ribbed knit, stitched down.",
-            "next_x": 45.9961,
-            "next_y": 51.8555,
-            "next_size": 21.4844
+            "next_x": 46.0449,
+            "next_y": 48.4375,
+            "next_size": 21.4844,
+            "focus_x": 50,
+            "focus_y": 55
           }
         },
         "step_3": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-slc-3-dtg-print.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-3-dtg-print.jpg",
             "eyebrow": "Printed into the cotton",
             "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
             "next_x": 43.9453,
-            "next_y": 76.1719,
-            "next_size": 23.8281
+            "next_y": 75.9766,
+            "next_size": 23.8281,
+            "focus_x": 50,
+            "focus_y": 50
           }
         },
         "step_4": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-slc-4-yarn.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
             "eyebrow": "260 GSM, 100% cotton",
-            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on."
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "focus_x": 50,
+            "focus_y": 50
           }
         }
       },
@@ -825,7 +833,8 @@
         "scroll_length": "medium",
         "background": "#0d0e11",
         "text_color": "#ffffff"
-      }
+      },
+      "disabled": true
     }
   },
   "order": [
