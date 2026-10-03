@@ -313,7 +313,7 @@
           "type": "column",
           "settings": {
             "title": "Printed in the USA",
-            "text": "<p>We print your order after you place it. Most orders arrive in 5 to 7 business days.</p>"
+            "text": "<p>We print your order after you place it. Most orders arrive in 4 to 7 business days.</p>"
           }
         },
         "wyg_3": {
@@ -644,7 +644,7 @@
           "type": "callout",
           "settings": {
             "eyebrow": "Printed in the USA",
-            "label": "Ships in 4 to 7 days.",
+            "label": "Arrives in 4 to 7 business days.",
             "side": "left",
             "x": 45,
             "y": 75
