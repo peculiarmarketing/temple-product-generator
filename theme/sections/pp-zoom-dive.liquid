@@ -1,0 +1,153 @@
+{%- comment -%}
+  Peculiar People homepage: the dive. One continuous zoom from a lifestyle shot of
+  the tee down to the yarn, driven by scroll. Each step is a photo that is a
+  close-up of a square inside the step before it (the step names where that square
+  sits), plus the words shown while it is on screen. pp-quality.js draws the zoom on
+  a canvas and fades each close-up in over the square it came from, so the photos
+  hand off with no visible cut. Without the script, or with reduced motion on, the
+  photos and words are shown as a plain sequence, so nothing is hidden.
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.scroll_length
+    when 'short'
+      assign track_vh = 320
+    when 'long'
+      assign track_vh = 560
+    else
+      assign track_vh = 440
+  endcase
+  assign first_alt = 'Peculiar People tee, worn outdoors'
+  for block in section.blocks
+    if block.settings.image != blank
+      assign first_alt = block.settings.image.alt | default: first_alt
+      break
+    endif
+  endfor
+-%}
+<section
+  class="pp-dive"
+  data-pp-dive
+  style="--pp-dive-bg: {{ s.background }}; --pp-dive-fg: {{ s.text_color }}; --pp-dive-track: {{ track_vh }}vh;"
+>
+  <div class="pp-dive__track">
+    <div class="pp-dive__sticky">
+      <div class="pp-dive__inner">
+        <div class="pp-dive__stage">
+          <canvas class="pp-dive__canvas" role="img" aria-label="{{ first_alt | escape }}, zooming in to the fabric"></canvas>
+          <span class="pp-dive__rail" aria-hidden="true"><span class="pp-dive__bar"></span></span>
+        </div>
+
+        <div class="pp-dive__copy">
+          {%- if s.heading != blank -%}
+            <h2 class="pp-dive__heading">{{ s.heading }}</h2>
+          {%- endif -%}
+          <ol class="pp-dive__steps">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign b = block.settings
+                assign next = ''
+                unless forloop.last
+                  assign next = b.next_x | append: ',' | append: b.next_y | append: ',' | append: b.next_size
+                endunless
+                assign alt = b.image.alt | default: b.eyebrow
+              -%}
+              <li
+                class="pp-dive__step"
+                data-pp-dive-step
+                {% if b.image != blank %}
+                  data-src="{{ b.image | image_url: width: 2048 }}"
+                  data-src-small="{{ b.image | image_url: width: 1100 }}"
+                {% endif %}
+                data-next="{{ next }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if b.image != blank -%}
+                  <div class="pp-dive__still">
+                    {{
+                      b.image
+                      | image_url: width: 1100
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '550, 800, 1100',
+                        sizes: '(min-width: 990px) 480px, 100vw',
+                        alt: alt
+                    }}
+                  </div>
+                {%- endif -%}
+                {%- if b.eyebrow != blank -%}
+                  <p class="pp-dive__eyebrow">{{ b.eyebrow | escape }}</p>
+                {%- endif -%}
+                {%- if b.text != blank -%}
+                  <p class="pp-dive__line">{{ b.text }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ol>
+          <div class="pp-dive__dots" data-pp-dive-dots></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP dive",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Optional. Sits above the words." },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll length",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "Square, 2048 px. Each photo after the first must be a close-up of the square named on the step before it."
+        },
+        { "type": "text", "id": "eyebrow", "label": "Small caps label" },
+        { "type": "inline_richtext", "id": "text", "label": "Words" },
+        {
+          "type": "header",
+          "content": "Where the next photo sits",
+          "info": "The square inside this photo that the next step is a close-up of, in percent of this photo. Ignored on the last step."
+        },
+        { "type": "number", "id": "next_x", "label": "Left edge (%)", "default": 37.5 },
+        { "type": "number", "id": "next_y", "label": "Top edge (%)", "default": 37.5 },
+        { "type": "number", "id": "next_size", "label": "Size (%)", "default": 25 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP dive",
+      "blocks": [
+        { "type": "step", "settings": { "eyebrow": "The blank", "text": "We put the samples side by side. Anything that felt light or stiff, we passed on." } },
+        { "type": "step", "settings": { "eyebrow": "Ribbed collar", "text": "Ribbed knit, stitched down." } },
+        { "type": "step", "settings": { "eyebrow": "Printed into the cotton", "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close." } },
+        { "type": "step", "settings": { "eyebrow": "260 GSM, 100% cotton", "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

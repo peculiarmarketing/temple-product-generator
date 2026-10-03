@@ -111,3 +111,25 @@ themes only; the live theme is blocked). Not published.
   and the founder letter are byte-identical to the pulled template.
 - Preview: https://peculiarpeopleco.com/?preview_theme_id=194242150772
 - Screenshots of that preview: `../artifacts/quality-sections/qa/live-preview/`.
+
+## Scroll zoom v2: dive and film (3 Oct 2026)
+
+- `sections/pp-zoom-dive.liquid`: the seamless zoom as a photo chain drawn on a
+  canvas. Each step block: photo, label, words, and the square (percent of this
+  photo) that the next photo is a close-up of.
+- `sections/pp-zoom-film.liquid`: the same dive as one scroll-scrubbed video, pasted
+  as a Files URL (1080 and a phone 720), plus a poster.
+- `assets/pp-quality.js`: new shared scroll smoothing (time-based easing toward the
+  scroll position), the dive engine (exponential zoom about the fixed point of each
+  square, soft-edged crossfade that narrows to nothing at the hand-off, photos decoded
+  in order ahead of the zoom) and the film scrubber (seeks chained on `seeked`,
+  muted play-and-pause to prime iOS, falls back to the still layout if the browser
+  cannot decode the film).
+- Images and film: `../artifacts/quality-sections/zoom-v2/` (README there).
+
+Claude Code V2 is now the live theme, which the connector cannot write. Both new
+sections are on a duplicate, unpublished "Claude Code V3 zoom preview"
+(`gid://shopify/OnlineStoreTheme/194273870196`), homepage order: dive, then film,
+then the old scroll zoom set `"disabled": true`. `templates/index.json` here is that
+preview's template. Preview:
+https://peculiarpeopleco.com/?preview_theme_id=194273870196

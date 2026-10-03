@@ -1,18 +1,19 @@
 /* Peculiar People homepage quality sections: sections/pp-scroll-zoom.liquid,
+   sections/pp-zoom-dive.liquid, sections/pp-zoom-film.liquid,
    sections/pp-spec-overlay.liquid and sections/pp-why-chain.liquid.
    Behaviour lives in pp-quality.js. Every animation is opt-in: it only runs once the
    script has marked a section as armed, and never under reduced motion. Unarmed, each
    section is a plain, complete layout. Colours come from each section's settings;
    type comes from the theme's heading font. */
 
-.pp-zoom, .pp-spec, .pp-chain {
+.pp-zoom, .pp-dive, .pp-spec, .pp-chain {
   --pp-head: var(--font-heading-family, Montserrat, "Helvetica Neue", Arial, sans-serif);
   --pp-radius: 4px;
 }
-.pp-zoom *, .pp-spec *, .pp-chain * { box-sizing: border-box; }
+.pp-zoom *, .pp-dive *, .pp-spec *, .pp-chain * { box-sizing: border-box; }
 
 /* Shared type: big light lines with bold available, small spaced capitals for tags. */
-.pp-zoom__line, .pp-chain__line {
+.pp-zoom__line, .pp-dive__line, .pp-chain__line {
   font-family: var(--pp-head);
   font-weight: 300;
   letter-spacing: -0.005em;
@@ -21,6 +22,7 @@
   text-wrap: balance;
 }
 .pp-zoom__line strong, .pp-zoom__line b,
+.pp-dive__line strong, .pp-dive__line b,
 .pp-chain__line strong, .pp-chain__line b { font-weight: 700; }
 
 .pp-tag {
@@ -175,6 +177,98 @@
 .pp-zoom.is-armed .pp-zoom__stop.is-active { opacity: 1; transform: none; }
 .pp-zoom.is-armed .pp-zoom__line { font-size: clamp(22px, 3.4vw, 40px); text-shadow: 0 1px 24px rgba(0, 0, 0, .55); }
 
+/* ---------- Dive and film (the seamless zoom) ---------- */
+
+.pp-dive { --pp-top: 0px; background: var(--pp-dive-bg); color: var(--pp-dive-fg); }
+.pp-dive__inner { max-width: 1200px; margin: 0 auto; padding: 56px 16px; }
+.pp-dive__heading {
+  font-family: var(--pp-head); font-weight: 300; font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1.15; margin: 0 0 28px; color: var(--pp-dive-fg);
+}
+.pp-dive__eyebrow {
+  font-family: var(--pp-head); font-weight: 600; font-size: 12px; letter-spacing: .18em;
+  text-transform: uppercase; margin: 0 0 12px; color: #F58000;
+}
+.pp-dive__line { font-size: clamp(22px, 2.6vw, 32px); color: var(--pp-dive-fg); max-width: 26ch; }
+
+/* Resting layout: each photo with its words, one after another. */
+.pp-dive__stage, .pp-dive__dots { display: none; }
+.pp-dive__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 48px; }
+.pp-dive__step { display: grid; gap: 0; }
+.pp-dive__still { margin: 0 0 20px; max-width: 560px; aspect-ratio: 1; overflow: hidden; border-radius: var(--pp-radius); }
+.pp-dive__still img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 750px) {
+  .pp-dive__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 40px; }
+}
+
+/* Armed: the band pins, the photo is a square stage, the words swap in beside it. */
+.pp-dive.is-armed .pp-dive__track { height: var(--pp-dive-track); position: relative; }
+.pp-dive.is-armed .pp-dive__sticky {
+  position: sticky;
+  top: var(--pp-top);
+  height: calc(100vh - var(--pp-top));
+  height: calc(100svh - var(--pp-top));
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.pp-dive.is-armed .pp-dive__inner {
+  --side: min(calc(100svh - var(--pp-top) - 96px), 56vw, 760px);
+  width: 100%;
+  padding: 0 clamp(16px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: var(--side) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+}
+.pp-dive.is-armed .pp-dive__stage {
+  display: block;
+  position: relative;
+  width: var(--side);
+  aspect-ratio: 1;
+  border-radius: var(--pp-radius);
+  overflow: hidden;
+  background: #000;
+}
+.pp-dive__canvas, .pp-dive__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pp-dive__rail { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255, 255, 255, .14); }
+.pp-dive__bar { display: block; height: 100%; background: #F58000; transform-origin: 0 50%; transform: scaleX(0); }
+.pp-dive.is-armed .pp-dive__steps { display: grid; grid-template-columns: none; gap: 0; }
+.pp-dive.is-armed .pp-dive__step {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .45s ease, transform .6s cubic-bezier(.2, .7, .2, 1);
+  pointer-events: none;
+}
+.pp-dive.is-armed .pp-dive__step.is-active { opacity: 1; transform: none; pointer-events: auto; }
+.pp-dive.is-armed .pp-dive__still { display: none; }
+.pp-dive.is-armed .pp-dive__dots { display: flex; gap: 2px; margin-top: 32px; }
+.pp-dive__dot {
+  width: 28px; height: 28px; padding: 0; border: 0; background: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.pp-dive__dot::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .6); transition: background .3s, border-color .3s;
+}
+.pp-dive__dot[aria-current="true"]::before { background: #F58000; border-color: #F58000; }
+.pp-dive__dot:focus-visible { outline: 2px solid #F58000; outline-offset: 2px; border-radius: 50%; }
+
+@media (max-width: 749px) {
+  .pp-dive.is-armed .pp-dive__inner {
+    --side: min(calc(100vw - 32px), calc(100svh - var(--pp-top) - 230px));
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 22px;
+  }
+  .pp-dive.is-armed .pp-dive__copy { width: var(--side); min-height: 150px; }
+  .pp-dive.is-armed .pp-dive__line { font-size: 21px; }
+  .pp-dive.is-armed .pp-dive__eyebrow { margin-bottom: 8px; font-size: 11px; }
+  .pp-dive.is-armed .pp-dive__heading { display: none; }
+  .pp-dive.is-armed .pp-dive__dots { margin-top: 14px; }
+}
+
 /* ---------- Spec overlay ---------- */
 
 .pp-spec { background: var(--pp-spec-bg); color: var(--pp-spec-fg); }
@@ -275,5 +369,5 @@
 .pp-chain.is-armed.is-in .pp-chain__img { transform: scale(1.14); }
 
 @media (prefers-reduced-motion: reduce) {
-  .pp-zoom__stop, .pp-spec__label, .pp-spec__lines line, .pp-chain__line, .pp-chain__img { transition: none !important; }
+  .pp-zoom__stop, .pp-dive__step, .pp-spec__label, .pp-spec__lines line, .pp-chain__line, .pp-chain__img { transition: none !important; }
 }

@@ -615,7 +615,8 @@
         "text_color": "#ffffff",
         "garment_image": "shopify://shop_images/tee_black_68c7ee89-a942-4c3e-871b-390824e49e06.jpg",
         "macro_image": "shopify://shop_images/pp-jersey-black-macro.jpg"
-      }
+      },
+      "disabled": true
     },
     "pp_spec_overlay": {
       "type": "pp-spec-overlay",
@@ -715,11 +716,123 @@
         "alignment": "left",
         "image": "shopify://shop_images/pp-fleece-black-fold.jpg"
       }
+    },
+    "pp_zoom_dive": {
+      "type": "pp-zoom-dive",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-1-tee.jpg",
+            "eyebrow": "The blank",
+            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
+            "next_x": 35.4004,
+            "next_y": 28.5645,
+            "next_size": 24.4141
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-2-collar.jpg",
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "next_x": 45.6055,
+            "next_y": 60.4004,
+            "next_size": 19.5312
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-3-print.jpg",
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "next_x": 43.9453,
+            "next_y": 74.2188,
+            "next_size": 25
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-4-knit.jpg",
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on."
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "heading": "",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
+    },
+    "pp_zoom_film": {
+      "type": "pp-zoom-film",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "The blank",
+            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
+            "time": 0
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "time": 4.2
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "time": 9.3
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "time": 14.2
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "heading": "",
+        "video_url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-film-1080.mp4?v=1791060318",
+        "video_url_small": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-film-720.mp4?v=1791060318",
+        "poster": "shopify://shop_images/pp-dive-1-tee.jpg",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
     }
   },
   "order": [
     "pp_temple_showcase",
     "hero",
+    "pp_zoom_dive",
+    "pp_zoom_film",
     "pp_scroll_zoom",
     "featured_products",
     "browse",
