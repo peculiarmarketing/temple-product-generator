@@ -1,0 +1,182 @@
+{%- comment -%}
+  Peculiar People homepage: scroll zoom. The band pins while the shopper scrolls and
+  the view moves from the whole garment into the print, the fabric and the city line.
+  Each stop is a block: its words, optional spec tags, how far to zoom, and which
+  point of the photo to bring into view. pp-quality.js drives it. Without the script,
+  or with reduced motion on, the garment is shown once with every stop's words
+  listed underneath, so nothing is ever hidden.
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.scroll_length
+    when 'short'
+      assign track_vh = 240
+    when 'long'
+      assign track_vh = 420
+    else
+      assign track_vh = 330
+  endcase
+  assign garment_alt = s.garment_image.alt | default: 'The garment, back view'
+  assign macro_alt = s.macro_image.alt | default: 'Close-up of the fabric'
+-%}
+<section
+  class="pp-zoom"
+  data-pp-zoom
+  style="--pp-zoom-bg: {{ s.background }}; --pp-zoom-fg: {{ s.text_color }}; --pp-zoom-track: {{ track_vh }}vh;"
+>
+  <div class="pp-zoom__track">
+    <div class="pp-zoom__sticky">
+      <div class="pp-zoom__stage">
+        {%- if s.garment_image != blank -%}
+          {{
+            s.garment_image
+            | image_url: width: 2400
+            | image_tag:
+              widths: '750, 1100, 1500, 2000, 2400',
+              sizes: '100vw',
+              class: 'pp-zoom__img',
+              alt: garment_alt
+          }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'pp-zoom__img pp-zoom__img--placeholder' }}
+        {%- endif -%}
+        {%- if s.macro_image != blank -%}
+          {{
+            s.macro_image
+            | image_url: width: 2048
+            | image_tag:
+              loading: 'lazy',
+              widths: '750, 1100, 1500, 2048',
+              sizes: '100vw',
+              class: 'pp-zoom__macro',
+              alt: macro_alt
+          }}
+        {%- endif -%}
+        <div class="pp-zoom__dots" data-pp-zoom-dots></div>
+      </div>
+
+      <ol class="pp-zoom__stops">
+        {%- for block in section.blocks -%}
+          <li
+            class="pp-zoom__stop"
+            {{ block.shopify_attributes }}
+            data-zoom="{{ block.settings.zoom }}"
+            data-x="{{ block.settings.x }}"
+            data-y="{{ block.settings.y }}"
+            data-macro="{{ block.settings.show_macro }}"
+          >
+            {%- if block.settings.text != blank -%}
+              <p class="pp-zoom__line">{{ block.settings.text }}</p>
+            {%- endif -%}
+            {%- if block.settings.tags != blank -%}
+              {%- assign tags = block.settings.tags | split: ',' -%}
+              <ul class="pp-zoom__tags" role="list">
+                {%- for tag in tags -%}
+                  {%- assign tag_text = tag | strip -%}
+                  {%- if tag_text != blank -%}
+                    <li class="pp-tag">{{ tag_text | escape }}</li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP scroll zoom",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "garment_image",
+      "label": "Garment photo",
+      "info": "The whole garment. Use one at least 2048 px wide, or the zoom turns soft."
+    },
+    {
+      "type": "image_picker",
+      "id": "macro_image",
+      "label": "Fabric close-up",
+      "info": "Fades in at every stop with \"Show fabric close-up\" ticked."
+    },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll length",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "stop",
+      "name": "Stop",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Words", "default": "Look closer." },
+        {
+          "type": "text",
+          "id": "tags",
+          "label": "Spec tags",
+          "info": "Separate with commas, for example: 260 GSM, 7.7 oz"
+        },
+        { "type": "range", "id": "zoom", "label": "Zoom", "min": 1, "max": 6, "step": 0.1, "default": 1, "info": "1 shows the whole photo. 2 shows half its height, and so on." },
+        { "type": "range", "id": "x", "label": "Point across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "y", "label": "Point down the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "checkbox", "id": "show_macro", "label": "Show fabric close-up", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP scroll zoom",
+      "blocks": [
+        { "type": "stop", "settings": { "text": "Look closer.", "zoom": 1, "x": 50, "y": 48 } },
+        {
+          "type": "stop",
+          "settings": {
+            "text": "The whole temple, up to 12 inches across the back.",
+            "tags": "Up to 12 in across",
+            "zoom": 2.3,
+            "x": 50,
+            "y": 51
+          }
+        },
+        {
+          "type": "stop",
+          "settings": {
+            "text": "260 GSM cotton. You'll notice the weight the first time you put it on.",
+            "tags": "260 GSM, 7.7 oz",
+            "zoom": 4,
+            "x": 40,
+            "y": 66,
+            "show_macro": true
+          }
+        },
+        {
+          "type": "stop",
+          "settings": {
+            "text": "SARATOGA SPRINGS, UTAH. Under every temple, the city it actually stands in.",
+            "tags": "Real city line",
+            "zoom": 3.4,
+            "x": 50,
+            "y": 61
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

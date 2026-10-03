@@ -1,0 +1,165 @@
+{%- comment -%}
+  Peculiar People homepage: spec overlay. A garment photo with callouts: a dot on the
+  photo and a label beside it, joined by a thin line that draws out when the section
+  scrolls into view. Each callout is a block (point on the photo, side, small caps
+  label, short line). Desktop puts the labels in columns either side of the photo
+  and pp-quality.js draws the lines; phones show numbered dots and the labels as a
+  numbered list under the photo. With the script off or reduced motion on, the labels
+  are simply shown.
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  assign image_alt = s.image.alt | default: 'The garment, back view, with its specifications'
+  assign left_count = 0
+  assign right_count = 0
+  for block in section.blocks
+    if block.settings.side == 'left'
+      assign left_count = left_count | plus: 1
+    else
+      assign right_count = right_count | plus: 1
+    endif
+  endfor
+  assign rows = left_count
+  if right_count > rows
+    assign rows = right_count
+  endif
+  if rows < 1
+    assign rows = 1
+  endif
+-%}
+<section
+  class="pp-spec"
+  data-pp-spec
+  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};"
+>
+  <div class="pp-spec__inner">
+    {%- if s.heading != blank or s.text != blank -%}
+      <div class="pp-spec__intro">
+        {%- if s.heading != blank -%}
+          <h2 class="pp-spec__heading">{{ s.heading }}</h2>
+        {%- endif -%}
+        {%- if s.text != blank -%}
+          <p class="pp-spec__text">{{ s.text }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pp-spec__stage" data-pp-spec-stage>
+      <div class="pp-spec__media">
+        {%- if s.image != blank -%}
+          {{
+            s.image
+            | image_url: width: 1400
+            | image_tag:
+              loading: 'lazy',
+              widths: '550, 750, 1000, 1400',
+              sizes: '(min-width: 990px) 560px, 100vw',
+              class: 'pp-spec__img',
+              alt: image_alt
+          }}
+        {%- else -%}
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'pp-spec__img pp-spec__img--placeholder' }}
+        {%- endif -%}
+        {%- for block in section.blocks -%}
+          <span
+            class="pp-spec__dot"
+            style="--x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%;"
+            data-pp-spec-dot="{{ forloop.index }}"
+            aria-hidden="true"
+          >
+            <span class="pp-spec__num">{{ forloop.index }}</span>
+          </span>
+        {%- endfor -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div
+          class="pp-spec__label pp-spec__label--{{ block.settings.side }}"
+          style="--i: {{ forloop.index0 }};"
+          data-pp-spec-label="{{ forloop.index }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="pp-spec__num" aria-hidden="true">{{ forloop.index }}</span>
+          <span class="pp-spec__words">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="pp-spec__eyebrow">{{ block.settings.eyebrow | escape }}</span>
+            {%- endif -%}
+            {%- if block.settings.label != blank -%}
+              <span class="pp-spec__sub">{{ block.settings.label | escape }}</span>
+            {%- endif -%}
+          </span>
+        </div>
+      {%- endfor -%}
+
+      <svg class="pp-spec__lines" aria-hidden="true" focusable="false" data-pp-spec-lines></svg>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP spec overlay",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "text", "label": "Text under the heading" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Garment photo",
+      "info": "Square works best. After changing it, move each callout's point to match."
+    },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text and lines", "default": "#ffffff" },
+    { "type": "color", "id": "accent", "label": "Dot colour", "default": "#F58000" }
+  ],
+  "blocks": [
+    {
+      "type": "callout",
+      "name": "Callout",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Small caps label", "default": "Spec" },
+        { "type": "text", "id": "label", "label": "Line under it" },
+        {
+          "type": "select",
+          "id": "side",
+          "label": "Label side",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "right"
+        },
+        { "type": "range", "id": "x", "label": "Point across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "y", "label": "Point down the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP spec overlay",
+      "blocks": [
+        {
+          "type": "callout",
+          "settings": { "eyebrow": "350 GSM · 10.3 oz", "label": "Heavyweight fleece.", "side": "left", "x": 38, "y": 56 }
+        },
+        {
+          "type": "callout",
+          "settings": { "eyebrow": "Up to 12 in across", "label": "The full temple, centred on the back.", "side": "right", "x": 50, "y": 41 }
+        },
+        {
+          "type": "callout",
+          "settings": { "eyebrow": "Printed in the USA", "label": "Ships in 4 to 7 days.", "side": "left", "x": 45, "y": 75 }
+        },
+        {
+          "type": "callout",
+          "settings": { "eyebrow": "City line", "label": "Nauvoo, Illinois. The city the temple stands in.", "side": "right", "x": 50, "y": 65 }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

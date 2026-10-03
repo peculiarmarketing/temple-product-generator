@@ -56,3 +56,44 @@ Built on the unpublished "Claude Code V2" theme for Evan to preview and publish.
   The letter is protected founder voice and lives in `index.json` unchanged.
 - `assets/pp-home.css`, `assets/pp-home.js`: styles and behaviour for all three.
   Every animation is skipped under reduced motion.
+
+# Homepage quality sections (3 October 2026)
+
+Three sections that show the garment up close, tied to why the shirt exists. Drafts
+and reasoning: `docs/section-drafts/` and `docs/shopify-custom-sections-research.md`
+in the workspace repo. Built to that doc's CLAUDE.md rules: new `pp-` files only, no
+Shrine file touched, nothing on the product page.
+
+- `sections/pp-scroll-zoom.liquid`: the band pins while you scroll and the view moves
+  from the whole garment into the print, the fabric and the city line. Each stop is a
+  block: words, spec tags (comma separated), zoom (1 = whole photo) and the point of
+  the photo to bring into view. "Show fabric close-up" fades the macro in.
+- `sections/pp-spec-overlay.liquid`: garment photo with callouts. Each callout is a
+  block: point on the photo, side, small caps label, line under it. Desktop draws
+  lines out to labels either side; phones get numbered dots and a numbered list.
+- `sections/pp-why-chain.liquid`: the BRAND.md section 5 chain as large lines over a
+  dark fabric photo (or a looping video). Lines light one at a time, once.
+- `assets/pp-quality.css`, `assets/pp-quality.js`: styles and behaviour for all three.
+  Every animation is skipped under reduced motion or without the script, and each
+  section then shows a complete still layout.
+- `snippets/pp-quality-font.liquid`: loads the light and bold cuts of the theme's
+  heading font, which the big lines use.
+
+Images: `../artifacts/quality-sections/upload/` (generated, see `generated/README.md`
+there). Upload both under Content > Files. The garment photos are the live product
+photos (Saratoga Springs tee in Black, Nauvoo hoodie in Black).
+
+## Upload (from a Mac with Shopify CLI logged in)
+
+Push to the UNPUBLISHED theme only. Check `shopify theme list` first and use the id
+of a theme that is not [live].
+
+    cd temple-product-generator
+    shopify theme push --path theme --theme <unpublished theme id> --nodelete --strict \
+      --only sections/pp-scroll-zoom.liquid --only sections/pp-spec-overlay.liquid \
+      --only sections/pp-why-chain.liquid --only snippets/pp-quality-font.liquid \
+      --only assets/pp-quality.css --only assets/pp-quality.js
+
+Then in the theme editor on that theme: Add section, pick each "PP" section, and set
+its images. Suggested order on the homepage: scroll zoom after the hero, spec overlay
+in place of (or after) garment anatomy, why chain just before the founder letter.
