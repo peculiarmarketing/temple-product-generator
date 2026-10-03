@@ -70,3 +70,4 @@ artifacts/swatches/
 # The upload-ready JPEGs in artifacts/quality-sections/upload/ are the copies kept;
 # generated/README.md records the jobs and settings to regenerate them.
 artifacts/quality-sections/generated/*.png
+artifacts/quality-sections/zoom-v2/**/*.png
