@@ -83,7 +83,18 @@ scripts/tapstitch_build.py                     # write the print files, once bla
 scripts/tapstitch_publish.py check             # what is still blocking a run
 scripts/tapstitch_run.py                       # plan: what would be built, what is blocked
 scripts/tapstitch_run.py --apply --publish --limit 1   # one product, watched. LIVE.
+scripts/web_marquee.py check                   # every live temple on the homepage marquee
 ```
+
+**Every new temple must be added to the homepage marquee.** The marquee on the
+homepage (`theme/sections/pp-temple-marquee.liquid`) shows a temple only once
+the theme has its art (`assets/pp-temple-<slug>.webp`), its stroke file
+(`assets/pp-temple-<slug>.json`, built by `scripts/pen_strokes.py`) and its city
+line (`snippets/pp-temple-city.liquid`). Without them the temple is left off with
+no error. `tapstitch_run.py --publish` runs `scripts/web_marquee.py check` on
+the way out and lists what each new temple is missing; `web_marquee.py sync`
+regenerates the city-line snippet and prints the `shopify theme push` command
+for the rest. A temple is not finished until that check is clean.
 
 ## Printify end-of-run sequence
 

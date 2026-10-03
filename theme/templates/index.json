@@ -288,9 +288,7 @@
         "collection": "temple-tees",
         "heading": "",
         "seconds_per_temple": 4,
-        "label": "Temple designs",
-        "pause_label": "Pause",
-        "play_label": "Play"
+        "label": "Temple designs"
       }
     },
     "what_you_get": {

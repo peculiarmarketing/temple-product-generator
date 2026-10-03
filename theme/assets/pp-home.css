@@ -171,7 +171,7 @@
 
 /* ---------- Temple marquee ---------- */
 
-.pp-marquee { background: var(--pp-navy); color: var(--pp-white); padding: 48px 0 32px; }
+.pp-marquee { background: var(--pp-navy); color: var(--pp-white); padding: 48px 0; }
 .pp-marquee__heading { margin: 0 auto 32px; padding: 0 24px; max-width: 1200px; color: var(--pp-white); text-align: center; }
 .pp-marquee__viewport {
   overflow: hidden;
@@ -219,7 +219,6 @@
 
 .pp-marquee:hover .pp-marquee__track,
 .pp-marquee:focus-within .pp-marquee__track,
-.pp-marquee.is-paused .pp-marquee__track,
 .pp-marquee.is-offscreen .pp-marquee__track { animation-play-state: paused; }
 
 /* Keyboard: once a tile has focus the row stops and scrolls by hand, so the focused
@@ -227,41 +226,8 @@
 .pp-marquee.is-manual .pp-marquee__track { animation: none; }
 .pp-marquee.is-manual .pp-marquee__viewport { overflow-x: auto; }
 
-.pp-marquee__controls { display: flex; justify-content: center; padding: 16px 24px 0; }
-.pp-marquee__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 20px;
-  border: 1px solid rgba(255, 255, 255, .55);
-  border-radius: var(--pp-radius);
-  background: transparent;
-  color: var(--pp-white);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: border-color .2s ease, background-color .2s ease;
-}
-.pp-marquee__toggle[hidden] { display: none; }
-.pp-marquee__toggle:hover { border-color: var(--pp-white); background: rgba(255, 255, 255, .08); }
-.pp-marquee__toggle:active { background: rgba(255, 255, 255, .16); }
-.pp-marquee__toggle:focus-visible { outline: 2px solid var(--pp-white); outline-offset: 4px; }
-/* Pause bars, or a play triangle once paused. */
-.pp-marquee__icon { width: 10px; height: 12px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
-.pp-marquee.is-paused .pp-marquee__icon {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 0 6px 10px;
-  border-color: transparent transparent transparent currentColor;
-}
-
 @media (max-width: 749px) {
-  .pp-marquee { padding: 36px 0 20px; }
+  .pp-marquee { padding: 36px 0; }
   .pp-marquee__item { width: 160px; margin-right: 20px; }
   .pp-marquee__city { letter-spacing: .12em; }
 }
@@ -278,7 +244,6 @@
     mask-image: none;
   }
   .pp-marquee__item { scroll-snap-align: start; scroll-margin-left: 24px; }
-  .pp-marquee__toggle { display: none; }
   .pp-anatomy .pp-callout > * { transition: none !important; }
 }
 

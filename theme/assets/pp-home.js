@@ -2,8 +2,8 @@
    - Garment anatomy (sections/pp-garment-anatomy.liquid): arms the callouts hidden,
      then draws them out once the section scrolls into view. Not armed at all under
      reduced motion, or if this script never runs, so the labels are simply shown.
-   - Temple marquee (sections/pp-temple-marquee.liquid): the pause button, pausing
-     while off screen, and keyboard use. The loop itself is a CSS animation. */
+   - Temple marquee (sections/pp-temple-marquee.liquid): pausing while off screen,
+     and keyboard use. The loop itself is a CSS animation, paused on hover. */
 (() => {
   if (window.PPHome) return;
 
@@ -22,21 +22,7 @@
   }
 
   function initMarquee(section) {
-    const toggle = section.querySelector('[data-pp-marquee-toggle]');
-    const toggleText = section.querySelector('[data-pp-marquee-toggle-text]');
     const viewport = section.querySelector('.pp-marquee__viewport');
-
-    // WCAG 2.2.2: anything that moves on its own for more than five seconds needs a
-    // way to stop it. Hover and focus already pause; the button makes it stick.
-    const showToggle = () => { if (toggle) toggle.hidden = reduced(); };
-    showToggle();
-    reducedQuery.addEventListener?.('change', showToggle);
-    if (toggle) {
-      toggle.addEventListener('click', () => {
-        const paused = section.classList.toggle('is-paused');
-        toggleText.textContent = paused ? toggle.dataset.playLabel : toggle.dataset.pauseLabel;
-      });
-    }
 
     // No point animating what nobody can see.
     if ('IntersectionObserver' in window) {

@@ -79,6 +79,7 @@ import flatten
 import generate
 import ledger
 import mirror_facts
+import web_marquee
 import tapstitch_api as T
 import tapstitch_variant_images
 from shopify_client import ShopifyClient
@@ -632,6 +633,18 @@ def main():
                   f"artifacts/temple-facts/. Commit them.")
     except Exception as e:
         print(f"Could not mirror the temple-facts fragments: {safe_error(e)}")
+
+    # A newly published temple shows on the homepage marquee only once its art,
+    # stroke file and city line are in the theme, and the marquee leaves it out
+    # without a word otherwise. Say so here, where a new temple has just gone
+    # live. Never fatal, for the same reason as the backup above.
+    if a.publish and done:
+        try:
+            print()
+            web_marquee.check(None)
+        except (Exception, SystemExit) as e:
+            print(f"Could not run the marquee check: {safe_error(e)}. "
+                  "Run scripts/web_marquee.py check by hand.")
     for temple, gid, err in failed:
         print(f"  {temple} {gid}: {err}")
     return 1 if failed else 0

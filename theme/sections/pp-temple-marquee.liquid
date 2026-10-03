@@ -7,9 +7,10 @@
   uploaded yet and is left out.
 
   The list is printed twice so the loop has no seam; the second copy is inert, so
-  screen readers and the keyboard skip it. The loop pauses on hover, on keyboard
-  focus, and with the pause button. Under reduced motion it does not move at all:
-  the second copy is dropped and the row scrolls sideways by hand.
+  screen readers and the keyboard skip it. The loop pauses on hover and on
+  keyboard focus; there is no pause button (Evan, 3 October 2026). Under reduced
+  motion it does not move at all: the second copy is dropped and the row scrolls
+  sideways by hand.
 {%- endcomment -%}
 {{ 'pp-home.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-home.js' | asset_url }}" defer></script>
@@ -63,14 +64,6 @@
         <ul class="pp-marquee__list pp-marquee__list--copy" role="list" aria-hidden="true" inert>{{ items }}</ul>
       </div>
     </div>
-    <div class="pp-marquee__controls">
-      <button type="button" class="pp-marquee__toggle" data-pp-marquee-toggle hidden
-        data-pause-label="{{ section.settings.pause_label | escape }}"
-        data-play-label="{{ section.settings.play_label | escape }}">
-        <span class="pp-marquee__icon" aria-hidden="true"></span>
-        <span data-pp-marquee-toggle-text>{{ section.settings.pause_label | escape }}</span>
-      </button>
-    </div>
   </section>
 {%- endif -%}
 
@@ -86,9 +79,7 @@
       "label": "Seconds each temple takes to pass",
       "min": 2, "max": 8, "step": 1, "default": 4
     },
-    { "type": "text", "id": "label", "label": "Name for screen readers", "default": "Temple designs" },
-    { "type": "text", "id": "pause_label", "label": "Pause button", "default": "Pause" },
-    { "type": "text", "id": "play_label", "label": "Play button", "default": "Play" }
+    { "type": "text", "id": "label", "label": "Name for screen readers", "default": "Temple designs" }
   ],
   "presets": [{ "name": "PP temple marquee" }]
 }
