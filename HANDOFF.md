@@ -12,6 +12,16 @@ and now named "Claude code original".
 Details and the rebuild command: `theme/README.md`. Rollback files:
 `theme-backup/2026-09-23-original/`.
 
+**Fixed 3 October 2026: the Salt Lake tee's chest logo image.** Its "chest logo
+flat lay - Maroon" was a Manti back print (same 1,259,725-byte file as the Manti
+tee's back; every other tee front is 1,071,804 bytes). The archive copy
+`flat-originals/salt-lake/tee_maroon_front.png` was the same Manti back. The live
+image was replaced with the standard chest logo flat lay, put back in slot 2 and
+the wrong one deleted; it was bound to no variant. The archive copy is now the
+standard front, identical to the other 44 temples', so a rebuild cannot
+republish the Manti print. The Salt Lake crew and hoodie were checked and are
+correct.
+
 **Found on 1 October and still not in git:** the 22 to 24 September hoodie
 rebuild (45 new hoodies with Royal Blue added, old ones drafted with
 `-retired-2026-09-23` handles) and `scripts/web_drawings.py`, which made the
