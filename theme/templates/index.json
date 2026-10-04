@@ -723,48 +723,48 @@
         "story_1": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-story-1-between-classes.jpg",
-            "eyebrow": "Between classes",
-            "text": "He was walking to class when someone stopped him to ask about his shirt.",
+            "image": "shopify://shop_images/pp-dive-purpose-1-why.jpg",
+            "eyebrow": "Why we make it",
+            "text": "We make temple apparel for one reason: so someone asks you about it.",
             "transition": "fade",
-            "focus_x": 50,
-            "focus_y": 28
+            "focus_x": 66,
+            "focus_y": 42
           }
         },
         "story_2": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-story-2-question.jpg",
-            "eyebrow": "One question",
-            "text": "What does Peculiar People mean? Five minutes later he's showing them a photo from the temple steps.",
+            "image": "shopify://shop_images/pp-dive-purpose-2-opening.jpg",
+            "eyebrow": "An opening",
+            "text": "A question about your shirt is an easy one to answer. Sometimes it leads somewhere you didn't plan.",
             "transition": "fade",
-            "focus_x": 52,
-            "focus_y": 30
+            "focus_x": 55,
+            "focus_y": 40
           }
         },
         "story_3": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-story-3-lunch.jpg",
-            "eyebrow": "Lunch, apparently",
-            "text": "It was supposed to be a two-minute walk. They ended up getting lunch.",
+            "image": "shopify://shop_images/pp-dive-purpose-3-every-day.jpg",
+            "eyebrow": "Worn every day",
+            "text": "None of that happens if the shirt stays in the drawer. It has to be the one you reach for first.",
             "transition": "fade",
-            "focus_x": 48,
-            "focus_y": 28
+            "focus_x": 42,
+            "focus_y": 42
           }
         },
         "story_4": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-story-4-blank.jpg",
+            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
             "eyebrow": "The blank",
-            "text": "That shirt came first. We put the samples side by side and passed on anything that felt light or stiff.",
+            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
             "transition": "zoom",
-            "next_x": 34.3525,
-            "next_y": 16.0721,
-            "next_size": 27.002,
-            "focus_x": 48,
-            "focus_y": 30
+            "next_x": 41.4101,
+            "next_y": 32.5427,
+            "next_size": 19.4148,
+            "focus_x": 50,
+            "focus_y": 40
           }
         },
         "step_2": {

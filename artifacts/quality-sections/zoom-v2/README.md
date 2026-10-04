@@ -224,3 +224,24 @@ How the frames were made:
 `pp-zoom-dive` gained a per-step "Into the next step" setting (zoom or fade), an
 "Extra long" scroll length (900vh) and max 8 steps. `qa/live8-story-desk.jpg`,
 `qa/live7-desk.jpg`, `qa/live7-mob.jpg`: the store preview.
+
+## Round 6: wider photos, purpose-led copy
+
+Evan: the story photos were too zoomed in to see what was happening, and the copy
+should move from a narrative to the brand's purpose, then into the quality
+statements.
+
+- Photos. The model re-rendered the black tee on the full Pexels originals
+  (3:2 for frames 1 to 3, a wider square for frame 4), with the approved tight
+  frames as references. The logo was placed with place_logo.py at the approved
+  sizes and angles, mapped over from the tight frames (correlation 0.97 to 0.98).
+  Frame 4's logo is placed from K1's own logo position, so the zoom lands on the
+  same print (align score 0.97). New files: web3/pp-dive-purpose-1..4.
+- Engine. Fade steps can now be any shape: windowOf in pp-quality.js fits the
+  photo's own aspect, so a landscape frame shows the whole scene on desktop and a
+  centred slice (focus point) on a phone.
+- Copy (humanizer and structural passes, both scanners clean):
+  Why we make it / An opening / Worn every day / The blank, then Ribbed collar,
+  Printed into the cotton, 260 GSM as before.
+- Live sweep: qa/live9-purpose-desk.jpg and qa/live9-purpose-mob.jpg. No errors,
+  no sideways scroll.

@@ -349,17 +349,20 @@
       showStep(steps, Math.round(d), state);
     }
 
-    // A screen-shaped window of a square photo, centred on its focus point and
-    // shrunk to `sz` of the square (1 is the whole square), drawn at `alpha`.
+    // A screen-shaped window of a photo, centred on its focus point and shrunk to
+    // `sz` of the largest window that fits (1 covers the screen with the whole
+    // width or height of the photo), drawn at `alpha`. Fade steps may use any
+    // shape of photo; zoom steps are square.
     function windowOf(f, sz, alpha) {
       if (!f.img) return false;
-      const aspect = CW / CH;
-      const vw = aspect >= 1 ? sz : sz * aspect;
-      const vh = aspect >= 1 ? sz / aspect : sz;
-      const vx = clamp(f.fx - vw / 2, 0, 1 - vw);
-      const vy = clamp(f.fy - vh / 2, 0, 1 - vh);
       const nw = f.img.naturalWidth;
       const nh = f.img.naturalHeight;
+      const sa = CW / CH;
+      const ia = nw / nh;
+      const vw = sa >= ia ? sz : sz * sa / ia;
+      const vh = sa >= ia ? sz * ia / sa : sz;
+      const vx = clamp(f.fx - vw / 2, 0, 1 - vw);
+      const vy = clamp(f.fy - vh / 2, 0, 1 - vh);
       ctx.globalAlpha = alpha;
       ctx.drawImage(f.img, vx * nw, vy * nh, vw * nw, vh * nh, 0, 0, CW, CH);
       ctx.globalAlpha = 1;
