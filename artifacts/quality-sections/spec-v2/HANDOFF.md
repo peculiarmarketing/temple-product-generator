@@ -63,9 +63,14 @@ Answers from Evan (4 Oct 2026):
 - **Sourcing:** unknown. Omit any source location or "premium sourced" claim;
   the cotton and fleece lines lean on the weights only.
 - **Designed and printed in the USA:** confirmed true. Callout 4 can say it.
-- **Photo:** not picked yet. Evan did not like A, B or C (`group-options.jpg`).
-  Round 2 is D to I (`group-options-2.jpg`), round 3 is J to O (`group-options-3.jpg`); tables below. If none of those
-  work either, keep searching (method below).
+- **Photo: K, Pexels 7972658** (picked 4 Oct 2026). Three students talking
+  against a stone campus wall, mid-conversation. Full size:
+  `https://images.pexels.com/photos/7972658/pexels-photo-7972658.jpeg`.
+  Proposed garments (confirm with Evan before rendering): man on the left in the
+  **hoodie**, woman in the middle in the **tee**, woman on the right in the
+  **crewneck**. All black. Keep their backpacks, jeans, hair, faces and hands.
+  Other frames of the same three are in the 7972640 to 7972680 range if a
+  different moment works better.
 
 ## Photo options (Pexels, free for commercial use and editing)
 
@@ -90,8 +95,8 @@ Round 3 (Evan passed on D to I too; `group-options-3.jpg`):
 
 | Option | Pexels ID | Notes |
 |---|---|---|
-| J (recommended) | 7972657 | Three students walking toward camera under spring blossoms, all smiling and facing forward. Campus feel like the dive. |
-| K | 7972658 | Same three talking against a stone wall, mid-conversation. |
+| J | 7972657 | Three students walking toward camera under spring blossoms, all smiling and facing forward. Campus feel like the dive. |
+| K (**picked**) | 7972658 | Same three talking against a stone wall, mid-conversation. |
 | L | 7972538 | A different trio walking a brick campus path. |
 | M | 7973039 | That trio coming down campus steps through an iron gate. |
 | N | 6140429 | Three coming down the steps of a stone building (same shoot as A). |
