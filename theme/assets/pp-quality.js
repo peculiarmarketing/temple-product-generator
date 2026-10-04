@@ -235,8 +235,9 @@
         img: null,
       };
     });
-    // Every step but the last needs a photo and a square for the next one.
-    if (frames.some((f, i) => !f.big || (i < frames.length - 1 && !(f.next && f.next.w > 0 && f.next.w < 1)))) return;
+    // Every step needs a photo. A step that zooms into the next one also needs the
+    // square it zooms into; a step without one cross-fades to the next photo instead.
+    if (frames.some((f) => !f.big || (f.next && !(f.next.w > 0 && f.next.w < 1)))) return;
 
     section.classList.add('is-armed');
     const track = section.querySelector('.pp-dive__track');
@@ -284,6 +285,7 @@
       const a = frames[k];
       const b = frames[k + 1];
       const r = a.next;
+      if (!r) { fade(a, b, t, d); return; }
       // View square inside photo k: size w^t, shrinking toward the fixed point F,
       // the one point that sits at the same place in the view and in the target square.
       const sz = Math.pow(r.w, t);
@@ -343,6 +345,38 @@
         ctx.drawImage(scratch, 0, 0);
         ctx.globalAlpha = 1;
       }
+      if (bar) bar.style.transform = `scaleX(${(d / last).toFixed(4)})`;
+      showStep(steps, Math.round(d), state);
+    }
+
+    // A screen-shaped window of a square photo, centred on its focus point and
+    // shrunk to `sz` of the square (1 is the whole square), drawn at `alpha`.
+    function windowOf(f, sz, alpha) {
+      if (!f.img) return false;
+      const aspect = CW / CH;
+      const vw = aspect >= 1 ? sz : sz * aspect;
+      const vh = aspect >= 1 ? sz / aspect : sz;
+      const vx = clamp(f.fx - vw / 2, 0, 1 - vw);
+      const vy = clamp(f.fy - vh / 2, 0, 1 - vh);
+      const nw = f.img.naturalWidth;
+      const nh = f.img.naturalHeight;
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(f.img, vx * nw, vy * nh, vw * nw, vh * nh, 0, 0, CW, CH);
+      ctx.globalAlpha = 1;
+      return true;
+    }
+
+    // Story steps: separate photos, so no shared square to zoom through. The photo
+    // drifts in slightly while the next one fades up over it, and the next one starts
+    // from its own whole window, so the step after it begins where this one ends.
+    function fade(a, b, t, d) {
+      ctx.imageSmoothingQuality = 'high';
+      if (!windowOf(a, 1 - 0.06 * t, 1)) {
+        ctx.fillStyle = getComputedStyle(section).getPropertyValue('--pp-dive-bg') || '#000';
+        ctx.fillRect(0, 0, CW, CH);
+      }
+      const e = clamp((t - 0.45) / 0.4, 0, 1);
+      if (e > 0) windowOf(b, 1, e * e * (3 - 2 * e));
       if (bar) bar.style.transform = `scaleX(${(d / last).toFixed(4)})`;
       showStep(steps, Math.round(d), state);
     }

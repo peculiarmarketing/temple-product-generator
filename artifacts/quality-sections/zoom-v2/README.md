@@ -185,3 +185,42 @@ so the letters can't drift and every hand-off stays exact.
 The ink brightness step at each hand-off is 10 to 16 levels (the old K1 to K2 step
 was 15). `qa/live6-desk.jpg`, `qa/live6-mob.jpg`, `qa/live6-dtg-closeup.jpg`: the
 store preview after the swap.
+
+## Round 5: the story opens the dive
+
+Evan asked for real people, a conversation the shirt starts, and the Tapstitch fit.
+The dive now opens on four frames of one man from a Pexels campus shoot
+(photos 7683738, 7683740, 7683872 and 7683697, free for commercial use). They
+cross-fade from one to the next, then the last zooms into the collar and on down
+to the yarn as before. The temple-wall opening shot is out of the dive.
+
+| Step | Photo | Words |
+|---|---|---|
+| 1, fade | `pp-dive-story-1-between-classes.jpg` (7683740) | Between classes / He was walking to class when someone stopped him to ask about his shirt. |
+| 2, fade | `pp-dive-story-2-question.jpg` (7683738) | One question / What does Peculiar People mean? Five minutes later he's showing them a photo from the temple steps. |
+| 3, fade | `pp-dive-story-3-lunch.jpg` (7683872) | Lunch, apparently / It was supposed to be a two-minute walk. They ended up getting lunch. |
+| 4, zoom | `pp-dive-story-4-blank.jpg` (7683697) | The blank / That shirt came first. We put the samples side by side and passed on anything that felt light or stiff. |
+| 5, zoom | `pp-dive-story-5-collar.jpg` | Ribbed collar (unchanged) |
+| 6, 7 | the round 4 print macro and yarn | unchanged |
+
+The words went through both humanizer passes; both scanners came back clean.
+
+How the frames were made:
+- **Shirt.** gpt_image_2_5 sunburst re-rendered each crop in a black RT0063
+  (references: Tapstitch's own on-model RT0063 photos), heavyweight, boxy, straight
+  hem at mid-hip. The whole render is used as is: splicing the original pixels back
+  around the new shirt was tried and read as edited.
+- **Frame 4 fixes.** His grey backpack swapped for the khaki one in the other frames;
+  his hand at his hip re-rendered so it sits in his pocket in front of the hem.
+- **Logo.** `place_logo.py` lays the real logo file, never the model: 0.73 of each
+  shirt's collar width, its top 0.59 logo widths below the collar along the shirt's
+  slanted centre line, rotated to the shirt (level, 5, 10 and 7 degrees), bent with
+  the folds, hands and straps kept in front.
+- **Hand-off.** Step 4's square (34.35, 16.07, 27.00 %) puts its logo exactly where
+  the collar close-up has it. The collar close-up was rebuilt from that crop (model
+  sharpened, `align.py` shift 0, score 0.99) so his hand does not fade out, and the
+  logo was laid at the old K1 position, so K1 to K2 still aligns (shift 0, 0.99).
+
+`pp-zoom-dive` gained a per-step "Into the next step" setting (zoom or fade), an
+"Extra long" scroll length (900vh) and max 8 steps. `qa/live8-story-desk.jpg`,
+`qa/live7-desk.jpg`, `qa/live7-mob.jpg`: the store preview.

@@ -1,11 +1,12 @@
 {%- comment -%}
   Peculiar People homepage: the dive. One continuous zoom from a lifestyle shot of
   the tee down to the yarn, driven by scroll, filling the screen with the words laid
-  over it. Each step is a photo that is a
-  close-up of a square inside the step before it (the step names where that square
-  sits), plus the words shown while it is on screen. pp-quality.js draws the zoom on
-  a canvas and fades each close-up in over the square it came from, so the photos
-  hand off with no visible cut. Without the script, or with reduced motion on, the
+  over it. A step can open with a short story told in separate photos that fade
+  from one to the next; the zoom steps after it are each a close-up of a square
+  inside the step before (the step names where that square sits), plus the words
+  shown while it is on screen. pp-quality.js draws the zoom on a canvas and fades
+  each close-up in over the square it came from, so the photos hand off with no
+  visible cut. Without the script, or with reduced motion on, the
   photos and words are shown as a plain sequence, so nothing is hidden.
 {%- endcomment -%}
 {{ 'pp-quality.css' | asset_url | stylesheet_tag }}
@@ -18,6 +19,8 @@
       assign track_vh = 320
     when 'long'
       assign track_vh = 560
+    when 'story'
+      assign track_vh = 900
     else
       assign track_vh = 440
   endcase
@@ -51,7 +54,7 @@
               {%- liquid
                 assign b = block.settings
                 assign next = ''
-                unless forloop.last
+                unless forloop.last or b.transition == 'fade'
                   assign next = b.next_x | append: ',' | append: b.next_y | append: ',' | append: b.next_size
                 endunless
                 assign alt = b.image.alt | default: b.eyebrow
@@ -109,7 +112,8 @@
       "options": [
         { "value": "short", "label": "Short" },
         { "value": "medium", "label": "Medium" },
-        { "value": "long", "label": "Long" }
+        { "value": "long", "label": "Long" },
+        { "value": "story", "label": "Extra long" }
       ],
       "default": "medium"
     },
@@ -125,14 +129,25 @@
           "type": "image_picker",
           "id": "image",
           "label": "Photo",
-          "info": "Square, 2048 px. Each photo after the first must be a close-up of the square named on the step before it."
+          "info": "Square, 2048 px. After a zoom step, this photo must be a close-up of the square named on the step before it."
         },
         { "type": "text", "id": "eyebrow", "label": "Small caps label" },
         { "type": "inline_richtext", "id": "text", "label": "Words" },
         {
+          "type": "select",
+          "id": "transition",
+          "label": "Into the next step",
+          "info": "Zoom in: the next photo is a close-up of this one. Fade: the next photo is a different shot.",
+          "options": [
+            { "value": "zoom", "label": "Zoom in" },
+            { "value": "fade", "label": "Fade" }
+          ],
+          "default": "zoom"
+        },
+        {
           "type": "header",
           "content": "Where the next photo sits",
-          "info": "The square inside this photo that the next step is a close-up of, in percent of this photo. Ignored on the last step."
+          "info": "The square inside this photo that the next step is a close-up of, in percent of this photo. Ignored on the last step and on fade steps."
         },
         { "type": "number", "id": "next_x", "label": "Left edge (%)", "default": 37.5 },
         { "type": "number", "id": "next_y", "label": "Top edge (%)", "default": 37.5 },
@@ -147,7 +162,7 @@
       ]
     }
   ],
-  "max_blocks": 6,
+  "max_blocks": 8,
   "presets": [
     {
       "name": "PP dive",

@@ -720,30 +720,65 @@
     "pp_zoom_dive": {
       "type": "pp-zoom-dive",
       "blocks": {
-        "step_1": {
+        "story_1": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-1-temple.jpg",
-            "eyebrow": "The blank",
-            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
-            "next_x": 38.4766,
-            "next_y": 41.9922,
-            "next_size": 24.4141,
+            "image": "shopify://shop_images/pp-dive-story-1-between-classes.jpg",
+            "eyebrow": "Between classes",
+            "text": "He was walking to class when someone stopped him to ask about his shirt.",
+            "transition": "fade",
             "focus_x": 50,
-            "focus_y": 42
+            "focus_y": 28
+          }
+        },
+        "story_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-2-question.jpg",
+            "eyebrow": "One question",
+            "text": "What does Peculiar People mean? Five minutes later he's showing them a photo from the temple steps.",
+            "transition": "fade",
+            "focus_x": 52,
+            "focus_y": 30
+          }
+        },
+        "story_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-3-lunch.jpg",
+            "eyebrow": "Lunch, apparently",
+            "text": "It was supposed to be a two-minute walk. They ended up getting lunch.",
+            "transition": "fade",
+            "focus_x": 48,
+            "focus_y": 28
+          }
+        },
+        "story_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-4-blank.jpg",
+            "eyebrow": "The blank",
+            "text": "That shirt came first. We put the samples side by side and passed on anything that felt light or stiff.",
+            "transition": "zoom",
+            "next_x": 34.3525,
+            "next_y": 16.0721,
+            "next_size": 27.002,
+            "focus_x": 48,
+            "focus_y": 30
           }
         },
         "step_2": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-2b-collar.jpg",
+            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
             "eyebrow": "Ribbed collar",
             "text": "Ribbed knit, stitched down.",
             "next_x": 46.0449,
             "next_y": 48.4375,
             "next_size": 21.4844,
             "focus_x": 50,
-            "focus_y": 55
+            "focus_y": 55,
+            "transition": "zoom"
           }
         },
         "step_3": {
@@ -756,7 +791,8 @@
             "next_y": 75.9766,
             "next_size": 23.8281,
             "focus_x": 50,
-            "focus_y": 50
+            "focus_y": 50,
+            "transition": "zoom"
           }
         },
         "step_4": {
@@ -771,14 +807,17 @@
         }
       },
       "block_order": [
-        "step_1",
+        "story_1",
+        "story_2",
+        "story_3",
+        "story_4",
         "step_2",
         "step_3",
         "step_4"
       ],
       "settings": {
         "heading": "",
-        "scroll_length": "medium",
+        "scroll_length": "story",
         "background": "#0d0e11",
         "text_color": "#ffffff"
       }
