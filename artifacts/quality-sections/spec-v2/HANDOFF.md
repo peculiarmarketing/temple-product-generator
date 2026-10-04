@@ -59,7 +59,9 @@ before shipping):
 | 3 | Crewneck · 350 GSM | The same fleece as the hoodie, so the pair feels the same. |
 | 4 | Designed and printed in the USA | Printed when you order, and it arrives in 4 to 7 business days. |
 
-Open questions for Evan (ask before building copy):
+Open questions for Evan (ask before building copy). As of the end of the
+4 Oct session Evan had answered none of these ("None, not yet"): no photo is
+picked, and there is no sourcing fact, so the copy uses the weights only.
 - **Which photo, A, B or C** (`group-options.jpg`)? Recommendation: A.
 - **"Premium sourced cotton and fleece":** nothing on file says where the
   fabric is sourced. BRAND.md only backs the weights (tee 260 gsm / 7.7 oz,
