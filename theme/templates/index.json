@@ -736,7 +736,7 @@
         "step_2": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-2-collar.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-2b-collar.jpg",
             "eyebrow": "Ribbed collar",
             "text": "Ribbed knit, stitched down.",
             "next_x": 46.0449,
@@ -749,7 +749,7 @@
         "step_3": {
           "type": "step",
           "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-3-dtg-print.jpg",
+            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
             "eyebrow": "Printed into the cotton",
             "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
             "next_x": 43.9453,

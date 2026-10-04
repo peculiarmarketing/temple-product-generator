@@ -159,3 +159,29 @@ by a per-step focus point that glides to the next photo's focus, so the window a
 the end of a zoom is exactly the window the next photo starts with, on any screen
 shape. Local sweep: no jumps at hand-offs on 1440x900 or 390x844.
 `qa/live5-desk.jpg`, `qa/live5-mob.jpg`: the store preview.
+
+## Round 4: real DTG ink on the print and collar frames
+
+Evan asked for the logo in the print close-up to look exactly like a good DTG
+print on cotton, rendered by gpt_image_2_5 sunburst, with bright opaque white ink.
+The collar frame gets the same treatment so the ink doesn't change colour as K1
+hands off to K2.
+
+Style references (copyrighted web photos, used privately as model references
+only and not stored here):
+- White DTG on black, close up: https://image.rolanddga.com/-/media/roland/images/blog/2021/white-ink-article/closeup.jpg
+- A combed cotton fibre macro, found through Yandex image search.
+
+How (`dtg_ink.py`): the model re-renders the current frame with the style
+references. Its pixels are kept only where they are ink, inside the real letter
+shapes grown by half a knit stitch. Everything else is the old frame unchanged,
+so the letters can't drift and every hand-off stays exact.
+
+| Frame | Generation | Kept | Ink vs true letters (IoU) | Hand-off check |
+|---|---|---|---|---|
+| K2 print | 7f26f740 (of 3) | `chain3/K2dtg.png`, `web3/pp-dive-wall-3b-dtg-print.jpg` | 0.921 | K2 to K3 square sits below the logo, untouched |
+| K1 collar | 4fd784cb (of 2) | `chain3/K1dtg.png`, `web3/pp-dive-wall-2b-collar.jpg` | (strokes 3 to 5 px, checked by eye) | `align.py` K1 to K2: shift 0, 0, score 0.992 |
+
+The ink brightness step at each hand-off is 10 to 16 levels (the old K1 to K2 step
+was 15). `qa/live6-desk.jpg`, `qa/live6-mob.jpg`, `qa/live6-dtg-closeup.jpg`: the
+store preview after the swap.
