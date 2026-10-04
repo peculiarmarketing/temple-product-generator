@@ -64,7 +64,7 @@ Answers from Evan (4 Oct 2026):
   the cotton and fleece lines lean on the weights only.
 - **Designed and printed in the USA:** confirmed true. Callout 4 can say it.
 - **Photo:** not picked yet. Evan did not like A, B or C (`group-options.jpg`).
-  Round 2 is D to I (`group-options-2.jpg`, table below). If none of those
+  Round 2 is D to I (`group-options-2.jpg`), round 3 is J to O (`group-options-3.jpg`); tables below. If none of those
   work either, keep searching (method below).
 
 ## Photo options (Pexels, free for commercial use and editing)
@@ -85,6 +85,20 @@ Round 2 (sent after Evan passed on A to C):
 | G | 12565305 | Three young men, arms around shoulders, outdoors. |
 | H | 6150581 | Three cheering, already in a hoodie and crewneck. Studio wall, very loud energy. |
 | I | 4148947 | Selfie on a forest path. The rest of that shoot is workout clothes. |
+
+Round 3 (Evan passed on D to I too; `group-options-3.jpg`):
+
+| Option | Pexels ID | Notes |
+|---|---|---|
+| J (recommended) | 7972657 | Three students walking toward camera under spring blossoms, all smiling and facing forward. Campus feel like the dive. |
+| K | 7972658 | Same three talking against a stone wall, mid-conversation. |
+| L | 7972538 | A different trio walking a brick campus path. |
+| M | 7973039 | That trio coming down campus steps through an iron gate. |
+| N | 6140429 | Three coming down the steps of a stone building (same shoot as A). |
+| O | 8764897 | Three hanging out under a tree by a lake. |
+
+J to M come from one large campus shoot (Pexels IDs around 7972300 to 7973050);
+more frames of the same people are in that range.
 
 How the search was done: Yandex image search
 (`https://yandex.com/images/search?text=...`, desktop browser User-Agent) with
