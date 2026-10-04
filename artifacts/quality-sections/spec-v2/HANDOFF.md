@@ -63,8 +63,9 @@ Answers from Evan (4 Oct 2026):
 - **Sourcing:** unknown. Omit any source location or "premium sourced" claim;
   the cotton and fleece lines lean on the weights only.
 - **Designed and printed in the USA:** confirmed true. Callout 4 can say it.
-- **Photo:** not picked yet. Ask: A, B or C (`group-options.jpg`)?
-  Recommendation: A.
+- **Photo:** not picked yet. Evan did not like A, B or C (`group-options.jpg`).
+  Round 2 is D to I (`group-options-2.jpg`, table below). If none of those
+  work either, keep searching (method below).
 
 ## Photo options (Pexels, free for commercial use and editing)
 
@@ -73,6 +74,24 @@ Answers from Evan (4 Oct 2026):
 | A (recommended) | 6140643 | Three walking toward camera, laughing. Woman left: crewneck. Man middle (red tee): tee. Man right (jacket): hoodie. |
 | B | 6140614 | Same three, same shoot, mid-stride; the woman is partly behind the left man. |
 | C | 6147395 | Different trio with books. Left man: tee. Middle man: hoodie. Woman: crewneck. |
+
+Round 2 (sent after Evan passed on A to C):
+
+| Option | Pexels ID | Notes |
+|---|---|---|
+| D (recommended) | 4767025 | Three friends laughing, arms around each other, street. Closest to "the shirt starts a conversation". |
+| E | 175697 | Three men sitting on a step, graffiti door. Urban, relaxed. |
+| F | 9071725 | Three guys sitting, laughing, in tees. "GAME" sign behind them would need cropping. |
+| G | 12565305 | Three young men, arms around shoulders, outdoors. |
+| H | 6150581 | Three cheering, already in a hoodie and crewneck. Studio wall, very loud energy. |
+| I | 4148947 | Selfie on a forest path. The rest of that shoot is workout clothes. |
+
+How the search was done: Yandex image search
+(`https://yandex.com/images/search?text=...`, desktop browser User-Agent) with
+queries like `site:pexels.com three friends arms around each other`, pulling
+`images.pexels.com/photos/<ID>` out of the HTML, then contact sheets of
+`?auto=compress&w=260` thumbnails. Check neighbouring IDs (plus or minus 8) for
+other frames from the same shoot.
 
 Download full size: `https://images.pexels.com/photos/<ID>/pexels-photo-<ID>.jpeg`
 (consecutive IDs are usually the same shoot). Pexels asks that photos not imply
