@@ -59,15 +59,12 @@ before shipping):
 | 3 | Crewneck · 350 GSM | The same fleece as the hoodie, so the pair feels the same. |
 | 4 | Designed and printed in the USA | Printed when you order, and it arrives in 4 to 7 business days. |
 
-Open questions for Evan (ask before building copy). As of the end of the
-4 Oct session Evan had answered none of these ("None, not yet"): no photo is
-picked, and there is no sourcing fact, so the copy uses the weights only.
-- **Which photo, A, B or C** (`group-options.jpg`)? Recommendation: A.
-- **"Premium sourced cotton and fleece":** nothing on file says where the
-  fabric is sourced. BRAND.md only backs the weights (tee 260 gsm / 7.7 oz,
-  crew and hoodie 350 gsm / 10.3 oz) and that all three blanks are fulfilled and
-  printed in the USA. Use a sourcing claim only if Evan supplies the fact.
-- **"Designed in the USA":** assumes Evan draws the art in the US. Confirm.
+Answers from Evan (4 Oct 2026):
+- **Sourcing:** unknown. Omit any source location or "premium sourced" claim;
+  the cotton and fleece lines lean on the weights only.
+- **Designed and printed in the USA:** confirmed true. Callout 4 can say it.
+- **Photo:** not picked yet. Ask: A, B or C (`group-options.jpg`)?
+  Recommendation: A.
 
 ## Photo options (Pexels, free for commercial use and editing)
 
