@@ -232,6 +232,9 @@
         // Where the screen-shaped window sits inside this square photo (0..1).
         fx: clamp((parseFloat(el.dataset.focusX) || 50) / 100, 0, 1),
         fy: clamp((parseFloat(el.dataset.focusY) || 50) / 100, 0, 1),
+        // Fade steps only: where the focus slides across to while the step is on
+        // screen. Only shows where the screen is narrower than the photo (phones).
+        px: el.dataset.panX ? clamp(parseFloat(el.dataset.panX) / 100, 0, 1) : null,
         img: null,
       };
     });
@@ -353,7 +356,7 @@
     // `sz` of the largest window that fits (1 covers the screen with the whole
     // width or height of the photo), drawn at `alpha`. Fade steps may use any
     // shape of photo; zoom steps are square.
-    function windowOf(f, sz, alpha) {
+    function windowOf(f, sz, alpha, pan = 0) {
       if (!f.img) return false;
       const nw = f.img.naturalWidth;
       const nh = f.img.naturalHeight;
@@ -361,7 +364,8 @@
       const ia = nw / nh;
       const vw = sa >= ia ? sz : sz * sa / ia;
       const vh = sa >= ia ? sz * ia / sa : sz;
-      const vx = clamp(f.fx - vw / 2, 0, 1 - vw);
+      const cx = f.px === null || isNaN(f.px) ? f.fx : f.fx + (f.px - f.fx) * pan;
+      const vx = clamp(cx - vw / 2, 0, 1 - vw);
       const vy = clamp(f.fy - vh / 2, 0, 1 - vh);
       ctx.globalAlpha = alpha;
       ctx.drawImage(f.img, vx * nw, vy * nh, vw * nw, vh * nh, 0, 0, CW, CH);
@@ -374,7 +378,9 @@
     // from its own whole window, so the step after it begins where this one ends.
     function fade(a, b, t, d) {
       ctx.imageSmoothingQuality = 'high';
-      if (!windowOf(a, 1 - 0.06 * t, 1)) {
+      // the pan settles before the next photo starts to fade up
+      const p = clamp(t / 0.42, 0, 1);
+      if (!windowOf(a, 1 - 0.06 * t, 1, p * p * (3 - 2 * p))) {
         ctx.fillStyle = getComputedStyle(section).getPropertyValue('--pp-dive-bg') || '#000';
         ctx.fillRect(0, 0, CW, CH);
       }

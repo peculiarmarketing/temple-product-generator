@@ -245,3 +245,8 @@ statements.
   Printed into the cotton, 260 GSM as before.
 - Live sweep: qa/live9-purpose-desk.jpg and qa/live9-purpose-mob.jpg. No errors,
   no sideways scroll.
+- Phones: frame 3's two people stand further apart than a phone screen is wide,
+  so that step pans. A fade step can name a "Slide across to" point (pan_x); on
+  screens narrower than the photo the view slides from the focus point to it
+  before the next photo fades up. Frame 3 goes from him (36) to his friend (68).
+  Desktop shows the whole scene and is unchanged. qa/live10-pan-mob.jpg.

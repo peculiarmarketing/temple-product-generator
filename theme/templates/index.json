@@ -749,8 +749,9 @@
             "eyebrow": "Worn every day",
             "text": "None of that happens if the shirt stays in the drawer. It has to be the one you reach for first.",
             "transition": "fade",
-            "focus_x": 42,
-            "focus_y": 42
+            "focus_x": 36,
+            "focus_y": 42,
+            "pan_x": 68
           }
         },
         "story_4": {

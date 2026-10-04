@@ -69,6 +69,7 @@
                 data-next="{{ next }}"
                 data-focus-x="{{ b.focus_x }}"
                 data-focus-y="{{ b.focus_y }}"
+                {% if b.transition == 'fade' and b.pan_x != blank %}data-pan-x="{{ b.pan_x }}"{% endif %}
                 {{ block.shopify_attributes }}
               >
                 {%- if b.image != blank -%}
@@ -158,7 +159,13 @@
           "info": "The photo fills the screen, so a wide or tall screen sees part of it. This is the point it stays centred on, in percent of this photo."
         },
         { "type": "range", "id": "focus_x", "label": "Across (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
-        { "type": "range", "id": "focus_y", "label": "Down (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+        { "type": "range", "id": "focus_y", "label": "Down (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        {
+          "type": "number",
+          "id": "pan_x",
+          "label": "Slide across to (%)",
+          "info": "Fade steps only, optional. On screens too narrow for the whole photo, the view slides from the focus point across to this point while the step is on screen."
+        }
       ]
     }
   ],

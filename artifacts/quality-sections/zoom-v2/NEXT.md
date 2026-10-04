@@ -21,5 +21,3 @@ Open points worth knowing:
   but Pexels asks that photos not imply the person endorses a product.
 - The old pp-dive-wall-2-collar.jpg, pp-dive-wall-3-dtg-print.jpg and pp-dive-story-1..4 are still in
   Shopify Files and can go once the dive is approved.
-- On a phone, frame 3 (arm out to his friend) shows him only; the friend is off
-  to the side. A narrower crop of that frame would fix it if it matters.
