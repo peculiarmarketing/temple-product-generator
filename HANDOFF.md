@@ -46,9 +46,18 @@ either way:
 - Done 6 October 2026: the "Temple Design Products" collection
   (`temple-design-products`) is published to the Online Store. The Claude Code
   V3 zoom preview theme's "Shop by garment" row reads it.
-- Menus pointed at Temple Tees, Temple Crewnecks, Temple Hoodies and All
-  Temples. The plan was to repoint them to Temple Design Products, delete those
-  four collections, and redirect their URLs.
+- Collections, 6 October 2026. Main menu "Shop" now goes to Temple Design
+  Products with no sub-links. `temple-tees` is kept as the hidden marquee
+  source: retitled "Marquee: designed temples", hidden from search, handle
+  unchanged because the live marquee reads it by handle. Its `garment:tee` rule
+  means every new temple's tee joins the marquee with no extra step. Redirects
+  to Temple Design Products exist for `temple-crewnecks`, `temple-hoodies` and
+  `all-products`. Still open, Evan in admin (the store connector refuses to
+  unpublish): untick every sales channel on Temple Crewnecks, Temple Hoodies
+  and All Products. All Temples stays until the live V2 homepage stops using
+  it ("Find your temple" button and "The temples" row); then unpublish it and
+  redirect `/collections/all-temples`. V3 no longer uses it: its "The temples"
+  row is removed and its button points to Temple Design Products.
 - Evan's call: the navy "LIMITED TIME" announcement bar sits between the black
   header and the black banner. Keep it or change it.
 - The review sign-off on commits `67f5383..ff4a8f1` was never run.
