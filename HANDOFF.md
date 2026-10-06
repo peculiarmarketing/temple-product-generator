@@ -22,13 +22,12 @@ standard front, identical to the other 44 temples', so a rebuild cannot
 republish the Manti print. The Salt Lake crew and hoodie were checked and are
 correct.
 
-**Found on 1 October and still not in git:** the 22 to 24 September hoodie
-rebuild (45 new hoodies with Royal Blue added, old ones drafted with
-`-retired-2026-09-23` handles) and `scripts/web_drawings.py`, which made the
-original drawing files. Both were run from a machine whose work was never pushed.
-Commit them from that machine. The Easify option-set CSV below predates the
-hoodie rebuild, so check that its hoodie rows point at the new handles before
-you import it.
+**Pushed 6 October 2026:** the 22 to 24 September hoodie rebuild (the Eden
+Green rollout in the section below) and `scripts/web_drawings.py`, both found
+missing from git on 1 October, had been committed on one Mac but never pushed.
+They are now on GitHub. The Easify option-set CSV below predates the hoodie
+rebuild, so check that its hoodie rows point at the new handles before you
+import it.
 
 ---
 
