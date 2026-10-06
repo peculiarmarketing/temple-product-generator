@@ -23,11 +23,12 @@ republish the Manti print. The Salt Lake crew and hoodie were checked and are
 correct.
 
 **Pushed 6 October 2026:** the 22 to 24 September hoodie rebuild (the Eden
-Green rollout in the section below) and `scripts/web_drawings.py`, both found
-missing from git on 1 October, had been committed on one Mac but never pushed.
-They are now on GitHub. The Easify option-set CSV below predates the hoodie
-rebuild, so check that its hoodie rows point at the new handles before you
-import it.
+Green rollout in the section below), found missing from git on 1 October, had
+been committed on one Mac but never pushed. It is now on GitHub.
+`scripts/web_drawings.py` is still not on main: it is committed only on that
+Mac's unpushed `pen-drawn-temples` branch. The Easify option-set CSV below
+predates the hoodie rebuild, so check that its hoodie rows point at the new
+handles before you import it.
 
 ---
 
