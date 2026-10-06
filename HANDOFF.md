@@ -26,10 +26,33 @@ correct.
 **Pushed 6 October 2026:** the 22 to 24 September hoodie rebuild (the Eden
 Green rollout in the section below), found missing from git on 1 October, had
 been committed on one Mac but never pushed. It is now on GitHub.
-`scripts/web_drawings.py` is still not on main: it is on the
-`pen-drawn-temples` branch, pushed to GitHub 6 October 2026 but not merged. The Easify option-set CSV below
+`scripts/web_drawings.py` came in with the branch merge below. The Easify option-set CSV below
 predates the hoodie rebuild, so check that its hoodie rows point at the new
 handles before you import it.
+
+
+**Merged 6 October 2026: the 23 September `pen-drawn-temples` branch.** Now on
+main: `scripts/web_drawings.py` (build, push and check the drawing files),
+`scripts/pen_templates.py` (golive and revert for the two page layouts),
+`scripts/design_collection.py`, `web_drawing.py`, the theme sections
+`pp-temple-showcase` and `pp-temple-drawing`, the browser harness
+`theme/dev/harness.html`, their tests, and the spec and plan under
+`docs/superpowers/`. `pp-pen-draw.js` stays the 1 October version, which is the
+one live. The branch planned to go live through `pen_templates.py golive`; the
+drawings went live on 2 October through the Claude Code V2 theme instead. These
+items from the branch plan may still be open, and nothing in git confirms them
+either way:
+
+- The "Temple Design Products" collection (`temple-design-products`) was
+  created but not published to the Online Store.
+- Menus pointed at Temple Tees, Temple Crewnecks, Temple Hoodies and All
+  Temples. The plan was to repoint them to Temple Design Products, delete those
+  four collections, and redirect their URLs.
+- Evan's call: the navy "LIMITED TIME" announcement bar sits between the black
+  header and the black banner. Keep it or change it.
+- The review sign-off on commits `67f5383..ff4a8f1` was never run.
+- If the navy buttons and orange-only Add to Cart went live, BRAND.md section 8
+  needs them.
 
 ---
 

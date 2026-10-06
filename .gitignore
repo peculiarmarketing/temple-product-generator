@@ -65,3 +65,11 @@ artifacts/photo-mockup-spike/.flatcache/catalog/
 # the Shrine theme's own licence blobs, and a new timestamped copy lands on every
 # push, so history would accumulate them for no gain.
 artifacts/swatches/
+
+# Pen-drawing theme assets, rebuilt from ../Temples/ by scripts/web_drawings.py build
+# in about four minutes. The live theme holds the published copy. build-report.json
+# is small and records the per-temple numbers, but it lives with the files it describes.
+artifacts/web_drawings/
+
+# Page-layout backups written by scripts/pen_templates.py golive, the revert path.
+artifacts/pen_templates/

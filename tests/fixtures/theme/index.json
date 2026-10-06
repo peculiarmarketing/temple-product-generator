@@ -1,0 +1,681 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "slideshow",
+      "blocks": {
+        "hero_slide": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/product_lay.png",
+            "image_overlay_opacity": 0,
+            "heading": "Made to start the conversation",
+            "title_highlight_color": "#001A58",
+            "heading_size": "h1",
+            "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
+            "button_label": "Find your temple",
+            "link": "shopify://collections/all-temples",
+            "button_style_secondary": false,
+            "box_align": "middle-center",
+            "show_text_box": true,
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "custom",
+            "custom_colors_background": "#ffffff",
+            "custom_colors_text": "#111111",
+            "custom_colors_solid_button_background": "#F58000",
+            "custom_colors_solid_button_text": "#ffffff",
+            "custom_colors_outline_button": "#001A58",
+            "transparent_container_color": "white"
+          }
+        }
+      },
+      "block_order": [
+        "hero_slide"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "layout": "full_bleed",
+        "slide_height": "medium",
+        "slider_visual": "dots",
+        "desktop_pagination_position": "over",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "show_text_below": true,
+        "mobile_pagination_position": "under",
+        "accessibility_info": "Peculiar People temple apparel"
+      }
+    },
+    "featured_products": {
+      "type": "featured-collection",
+      "settings": {
+        "visibility": "always-display",
+        "title": "The temples",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_color": "#001A58",
+        "heading_size": "h2",
+        "collection": "all-temples",
+        "products_to_show": 12,
+        "show_view_all": true,
+        "view_all_style": "outline",
+        "image_ratio": "square",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "enable_quick_add": false,
+        "color_scheme": "background-1",
+        "cards_color_scheme": "background-1",
+        "columns_desktop": 4,
+        "slider_desktop": false,
+        "desktop_spacing": 20,
+        "columns_mobile": "2",
+        "slider_mobile": false,
+        "desktop_dots_position": "hidden",
+        "desktop_arrows_position": "hidden",
+        "mobile_dots_position": "hidden",
+        "mobile_arrows_position": "hidden",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "browse": {
+      "type": "collection-list",
+      "blocks": {
+        "c_tees": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "temple-tees",
+            "custom_title": ""
+          }
+        },
+        "c_crews": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "temple-crewnecks",
+            "custom_title": ""
+          }
+        },
+        "c_hoods": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "temple-hoodies",
+            "custom_title": ""
+          }
+        },
+        "c_utah": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "utah-temples",
+            "custom_title": ""
+          }
+        },
+        "c_idaho": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "idaho-temples",
+            "custom_title": ""
+          }
+        },
+        "c_cali": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "california-temples",
+            "custom_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_tees",
+        "c_crews",
+        "c_hoods",
+        "c_utah",
+        "c_idaho",
+        "c_cali"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "title": "Browse",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_color": "#001A58",
+        "heading_size": "h2",
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "show_view_all": false,
+        "card_style": "standard",
+        "cards_color_scheme": "background-1",
+        "card_text_alignment": "center",
+        "card_title_position": "under",
+        "columns_desktop": 3,
+        "columns_mobile_int": 2,
+        "slider_desktop": false,
+        "slider_mobile": false,
+        "desktop_dots_position": "hidden",
+        "desktop_arrows_position": "hidden",
+        "mobile_dots_position": "hidden",
+        "mobile_arrows_position": "hidden",
+        "pattern_color": "#001A58",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "intro": {
+      "type": "rich-text",
+      "blocks": {
+        "intro_heading": {
+          "type": "heading",
+          "settings": {
+            "visibility": "always-display",
+            "title": "\"What's on your shirt?\"",
+            "heading_tag": "h2",
+            "heading_size": "h2",
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "title_highlight_1": "solid-color",
+            "title_highlight_1_color": "#001A58",
+            "highlighted-1_border_color": "#001A58",
+            "title_highlight_1_underline-color": "#001A58",
+            "title_highlight_1_handwritten-color": "#001A58",
+            "title_highlight_2_color": "#001A58",
+            "highlighted-2_border_color": "#001A58",
+            "title_highlight_2_underline-color": "#001A58",
+            "title_highlight_2_handwritten-color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        },
+        "intro_text": {
+          "type": "text",
+          "settings": {
+            "visibility": "always-display",
+            "text": "<p>That question is the whole point. Every piece is a temple you know, drawn in line and printed heavy, so the person who asks gets to hear why it matters to you.</p>",
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "text_size": 16,
+            "bold_solid_color": "#001A58",
+            "italic_solid_color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        }
+      },
+      "block_order": [
+        "intro_heading",
+        "intro_text"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "full_width": true,
+        "color_scheme": "background-1",
+        "pattern_color": "#001A58",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "process": {
+      "type": "comparison-slider",
+      "name": "The temple, the drawing",
+      "settings": {
+        "visibility": "always-display",
+        "title": "Carefully made designs",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_color": "#001A58",
+        "heading_size": "h2",
+        "text": "<p>Made to capture all the details that are important to you.</p>",
+        "color_scheme": "background-1",
+        "custom_colors_solid_button_background": "#F58000",
+        "custom_colors_solid_button_text": "#ffffff",
+        "custom_colors_outline_button": "#001A58",
+        "pattern_color": "#001A58",
+        "layout": "slider_second",
+        "before_label": "The temple",
+        "after_label": "The drawing",
+        "labels_color_scheme": "accent-1",
+        "line_color": "background-1",
+        "arrows_style": "circle",
+        "before_image": "shopify://shop_images/1_a4ea5b67-62a6-4abb-bbef-0d555fc340f0.png",
+        "after_image": "shopify://shop_images/2.png",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "suggest_heading": {
+      "type": "rich-text",
+      "blocks": {
+        "sug_h": {
+          "type": "heading",
+          "settings": {
+            "visibility": "always-display",
+            "title": "Have a design suggestion?",
+            "heading_tag": "h2",
+            "heading_size": "h2",
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "title_highlight_1": "solid-color",
+            "title_highlight_1_color": "#001A58",
+            "highlighted-1_border_color": "#001A58",
+            "title_highlight_1_underline-color": "#001A58",
+            "title_highlight_1_handwritten-color": "#001A58",
+            "title_highlight_2_color": "#001A58",
+            "highlighted-2_border_color": "#001A58",
+            "title_highlight_2_underline-color": "#001A58",
+            "title_highlight_2_handwritten-color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        },
+        "sug_t": {
+          "type": "text",
+          "settings": {
+            "visibility": "always-display",
+            "text": "<p>Temple you want that we haven't drawn yet? Tell us and we'll move it up the list. We'll email you once, the day it goes live.</p>",
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "text_size": 16,
+            "bold_solid_color": "#001A58",
+            "italic_solid_color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        }
+      },
+      "block_order": [
+        "sug_h",
+        "sug_t"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "full_width": true,
+        "color_scheme": "background-1",
+        "pattern_color": "#001A58",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "suggest_form": {
+      "type": "contact-form",
+      "blocks": {
+        "field_row_twjC7R": {
+          "type": "field_row",
+          "settings": {
+            "input_1_enabled": true,
+            "input_1_type": "custom",
+            "input_1_required": true,
+            "input_1_error_message": "Tell us which temple",
+            "input_1_custom_name": "Design suggestion",
+            "input_2_enabled": true,
+            "input_2_type": "email",
+            "input_2_required": true,
+            "input_2_error_message": "We need an email to tell you when it is live",
+            "input_2_custom_name": "Custom input name"
+          }
+        }
+      },
+      "block_order": [
+        "field_row_twjC7R"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "title": "",
+        "heading_size": "h2",
+        "button_full_width": true,
+        "color_scheme": "background-1",
+        "custom_colors_solid_button_background": "#F58000",
+        "custom_colors_solid_button_text": "#ffffff",
+        "pattern_color": "#001A58",
+        "input_styling": "theme",
+        "dropdown_styling": "theme",
+        "padding_top": 24,
+        "padding_bottom": 36
+      }
+    },
+    "founder": {
+      "type": "rich-text",
+      "blocks": {
+        "intro_heading": {
+          "type": "heading",
+          "settings": {
+            "visibility": "always-display",
+            "title": "From the Founder",
+            "heading_tag": "h2",
+            "heading_size": "h2",
+            "alignment": "left",
+            "mobile_alignment": "mobile-left",
+            "title_highlight_1": "solid-color",
+            "title_highlight_1_color": "#001A58",
+            "highlighted-1_border_color": "#001A58",
+            "title_highlight_1_underline-color": "#001A58",
+            "title_highlight_1_handwritten-color": "#001A58",
+            "title_highlight_2_color": "#001A58",
+            "highlighted-2_border_color": "#001A58",
+            "title_highlight_2_underline-color": "#001A58",
+            "title_highlight_2_handwritten-color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        },
+        "intro_text": {
+          "type": "text",
+          "settings": {
+            "visibility": "always-display",
+            "text": "<p>You put on a Peculiar People shirt because it reminds you why we're all here. Because that building is where you were sealed to your spouse, where you got an answer to a prayer you'd been carrying for years, where you first felt something you couldn't explain away. A stepping stone. A day you'll never forget.</p><p>You put it on because you want to share that with someone. Because gospel conversations are hard to start. Harder than they were on your mission, when the whole day was built around them.</p><p>It's the new white shirt and tie. The new dress. The new name tag you don't need a calling to wear. A shirt you may even feel prompted to wear some days.</p><p>That's why I started this company. It doesn't take much for someone who has been prepared to tap you on the shoulder and ask a question that changes the direction of their life. No argument, no pitch, no lesson plan. Just an opening.</p><p>- Evan</p>",
+            "alignment": "left",
+            "mobile_alignment": "mobile-left",
+            "text_size": 16,
+            "bold_solid_color": "#001A58",
+            "italic_solid_color": "#001A58",
+            "margin_top": 15,
+            "margin_bottom": 15
+          }
+        }
+      },
+      "block_order": [
+        "intro_heading",
+        "intro_text"
+      ],
+      "settings": {
+        "visibility": "always-display",
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "full_width": false,
+        "color_scheme": "background-1",
+        "pattern_color": "#001A58",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "what_you_get": {
+      "type": "multicolumn",
+      "blocks": {
+        "wyg_0": {
+          "type": "column",
+          "settings": {
+            "title": "Heavier than your usual tee",
+            "text": "<p>The tee is 7.7 oz cotton. The sweatshirt and hoodie are 10.3 oz fleece, and they feel broken in the day they arrive.</p>"
+          }
+        },
+        "wyg_1": {
+          "type": "column",
+          "settings": {
+            "title": "Drawn one temple at a time",
+            "text": "<p>Every design is original line art of a single temple, with its city printed underneath. Our logo goes on the front.</p>"
+          }
+        },
+        "wyg_2": {
+          "type": "column",
+          "settings": {
+            "title": "Printed in the USA",
+            "text": "<p>We print your order after you place it. Most orders arrive in 5 to 7 business days.</p>"
+          }
+        },
+        "wyg_3": {
+          "type": "column",
+          "settings": {
+            "title": "Made right, or we replace it",
+            "text": "<p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "wyg_0",
+        "wyg_1",
+        "wyg_2",
+        "wyg_3"
+      ],
+      "settings": {
+        "title": "What you get",
+        "heading_size": "h2",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_color": "#001A58",
+        "color_scheme": "background-1",
+        "cards_color_scheme": "background-2",
+        "image_width": "third",
+        "column_alignment": "center",
+        "columns_desktop": 4,
+        "columns_mobile": "1",
+        "slider_mobile": false,
+        "slider_desktop": false,
+        "desktop_dots_position": "hidden",
+        "desktop_arrows_position": "hidden",
+        "mobile_dots_position": "hidden",
+        "mobile_arrows_position": "hidden",
+        "desktop_heading_size": 18,
+        "mobile_heading_size": 18,
+        "pattern_color": "#001A58",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "faq": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_content_HiKLPd": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "Is it appropriate to wear a temple on a shirt?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>I get this one a lot, and I thought about it before I drew the first one. These are architectural drawings of a building, not anything that happens inside it. No slogans, nothing that turns the temple into a punchline. If you'd put a framed temple photo in your living room, this is that same idea on cotton.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_DJ79XT": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "Is Peculiar People affiliated with the Church?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>No. We are an independent company. Peculiar People is not affiliated with, endorsed by, or sponsored by The Church of Jesus Christ of Latter-day Saints.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_iCLqdM": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "Where do people usually wear these?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>Our goal with our clothing is for it to be seen. Which means it also needs to be your go-to comfort clothing.<br/><br/>It's made to be the first thing you grab when you want to be comfortable, and the first clothing you'll be prompted to wear.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_6Py6Ex": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "How do I wash it so the print lasts?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>Our prints are made to last. To make sure they do, use no bleach and no fabric softener, which coats the fibers and dulls the print over time. Don't iron over the design. You can wash it before the first wear to get the loose surface dye off, but you don't have to.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_WdJtJy": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "It says unisex. How do I size it if I want a women's fit?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>It's a men's cut. If you normally wear a women's medium, order a small for a fitted look or a medium if you want it roomier. The size guide video shows a woman at 5'9\" in a small and a man at 6'4\" in a large.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_rBijbT": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "Where does the artwork come from?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>Original line art, made here, one temple at a time. Every drawing gets checked against verified references before we add it to our collection.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_KDgPP7": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "Do you do group orders?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>Yes. Ward and stake temple trips, mission reunions, family reunions. Email support@peculiarpeopleco.com with the temple, the garment, and roughly how many people, and I'll get back to you with a price.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        },
+        "collapsible_row_content_YxXEG3": {
+          "type": "collapsible-row-content",
+          "settings": {
+            "open": false,
+            "heading": "What is the digital art file?",
+            "icon": "question_mark",
+            "filled_icon": false,
+            "row_content": "<p>An SVG of the temple line art for $4.95. Same drawing that goes on the shirts. It's a vector, so it scales to any size without going soft at the edges, and it opens in Cricut, Illustrator, Figma, or anything else that reads vectors.<br/><br/>This file should not be shared and is not permitted for commercial use.</p>",
+            "page": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "collapsible_row_content_HiKLPd",
+        "collapsible_row_content_DJ79XT",
+        "collapsible_row_content_iCLqdM",
+        "collapsible_row_content_6Py6Ex",
+        "collapsible_row_content_WdJtJy",
+        "collapsible_row_content_rBijbT",
+        "collapsible_row_content_KDgPP7",
+        "collapsible_row_content_YxXEG3"
+      ],
+      "name": "Collapsible content",
+      "settings": {
+        "display_id": false,
+        "visibility": "always-display",
+        "caption": "",
+        "title": "FAQ",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_bg-color": "#eef1f8",
+        "title_highlight_1_color": "#001A58",
+        "highlighted-1_border_radius": 8,
+        "highlighted-1_border_width": 0,
+        "highlighted-1_border": "solid",
+        "highlighted-1_border_color": "#001A58",
+        "highlighted-1_padding-block": 0.3,
+        "highlighted-1_padding-inline": 0.3,
+        "title_highlight_1_underline-thickness": 2,
+        "title_highlight_1_underline-color": "#001A58",
+        "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_underline-color-position": 25,
+        "title_highlight_1_handwritten-color": "#001A58",
+        "title_highlight_1_handwritten-stroke-width": 3,
+        "title_highlight_1_handwritten-position": 60,
+        "title_highlight_2": "none",
+        "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_bg-color": "#eef1f8",
+        "title_highlight_2_color": "#001A58",
+        "highlighted-2_border_radius": 8,
+        "highlighted-2_border_width": 0,
+        "highlighted-2_border": "solid",
+        "highlighted-2_border_color": "#001A58",
+        "highlighted-2_padding-block": 0.3,
+        "highlighted-2_padding-inline": 0.3,
+        "title_highlight_2_underline-thickness": 2,
+        "title_highlight_2_underline-color": "#001A58",
+        "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_underline-color-position": 25,
+        "title_highlight_2_handwritten-color": "#001A58",
+        "title_highlight_2_handwritten-stroke-width": 3,
+        "title_highlight_2_handwritten-position": 60,
+        "heading_size": "h2",
+        "custom_desktop_size": 39,
+        "custom_mobile_size": 28,
+        "color_scheme": "background-1",
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "pattern_bg": "none",
+        "pattern_color": "#001A58",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
+        "video_muted_autoplay": true,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "rows_spacing": 4,
+        "row_heading_size": "medium",
+        "collapse_icon": "carret",
+        "collapse_icon_style": "standard",
+        "collapse_icon_radius": 15,
+        "animation_speed": 0.4,
+        "border_type": "bottom",
+        "border_thickness": 1,
+        "border_style": "solid",
+        "corner_radius": 8,
+        "enable_custom_style": false,
+        "heading_padding_vertical": 12,
+        "heading_padding_horizontal": 10,
+        "content_padding_vertical": 10,
+        "content_padding_horizontal": 10,
+        "closed_state_border": "#dddddd",
+        "closed_state_header_bg": "#f9f9f9",
+        "closed_state_header_text": "#121212",
+        "closed_state_row_icon": "#121212",
+        "closed_state_collapse_icon": "#121212",
+        "closed_state_collapse_icon_solid": "#fff",
+        "closed_state_collapse_bg": "#121212",
+        "closed_state_content_bg": "#f9f9f9",
+        "closed_state_content_text": "#121212",
+        "open_state_border": "#c9d1e6",
+        "open_state_header_bg": "#f5f7fb",
+        "open_state_header_text": "#000000",
+        "open_state_row_icon": "#001A58",
+        "open_state_collapse_icon": "#121212",
+        "open_state_collapse_icon_solid": "#fff",
+        "open_state_collapse_bg": "#001A58",
+        "open_state_content_bg": "#f5f7fb",
+        "open_state_content_text": "#121212",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured_products",
+    "browse",
+    "intro",
+    "founder",
+    "what_you_get",
+    "process",
+    "faq",
+    "suggest_heading",
+    "suggest_form"
+  ]
+}
