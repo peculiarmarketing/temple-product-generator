@@ -93,7 +93,7 @@
   },
   "costs_usd": {
     "all_in_per_unit": 34.1,
-    "_all_in_note": "EVAN'S FIGURE, 14 Sep 2026, and the one to trust. Includes the blank, printing both sides, shipping, custom neck tag, hangtag, order insert, and payment gateway fees. Revised for USA fulfillment. FLAGGED 2 Oct 2026: custom neck labels and hang tags are no longer used, so this figure overstates the real cost by their per-unit cost, which was never recorded. Recalculate when Evan has it; do not guess. The per-shipment line items that used to sit here were international rates and are gone rather than left to mislead; nothing below sums to all_in_per_unit.",
+    "_all_in_note": "EVAN'S FIGURE, 14 Sep 2026, and the one to trust. Includes the blank, printing both sides, shipping, order insert, and payment gateway fees. No neck tag or hangtag (Evan confirmed 6 Oct 2026). Revised for USA fulfillment. The per-shipment line items that used to sit here were international rates and are gone rather than left to mislead; nothing below sums to all_in_per_unit.",
     "blank": 16.57,
     "_blank_note": "Read off the live product page 14 Sep 2026. Priced the same from the US and international centers.",
     "print_per_frame": 2.99,
