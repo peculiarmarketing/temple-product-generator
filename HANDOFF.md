@@ -1,3 +1,37 @@
+# Pen-drawn temples: live since 2 October 2026
+
+The pen-drawing animation draws each temple in drawing order: outline, inner
+structure, windows and doors one at a time, then small marks. Stroke files
+come from `scripts/pen_strokes.py`. Evan uploaded the 45 rebuilt
+`pp-temple-<slug>.json` files and `pp-pen-draw.js` to the **"Claude Code V2"**
+theme (`gid://shopify/OnlineStoreTheme/194242150772`) and published it. The
+homepage showcase is on `templates/index.json` and the product band is on
+`templates/product.json`. The old live theme (id 193770258804) is unpublished
+and now named "Claude code original".
+
+Details and the rebuild command: `theme/README.md`. Rollback files:
+`theme-backup/2026-09-23-original/`.
+
+**Fixed 3 October 2026: the Salt Lake tee's chest logo image.** Its "chest logo
+flat lay - Maroon" was a Manti back print (same 1,259,725-byte file as the Manti
+tee's back; every other tee front is 1,071,804 bytes). The archive copy
+`flat-originals/salt-lake/tee_maroon_front.png` was the same Manti back. The live
+image was replaced with the standard chest logo flat lay, put back in slot 2 and
+the wrong one deleted; it was bound to no variant. The archive copy is now the
+standard front, identical to the other 44 temples', so a rebuild cannot
+republish the Manti print. The Salt Lake crew and hoodie were checked and are
+correct.
+
+**Found on 1 October and still not in git:** the 22 to 24 September hoodie
+rebuild (45 new hoodies with Royal Blue added, old ones drafted with
+`-retired-2026-09-23` handles) and `scripts/web_drawings.py`, which made the
+original drawing files. Both were run from a machine whose work was never pushed.
+Commit them from that machine. The Easify option-set CSV below predates the
+hoodie rebuild, so check that its hoodie rows point at the new handles before
+you import it.
+
+---
+
 # DONE 23 Sep 2026: the Eden Green hoodie rollout. Follow-ups below still open.
 
 All 45 temple hoodies are live with seven colours, Eden Green (Tapstitch 6655)
@@ -174,9 +208,9 @@ products carry it already. The CC1717 intro could not simply be reused for the
 tee: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7 oz
 (260 gsm) and not garment-dyed, so copying it would have published false claims.
 
-**One thing is waiting on you:** whether the size guide gets a new video or the
-branded chart images in `Important Elements/`. This matters less now that the
-guide is out of the description; it is about where a size guide lives at all.
+**Decided 2 October 2026: the size guide stays as is for now.** No new video
+and no branded chart images from `Important Elements/` for the moment; the
+guide stays out of the description. Revisit only if Evan raises it.
 
 **Every temple now has a researched `temple-facts.html`, and the runner has no
 blocked rows.** It still blocks any temple that lacks one, which is correct: the
@@ -224,7 +258,8 @@ light and would have the same problem more severely.
 **Worth a second look on price:** the crew blank costs more than the hoodie blank
 ($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
 but the crew sells for $10.00 less. That is $9.43 less gross on a garment that
-costs the same to make. Prices are unchanged and this is flagged, not decided.
+costs the same to make. **Decided 2 October 2026: the crew price stays as is**
+($64.99). This is settled, not an open question.
 
 **Nothing else needs you.** Every temple in the catalog is traced, researched
 and published.
@@ -526,26 +561,70 @@ In order, on a new session:
    distribute, wait for Shopify, set productType, run the fixups, run
    `tapstitch_variant_images.py`, update the ledger.
 
-## Not yet reviewed
+## Review of 2 October 2026
 
-The work up to and including the store pull-down went through the full review
-loop (six specialists plus a final judge, all signed off). **Changes made after
-that review have not been through it.** The 16 September morning work DID go
-through the full loop
-(six specialists plus the judge) and every finding was fixed and signed off, which
-covers `print_areas`, `placement`, the store-product calls, the crew blank config
-and the crew size guide. NOT yet reviewed: the hoodie publish and its blank config,
-`scripts/tapstitch_variant_images.py`, the Easify `sets.json` rebind, the hoodie
-size guide, `tests/test_tapstitch_placement.py` and its fixtures, and the
-`post_publish` wiring in `finish_on_shopify`. Also still unreviewed from 15
-September: `scripts/tapstitch_capture.py` and the retired selector block. The API client has been exercised against
-the live account but never reviewed. Also: the blank specs and colour configs, the
-`colorway_renames_by_type` mechanism in `scripts/shopify_fixups.py`, the centring
-and 0.8in spacing, the `kept`-records change in `scripts/store_pulldown.py`, and
-several test rewrites. Run `review-loop` over the delta before any of it drives
-the live editor.
+The whole "not yet reviewed" list went through review on 2 October 2026: the
+hoodie publish and blank configs, `tapstitch_variant_images.py`, the Easify
+`sets.json` rebind, the hoodie size guide, `test_tapstitch_placement.py` and its
+fixtures, the `post_publish` wiring, `tapstitch_capture.py` and the retired
+selector block, `tapstitch_api.py`, the blank specs and colour configs,
+`colorway_renames_by_type`, centring and spacing (the value is 0.7in, settled
+in docs/decisions.md; "0.8in" was a stale label), the `kept`-records change, and
+the test rewrites. Also reviewed: `scripts/pen_strokes.py` and
+`theme/assets/pp-pen-draw.js`. Six reviewers, one per area, then a judge who
+checked every finding against the code. Nothing touched Tapstitch or the store.
 
-All six test files pass as of this commit:
+**Fixed (clearly broken):**
+- `tapstitch_publish.py check` printed "blocked" for missing swatches and colour
+  name drift but exited 0. It now exits 1.
+- `tapstitch_capture.py` truncated a body before redacting it, so a JSON body
+  over 200KB was no longer JSON and was written unredacted. It now redacts first.
+  The console line also printed the unredacted URL.
+- `store_pulldown.py delete` would permanently delete the Temple Art File (a
+  snapshot `kept` record passes every other guard). Titles in
+  `KEEP_LIVE_TITLES` are now refused.
+- `pen_strokes.py` printed a leftover debug line on every run.
+
+**Open, for a decision or live evidence (nothing here is broken today):**
+- *Fails quietly:* `rebind()` returns "nothing to change" when a variant's
+  front is not in the pairs or its back is not in the product's media, and the
+  row goes live with the shopper on the near-blank front. It needs a check that
+  every variant ends on a back; that needs real filenames from a publish.
+- *Duplicate risk:* `create_store_product` is a POST with no "create started"
+  marker. A lost response then a re-run makes a second store product inside
+  Tapstitch. Add a marker like `distribute_started_at`, and never wrap this
+  call in retries.
+- *Evan's call:* `first_colors_by_type` lets the Tapstitch tee's first colour
+  (Black) lead on retired Printify tees too, against the Moss decision in
+  docs/decisions.md. Also: the crew's `lead_colorCode` is Black while its
+  storefront first colour is Heather Gray.
+- *Second entry point:* `tapstitch_publish.py finish` skips the import wait,
+  the rebind and the stale-colour check, and leaves the row in a state the
+  runner never resumes. Retire it or make it call the runner's finish.
+- *Guard text:* the hoodie copy README says a missing `product-details.html`
+  blocks the publish; the code falls back to intro + size guide instead.
+  `missing_garment_setup` should check `product-details.html`.
+- *Unknown type:* `mockups_back_first` compares Tapstitch's `colorId` with an int;
+  if it arrives as a string the lead-colour sort silently does nothing.
+  Normalise both with `str()`.
+- *Store pulldown:* whether any `kept` record should be deletable at all. Only
+  the Temple Art File is blocked now; the other four are Tapstitch test products.
+- *Pen drawing script* (`pp-pen-draw.js`, live): an error inside an animation
+  frame freezes the showcase; one bad temple hides the whole showcase rather
+  than dropping that temple; no load timeouts; a failed load after a fade
+  leaves the stage blank about 5s per retry; old iOS (before 15) collapses the
+  drawing box; reduced motion still cycles the showcase. None is triggered by
+  the current files. Fixing them means a theme upload.
+- *Pen strokes:* 54 of 20,314 committed `lens` values are off by up to 0.22
+  units (two different roundings); it crashes on art with no lines or one line
+  weight; manti takes 43s. Fix at the next regeneration.
+- Smaller: stale comments and docstrings (old colour names, the size-guide
+  description block, "NOT yet replayed"), a few vacuous or mislabelled tests
+  (`test_store_pulldown.py` "two live garments disagreeing", the Easify paused
+  set, the landscape truncation case), no kept-record test.
+
+Five test files pass here. The other four need the sibling `../Temples/` art
+folder, which a cloud session does not have; run them on the Mac:
 
 ```bash
 for t in tests/test_*.py; do ./.venv.nosync/bin/python "$t"; done

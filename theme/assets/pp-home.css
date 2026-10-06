@@ -1,0 +1,317 @@
+/* Peculiar People homepage sections: sections/pp-garment-anatomy.liquid,
+   sections/pp-temple-marquee.liquid and sections/pp-founder.liquid.
+   Behaviour lives in pp-home.js. Every animation here is opt-in: it only runs once
+   the script has marked a section as armed, and never under reduced motion. */
+
+.pp-anatomy,
+.pp-marquee,
+.pp-founder {
+  --pp-black: #121212;
+  --pp-navy: #001A58;
+  --pp-ink: #2e2a39;
+  --pp-white: #fff;
+  --pp-halo: rgba(255, 255, 255, .6);
+  --pp-radius: 4px;
+}
+.pp-anatomy *, .pp-marquee *, .pp-founder * { box-sizing: border-box; }
+
+/* ---------- Garment anatomy ---------- */
+
+.pp-anatomy { background: var(--pp-white); color: var(--pp-ink); }
+.pp-anatomy__inner { max-width: 1200px; margin: 0 auto; padding: 40px 24px 48px; }
+.pp-anatomy__intro { max-width: 640px; margin: 0 auto 32px; text-align: center; }
+.pp-anatomy__heading { margin: 16px 0; color: var(--pp-navy); }
+.pp-anatomy__text { font-size: 16px; line-height: 1.6; }
+.pp-anatomy__text p { margin: 0; }
+
+/* Desktop: label column, front, back, label column. The callouts reach out of
+   their image into the label column beside it. */
+.pp-anatomy__stage {
+  --pp-label-col: 200px;
+  --pp-gap: 24px;
+  display: grid;
+  grid-template-columns: var(--pp-label-col) 1fr 1fr var(--pp-label-col);
+  gap: var(--pp-gap);
+  align-items: center;
+}
+.pp-anatomy__fig { margin: 0; min-width: 0; }
+.pp-anatomy__fig--front { grid-column: 2; }
+.pp-anatomy__fig--back { grid-column: 3; }
+.pp-anatomy__media { position: relative; }
+.pp-anatomy__img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--pp-radius); }
+
+/* A callout is a zero-height row at the point's height: the dot, then the line out
+   to the label column's outer edge. The label sits on the far end of the line,
+   above it, or below it for --below, so labels stacked on one side can never
+   collide however small the images get. */
+.pp-callout {
+  position: absolute;
+  top: var(--y);
+  height: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+/* Left callout: from the label column's outer edge in to the point. */
+.pp-callout--left {
+  left: calc(-1 * (var(--pp-label-col) + var(--pp-gap)));
+  right: calc(100% - var(--x));
+  flex-direction: row-reverse;
+}
+/* Right callout: from the point out to the label column's outer edge. */
+.pp-callout--right {
+  left: var(--x);
+  right: calc(-1 * (var(--pp-label-col) + var(--pp-gap)));
+}
+.pp-callout__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin: 0 -6px;  /* centred on the point */
+  border: 2px solid var(--pp-navy);
+  border-radius: 50%;
+  background: var(--pp-white);
+  box-shadow: 0 0 0 2px var(--pp-halo);
+  position: relative;
+  z-index: 1;
+}
+.pp-callout__num { display: none; }
+.pp-callout__line {
+  flex: 1 1 auto;
+  min-width: 24px;
+  height: 1.5px;
+  background: var(--pp-navy);
+  box-shadow: 0 0 0 .5px var(--pp-halo);  /* stays visible over a dark shirt */
+}
+.pp-callout--left .pp-callout__line { transform-origin: right center; }
+.pp-callout--right .pp-callout__line { transform-origin: left center; }
+.pp-callout__label {
+  position: absolute;
+  bottom: 8px;
+  width: var(--pp-label-col);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--pp-ink);
+}
+.pp-callout--below .pp-callout__label { bottom: auto; top: 8px; }
+.pp-callout--left .pp-callout__label { left: 0; }
+.pp-callout--right .pp-callout__label { right: 0; }
+.pp-callout__eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-heading-family, Montserrat), Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--pp-navy);
+}
+.pp-anatomy__list { display: none; }
+
+/* The draw-out. Armed by pp-home.js (never under reduced motion), played when the
+   section scrolls into view: dot, then line, then label, one callout after another. */
+.pp-anatomy.is-armed .pp-callout__dot { transform: scale(0); transition: transform .3s ease calc(var(--i) * .35s); }
+.pp-anatomy.is-armed .pp-callout__line { transform: scaleX(0); transition: transform .6s cubic-bezier(.65, 0, .35, 1) calc(var(--i) * .35s + .15s); }
+.pp-anatomy.is-armed .pp-callout__label { opacity: 0; transition: opacity .4s ease calc(var(--i) * .35s + .55s); }
+.pp-anatomy.is-in .pp-callout__dot { transform: scale(1); }
+.pp-anatomy.is-in .pp-callout__line { transform: scaleX(1); }
+.pp-anatomy.is-in .pp-callout__label { opacity: 1; }
+
+@media (min-width: 750px) and (max-width: 989px) {
+  .pp-anatomy__stage { --pp-label-col: 152px; --pp-gap: 16px; }
+}
+
+/* Phones: images stacked, numbered points on them, the labels as a list below. */
+@media (max-width: 749px) {
+  .pp-anatomy__inner { padding: 32px 20px 36px; }
+  .pp-anatomy__intro { margin-bottom: 24px; }
+  .pp-anatomy__stage { grid-template-columns: 1fr; gap: 12px; max-width: 360px; margin: 0 auto; }
+  .pp-anatomy__fig--front, .pp-anatomy__fig--back { grid-column: 1; }
+  /* The numbered mark sits beside its point, on the line's side, so it never covers
+     the print it names. */
+  .pp-callout, .pp-callout--left, .pp-callout--right { left: var(--x); right: auto; transform: translateX(4px); }
+  .pp-callout--left { transform: translateX(calc(-100% - 4px)); }
+  .pp-callout__line, .pp-callout__label { display: none; }
+  .pp-callout__dot {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    border: 2px solid var(--pp-white);
+    background: var(--pp-navy);
+    color: var(--pp-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pp-callout__num { display: block; font-size: 12px; font-weight: 700; line-height: 1; }
+  .pp-anatomy__list {
+    display: grid;
+    gap: 12px;
+    max-width: 360px;
+    margin: 24px auto 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pp-anatomy__list li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; line-height: 1.4; }
+  .pp-anatomy__list-num {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--pp-navy);
+    color: var(--pp-white);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pp-anatomy.is-armed .pp-callout__dot { transition-delay: calc(var(--i) * .12s); }
+}
+
+/* ---------- Temple marquee ---------- */
+
+.pp-marquee { background: var(--pp-navy); color: var(--pp-white); padding: 48px 0; }
+.pp-marquee__heading { margin: 0 auto 32px; padding: 0 24px; max-width: 1200px; color: var(--pp-white); text-align: center; }
+.pp-marquee__viewport {
+  overflow: hidden;
+  padding: 8px 0;  /* room for the focus ring */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.pp-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: pp-marquee var(--pp-marquee-duration, 180s) linear infinite;
+}
+/* Exactly half the track is one copy, so -50% lands on the start of the second
+   copy and the loop has no seam. Items carry their own trailing space (no gap on
+   the track) so both halves measure the same. */
+@keyframes pp-marquee { to { transform: translateX(-50%); } }
+.pp-marquee__list { display: flex; margin: 0; padding: 0; list-style: none; }
+.pp-marquee__item { flex: none; width: 220px; margin-right: 32px; }
+.pp-marquee__tile {
+  display: block;
+  color: var(--pp-white);
+  text-decoration: none;
+  border-radius: var(--pp-radius);
+}
+.pp-marquee__tile:focus-visible { outline: 2px solid var(--pp-white); outline-offset: 4px; }
+.pp-marquee__frame { display: block; aspect-ratio: 5 / 4; padding: 8px; }
+.pp-marquee__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity .3s ease;
+}
+.pp-marquee__city {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-heading-family, Montserrat), Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .16em;
+  text-align: center;
+}
+.pp-marquee__tile:hover .pp-marquee__city { text-decoration: underline; text-underline-offset: 4px; }
+
+.pp-marquee:hover .pp-marquee__track,
+.pp-marquee:focus-within .pp-marquee__track,
+.pp-marquee.is-offscreen .pp-marquee__track { animation-play-state: paused; }
+
+/* Keyboard: once a tile has focus the row stops and scrolls by hand, so the focused
+   tile can always be brought into view (pp-home.js). */
+.pp-marquee.is-manual .pp-marquee__track { animation: none; }
+.pp-marquee.is-manual .pp-marquee__viewport { overflow-x: auto; }
+
+@media (max-width: 749px) {
+  .pp-marquee { padding: 36px 0; }
+  .pp-marquee__item { width: 160px; margin-right: 20px; }
+  .pp-marquee__city { letter-spacing: .12em; }
+}
+
+/* Reduced motion: a still row the shopper scrolls sideways. */
+@media (prefers-reduced-motion: reduce) {
+  .pp-marquee__track { animation: none; }
+  .pp-marquee__list--copy { display: none; }
+  .pp-marquee__viewport {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 8px 24px 16px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .pp-marquee__item { scroll-snap-align: start; scroll-margin-left: 24px; }
+  .pp-anatomy .pp-callout > * { transition: none !important; }
+}
+
+/* ---------- Founder letter ---------- */
+
+.pp-founder { background: var(--pp-white); color: var(--pp-ink); }
+.pp-founder__band { background: var(--pp-navy); color: var(--pp-white); padding: 72px 24px; }
+.pp-founder__quote { position: relative; max-width: 900px; margin: 0 auto; text-align: center; }
+.pp-founder__mark {
+  display: block;
+  height: .5em;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 96px;
+  line-height: 1;
+  color: rgba(255, 255, 255, .5);
+}
+.pp-founder__quote-text { margin: 0; padding: 0; border: 0; }
+.pp-founder__quote-text p {
+  margin: 0;
+  font-family: var(--font-heading-family, Montserrat), Arial, sans-serif;
+  font-size: clamp(30px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  color: var(--pp-white);
+  text-wrap: balance;
+}
+
+.pp-founder__split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 56px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 40px;
+}
+.pp-founder__media { border-radius: var(--pp-radius); overflow: hidden; }
+.pp-founder__img { display: block; width: 100%; height: auto; }
+.pp-founder__media--art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  padding: 14%;
+  background: var(--pp-navy);
+}
+.pp-founder__art { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pp-founder__split--solo { grid-template-columns: minmax(0, 1fr); max-width: 800px; }
+.pp-founder__heading { margin: 0 0 20px; color: var(--pp-navy); }
+.pp-founder__body { max-width: 62ch; font-size: 16px; line-height: 1.7; }
+.pp-founder__body p { margin: 0 0 1em; }
+.pp-founder__body p:last-child { margin-bottom: 0; }
+
+@media (min-width: 990px) {
+  /* The letter is long; the image stays beside it while it is read. */
+  .pp-founder__media { position: sticky; top: 100px; }
+}
+
+@media (max-width: 989px) {
+  .pp-founder__split { grid-template-columns: 1fr; gap: 32px; padding: 48px 24px; }
+  .pp-founder__media { max-width: 520px; width: 100%; margin: 0 auto; }
+  .pp-founder__media--art { aspect-ratio: 4 / 3; padding: 10%; }
+  .pp-founder__body { max-width: none; }
+}
+
+@media (max-width: 749px) {
+  .pp-founder__band { padding: 48px 20px; }
+  .pp-founder__mark { font-size: 72px; }
+  .pp-founder__split { padding: 36px 20px 40px; }
+}

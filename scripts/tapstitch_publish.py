@@ -176,7 +176,7 @@ def cmd_check():
             print(f"  {state:<22} {c[state]}")
     ready = [r for r in data["rows"] if r["state"] == "file-approved"]
     print(f"\n{len(ready)} rows are approved and waiting for a product to be built.")
-    return 0 if not (editor or garments) else 1
+    return 0 if not (editor or garments or swatch_missing or drift) else 1
 
 
 def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_run=False,

@@ -1,0 +1,86 @@
+{%- comment -%}
+  Peculiar People homepage: every temple's white line art on navy, in a slow
+  continuous loop, each tile linking to that temple's tee. Built from the tee
+  collection: a product's `temple:` tag gives the slug, the slug gives the art
+  (assets/pp-temple-<slug>.webp) and the city line (snippets/pp-temple-city.liquid,
+  generated from the stroke files). A temple with no city line has no drawing
+  uploaded yet and is left out.
+
+  The list is printed twice so the loop has no seam; the second copy is inert, so
+  screen readers and the keyboard skip it. The loop pauses on hover and on
+  keyboard focus; there is no pause button (Evan, 3 October 2026). Under reduced
+  motion it does not move at all: the second copy is dropped and the row scrolls
+  sideways by hand.
+{%- endcomment -%}
+{{ 'pp-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-home.js' | asset_url }}" defer></script>
+{%- assign tiles = 0 -%}
+{%- capture items -%}
+  {%- for product in section.settings.collection.products limit: 60 -%}
+    {%- liquid
+      assign slug = ''
+      for tag in product.tags
+        assign head = tag | slice: 0, 7
+        if head == 'temple:'
+          assign slug = tag | remove_first: 'temple:'
+          break
+        endif
+      endfor
+      assign city = ''
+      if slug != blank
+        capture city
+          render 'pp-temple-city', slug: slug
+        endcapture
+      endif
+    -%}
+    {%- if city != blank -%}
+      {%- assign tiles = tiles | plus: 1 -%}
+      <li class="pp-marquee__item">
+        <a class="pp-marquee__tile" href="{{ product.url }}">
+          <span class="pp-marquee__frame">
+            <img class="pp-marquee__art"
+              src="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}"
+              alt="{{ product.title | escape }}"
+              width="400" height="320" loading="lazy" decoding="async">
+          </span>
+          <span class="pp-marquee__city">{{ city }}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if tiles > 0 -%}
+  {%- assign seconds = tiles | times: section.settings.seconds_per_temple -%}
+  <section class="pp-marquee" data-pp-marquee
+    aria-label="{{ section.settings.label | escape }}"
+    style="--pp-marquee-duration: {{ seconds }}s;">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h2 pp-marquee__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <div class="pp-marquee__viewport">
+      <div class="pp-marquee__track">
+        <ul class="pp-marquee__list" role="list">{{ items }}</ul>
+        <ul class="pp-marquee__list pp-marquee__list--copy" role="list" aria-hidden="true" inert>{{ items }}</ul>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "PP temple marquee",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "Use the tee collection. Each tile links to the product it comes from." },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Optional." },
+    {
+      "type": "range",
+      "id": "seconds_per_temple",
+      "label": "Seconds each temple takes to pass",
+      "min": 2, "max": 8, "step": 1, "default": 4
+    },
+    { "type": "text", "id": "label", "label": "Name for screen readers", "default": "Temple designs" }
+  ],
+  "presets": [{ "name": "PP temple marquee" }]
+}
+{% endschema %}
