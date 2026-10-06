@@ -71,5 +71,6 @@ artifacts/swatches/
 # generated/README.md records the jobs and settings to regenerate them.
 artifacts/quality-sections/generated/*.png
 artifacts/quality-sections/zoom-v2/**/*.png
+!artifacts/quality-sections/zoom-v2/pp-logo-white.png
 __pycache__/
 artifacts/quality-sections/zoom-v2/**/*.mp4
