@@ -11,8 +11,9 @@ The live theme since 2 October 2026 is "Claude Code V2"
 - `assets/pp-temple-<slug>.json`: stroke files, version 2, built by
   `scripts/pen_strokes.py` from each temple's finished art
   (`pp-temple-<slug>.webp`, unchanged, kept in the theme).
-- `../theme-backup/2026-09-23-original/`: the version 1 stroke files and the art
-  as they stood before the rebuild, so the change can be undone.
+- Rollback: the version 1 stroke files and art from before the rebuild are in
+  the unpublished "Claude code original" theme (id 193770258804) and in git
+  history under `theme-backup/2026-09-23-original/` (removed 6 Oct 2026).
 
 ## Rebuild one temple
 

@@ -17,8 +17,8 @@ by Evan.
 
 | Phase | State |
 |---|---|
-| 1. Prove the API round-trip | Done, gate passed. Report: artifacts/phase1/findings.md |
-| 2. Layout math | Done, gate passed 17 Aug 2026. Previews: artifacts/phase2-previews/. Decisions: docs/decisions.md |
+| 1. Prove the API round-trip | Done, gate passed |
+| 2. Layout math | Done, gate passed 17 Aug 2026. Decisions: docs/decisions.md |
 | 3. Templates and generator | Done, gate passed (Logan rehearsal; San Antonio full set generated) |
 | 4. Skill and manual trigger | Done. Project skill in ../.claude/skills/; no schedule by Evan's choice |
 | 5. Backfill | Closed: Evan decided no backfill. --in-place available for one-offs |
@@ -51,7 +51,6 @@ Shared by both channels:
 Printify only:
 
 - `printify_client.py`: the Printify REST client.
-- `scripts/phase1.py`, `artifacts/phase1/`: Phase 1 driver and its gate report.
 - `scripts/add_date_layer.py`, `scripts/printify_login.py`: the date-layer browser automation.
 
 Tapstitch only:

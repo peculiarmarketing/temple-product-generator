@@ -2,7 +2,7 @@
 
 **Status:** proven by spike, not built. Evan approved building after the hoodie probe passed.
 **Date of spike:** 17 September 2026.
-**Artifacts:** `artifacts/photo-mockup-spike/` (prototype script plus every proof image).
+**Artifacts:** `artifacts/photo-mockup-spike/` (prototype scripts and the source images live code reads; the spike's comparison proofs were removed 6 Oct 2026 and are in git history).
 
 ## The problem
 
@@ -346,8 +346,7 @@ same photograph.
 Tested 17 Sep 2026. The hoodie's Gray back mockup was recoloured to the other
 five colourways and compared against the real Tapstitch render of each.
 **Navy, Black, Coffee, Mauve and Royal Blue all came out essentially
-indistinguishable from the real thing.** See
-`artifacts/photo-mockup-spike/recolour_vs_real.jpg`.
+indistinguishable from the real thing.**
 
 The target colours are not guessed. They are sampled as the median fabric
 luminance from the real mockups, the white print excluded:
@@ -361,13 +360,12 @@ luminance from the real mockups, the white print excluded:
 | Royal Blue | 55, 79, 192 | 109 |
 | Mauve | 196, 163, 171 | 177 |
 
-Stored at `artifacts/photo-mockup-spike/true_colors.json`.
+Stored at `artifacts/photo-mockup-spike/true_colors_all.json`.
 
 **Base colour is load-bearing.** Recolouring *down* in luminance is clean;
 recolouring far *up* mottles the fabric grain and washes out the print. Driving
 the same test from the Black base (L24) produced good Navy and Coffee but visibly
-degraded Gray, Royal Blue and Mauve. See
-`artifacts/photo-mockup-spike/recolour_strip.jpg`.
+degraded Gray, Royal Blue and Mauve.
 
 **Rule: generate each garment's base in the lightest colourway that garment
 offers**, then recolour downward. Hoodie base is Gray (L109). The tee's colours
@@ -700,10 +698,10 @@ small and the location text crisp.**
 ## What the spike proved
 
 - **Location text survives.** Letterforms are pixel-identical before and after
-  the warp. Only the light across them changes. See `cmp_text_zoom.jpg`.
+  the warp. Only the light across them changes.
 - **The failure mode is gentle.** The warp dial pushed to more than 4x the
   shipping setting makes the temple wavier and more contrasty, not broken. There
-  is no cliff. See `cmp_dial.jpg`.
+  is no cliff.
 - **The hoodie is fine.** Hood shadow was the main worry and turned out to be a
   non-issue. Zero retries.
 

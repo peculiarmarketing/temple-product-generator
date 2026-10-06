@@ -1,7 +1,0 @@
-{
-  "sales_channel": [
-    "shopify"
-  ],
-  "latest_storefront_published_at": "2026-08-15T15:38:25-06:00",
-  "conclusion": "Assessed, not proven: recent publish timestamps show the publish path working on the current plan. No test publish performed."
-}

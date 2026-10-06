@@ -1,5 +1,0 @@
-{
-  "accepted": false,
-  "status": 400,
-  "body": "{\"status\":\"error\",\"code\":8253,\"message\":\"Operation failed.\",\"errors\":{\"reason\":\"Provided images do not exist\",\"code\":8253}}"
-}

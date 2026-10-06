@@ -9,8 +9,9 @@ homepage showcase is on `templates/index.json` and the product band is on
 `templates/product.json`. The old live theme (id 193770258804) is unpublished
 and now named "Claude code original".
 
-Details and the rebuild command: `theme/README.md`. Rollback files:
-`theme-backup/2026-09-23-original/`.
+Details and the rebuild command: `theme/README.md`. Rollback: the unpublished
+"Claude code original" theme still holds the version 1 files, and git history has
+the old `theme-backup/` copies (removed 6 Oct 2026).
 
 **Fixed 3 October 2026: the Salt Lake tee's chest logo image.** Its "chest logo
 flat lay - Maroon" was a Manti back print (same 1,259,725-byte file as the Manti
@@ -74,17 +75,6 @@ dropdown until the import, so it would be a dead end. After the import: tag
 rules, and change `all-temples` to the single rule `listing:parent`. The homepage
 "The temples" row reads all-temples, so it drops to the three parents; that is
 intended. Utah, Idaho and California collections stay as they are (Evan).
-
-**Done 23 Sep, after the rollout:** the two held-back hoodie passes ran
-(`swap_care_image.py --garment hoodie`, `fix_facts_typos.py --hoodie`), and the
-Salt Lake hoodie got its care section. All 135 garments now show care-symbols.svg,
-confirmed by a read-back count. A `--verify` of the rollout will now report
-description differences between each new hoodie and its retired draft; that is
-these fixes, not a regression.
-
-**Known, harmless:** the 44 old hoodies lost their image alt text at 19:37 UTC on
-22 Sep when their Tapstitch designs were edited. Pictures are intact; those
-listings are being retired anyway. Tees and crews are untouched.
 
 **Also outstanding:** the storefront overhaul doc
 (https://claude.ai/artifact/RhgF4QLwLjQhhKmYnMYrd2, rev 52) still says Boise is
