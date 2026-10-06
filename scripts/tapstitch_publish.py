@@ -85,11 +85,10 @@ def missing_garment_setup():
         if not g.get("storefront_first_color"):
             out.append(f"{gid}: no storefront_first_color chosen")
         copy_dir = PROJECT_ROOT / g["garment_copy"]
-        if not (copy_dir / "product-intro.html").exists():
-            missing = "product-intro.html"
-            if not (copy_dir / "size-guide.html").exists():
-                missing += " and size-guide.html"
-            out.append(f"{gid}: {missing} not written yet ({g['garment_copy']})")
+        missing = [f for f in ("product-details.html", "product-intro.html")
+                   if not (copy_dir / f).exists()]
+        if missing:
+            out.append(f"{gid}: {' and '.join(missing)} not written yet ({g['garment_copy']})")
     return out
 
 
