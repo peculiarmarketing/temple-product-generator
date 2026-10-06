@@ -43,8 +43,9 @@ drawings went live on 2 October through the Claude Code V2 theme instead. These
 items from the branch plan may still be open, and nothing in git confirms them
 either way:
 
-- The "Temple Design Products" collection (`temple-design-products`) was
-  created but not published to the Online Store.
+- Done 6 October 2026: the "Temple Design Products" collection
+  (`temple-design-products`) is published to the Online Store. The Claude Code
+  V3 zoom preview theme's "Shop by garment" row reads it.
 - Menus pointed at Temple Tees, Temple Crewnecks, Temple Hoodies and All
   Temples. The plan was to repoint them to Temple Design Products, delete those
   four collections, and redirect their URLs.
