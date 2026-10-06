@@ -105,9 +105,9 @@ def push_catalog(only_temple=None):
             continue
         if not product["alts"]:
             # No mockups on the product yet. Position 2 does not exist, so the
-            # card would upload and then fail to move. Printify re-ingests
-            # every mockup after a republish and a product sits empty for
-            # minutes while it does; wait for it rather than card it now.
+            # card would upload and then fail to move. A product can sit
+            # empty for minutes while its mockups arrive; wait for it rather
+            # than card it now.
             waiting.append(title)
             continue
         plan.append((title, product, temple))

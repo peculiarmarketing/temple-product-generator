@@ -1,5 +1,5 @@
 {
-  "_comment": "Maps garment lines to Easify option sets. Sets are located in option-sets.csv by option_set_title; set ids live in the CSV only. A set listed here but absent from the CSV is created on the next sync, cloned structurally from clone_from. REBOUND 16 Sep 2026 from the retiring Printify garments (cc1717, cc1566, cc1567) to their Tapstitch replacements (tee, crew, hoodie). cc1717-dated stays because the dated tee is paused, not replaced. WHY THIS IS LOAD-BEARING: live_temple_products() matches a live product to a set by EXACT EQUALITY against build_title(load_garment_config(garment), ...). While crew.json and cc1566.json shared a title this binding did not matter; renaming the lines to Cloud on 16 Sep made it matter, and left unchanged it would have detached the Temple dropdown from every replacement on the next import, silently. NOTE ON RUNNING THE SYNC MID-MIGRATION: a populated set whose garment has no live products raises SystemExit, which is the guard against blanking a set on a bad catalogue read. The ONE exception is a set flagged \"paused\": true below, which passes through untouched because its line has no live products by design; every other such set still hard-stops, and a paused set that DOES have live products is itself an error. Run the sync once enough replacements are live, which is also when it repoints every row's URL to the new addresses.",
+  "_comment": "Maps garment lines to Easify option sets. Sets are located in option-sets.csv by option_set_title; set ids live in the CSV only. A set listed here but absent from the CSV is created on the next sync, cloned structurally from clone_from. A set in the CSV but not listed here is passed through untouched. WHY THIS IS LOAD-BEARING: live_temple_products() matches a live product to a set by EXACT EQUALITY against build_title(load_garment_config(garment), ...), so a renamed line must be mirrored in its garment config or the Temple dropdown detaches from it, silently. A populated set whose garment has no live products raises SystemExit, which is the guard against blanking a set on a bad catalogue read. A set flagged \"paused\": true passes through untouched because its line has no live products by design; a paused set that DOES have live products is itself an error.",
   "sets": [
     {
       "garment": "tee",
@@ -15,14 +15,6 @@
       "garment": "hoodie",
       "set_title": "Hoodie",
       "option_name": "Temple Hoodie"
-    },
-    {
-      "garment": "cc1717-dated",
-      "set_title": "Tee - With Date",
-      "option_name": "Temple Tee - With Date",
-      "clone_from": "Tee",
-      "paused": true,
-      "_paused_note": "The dated tee line is PAUSED in the Tapstitch migration, not retired, so it has zero live products by design. Without this flag the empty-catalog guard in cmd_sync reads that as a broken catalog read and hard-stops the ENTIRE sync, leaving the Temple dropdown on every live product pointed at the drafted Printify listings. Set false again when the dated line is relaunched."
     }
   ]
 }

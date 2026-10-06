@@ -15,7 +15,9 @@ from description_html import (COLLAPSIBLE_FIXED_HEADINGS, FACTS_STYLE,
                               fix_size_guide_video, trim_size_guide)
 import generate
 from generate import TEMPLES_DIR, fixed_description, load_garment_config
-from scripts.write_description import FACTS_RE, is_broken
+
+# How a facts section is read back out of a composed description.
+FACTS_RE = re.compile(r'<section class="temple-facts">.*</section>', re.S)
 
 MINI_FRAGMENT = """<section class="temple-facts">
 <h3 class="temple-facts__name">Test Utah Temple</h3>
@@ -82,9 +84,9 @@ for name, fragment in fragments.items():
     assert collapse_temple_facts(out) == out, f"{name}: collapse must be idempotent byte-exact"
 
 # FACTS_RE round trip: extract the facts from a composed description and
-# re-collapse; must be byte-identical (this is what --normalize relies on).
-fixed = fixed_description(load_garment_config("cc1717"))
-assert fixed, "cc1717 fixed sections missing"
+# re-collapse; must be byte-identical, so recomposing converges.
+fixed = fixed_description(load_garment_config("tee"))
+assert fixed, "tee fixed sections missing"
 composed = compose_description(fixed, MINI_FRAGMENT)
 extracted = FACTS_RE.search(composed).group(0).strip()
 assert collapse_temple_facts(extracted) == extracted, "extracted facts must already be canonical"
@@ -110,28 +112,9 @@ assert "Width is measured" not in trimmed
 assert "<h3>Size Guide</h3>" in trimmed and "</source></video>" in trimmed
 assert trim_size_guide(trimmed) == trimmed, "trim must be idempotent"
 
-# The real assets: every garment's size guide gains controls and metadata
-# preload, and ships without the measurements table.
-for garment in ("cc1717", "cc1717-dated", "cc1566", "cc1567"):
-    out = compose_description(fixed_description(load_garment_config(garment)))
-    assert out.count('controls="controls"') == 1, garment
-    assert 'preload="none"' not in out, garment
-    assert "<table" not in out and "Measurements (inches)" not in out, garment
-    assert "<h3>Size Guide</h3>" in out, garment
-
-# The dated tee's composed description still starts with the raw
-# Personalization opener that is_broken() checks.
-dated_fixed = fixed_description(load_garment_config("cc1717-dated"))
-opener = dated_fixed.split("\n\n")[0]
-dated_composed = compose_description(dated_fixed, MINI_FRAGMENT)
-assert dated_composed.startswith(opener.strip())
-assert not is_broken(dated_composed, opener)
-
 # --- the collapsed Care Instructions row (Evan, 18 Sep 2026) ----------------
 # It collapses in place, inside its own section, with a style scoped to that
-# section's own class. Scoped, not global: the dated tee's description must
-# still START with the visible Personalization section (asserted above), which
-# a style block written at the top of the description would break.
+# section's own class rather than one global style block.
 CARE = (generate.PROJECT_ROOT / generate.CARE_COPY).read_text().strip()
 care_out = collapse_fixed_sections(CARE)
 assert care_out.startswith('<section class="care-instructions">')
@@ -149,8 +132,7 @@ assert collapse_fixed_sections(care_out) == care_out, "collapse must be idempote
 # shape ships open rather than corrupted.
 assert collapse_fixed_sections("<p>no care section</p>") == "<p>no care section</p>"
 
-# End to end on the real garments: the current lines get exactly one collapsed
-# care row and the retiring ones get none.
+# End to end on the real garments: each line gets exactly one collapsed care row.
 for garment in ("crew", "hoodie", "tee"):
     out = compose_description(fixed_description(load_garment_config(garment)), MINI_FRAGMENT)
     assert out.count('<details class="care-instructions__block">') == 1, garment
@@ -158,15 +140,9 @@ for garment in ("crew", "hoodie", "tee"):
     assert out.count(FACTS_STYLE) == 1, f"{garment}: the facts style is untouched"
     assert out.index("care-instructions") < out.index("product-intro") \
         < out.index("temple-facts"), garment
-for garment in ("cc1717", "cc1717-dated", "cc1566", "cc1567"):
-    out = compose_description(fixed_description(load_garment_config(garment)), MINI_FRAGMENT)
-    assert "care-instructions" not in out, garment
 
 # --- the collapsed From the Founder row (Evan, 18 Sep 2026) -----------------
-# Same machinery as the care row, scoped to product-intro. The retiring lines
-# must NOT collapse, and nothing keeps them out except the heading text: their
-# product-intro.html opens with <h3>The Tee</h3>, not <h3>From the Founder</h3>.
-# If that ever changes, this is the test that catches it.
+# Same machinery as the care row, scoped to product-intro.
 assert "From the Founder" in COLLAPSIBLE_FIXED_HEADINGS
 for garment in ("crew", "hoodie", "tee"):
     raw = fixed_description(load_garment_config(garment))
@@ -177,12 +153,6 @@ for garment in ("crew", "hoodie", "tee"):
     # The founder message itself must survive the wrap, every paragraph of it.
     assert out.count("<p>") == raw.count("<p>"), f"{garment}: copy lost in the wrap"
     assert "<p>- Evan</p>" in out, f"{garment}: the signoff must survive"
-for garment in ("cc1717", "cc1717-dated", "cc1566", "cc1567"):
-    out = compose_description(fixed_description(load_garment_config(garment)), MINI_FRAGMENT)
-    assert "product-intro__block" not in out, \
-        f"{garment}: the retiring lines keep their intro open"
-    assert '<section class="product-intro">' in out, f"{garment}: intro still present"
-
 # Collapsing a LIVE description is the same transform as collapsing the repo's
 # assets, which is what lets scripts/collapse_live_sections.py backfill without
 # recomposing. Applied twice it must be a no-op, and it must leave a section

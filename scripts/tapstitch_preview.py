@@ -255,7 +255,7 @@ print area of the three garments ({w_in:.2f} in on this one).</p>
 centred in the print file, horizontally and vertically, with the temple spanning
 no more than {target} in at its widest ink and the city line sitting
 {sp['gap_ink_to_text_in']} in below the temple's lowest ink. The old top and
-bottom margins came off the Printify layout, where the logo sat at the bottom of
+bottom margins came off the old layout, where the logo sat at the bottom of
 the back; centring made them meaningless and they were the only thing keeping
 tall temples under full width.</p>
 </div></section>""")

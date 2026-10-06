@@ -159,7 +159,7 @@ assert abs(ink_cx_in - fa["width_px"] / fdpi / 2) < 0.01, \
     f"logo ink centre at {ink_cx_in:.3f}in, area centre is {fa['width_px'] / fdpi / 2:.3f}in"
 
 # Centring is opt-in. With no override the profile still anchors to the top,
-# which is what leaves the retiring Printify layouts exactly as they were.
+# which is what a garment with no override gets.
 bare = dict(TEE, spacing_overrides={})
 assert layout.load_spacing(bare).get("vertical_anchor") in (None, "top")
 bare_ys = np.where(np.asarray(

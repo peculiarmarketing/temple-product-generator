@@ -11,11 +11,9 @@ Two operations, both surgical, run in this order on every product in scope:
            the repo's assets, so a backfilled page and a freshly built one carry
            byte-identical markup.
 
-WHY IT SPLICES AND COLLAPSES INSTEAD OF RECOMPOSING. scripts/write_description.py
-rebuilds a description from scratch: repo copy plus the product's own temple
-facts. That is right for the retiring Printify line, whose descriptions this
-pipeline has always owned end to end. It is wrong here. The live Tapstitch-line
-pages have drifted from the repo's assets by hand, and published copy is not
+WHY IT SPLICES AND COLLAPSES INSTEAD OF RECOMPOSING. Rebuilding a description
+from scratch (repo copy plus the product's own temple facts) is wrong here. The
+live pages have drifted from the repo's assets by hand, and published copy is not
 retroactively rewritten unless Evan asks (CLAUDE.md). So this makes the smallest
 change that can be made and leaves every other byte alone.
 
@@ -24,11 +22,11 @@ WHAT IT TARGETS. Products whose description has both a
 on 18 Sep 2026 is 133 of 176 products and nothing else. The two line-parent
 products are excluded by that rule on their own, because an admin save stripped
 their section wrappers and they no longer have one to splice against; the 40
-retiring dated-tee drafts are excluded because they never had one. Both
+old tee drafts are excluded because they never had one. Both
 exclusions are Evan's 18 Sep 2026 scope, and both happen to be what the shape
 test selects anyway, which is the safest kind of agreement.
 
-The retiring lines are safe from the collapse pass for a second, independent
+The old drafts are safe from the collapse pass for a second, independent
 reason: COLLAPSIBLE_FIXED_HEADINGS matches on heading TEXT, and their intro
 sections open with <h3>The Tee</h3> rather than <h3>From the Founder</h3>.
 

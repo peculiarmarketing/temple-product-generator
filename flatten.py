@@ -8,11 +8,11 @@ canvas edges up with the print area edges and every element lands where the
 layout math put it. The browser step then reduces to the same boring clicks every
 run, and every file can be checked on this Mac before it touches Tapstitch.
 
-Positions come from layout.compute_stack(), the same gate-approved math the
-Printify pipeline uses. This module only composites and checks.
+Positions come from layout.compute_stack(), the gate-approved layout math. This
+module only composites and checks.
 
 The back design is temple art plus location text (profile back_temple_text). The
-logo moved to the front print area when the catalog left Printify.
+logo moved to the front print area in the 14 Sep 2026 migration.
 """
 
 import json
@@ -31,7 +31,7 @@ LOGO_FILES = {"black": ASSETS_DIR / "Peculiar People Logo - Black.png",
 COLORS = {"black": (0, 0, 0, 255), "white": (255, 255, 255, 255)}
 INK_RGB = {"black": (0, 0, 0), "white": (255, 255, 255)}
 
-# The whole Printify catalog once printed at ~157 effective DPI because 2048 px
+# The whole old catalog once printed at ~157 effective DPI because 2048 px
 # assets were stretched onto 4494 px print areas. Vector art rasterized to size
 # cannot hit that, but a PNG source can, so it is checked rather than assumed.
 MIN_EFFECTIVE_DPI = 200

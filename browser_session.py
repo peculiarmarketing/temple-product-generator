@@ -2,15 +2,10 @@
 
 Why this shape rather than a Playwright-launched browser: Cloudflare blocks
 Playwright-launched browsers outright. The working pattern, proven since 18 Aug
-2026 on the Printify date-layer automation, is that Evan logs in once inside a
+2026 on the old supplier's editor automation, is that Evan logs in once inside a
 REAL Google Chrome running a dedicated profile with a debug port open, and
 scripts attach to that Chrome afterwards. The session lives in the profile and
 survives across days and reboots. No script ever sees his password.
-
-This module is a parameterised version of the logic in scripts/printify_login.py,
-which is deliberately left untouched: it drives live production automation and
-the Printify pipeline is the fallback if the Tapstitch blanks disappoint. When
-Printify is finally retired, that file goes and this one stays.
 
 The profile directories are gitignored and iCloud-excluded. Never commit one,
 never print its contents.
@@ -31,8 +26,8 @@ CHROME_BINARY = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 @dataclass
 class Site:
     """One automated site: where to log in, how to tell you are logged in, and
-    which Chrome profile and debug port belong to it. Separate ports let the
-    Printify and Tapstitch browsers run at the same time."""
+    which Chrome profile and debug port belong to it. Separate ports let
+    two automated browsers run at the same time."""
     name: str
     profile_dir: Path
     debug_port: int
@@ -49,7 +44,7 @@ class Site:
 TAPSTITCH = Site(
     name="Tapstitch",
     profile_dir=PROJECT_ROOT / ".playwright.nosync" / "tapstitch-profile",
-    debug_port=9223,  # 9222 belongs to the Printify profile
+    debug_port=9223,  # 9222 belonged to the old supplier's profile
     login_url="https://www.tapstitch.com/login",
     app_url="https://www.tapstitch.com/dashboard",
     app_url_prefix="https://www.tapstitch.com/",

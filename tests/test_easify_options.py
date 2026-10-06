@@ -7,8 +7,7 @@ every live product page, and one guard stands between a bad catalogue read and a
 CSV that blanks that dropdown everywhere: a populated set whose garment has no
 live products hard-stops the run. On 16 Sep 2026 the catalogue sweep published
 102 products and then could not run the sync at all, because that guard fired on
-cc1717-dated, a line that is PAUSED and therefore has zero live products by
-design. The fix put a hole in the guard, keyed on one config field. A hole in the
+a line that was PAUSED and therefore had zero live products by design. The fix put a hole in the guard, keyed on one config field. A hole in the
 only safety check on a catalogue-wide write is worth pinning, and until this file
 there was no test importing easify_options at all.
 
@@ -16,11 +15,11 @@ WHAT IS PINNED HERE. The three behaviours at that seam: the guard still fires fo
 an active line, a paused line passes through untouched rather than stopping the
 run, and a paused line that turns out to HAVE live products is an error rather
 than a silent skip. That last one is what keeps the flag load-bearing: without
-it, relaunching the dated tee without clearing the flag would produce a clean
-looking run and a dropdown still pointing at drafted Printify pages.
+it, relaunching a paused line without clearing the flag would produce a clean
+looking run and a dropdown still pointing at drafted pages.
 
-NOT PINNED: which lines are actually paused, or that cc1717-dated is one of them.
-That is a lineup fact that flips the day the dated tee relaunches, and the 14 Sep
+NOT PINNED: which lines are actually paused. That is a lineup fact that can flip
+any day, and the 14 Sep
 entry in docs/decisions.md records two tests that went red on correct changes for
 exactly that reason. The config here is a hand-built literal and the CSV is a
 trimmed fixture with fake handles.

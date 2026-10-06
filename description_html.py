@@ -1,8 +1,7 @@
 """Assembly-time transforms for product description HTML.
 
-The fixed sections are vendored claude.ai skill exports (reference/skills/*/
-assets/) that must stay byte-identical to their claude.ai copies, and the
-per-temple facts fragments (Temples/{Name}/Working files/temple-facts.html)
+The fixed sections (reference/garment-copy/{garment}/) are stored assets that
+must stay byte-identical, and the per-temple facts fragments (Temples/{Name}/Working files/temple-facts.html)
 are canonical research output. Neither is ever edited for presentation, so
 presentation changes live here and are applied when a description is composed
 (Evan's 26 Aug 2026 decisions: temple facts render as collapsed <details>
@@ -10,8 +9,8 @@ rows, and the size-guide video gets controls so a phone that declines autoplay
 still shows a play button instead of a frozen frame).
 
 Idempotency is by full re-derivation: facts re-extracted from a live product
-(write_description.FACTS_RE) unwrap back to the canonical fragment before
-rewrapping, so composing twice is byte-identical and --normalize converges.
+unwrap back to the canonical fragment before rewrapping, so composing twice is
+byte-identical.
 Every transform fails open: input that does not match the expected shape is
 returned unchanged, never corrupted.
 """
@@ -22,16 +21,8 @@ import re
 # place inside its own <section> and carries its own scoped row style, so a
 # listed section renders as a row whether or not the product also has temple
 # facts. Evan's 26 Aug 2026 scope was facts only; Care Instructions joined it
-# 18 Sep 2026 and From the Founder the same day.
-#
-# Matching is by heading text, not by section class, which is what keeps the
-# retiring Printify lines out of this: their product-intro.html opens with
-# <h3>The Tee</h3> (or The Sweatshirt, The Hoodie) rather than From the Founder,
-# so the same section class collapses on the current lines and is left alone on
-# theirs, with no garment check anywhere.
-#
-# "Personalization" must never be listed: is_broken() requires dated
-# descriptions to START with that section, visible.
+# 18 Sep 2026 and From the Founder the same day. Matching is by heading text,
+# not by section class.
 COLLAPSIBLE_FIXED_HEADINGS = ("Care Instructions", "From the Founder")
 
 _FACTS_SECTION_RE = re.compile(
@@ -51,12 +42,10 @@ def _row_style(scope):
     section so it rides every description without theme work. Evan's theme
     hides the default disclosure markers and gives headings tall margins, so
     this adds dividing lines, tight row padding, and a +/- indicator. Literal
-    characters only: the Printify connector decodes entities on push.
+    characters only, never entities.
 
     Scoped per section rather than written once at the top of the description,
-    because a description has no <head> and the dated tee's must START with the
-    visible Personalization section (is_broken()); a leading style block would
-    mark every dated tee broken forever."""
+    because a description has no <head>."""
     return (
         f'<style class="{scope}__style">'
         f'section.{scope} details{{border-top:1px solid #d8d8d8}}'
@@ -73,7 +62,7 @@ def _row_style(scope):
 
 
 # Byte-identical to the string this module has shipped since 26 Aug 2026: every
-# live product carries it, and --normalize compares against it.
+# live product carries it.
 FACTS_STYLE = _row_style("temple-facts")
 
 
@@ -83,8 +72,7 @@ def fix_size_guide_video(html):
     iPhones decline autoplay in Low Power Mode, and without controls the
     video sits as a frozen frame with no way to start it; preload="none"
     leaves an empty box besides. Only the opening <video ...> tag is edited,
-    so the cc1717 asset's deliberately odd </source></video> tail rides
-    through untouched."""
+    so an odd </source></video> tail rides through untouched."""
     html = html.replace('preload="none"', 'preload="metadata"')
 
     def add_controls(m):
@@ -152,8 +140,7 @@ def collapse_temple_facts(fragment):
 def collapse_fixed_sections(html):
     """Collapse fixed sections whose <h3> text is listed in
     COLLAPSIBLE_FIXED_HEADINGS. A no-op while that tuple is empty, and a no-op
-    for any garment whose copy has no such section (the retiring Printify
-    lines carry no Care Instructions file, so their descriptions are untouched).
+    for any copy that has no such section.
 
     The row is scoped to the section's OWN class, not to temple-facts: the
     style and the block class are both derived from it, so a section collapses
@@ -163,9 +150,6 @@ def collapse_fixed_sections(html):
     simply ships open rather than corrupted."""
     if not COLLAPSIBLE_FIXED_HEADINGS:
         return html
-    if "Personalization" in COLLAPSIBLE_FIXED_HEADINGS:
-        raise ValueError("Personalization must stay visible: is_broken() "
-                         "requires dated descriptions to start with it.")
     for title in COLLAPSIBLE_FIXED_HEADINGS:
         pattern = re.compile(r'(<section class="([a-z-]+)">\n)(<h3>' + re.escape(title)
                              + r'</h3>)\n(.*?)(\n</section>)', re.S)

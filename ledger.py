@@ -4,9 +4,9 @@ One row per temple per garment. The migration recreates roughly 140 products
 through a web editor, which is slow and will be done across many sessions, so
 the run has to be able to lose its place and find it again.
 
-`old_shopify_handle` records the address each row's Printify listing had, which
-is captured by the pull-down snapshot while the catalogue is still intact and
-cannot be reliably read afterwards.
+`old_shopify_handle` records the address each row's old listing had, which
+was captured by the pull-down snapshot while the old catalogue was still intact
+and cannot be reliably read afterwards.
 
 It is no longer an address the replacement takes over. That was the 14 Sep 2026
 plan, retired on 16 Sep (Evan, asked and confirmed) once it turned out not to

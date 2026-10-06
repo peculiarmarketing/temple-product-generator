@@ -265,13 +265,11 @@ def finish_on_shopify(client, temple, garment_id, handle, old_handle=None, dry_r
 
     if old_handle and old_handle != handle:
         if post.get("delete_old_listing"):
-            actions.append(f"old listing {old_handle!r} still needs deleting "
-                           f"(store_pulldown.py delete --handle {old_handle})")
+            actions.append(f"old listing {old_handle!r} still needs deleting by hand")
         else:
             # Evan's 16 Sep 2026 call: replacements take their own address and
             # old listings stay DRAFT. Deleting was the only irreversible step in
-            # the migration and it ate the Printify fallback one product at a
-            # time, so this must not keep pointing at it.
+            # the migration, so this must not keep pointing at it.
             actions.append(f"old listing {old_handle!r} stays DRAFT, not deleted; "
                            f"its dropdown row is repointed by easify_options sync")
     if post.get("set_variant_back_images"):

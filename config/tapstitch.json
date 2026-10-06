@@ -17,7 +17,7 @@
     "upload_timeout_ms": 180000,
     "save_timeout_ms": 120000,
     "publish_timeout_ms": 300000,
-    "_note": "Uploads of 4500x5100 PNGs and the publish-to-Shopify round trip are both slow. The Printify pipeline learned that publishes can far exceed a 240s window and still complete, so the runner confirms against Shopify rather than trusting the editor's own success state."
+    "_note": "Uploads of 4500x5100 PNGs and the publish-to-Shopify round trip are both slow. The old pipeline learned that publishes can far exceed a 240s window and still complete, so the runner confirms against Shopify rather than trusting the editor's own success state."
   },
   "post_publish": {
     "set_product_type": true,
@@ -25,7 +25,7 @@
     "write_description": true,
     "push_art_card": true,
     "delete_old_listing": false,
-    "_delete_old_listing_note": "TURNED OFF 16 Sep 2026, asked and confirmed by Evan explicitly. Was: delete the old Printify listing at the moment its replacement publishes, so the replacement inherits the same web address. That never worked. Shopify builds a new product's address from its TITLE and ignores whatever address just came free, so deleting freed the address and then left it unused; the crew's address had to be set afterwards with productUpdate(handle:), and its predecessor was permanently destroyed for nothing. Replacements now take their own address, old listings stay DRAFT, and scripts/easify_options.py sync repoints the dropdown links by reading handles from the live catalogue. This also keeps Printify intact as the way back, which deleting was quietly eating one product at a time.",
+    "_delete_old_listing_note": "TURNED OFF 16 Sep 2026, asked and confirmed by Evan explicitly. Was: delete the old listing at the moment its replacement publishes, so the replacement inherits the same web address. That never worked. Shopify builds a new product's address from its TITLE and ignores whatever address just came free, so deleting freed the address and then left it unused; the crew's address had to be set afterwards with productUpdate(handle:), and its predecessor was permanently destroyed for nothing. Replacements now take their own address, old listings stay DRAFT, and scripts/easify_options.py sync repoints the dropdown links by reading handles from the live catalogue.",
     "set_variant_back_images": true,
     "_set_variant_back_images_note": "LOAD-BEARING and not optional. Shopify binds each variant to the FIRST image of its colour at import and Tapstitch sends fronts first, so every variant lands on a near-blank garment and the product page opens there, whatever the gallery order says. MEASURED on the hoodie 16 Sep: posting the mockups back-first fixes the gallery but NOT the binding. Run scripts/tapstitch_variant_images.py after every publish; it is idempotent."
   },

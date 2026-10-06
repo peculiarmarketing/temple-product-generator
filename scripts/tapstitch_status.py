@@ -31,8 +31,7 @@ def main():
     data = ledger.load()
     rows = data["rows"]
     if not rows:
-        print("The ledger is empty. Run scripts/tapstitch_build.py to populate it, "
-              "or scripts/store_pulldown.py snapshot to seed the old web addresses.")
+        print("The ledger is empty. Run scripts/tapstitch_build.py to populate it.")
         return
 
     counts = ledger.counts(data)

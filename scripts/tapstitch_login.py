@@ -1,7 +1,7 @@
 """Headed Tapstitch login for the product automation.
 
 Evan logs in inside his real Google Chrome (a dedicated profile on debug port
-9223, separate from the Printify profile on 9222 so both can run at once). This
+9223, kept apart from 9222, which an older automation profile used). This
 script only opens the window and watches for the logged-in state; it automates
 no input and never sees his password. The session persists in the profile.
 

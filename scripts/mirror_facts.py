@@ -10,7 +10,7 @@ that is hours of judgement per temple.
 
 The risk is not theoretical. On 17 September five temples (Logan, Provo,
 Kirtland, Cody, Taylorsville) turned out to have been researched already, weeks
-earlier, and the only surviving copy was the description of their old Printify
+earlier, and the only surviving copy was the description of their old
 listings. Nobody knew. They were recovered only because those listings still
 exist as drafts, and deleting a draft would have destroyed the work silently.
 

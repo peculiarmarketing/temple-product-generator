@@ -21,16 +21,13 @@ ACTIVE and purchasable with no undo, and it also requires a bound (`--limit` or
 `--temple`) so a forgotten flag cannot launch the whole catalogue. Running with
 `--apply` alone builds products and stops short of the storefront, which is the
 "build it, check it, then distribute" order tapstitch_api's own docstring
-describes. Precedent for the shape: scripts/store_pulldown.py, the other script
-whose default path touches the live store, which also plans by default and
-gates with --apply.
+describes.
 
 THE LEDGER IS NOT THE AUTHORITY ON WHAT IS LIVE. Its Salt Lake tee row said
 file-approved while that product was live on the storefront, because the tee was
 published on 15 Sep during the first proving session, before any of these
 set_state calls existed. So every row is checked against the store's real titles
-before it is built, the way generate.py has always checked before creating a
-Printify product. Trusting the ledger alone would have published a duplicate.
+before it is built. Trusting the ledger alone would have published a duplicate.
 
 RESUMABLE AT EVERY SEAM, because 132 rows is many sessions' work and the one
 irreversible call sits in the middle of it. Each id is written to the ledger the

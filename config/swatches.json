@@ -27,7 +27,7 @@
     "Mauve": {"hoodie": "#C4A3AB"}
   },
   "_retired": {
-    "_note": "Names carried only by the 40 DRAFT personalizable-date tees, a dead line that is never published. Listed so `swatches.py check` reports them as knowingly ignored rather than as missing swatches.",
+    "_note": "Names carried only by the 40 old DRAFT tees, a dead line that is never published. Listed so `swatches.py check` reports them as knowingly ignored rather than as missing swatches.",
     "names": ["Moss", "Brick", "Graphite", "Ice Blue", "Khaki", "Orchid", "True Navy", "Ivory"]
   }
 }

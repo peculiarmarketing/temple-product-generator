@@ -305,7 +305,7 @@ def mockups_back_first(mockups, lead_color_id=None):
 
     Tapstitch hands mockups back front-first, and the whole product is a back
     print: the front carries only a 6in logo, so a front-first gallery leads with
-    an almost blank sweatshirt. The retiring Printify catalogue leads with the
+    an almost blank sweatshirt. The old catalogue led with the
     back on every temple product, checked against the live Bountiful crew on
     16 Sep 2026, so this is the store's own established order rather than a new
     opinion.
