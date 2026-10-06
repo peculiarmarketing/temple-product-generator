@@ -95,25 +95,25 @@ cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude
 
 Every dependency (numpy, pillow, python-dotenv, requests, resvg_py, vtracer) installs as a prebuilt wheel on Python 3.12. If pip starts printing compiler output or errors about "building wheel", the Python version is wrong; recheck 3.2.
 
-The Alata font and the tracer script are inside the repo, so there is nothing else to install. The `.env` with the Printify and Shopify tokens synced in with the folder.
+The Alata font and the tracer script are inside the repo, so there is nothing else to install. The `.env` with the Shopify tokens synced in with the folder.
 
 ### 3.5 Verify
 
 Offline test first (no network, proves Python and the repo are intact):
 
 ```bash
-cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && ./.venv.nosync/bin/python tests/test_publish_drafts.py
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && ./.venv.nosync/bin/python tests/test_tapstitch_placement.py
 ```
 
-Expected: `all tests passed`.
+Expected: `test_tapstitch_placement: all assertions passed`.
 
 Then a read-only live check (proves the tokens in .env work from this machine):
 
 ```bash
-cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && ./.venv.nosync/bin/python generate.py --sweep --report-only
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/1. Peculiar People/Claude Projects/temple-product-generator" && ./.venv.nosync/bin/python scripts/shopify_fixups.py all --report-only
 ```
 
-Expected: the normal coverage report. If it errors about a missing token, the `.env` file has not synced yet; check 3.1.
+Expected: a scan of the catalogue ending in `product(s) scanned`. It writes nothing. If it errors about a missing token, the `.env` file has not synced yet; check 3.1.
 
 ### 3.6 The second repo
 
@@ -224,20 +224,20 @@ cause, which is exactly what this section exists to prevent.
 
 Run down this list; all six green means the machine is fully operational:
 
-1. `./.venv.nosync/bin/python tests/test_publish_drafts.py` prints `all tests passed`
-2. `./.venv.nosync/bin/python generate.py --sweep --report-only` prints a coverage report
-3. `./.venv.nosync/bin/python scripts/publish_drafts.py --report-only` runs without a token error
+1. `./.venv.nosync/bin/python tests/test_tapstitch_placement.py` prints `test_tapstitch_placement: all assertions passed`
+2. `./.venv.nosync/bin/python scripts/shopify_fixups.py all --report-only` scans the catalogue without a token error
+3. `./.venv.nosync/bin/python scripts/tapstitch_status.py` prints the ledger counts
 4. In `temple-ref-finder`, `./.venv.nosync/bin/python scan.py` prints a queue report
 5. `ssh -T github-peculiar` says `Hi peculiarmarketing!`
 6. `git push --dry-run` in each repo says `Everything up-to-date`
 
 Two things stay unfinished until you do them by hand, because they need your sign-in:
 
-- **Printify browser login.** The date-layer automation drives your real Chrome through a
-  dedicated profile at `.playwright.nosync/chrome-profile`, which is machine-local. Run
-  `./.venv.nosync/bin/python scripts/printify_login.py` once and sign in; check it later
-  with `--check`. Nothing else in the pipeline needs it, so this can wait until the first
-  run that adds date layers.
+- **Tapstitch browser login.** The runner drives Tapstitch through your real Chrome with a
+  dedicated profile at `.playwright.nosync/tapstitch-profile`, which is machine-local. Run
+  `./.venv.nosync/bin/python scripts/tapstitch_login.py` once and sign in; check it later
+  with `--check`. Only building or publishing products needs it, so this can wait until
+  the first run.
 - **The GitHub public key**, step 4.3 above.
 
 ## Troubleshooting

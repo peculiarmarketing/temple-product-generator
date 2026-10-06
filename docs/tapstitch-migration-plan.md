@@ -5,11 +5,9 @@
 
 ## What changed on 14 Sep 2026 (Evan's decisions)
 
-- **Three lines, all on Tapstitch:** one tee, one hoodie, one crewneck, carrying every temple design. CC1717, CC1566 and CC1567 retire.
-- **The personalizable date tee is PAUSED, not migrated.** This settles the open question below: rather than run a split catalogue to keep one line's personalization alive, the product waits. The split-catalogue lean recorded further down is superseded.
+- **Three lines, all on Tapstitch:** one tee, one hoodie, one crewneck, carrying every temple design. The old blanks retire.
 - **The logo moves off the back to the front print.** The back is temple plus location text only. A new layout profile, `back_temple_text`, does this; the front logo file is generated from Evan's existing logo asset onto a front-print-area-shaped canvas.
-- **The store goes dark, and nothing is deleted.** Every temple listing drafts and stays drafted. The original plan deleted each old listing as its replacement published so the replacement would inherit its address; that was RETIRED on 16 Sep 2026 (Evan, asked and confirmed) because it does not work. Shopify builds a new product's address from its title and ignores whatever address a deletion just freed, so the deletion bought nothing and destroyed the Printify fallback one product at a time. Replacements take their own address and `scripts/easify_options.py sync` repoints the dropdown links.
-- **Printify products stay untouched** as the way back.
+- **The store goes dark, and nothing is deleted.** Every temple listing drafts and stays drafted. The original plan deleted each old listing as its replacement published so the replacement would inherit its address; that was RETIRED on 16 Sep 2026 (Evan, asked and confirmed) because it does not work. Shopify builds a new product's address from its title and ignores whatever address a deletion just freed, so the deletion bought nothing and destroyed an old listing for nothing, one product at a time. Replacements take their own address and `scripts/easify_options.py sync` repoints the dropdown links.
 - **Descriptions are written straight to Shopify**, not typed into the Tapstitch editor. The existing writer is proven on 158 products and no Tapstitch redesign can break it.
 
 ## What is built (14 Sep 2026)
@@ -21,7 +19,7 @@
 | Build sweep | `scripts/tapstitch_build.py` | Done. |
 | Proof sheet | `scripts/tapstitch_preview.py` | Done. https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57 |
 | Migration ledger | `ledger.py`, `scripts/tapstitch_status.py` | Done. 121 rows seeded with the handle each replacement inherits. |
-| Store pull-down | `scripts/store_pulldown.py` | Done AND RUN, 14 Sep 2026. 160 listings drafted, six deleted. The store is dark. |
+| Store pull-down | `scripts/store_pulldown.py` (removed 6 Oct 2026, in git history) | Done AND RUN, 14 Sep 2026. 160 listings drafted, six deleted. The store is dark. |
 | Description plumbing | `generate.fixed_description` + `reference/garment-copy/` | Repointed per garment. Copy for the new blanks is not written. |
 | Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Written, never exercised. |
 | Editor automation | `config/tapstitch.json`, `scripts/tapstitch_publish.py` | Config scaffolded with 18 nulls; the Shopify half works, the editor half waits on a live session. |
@@ -47,7 +45,7 @@ lead colours, prices, and the pull-down are all settled and done.
 
 ## Context
 
-Evan is considering moving Peculiar People printing from Printify to Tapstitch because Tapstitch has better heavyweight blanks. The question this doc answers: if we switch, can we automate product creation the way the Printify pipeline does, given that Tapstitch has no API?
+Evan is considering moving Peculiar People printing from the old print-on-demand supplier to Tapstitch because Tapstitch has better heavyweight blanks. The question this doc answers: if we switch, can we automate product creation the way the old pipeline does, given that Tapstitch has no API?
 
 ## What we verified (27 Aug 2026)
 
@@ -71,25 +69,14 @@ Playwright can do it (it is a real program: it can measure images, compute coord
 ## Browser automation model
 
 - **Playwright drives the editor** for the repetitive steps: log in (see below), new product, upload file, set size, save. Roughly a minute or two per product; fine for a one-time catalog migration plus occasional new temples.
-- **Login:** the script reuses a browser profile Evan logged into once by hand, so it never touches his password. Same pattern as the Printify date-layer setup (real Chrome, dedicated profile, attach over CDP) in `docs/discovery/2026-08-date-layer-editor-notes.md`.
+- **Login:** the script reuses a browser profile Evan logged into once by hand, so it never touches his password. Same pattern as `browser_session.py` (real Chrome, dedicated profile, attach over CDP).
 - **Ongoing cost:** browser automation breaks when Tapstitch redesigns the editor. Maintainable, not set-and-forget. This is the price of no API.
-
-## Open question: buyer personalization (the With Date products) [SUPERSEDED 14 Sep 2026: Evan paused the dated tee; option 4 in effect, not option 3]
-
-Checked 27 Aug 2026: Tapstitch's help center and docs show NO buyer-personalization feature like Printify's (where the customer types a date at checkout and it flows into the print automatically). Everything Tapstitch calls "personalization" is seller-side branding (neck labels, hang tags, packaging) or marketing-blog language. Not proven absent; confirm with support@tapstitch.com or inside the dashboard before deciding.
-
-If it truly doesn't exist, the With Date options are:
-1. Manual per-order design edits (Easify collects the date at checkout, someone adds it in the Tapstitch editor per order). Labor on every dated order.
-2. Automate the per-order edit with Playwright. Rejected as a plan: per-order automation has to fire correctly on every incoming order, and a miss prints a customer's shirt wrong.
-3. **Split catalog (current lean):** base products move to Tapstitch for the blanks, With Date products stay on Printify where personalization works natively.
-4. Drop With Date from the Tapstitch lineup.
 
 ## First steps when samples arrive and Evan approves
 
-1. **Ask Tapstitch support whether buyer personalization exists** (see the open question above). The answer shapes whether this is a full migration or a split catalog.
-2. **Manual check (5 minutes):** confirm the Tapstitch editor defaults an upload to centered at full size, or that the size field can hit that exactly. The whole flattened-file approach leans on this.
-3. **Watch the editor's network traffic once** while saving a design by hand. Even without a public API, the editor talks to Tapstitch's servers to save designs, and that traffic usually carries exact positions and upload references. It may allow a sturdier or faster path than UI clicks, and it will tell us how the flattened file maps onto their design storage.
-4. **Prototype one temple end to end** (flattened PNG through published product) before touching the rest of the catalog.
+1. **Manual check (5 minutes):** confirm the Tapstitch editor defaults an upload to centered at full size, or that the size field can hit that exactly. The whole flattened-file approach leans on this.
+2. **Watch the editor's network traffic once** while saving a design by hand. Even without a public API, the editor talks to Tapstitch's servers to save designs, and that traffic usually carries exact positions and upload references. It may allow a sturdier or faster path than UI clicks, and it will tell us how the flattened file maps onto their design storage.
+3. **Prototype one temple end to end** (flattened PNG through published product) before touching the rest of the catalog.
 
 ## Discussion notes (Q&A from the 27 Aug session)
 

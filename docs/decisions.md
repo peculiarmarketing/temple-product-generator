@@ -1,401 +1,100 @@
 # Decision Log
 
-Decisions Evan has made, with dates. These override or refine the spec (docs/temple-catalog-generator-plan.md).
+Decisions Evan has made, with dates. Newer entries refine or override older ones.
+Entries that only governed the retired first supplier's pipeline were removed on
+6 October 2026; git history has them.
 
-## 17 August 2026 (Phase 1 gate and Phase 2 gate)
+## August 2026: decisions still in force
 
-- **Generator architecture: duplicate-then-edit.** Evan duplicates the template product in the Printify UI (carries mockup selections, personalization config, shipping options); the generator PUTs the design swap. Proven in the duplicate-flow experiment. API-only creation is rejected because mockups, personalization, and shipping are read-only via API and default wrong.
-- **Text layers are UI-only.** Any API write to print_areas wipes them, and they cannot be posted or updated. Location line is a generator-rendered image (Alata font, from the manifest's location string). Manual override honored: a `*location text*{black|white}*` file in the temple folder wins over auto-render. The personalization date layer on With Date products is re-added by hand in the Printify editor after generation.
-- **Resolution rule.** Uploads bump the SVG's declared width/height attribute to 4096 in memory (files on disk never modified). Proven to clear Printify's low-DPI warning. The live catalog's 2048 px assets are a Phase 5 backfill item.
-- **Art source of truth: `Temples/{Name}/` folders.** Manifests name art files explicitly (folder naming is inconsistent).
-- **Spacing constants** (see spacing_defaults.json): measured from the live catalog and approved via previews. Location text: 0.74 in tall on base products, 0.38 in on With Date. Divider on With Date: **2.0 in** (changed from the live products' 3.0 in at the Phase 2 gate so it does not read as an underline).
-- **With Date logo placement:** auto-pick the emptier top corner, near the temple, never flush to the print area edge. Manifest override available per temple.
-- **Sizing across shirt sizes: proportional** (design scales with the garment, matching the live catalog). Not physical-inch-consistent.
-- **Tracer standard going forward: drop `--square`.** New temples are traced `--trim --drop-label`; files come out at the drawing's natural aspect. Existing square files stay and work identically (the layout engine measures ink, not frames). NOTE: the live tracer skill in claude.ai still documents `--square` in its examples; update it there on the next skill edit.
-- Both text-size conventions and the base vs With Date layouts are separate layout profiles: `back_stack` and `back_stack_dated`.
+Carried over from the first catalogue. Each one still governs the Tapstitch
+pipeline.
 
-## 17 August 2026 (Phase 3)
-
-- **Location line rule: the temple's PHYSICAL city, not its name-city.** Confirmed from the live catalog: Washington D.C. Temple prints KENSINGTON, MARYLAND; Provo City Center prints PROVO, UTAH. Format: all caps, comma, spelled-out state, country for international.
-- **temples.json is the location dataset.** Folder name maps to official name and verified location line. The 14 finished temples were extracted from the live products themselves. A folder with no manifest gets one scaffolded automatically from this dataset; unverified entries hard-stop with instructions rather than guessing. New temples: the Phase 4 skill researches the physical location (churchofjesuschristtemples.org as the reference), appends the entry, and asks Evan only when uncertain.
-- **New-temple flow:** drop a folder with two SVGs into Temples/. Everything else (manifest, location text, layout, upload, product) is derived.
-- **Dress rehearsal passed.** Generated Logan Temple Tee (from a UI duplicate of the live product) matched the hand-built one in the editor with all mockups preserved and high-resolution art. Evan approved.
-- **Publishing stays manual for now.** The generator produces complete unpublished drafts; Evan clicks publish in Printify. Automated publish (with the 200-per-30-minutes throttle) is deferred to backfill planning.
-- **Personalization-optional is parked.** Folding With Date into base would need a design that looks right with and without the date line; Evan is not designing that now.
-## 17 August 2026 (Phases 4 and 5 closed)
-
-- **Recurring runs are manual.** No scheduled task. Evan triggers the sweep in a session ("run the sweep"); the project skill handles it. Rationale: generation depends on duplicates Evan makes by hand and publishing is manual, so a schedule saves only the typing.
-- **No catalog backfill.** Evan decided the existing hand-built products stay as they are. `--in-place` remains available as a tool for one-off regeneration if ever wanted, but there is no backfill campaign, which also retires the publish-throttle concern.
-- **Catalog gaps found by the first coverage report:** seven missing With Date tees (Nauvoo, Provo City Center, Salt Lake, San Diego, Saratoga Springs, St. George, Washington DC). Evan is making seven With Date duplicates; one sweep fills all seven.
-
-- **Descriptions are written to Printify pre-publish.** The pipeline session researches each temple once (same methodology, sources, and myth screening as the claude.ai description skills, which we hold verbatim in reference/skills/), saves the facts fragment to `Temples/{Name}/temple-facts.html`, and `scripts/write_description.py` applies fixed sections plus facts to all the temple's generated products. Products publish complete. With Date products get descriptions (the claude.ai skills never matched their titles). The claude.ai description event stays untouched; its post-publish overwrite of the same products is harmless churn until Evan retires it. Generator also sets fixed intro plus size guide at swap time so a draft never carries the donor temple's facts.
-
-- **No designated template products; any duplicate works.** Evan clarified his "templates" are Printify editor design-templates (saved layer arrangements), which the generator replaces entirely. What the pipeline needs from a duplicate is only the API-invisible settings, and any product of the right garment carries them. The generator claims any unclaimed "Copy of ..." product matching the garment's blueprint and provider; "With Date" copies are reserved for the dated line (personalization config); "front logo" copies are ignored (tests). Evan's editor design-templates become unnecessary for generated products.
-
-## 17 August 2026 (Easify option sets)
-
-- **The Easify temple dropdowns are pipeline-managed via CSV.** The canonical option-sets CSV lives at `artifacts/easify/option-sets.csv` (committed); Evan's Easify app is downstream of it. `scripts/easify_options.py sync` reconciles it against the live Shopify catalog; Evan imports the file in the Easify app by hand, the same way publishing is manual.
-- **The temple label is the reconciliation key; URLs follow labels.** A row whose label says Provo gets Provo's live URL, which is how the swapped Provo/Provo City Center links were corrected. Handles are always read from Shopify, never derived from titles (the Salt Lake tee lives at `salt-lake-city-temple-tee`).
-- **Option values are never auto-deleted.** Rows the sync cannot confidently bind, or whose product left Shopify, are kept and reported. `option_set_products` is rebuilt from the live catalog each run.
-- **The With Date tee line got its own new set** (Evan's choice), titled "Tee - With Date", cloned structurally from the Tee set. New sets carry placeholder ids (900001+) until the one-time post-import `reseed --export` adopts Evan's fresh export with the real ids.
-- **Approved data fixes applied by the first sync:** Salt Lake and Washington D.C. tee URLs, the Provo/Provo City Center swap in Sweatshirt and Hoodie, and the "San Deigo" spelling in both.
-
-## 18 August 2026 (auto-publish)
-
-- **Base products auto-publish via API; dated products stay manual.** Evan reversed the "publishing stays manual" decision for non-personalizable products. `scripts/publish_drafts.py` publishes never-published drafts that pass every gate: not "Copy of", not "(front logo)", not With Date or personalizable (layers in sales_channel_properties), description carries the temple-facts section, Economy shipping enabled. With Date products keep the manual flow because Evan must re-add the date text layer first.
-- **The publish API is sync flags only.** POST publish.json accepts seven booleans (title, description, images, variants, tags, keyFeatures, shipping_template), all true for first-time publishes. Shipping options and variant visibility are not API-settable; they ride the UI duplicate. `is_economy_shipping_enabled` is read-only via API and is verified as a publish gate. Variant visibility ("only show in stock variants") is a per-product Publishing settings choice in the Printify UI, not readable or writable via API.
-- **Printify's publish status lags the real push.** The Shopify product goes live in 1 to 4 minutes, but the Printify product's `external` field and lock can take 10+ minutes to update. The script therefore confirms against Shopify by exact title (creds from .env) and treats that as authoritative.
-- **Verified live on Brigham City (18 Aug 2026):** Tee (brigham-city-temple-tee, 52/52 variants), Sweatshirt (brigham-city-temple-sweatshirt, 36/36), Hoodie (brigham-city-temple-hoodie, 27 of 30 enabled variants on Shopify because exactly the 3 out-of-stock ones were hidden, proving the variant-visibility setting rides the duplicate through an API publish). All active, mockups and descriptions intact, art cards and Easify rows added by the normal post-publish steps.
-
-## 18 August 2026 (date-layer automation)
-
-- **Date layers are added by script.** `scripts/add_date_layer.py` drives the Printify editor via Playwright over CDP to add the personalization date text layer to unpublished With Date drafts, positioned from the divider layer read via GET plus the dated constants in `spacing_defaults.json`, settings from `config/date_layer.json` (canonical per Evan's 18 Aug gate). Runs only when Evan invokes it, never publishes, touches nothing else. The manual editor flow remains the fallback; the off switch is not running it. Editor click path and calibration live in `docs/discovery/2026-08-date-layer-editor-notes.md`; a Printify editor redesign means a repair session against that document. Session model: Evan logs into a real Chrome (dedicated profile, debug port 9222) once via `scripts/printify_login.py` because Cloudflare blocks automation-launched browsers; scripts attach over CDP.
-- **Verified dated drafts publish via API (Evan's 18 Aug evening reversal of the never-publish-dated rule):** `publish_drafts.py` accepts dated or personalizable drafts when the full date-layer verification passes, then all pre-existing gates still apply. Unverified dated drafts stay held.
-- **New drafts default Economy shipping OFF** (observed 18 Aug; contradicts the earlier belief that shipping rides the duplicate). The API field is read-only, so Evan flips Economy on in the UI before publish; the publish gate correctly holds economy-off drafts. UI automation of the toggle was designed (plan amendment Task 7) and deferred by Evan.
-
-## 19 August 2026 (economy gate dropped)
-
-- **Economy shipping is no longer a publish gate (Evan's 19 Aug decision, supersedes the 18 Aug hold-on-economy-off rule).** The Ephraim sweep held all four drafts on the economy gate, blocking unattended auto-publish. Evan chose to drop the gate rather than automate the toggle (Task 7 stays deferred): `publish_drafts.py` now publishes drafts with Economy off and prints a note ("eligible, note: economy shipping is off") for each one, so Evan can flip the toggle in the Printify UI whenever, post-publish. Consequence accepted: a product can be live offering only Standard shipping until he flips it. `is_economy_shipping_enabled` remains read-only via API.
-
-## 22 August 2026 (catalog rename, parent products, Shopify fixups)
-
-- **Product titles lead with the garment line, temple in parentheses.** New
-  patterns, one per garment config (`garments/*.json`, key `naming.title`):
-  `Pillar Temple Hoodie ({place})`, `Classic Temple Crew Sweatshirt ({place})`,
-  `Essential Temple Tee ({place})`, `Essential Temple Tee – with personalizable
-  date ({place})`. En dash, lowercase after it; that exact wording is
-  canonical and supersedes the hyphen and Title Case variants Evan tried by
-  hand on the Salt Lake and Layton products.
-- **Salt Lake is the parent temple** (`config/catalog.json`, key
-  `parent_temple`). Its four products carry the bare garment title with no
-  parenthetical (`naming.title_parent`) and stay ACTIVE on Shopify. Every
-  other temple's product is set to Shopify status UNLISTED, so the storefront
-  shows one listing per garment line and shoppers reach the rest through the
-  Easify Temple dropdown on the parent page. Unlisted products keep working
-  URLs, so every dropdown link still resolves. `publish_drafts.py` unlists
-  each newly published non-parent product automatically.
-- **Title parsing runs backwards now.** The place token is parenthesized at
-  the end, so reading a title back to a temple is an exact lookup rather than
-  the longest-prefix guess the old `{place} Temple Tee` titles needed
-  (`art_images.match_temple`). The nesting half of `check_title_collision` is
-  retired for the same reason: parentheses make Provo vs Provo City Center
-  structurally unambiguous, and the parent's bare title is a prefix of every
-  child title by design, which the old rule would have flagged 117 times.
-- **`limited edition` replaces `(front logo)` as the one-off marker.** Evan's
-  hand-built one-offs are now `Essential Temple Tee – Limited Edition
-  (Nauvoo)`, `Pillar Temple Hoodie – Limited Edition (Nauvoo)`, and `Classic
-  Temple Crew Sweatshirt – Limited Edition (Nauvoo)`. The pipeline never
-  claims one as a duplicate, never auto-publishes one, and never gives one a
-  dropdown row.
-- **The dated tee description opens with a Personalization section.** Evan
-  wrote it; it is held verbatim at
-  `reference/description-blocks/personalization-intro.html` and named by
-  `description_prefix` in `garments/cc1717-dated.json`. This is a new
-  directory on purpose: the vendored skill exports under `reference/skills/`
-  stay verbatim.
-- **Hoodie colorway "True Navy" is renamed to "Blue Jean" on Shopify.**
-  Printify labels the CC1567 hoodie colorway True Navy, but it does not match
-  the True Navy on the CC1717 tee or the CC1566 crew; it matches their Blue
-  Jean. Evan's call: Printify has it wrong and the storefront should read Blue
-  Jean. Shopify-only, so Printify order line items still say True Navy. Any
-  Printify republish re-syncs variants and pushes the old name back, which is
-  why `scripts/shopify_fixups.py hoodie-color` is re-runnable and part of the
-  end-of-run sequence rather than a one-shot.
-- **Moss is the default variant on the dated tees**, declared as
-  `default_colorway` in `garments/cc1717-dated.json`. `publish_drafts.py`
-  reports a wrong default before publishing and sets it right after, and
-  `scripts/default_variant.py` does the same in bulk. The size is preserved:
-  a product defaulting to "True Navy / L" moves to "Moss / L".
-- **`is_default` is writable through the Printify API**, measured 22 Aug 2026
-  against a live dated tee: the PUT was accepted and prices, enabled state and
-  variant count all came back unchanged. The Revision-2 spec
-  (`docs/temple-catalog-generator-plan.md`) listing it read-only was wrong, and
-  `WRITABLE_VARIANT_KEYS` now includes it.
-- **Printify's default variant does not drive Shopify's.** Measured the same
-  day: the Salt Lake dated tee Evan had already set to Moss showed the same
-  Shopify variant order (Brick / S first) as every product still defaulting to
-  True Navy. Setting the Printify default moves Printify's own default, which
-  mockup selection follows; the storefront is a separate lever.
-- **The storefront's opening variant is the Color option's first value.**
-  Shopify preselects variant position 1 and computes position from the option
-  value order, so `productOptionsReorder` is the only lever over it. That list
-  is also the swatch display order, so the chosen color moves to the front of
-  the swatch row too. Declared per garment as `storefront_first_color`:
-  **Moss** on both tee lines, **True Navy** on the crew, **Denim** on the
-  hoodie. Applied by `scripts/shopify_fixups.py color-order`.
-- **Reordering colors can scramble the size list, and Denim does.** Shopify
-  re-derives every option's value order from the resulting variant sequence,
-  so a first color missing a size pushes that size to the back. Shopify hides
-  out-of-stock variants at publish time (the "only show in-stock variants"
-  publishing setting), and Denim is missing S and 3XL on all 31 hoodies, so
-  hoodie sizes now read M, L, XL, 2XL, S, 3XL. Evan was shown the effect and
-  the three colors that are complete on every hoodie (Pepper, Blue Jean,
-  White) and chose Denim anyway on 22 Aug 2026. It corrects itself if those
-  Denim sizes come back in stock and the product is republished. Tees (Moss)
-  and crews (True Navy) are complete everywhere and kept correct size order.
-  `reorder_option_values` feeds a canonical size order in on every call so a
-  re-run cannot compound the scrambling.
-- **`productOptionsReorder` needs every option in the payload**, not just the
-  one moving; a partial list fails with MISSING_OPTION_NAME.
-- **The backfill wrote both sides directly, never republished.**
-  `scripts/rename_catalog.py` (deleted 18 Sep 2026 once the backfill was long
-  done and nothing in a pipeline run called it; recover it from git history)
-  PUT the title to Printify and then to Shopify,
-  addressing Shopify by the product id Printify stores in `external.id` rather
-  than by title (two products shared the title "Nauvoo Temple Sweatshirt
-  (front logo)"). A republish would re-sync images and variants along with the
-  title and would flip the UNLISTED children back to ACTIVE. Shopify keeps a
-  product's handle across a title change, so every existing link survived.
-- **Known gap, pre-existing:** six hand-built dated tees (Cody, Kirtland,
-  Logan, Manti, Provo, Taylorsville) have no description on Printify or
-  Shopify and no local facts fragment. They are reported and skipped by
-  `write_description.py --backfill-dated` until those temples are researched.
-- **Follow-up outside this repo:** Evan's three claude.ai description skills
-  resolve a Shopify product by the exact title `{place} Temple {Garment}` and
-  hard-stop on zero matches, so they need their resolution step updated to the
-  new titles.
-
-## 22 August 2026 (republish costs, featured photos)
-
-- **A republish is destructive to the Shopify-side work, measured not assumed.**
-  Republishing one tee and one hoodie (Bountiful, 22 Aug 2026) kept the title
-  and the UNLISTED status but **deleted the art close-up cards outright**,
-  reverted the hoodie's Blue Jean colorway to Printify's True Navy, and
-  reverted the Color option order so the pages stopped opening on the wanted
-  color. It did **not** change the featured image. `scripts/republish.py`
-  therefore runs the three repair passes itself after the pushes settle;
-  republishing without them leaves the storefront worse than before.
-- **Unclaimed "Copy of ..." drafts are never republished.** They have no
-  Shopify counterpart, so publishing one creates a junk storefront product.
-- **The featured photo is a third thing, separate from both defaults.** A dated
-  tee can carry Printify `is_default` = Moss and open on the Moss variant on
-  Shopify while its card still shows a Graphite shirt, because Printify's
-  `images[]` leads with the Graphite mockup and `images` is not writable
-  through the API. Fixed on the Shopify side by moving that colorway's mockup
-  to gallery position 1 and reseating the art card at position 2
-  (`scripts/shopify_fixups.py featured-photo`, keyed by
-  `storefront_featured_color`). Mockup media carry no alt text from Printify,
-  so the colorway is matched through its variants' image URLs.
-- **Three separate "defaults", worth keeping straight:** Printify's
-  `variants[].is_default` (drives Printify's own default, set by
-  `scripts/default_variant.py`); Shopify's preselected variant (position 1,
-  driven by the Color option value order, set by `color-order`); and the
-  featured photo (gallery position 1, set by `featured-photo`). Setting one
-  does not set the others. Evan's 22 Aug 2026 choice: featured photo follows
-  the dated tee only (Moss).
-
-## 22 August 2026 (republish aftermath, measured)
-
-- **A full-catalog republish takes the storefront's images down for roughly 15
-  minutes.** Pushing all 123 products at once made Shopify delete and re-ingest
-  every mockup; products go full to empty to full as Printify's queue reaches
-  them. Peak was 94 of 123 with zero media, including two of the four ACTIVE
-  parent listings. Everything recovered by t+14m and the parents by t+4m.
-  Stage a future run in batches so only a few products are dark at a time, or
-  do it outside trading hours.
-- **`art_images.py` no longer aborts the batch on one failure.** A product with
-  no mockups yet cannot take a card at gallery position 2, and that exception
-  used to raise straight out of the loop: it left 51 of 55 products uncarded.
-  It now skips a product with no mockups (reported, re-run picks it up) and
-  catches per-product failures, card rendering included.
-- **Matching a colorway to its mockup: variant image URL first, garment colour
-  second.** Some products carry no per-variant images on Shopify, so there is
-  no URL linking Moss to a photo. The fallback reads Printify's own default
-  mockup for the colorway and matches on the average colour of the image's
-  centre third. Grayscale hashing does not work here (every mockup in a set is
-  the same shirt in the same pose, so several tie at distance 0); colour
-  separates cleanly, observed best 0.1 against next-best 32.3. Printify
-  renames files on upload so filenames never match, and media ORDER is not
-  reliable either: on the Provo dated tee the Moss mockup sat at Shopify index
-  5, not the index 10 that position arithmetic predicted. `media_id_by_color`
-  refuses an ambiguous match rather than risk featuring the wrong colorway.
-- **Known gap:** the three Limited Edition one-offs have no art cards by design.
-  Draper's was closed on 22 Aug 2026 by retracing from the new sketch.
-- **A failed editor run is worth retrying before diagnosing.** The date-layer
-  automation timed out on the font picker's Search field and looked like the
-  editor redesign the discovery notes anticipate. It was not: Printify had not
-  changed, and the identical command succeeded on the next attempt. On this
-  machine the editor page needs longer to settle than the step allows. Retry
-  first; only open a repair session if it fails twice.
-
-## 23 August 2026 (publish ordering)
-
-- **The default variant is written BEFORE the publish, not after.**
-  `publish_drafts.py` used to call `fix_default_variant` after `publish_one`
-  returned. Two things went wrong with that, both seen on the 23 Aug sweep.
-  Printify locks a product while its publish is in flight, so the write raced
-  the lock and failed with code 8252 (the Ogden Original dated tee stayed
-  locked for over an hour). And when the write did land, it was by definition
-  an edit Printify had not pushed to the store, so every dated tee sat badged
-  "unpublished changes" in the Printify UI from the moment it went live.
-  Clearing that badge means a republish, and a republish deletes the art cards
-  and reverts the Shopify colorway and option order, so the badge is expensive
-  to clear and worthless to leave. Writing `is_default` first lets the publish
-  push carry it and the product lands clean.
-  The dated tee is the only line affected either way, because it is the only
-  garment declaring `default_colorway`. If the pre-publish write fails the
-  product still publishes, on the donor's colorway; fixing it afterward needs
-  `default_variant.py` and then `republish.py`, because once the product is
-  live only a republish carries the change to Shopify.
-- **`--report-only` cannot see a temple that has art but no SVGs.** The sweep's
-  report path calls `detect_art_files` (SVGs only) while the real run calls
-  `ensure_art_files`, which traces a source PNG first. Five folders with PNGs
-  and no SVGs therefore read as "NO ART YET" in the report and generated
-  normally in the run. The report is a lower bound on the work, not a preview
-  of it.
-- **`external.handle` sometimes comes back as a full URL.** On this shop
-  Printify returned `https://agv44k-jr.myshopify.com/products/<handle>` rather
-  than the bare handle, and the publish-time fixup looked it up literally and
-  skipped the product ("no Shopify product with handle 'https://...'"). The
-  Orem crew was the one hit; the catalog-wide `shopify_fixups.py all` pass
-  caught it afterward by title. Strip the origin before using that field.
-
-## 26 August 2026 (new products publish ACTIVE)
-
-- **New products are no longer unlisted; they publish ACTIVE (Evan's 26 Aug
-  decision, supersedes the 22 Aug unlist-the-children rule).** The unlist
-  fixup is removed from `scripts/shopify_fixups.py` entirely: it is gone from
-  `fix_published_product()` (so `publish_drafts.py` leaves each newly
-  published product ACTIVE, which is how a Printify publish lands on Shopify)
-  and gone from the `all`/standalone commands (so no catalog-wide pass can
-  re-unlist anything). The parent-product concept is unchanged: Salt Lake's
-  products still carry the bare garment titles and the Easify Temple dropdown
-  still cross-links every temple.
-- **Children published before 26 Aug 2026 stay UNLISTED.** Nothing in the
-  pipeline sets a product's status in either direction anymore; flipping the
-  existing children to ACTIVE would be a separate, Evan-initiated pass.
-  `easify_options.py` therefore keeps counting UNLISTED as live.
-
-## 26 August 2026 (collapsed temple facts, video guide fix)
-
-- **Temple facts render as collapsed `<details>` rows (Evan's 26 Aug
-  decision).** The facts block had grown to about six phone screens. Each
-  block is now a collapsed row: the temple name (h3) with its spec rows, then
-  one row per h4 block (Construction Story, Symbolism & Design, Changes Over
-  Time where present, Trivia). Scope is facts only: Personalization, the
-  garment intro, and the Size Guide stay open. The as-of line stays visible
-  after the rows.
-- **Presentation transforms live in `description_html.py` and run at
-  assembly time.** The vendored skill assets (`reference/skills/*/assets/`)
-  and the per-temple `Temples/*/temple-facts.html` fragments stay untouched;
-  `compose_description()` is now the one place a description's final HTML is
-  shaped, called from all three compose sites (generate.py and both
-  write_description.py paths). Transforms are idempotent by unwrap-then-
-  rewrap, so facts re-extracted from a live product re-collapse to identical
-  bytes and `--normalize` converges. The `<section class="temple-facts">`
-  wrapper stays outermost so the publish gate and FACTS_RE keep working.
-- **The size-guide video gets `controls="controls"` and
-  `preload="metadata"`.** The vendored tag is autoplay/loop/muted with
-  `preload="none"`, no controls, no poster. Autoplay is a request browsers
-  may decline (iPhones decline it in Low Power Mode), and with no controls
-  the video sits as a frozen frame with no way to start it, which is exactly
-  what Evan saw. Verified playing normally in desktop Chrome pre-fix, so the
-  files were never broken. The transform edits only the opening `<video>`
-  tag, so cc1717's deliberately odd `</source></video>` tail rides through.
-- **Description backfill channel: Printify PUT, then a description-only
-  publish (Evan's direction).** `write_description.py` gained `--only TEXT`
-  and `--via-publish`; the latter replaces the direct Shopify
-  `descriptionHtml` write with `POST publish.json` carrying
-  `{"description": true}` and every other sync flag false, because the
-  full-flag publish is the measured-destructive republish. Measured on the
-  Vernal base tee, 26 Aug 2026: the description-only publish synced within a
-  minute, kept the art card at gallery position 2, kept the color order, the
-  handle, and the listing status. Drafts with no `external` id are PUT only;
-  their description rides the first publish.
-- **The Printify connector decodes HTML entities on push**, measured the
-  same day on Vernal: `&sup2;` in the vendored size guide arrived on Shopify
-  as a literal superscript two. Rendering is identical, but a byte compare
-  would re-sync every product forever, so `--normalize` now compares the
-  Shopify side entity-insensitively (html.unescape on both sides). The
-  Printify side stays byte-exact.
-- **Follow-up outside this repo, still open:** Evan's claude.ai description
-  skills emit un-collapsed markup and the old video tag. They currently
-  hard-stop on the new title patterns, so they cannot overwrite anything; if
-  they are ever revived they need the same collapse and video treatment, and
-  until then a `--normalize` run re-converges anything they touch.
-- **The collapsed rows carry their own scoped `<style>` block** (Evan's
-  iPhone review, same day: rows too far apart, no dividers, and the theme
-  hides the default disclosure markers so nothing said the rows open).
-  `FACTS_STYLE` ships inside the facts section: divider lines, 12px row
-  padding, zeroed heading margins, and a +/− indicator on the right.
-  Literal characters, no entities (the connector decodes them). Measured
-  surviving the Printify PUT and the connector push intact on Vernal.
-- **The size-guide measurements table is dropped at assembly; the video IS
-  the size guide** (same review). `trim_size_guide()` keeps the h3 and the
-  video and cuts everything after the video inside the section (the h4
-  Measurements table and the width/length note). The vendored asset keeps
-  its table; it just never reaches a product.
-
-## 26 August 2026 (Temples/All mirror for the digital download files)
-
-- **Every temple's black SVG is duplicated into `Temples/All/`** (Evan's
-  direction, same day he built the Temple Art File product on Shopify: 40
-  variants, $4.95 SVG download, delivery wired through a digital products
-  app that wants one flat folder of files). The copy is named by the CLEAN
-  place token, never the folder name: `Manhattan black.svg`,
-  `Washington D.C. black.svg`, `Ogden Original black.svg`, no ref-finder
-  stars. `mirror_black_art()` in generate.py does the copy; it runs per
-  temple in every sweep (not report-only) and every `--temple` run, right
-  after the manifest loads, and refreshes the copy when the source art is
-  newer. The 40 existing temples were backfilled the same day.
-- **`Temples/All/` is not a temple folder.** The sweep walk skips it by
-  name (`ALL_ART_DIR`); nothing scaffolds a manifest for it. Any future
-  script that walks `Temples/` must skip it too.
-- Found while backfilling: Evan had renamed the misspelled `Manhatten`
-  folder and its files to `Manhattan`, stranding the manifest's art
-  filenames. The manifest was fixed to match (manifests are
-  pipeline-maintained). A renamed folder strands its manifest silently
-  until the next run; the `Manifest names missing art file` hard stop is
-  the tell.
-
-## 26 August 2026 (catalog description rollout, canonical comparison)
-
-- **The collapsed-facts catalog rollout is complete: 158 of 162 products
-  verified in sync on both stores.** Run via `write_description.py
-  --normalize --via-publish` (interrupted once by a session restart and
-  resumed; the pass is convergent so the resume was a plain re-run). One
-  transient lock ("Product is disabled for editing", Printify error 8252,
-  the Layton hoodie) resolved itself when its in-flight publish finished.
-- **Descriptions are compared in canonical form (`canon()` in
-  write_description.py), never byte-for-byte.** Both stores rewrite
-  render-identical HTML, all measured 26 Aug 2026: the Printify connector
-  decodes character entities on push, serializes the video tail as
-  `</source></video>` (the tee asset carries that form natively, which is
-  why only crews and hoodies drifted), collapses `<br />` to `<br>` (the
-  six old hand-researched temples carry `<br />` in their facts), and
-  whitespace after `<li>` is unstable across round trips (Logan). A save
-  from the Printify editor UI decodes entities on the Printify side too
-  (Evan's publish retries did this to the Saratoga Springs products).
-  Canonicalization is comparison-only; stored bytes are never rewritten to
-  match it.
-- **RESOLVED same day: the Saratoga Springs publish failures were
-  Printify's IP filter tripping on the word "Hardy".** All four products
-  failed to publish (Evan's manual retries included; the reason showed only
-  in the Printify UI banner). The trigger was the temple matron's maiden
-  name, "Marie Ellen Hardy Sorensen", in the First Temple President row:
-  Printify's intellectual-property screen apparently matches the brand Ed
-  Hardy against listing text and blocks the publish. Fix (Evan's call):
-  drop the maiden name from `Temples/Saratoga Springs/temple-facts.html`
-  ("Marie Ellen Sorensen") and re-run `--normalize --via-publish --only
-  "(Saratoga Springs)"`; publishes cleared immediately. TRAP for future
-  descriptions: a publish that fails repeatedly with no API-visible cause
-  may be the IP filter matching an innocent word (names especially) against
-  a brand; check the UI banner and reword.
+- **Art source of truth: `Temples/{Name}/` folders.** Manifests name art files
+  explicitly, because folder naming is inconsistent.
+- **The location line is the temple's PHYSICAL city, not its name-city**
+  (17 Aug). Washington D.C. Temple prints KENSINGTON, MARYLAND; Provo City Center
+  prints PROVO, UTAH. All caps, comma, spelled-out state, country for
+  international.
+- **temples.json is the location dataset** (17 Aug). Folder name maps to official
+  name and verified location line. A folder with no manifest gets one scaffolded
+  from this dataset; unverified entries hard-stop with instructions rather than
+  guessing. For a new temple, research the physical location
+  (churchofjesuschristtemples.org), append the entry, and ask Evan only when
+  uncertain.
+- **The location line is a rendered image** in Alata, from the manifest's
+  location string. A `*location text*{black|white}*` file in the temple folder
+  wins over the auto-render.
+- **New-temple flow:** drop a folder with two SVGs (or the source sketch PNG)
+  into `Temples/`. Everything else is derived.
+- **Tracer standard: drop `--square`.** New temples are traced
+  `--trim --drop-label`; files come out at the drawing's natural aspect. Existing
+  square files work identically, because the layout engine measures ink, not
+  frames.
+- **Runs are manual.** No scheduled task; Evan starts a run in a session.
+- **The Easify Temple dropdowns are pipeline-managed via CSV** (17 Aug). The
+  canonical file is `artifacts/easify/option-sets.csv`; `scripts/easify_options.py
+  sync` reconciles it against the live catalogue, and Evan imports it in the
+  Easify app by hand. The temple label is the reconciliation key and URLs follow
+  labels; handles are always read from Shopify, never derived from titles. Option
+  values are never auto-deleted: rows the sync cannot bind are kept and reported.
+  New sets carry placeholder ids (900001+) until a post-import `reseed --export`
+  adopts Evan's fresh export with the real ids.
+- **Titles lead with the garment line, temple in parentheses** (22 Aug). One
+  pattern per garment config (`naming.title`), never hardcoded. **Salt Lake is the
+  parent temple** (`config/catalog.json`): its products carry the bare
+  `naming.title_parent`, and shoppers reach every other temple through the Easify
+  Temple dropdown. Reading a title back to a temple is an exact lookup on the
+  parenthesized place token (`art_images.match_temple`).
+- **`limited edition` marks Evan's hand-built one-offs.** The pipeline never
+  builds over one, never publishes one, and never gives one a dropdown row. They
+  have no art cards by design.
+- **The storefront's opening variant is the Color option's first value**
+  (22 Aug). Shopify preselects variant position 1 and computes position from the
+  option value order, so `productOptionsReorder` is the only lever over it. That
+  list is also the swatch display order. Declared per garment as
+  `storefront_first_color`, applied by `scripts/shopify_fixups.py color-order`.
+- **`productOptionsReorder` needs every option in the payload**, not just the one
+  moving; a partial list fails with MISSING_OPTION_NAME.
+- **Reordering colours can scramble the size list.** Shopify re-derives every
+  option's value order from the resulting variant sequence, so a first colour
+  missing a size pushes that size to the back. `reorder_option_values` feeds a
+  canonical size order in on every call so a re-run cannot compound it.
+- **`art_images.py` does not abort the batch on one failure** (22 Aug). A
+  product with no mockups yet cannot take a card at gallery position 2; it is
+  skipped and reported, and a re-run picks it up.
+- **New products publish ACTIVE** (26 Aug, superseding a 22 Aug rule that
+  unlisted every child product). Nothing in the pipeline sets a product's status
+  in either direction. Children published before 26 Aug 2026 stay UNLISTED, so
+  `easify_options.py` counts UNLISTED as live.
+- **Temple facts render as collapsed `<details>` rows** (26 Aug). One row for the
+  temple name (h3) with its spec rows, then one per h4 block; the as-of line stays
+  visible after the rows. The rows carry their own scoped `<style>` block
+  (dividers, 12px row padding, a +/- indicator), literal characters only, no
+  entities.
+- **Presentation transforms live in `description_html.py` and run at assembly
+  time.** The stored fixed sections and the `temple-facts.html` fragments stay
+  untouched; `compose_description()` is the one place a description's final HTML
+  is shaped. Transforms unwrap then rewrap, so composing twice is byte-identical.
+  The `<section class="temple-facts">` wrapper stays outermost.
+- **Every temple's black SVG is mirrored into `Temples/All/`** (26 Aug) for the
+  Temple Art File digital download, named by the clean place token
+  (`Manhattan black.svg`, `Ogden Original black.svg`, no ref-finder stars).
+  `generate.mirror_black_art()` does the copy; no pipeline script calls it since
+  6 Oct 2026, so run it by hand for a new temple. `Temples/All/` is not a temple
+  folder: any script that walks `Temples/` must skip it.
+- **A renamed temple folder strands its manifest silently** until the next run;
+  the `Manifest names missing art file` hard stop is the tell. Manifests are
+  pipeline-maintained.
 
 
 ## 14 September 2026 (the Tapstitch decision and what it changed)
 
 - **Evan committed to Tapstitch blanks**: one tee, one hoodie, one crewneck for
-  every temple design. CC1717, CC1566 and CC1567 retire. The specific blanks are
+  every temple design. The old blanks retire. The specific blanks are
   NOT picked yet, so print areas, colours, prices and product copy are all still
   placeholder.
-- **The personalizable date tee is PAUSED, not migrated.** This closes the
-  27 Aug open question about Tapstitch buyer personalization: rather than run a
-  split catalogue to keep one line alive, the product waits. The split-catalogue
-  lean in the migration plan is superseded.
 - **The logo moved off the back print to the front.** New layout profile
-  `back_temple_text` (temple plus location text). The existing `back_stack` and
-  `back_stack_dated` are untouched so the Printify fallback still works.
+  `back_temple_text` (temple plus location text).
 - **Two back-spacing questions were raised by that change and are open.**
   Measured across all 40 designs: removing the logo left the old 2.5in bottom
   margin as the only thing capping tall temples (Salt Lake prints 11.1in against
@@ -403,27 +102,18 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   canvas below the location line depending on the building's proportions.
   `vertical_anchor: "center"` exists as the alternative. Proof sheet:
   https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57
-- **Store pull-down is two steps, deliberately.** Every temple listing drafts
-  now; each old listing is deleted only when its replacement publishes. Mechanism
-  that forces this: a DRAFT or ARCHIVED Shopify product keeps its handle
-  reserved, so a replacement under the same title would be minted at a '-1'
-  handle and every Easify dropdown URL would break. Deleting at swap time lets
-  the replacement inherit the exact address. `scripts/store_pulldown.py` has
-  snapshot / draft / restore / delete, and snapshot must run first because the
-  temple-to-handle mapping is only reliably readable while the catalogue is intact.
 - **Descriptions go straight to Shopify, never through the Tapstitch editor.**
   The writer is proven on 158 products and no Tapstitch redesign can break it.
 - **Garment copy moved out of the description skills** into
   `reference/garment-copy/{garment_id}/`. Three new blanks would otherwise have
-  meant three new skills holding two HTML files each. The four Comfort Colors
-  descriptions were verified byte-identical before and after the move. The
+  meant three new skills holding two HTML files each. The
   Tapstitch folders hold a README and NO html files on purpose: `fixed_description()`
   returns empty when the files are absent, and an empty description beats the
   wrong garment's specifications on a live page, so a placeholder would defeat
   the guard.
 - **MEASURED: Tapstitch publishes to Shopify with an EMPTY productType**, and
   every fixup in `scripts/shopify_fixups.py` is keyed on that field, so colour
-  ordering and the featured photo silently do nothing and report success. The
+  ordering silently does nothing and reports success. The
   runner sets productType immediately after publish, before any fixup. Full
   findings in `docs/discovery/2026-09-tapstitch-store-findings.md`, including the
   four Tapstitch test products Evan left as drafts on 28 Aug and their real
@@ -434,7 +124,7 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   first, no art card) is a stray. Only one address can be inherited, so the
   snapshot keeps the OLDEST and reports the collision rather than letting
   last-write-wins pick. RESOLVED the same evening: the stray was deleted, along
-  with its dated twin. See the evening entry below.
+  with its twin. See the evening entry below.
 - **The repo was in an iCloud conflict state** when this work started: empty
   shells named `garments`, `config`, `scripts`, `docs`, `tests`, `artifacts`,
   `fonts`, `reference` beside the real content in `<name> 2` twins. Git reported
@@ -446,82 +136,7 @@ Decisions Evan has made, with dates. These override or refine the spec (docs/tem
   instead of working. Caches are capped at 8 and 4; callers iterate temple-major
   so that covers every repeat within one temple.
 
-## 14 September 2026, later (the blanks)
-
-Evan chose all three blanks. Specs below were read off the live Tapstitch product
-pages the same day, not taken from the chat.
-
-| Line | Blank | Code | Weight | Sizes | Blank cost |
-|---|---|---|---|---|---|
-| tee | Pure Cotton Unisex T-Shirt #RU0010 | RU0010-C001-V6 | 180 gsm, 5.3 oz | M-3XL | $2.99 |
-| crew | Boxy Fleece Crewneck Sweatshirt #UT0044 | UT0044-P001-V3 | 345 gsm, 10.2 oz | S-2XL | $14.99 |
-| hoodie | Essential Oversized Boxy Fit Fleece Hoodie #RW0041 | RW0041-P001-V3 | 345 gsm, 10.2 oz | S-2XL | $16.99 |
-
-All three: DTG, international fulfillment, Special Line shipping (9-14 days),
-front and back print at $2.99 per frame. Production 1-3 days, so 10-17 days to a
-customer's door. The crew and hoodie are a matching set (same fabric, same colours).
-
-- **Colours are now in the garment configs** as a `colorways` list, each entry
-  carrying the Tapstitch name, the storefront name and which ink that colourway
-  prints. Tee: Black, Charcoal Gray, Caramel Machiato, Wine Red, Grape Purple.
-  Crew and hoodie: Black, Dark Gray, Haze Blue, Navy Blue, Dark Green, Coffee.
-- **Three tee colours are renamed on the storefront** (Evan's call): Caramel
-  Machiato to Caramel, Wine Red to Maroon, Grape Purple to Grape.
-  `scripts/shopify_fixups.py` gained `colorway_renames_by_type()`, which reads
-  those pairs from the configs rather than hardcoding them the way the older
-  Printify hoodie rename does. Same caveat as that one: it is Shopify-only, so a
-  variant re-sync from Tapstitch pushes the original names back, which is why it
-  stays a re-runnable command in the end-of-run sequence. The renames run BEFORE
-  the colour reorder, so a reorder asking for a storefront name finds it.
-- **Ink per colourway is a first pass.** Everything is white except Caramel,
-  which is set to black. Needs Evan's eye on a real mockup.
-- **PRINT AREAS ARE STILL UNKNOWN.** Not on the public product pages; only inside
-  the Tapstitch editor. They stay placeholders until the first live session, and
-  `tapstitch_publish.py check` still names them as blocking.
-
-THREE PROBLEMS WITH THE LINEUP, raised to Evan the same day:
-1. The RU0010 tee is 180 gsm / 5.3 oz, LIGHTER than the Comfort Colors 1717 it
-   replaces, when the stated reason for the whole migration was wanting heavier.
-   The fleece at 345 gsm does deliver that; the tee does not.
-2. The tee has NO SMALL (M-3XL) and Tapstitch's own page warns the sizing is
-   smaller than standard.
-3. Size ranges do not line up: tee M-3XL, fleece S-2XL. Only M, L, XL and 2XL
-   exist across all three lines.
-
-Also worth modelling before any multi-buy offer: per-additional-item shipping is
-about $1.55 (tee), $4.80 (crew), $6.70 (hoodie). Multi-temple orders are one of
-the three named AOV levers and this works against it.
-
-## 14 September 2026, later still (tee swapped, prices, real costs)
-
-- **The tee blank changed from RU0010 to RT0063** the same day it was chosen.
-  Raised three problems with the RU0010: 180 gsm / 5.3 oz (LIGHTER than the
-  Comfort Colors 1717 it replaces, defeating the stated reason for the migration),
-  no Small, and a "sizing is smaller than standard" warning on Tapstitch's own
-  product page. The RT0063 Essential Cotton T-Shirt is 260 gsm / 7.7 oz, runs
-  S-3XL, has no sizing warning, and costs $5.99 rather than $2.99.
-- **Colours settled.** Tee: Black, Dark Gray, Coffee, Navy Blue, Wine Red (shown
-  as Maroon). Crew and hoodie: Black, Dark Gray, Haze Blue, Navy Blue, Dark Green,
-  Coffee. Four of the five tee colours are shared with the fleece, so the
-  catalogue reads as one family. Caramel, Charcoal Gray and Grape are gone with
-  the RU0010.
-- **Every colourway in the range is dark, so every design prints WHITE.** There is
-  no light colourway and no second art file to manage. If a light colourway is
-  ever added, its `ink` must be set to black and the black art files built.
-- **Only one rename survives:** Wine Red to Maroon. Driven from the config, not code.
-- **Storefront opens on:** tee Black, crew Coffee, hoodie Dark Gray (Evan).
-- **Prices unchanged:** $44.99 tee, $64.99 crew, $74.99 hoodie.
-- **Real unit costs are Evan's figures, not Tapstitch list arithmetic:** $20.57
-  tee, $32.55 crew, $36.77 hoodie, including blank, both print sides, shipping,
-  custom neck tag, hangtag, order insert and payment gateway fees. Recorded in
-  each garment config under `costs_usd.all_in_per_unit`, which is the number to
-  trust; the Tapstitch line items beside it do not sum to it.
-  CAVEAT recorded and raised: the $20.57 was worked out while the tee was the
-  RU0010. RT0063 adds about $3.80 per unit (blank +$3.00, shipping +$0.80), so the
-  real tee cost is nearer $24 and the gross nearer $21, not $24.42.
-- Against the $22 to $40 acquisition cost in BRAND.md section 16, a single tee
-  does not pay for its own customer. Unchanged by the migration, but now arithmetic
-  rather than an estimate.
+## 14 September 2026 (a test lesson)
 
 TEST LESSON from this round: two tests written earlier in the day pinned exact
 colour values and exact rename pairs, and both failed on a CORRECT change rather
@@ -538,8 +153,7 @@ pin a lineup that is expected to change.
   Monticello, instead of the 2.5in-to-8.6in bottom gap top-anchoring produced.
 - **The location line is the same height on every temple**, so the type never
   varies between products. It was already constant at 0.74in; what varied was the
-  temple art beside it, not the type. Set per Tapstitch garment in
-  `spacing_overrides`, so the retiring Printify profiles are provably untouched.
+  temple art beside it, not the type. Set per garment in `spacing_overrides`.
 - **0.8in, chosen against the width ceiling rather than by eye.** Asked for 1.0in
   first, then asked what 0.8 would do. Measured across all 40 location lines, the
   longest being SARATOGA SPRINGS, UTAH:
@@ -556,32 +170,27 @@ pin a lineup that is expected to change.
   unknown. 1.0in only ever fit because the placeholder canvas is oversized at
   14.98in; it would have started clipping the moment the real number arrived.
 - **Proof-sheet swatches were repainted** to the colours the products actually
-  open in (Black, Coffee, Dark Gray). They had been rendering the retiring
-  Comfort Colors moss, navy and denim, which meant Evan was being asked to judge
+  open in (Black, Coffee, Dark Gray). They had been rendering the old
+  catalogue's colours, which meant Evan was being asked to judge
   the design against colours that no longer exist.
 
 ### THE STORE IS DARK, done 14 Sep 2026 on Evan's explicit go-ahead
 
 - **160 temple listings set to DRAFT**, 0 failures. Verified against Shopify
   afterwards: 165 products, 164 DRAFT, 1 ACTIVE. The only thing still live is
-  **Temple Art File**, the $4.95 download, which is not a Printify product and
-  stays sellable. The four Tapstitch test drafts were correctly excluded by
+  **Temple Art File**, the $4.95 download, which is not a garment and stays
+  sellable. The four Tapstitch test drafts were correctly excluded by
   vendor.
 - **SIX PRODUCTS PERMANENTLY DELETED** at Evan's instruction. There is no undo:
-  - the two stray duplicates from 27 Aug, `essential-temple-tee` and
-    `essential-temple-tee-with-personalizable-date`
+  - the two stray duplicates from 27 Aug, `essential-temple-tee` and its twin
   - the three Nauvoo Limited Edition one-offs
     (`nauvoo-temple-tee-limited-edition`, `copy-of-nauvoo-temple-hoodie`,
     `nauvoo-temple-sweatshirt-front-logo`)
   - `cornerstone-sweatpants`
-- **`restore --apply` is the way back** for the 160 drafts, reading
-  `artifacts/tapstitch/pre-migration-catalog.json`. It cannot bring back the six
-  deletions, and it will report them as failures if run, which is expected.
-- Two fixes the run itself forced: the snapshot now records FULL product details
-  for the products it leaves alone (it stored only a title and a reason, which
-  made the four non-temple leftovers unreachable by the guarded delete path), and
-  the delete message no longer claims a replacement is coming for a product that
-  has none.
+- **The pre-migration snapshot** `artifacts/tapstitch/pre-migration-catalog.json`
+  records the 160 drafts as they were. The script that took the catalogue down and
+  could restore it from that file was removed on 6 Oct 2026; git history has it.
+  Nothing can bring back the six deletions.
 
 ## 14 September 2026, late evening (US fulfillment, crew and hoodie blanks swapped)
 
@@ -629,53 +238,19 @@ pin a lineup that is expected to change.
   the cost of breathability across large solid areas. Our designs are line work
   on dark blanks, so this is a fair trade, but it is a real change in what the
   garment feels like and the product copy should not claim DTG.
-- **Costs are Evan's figures and they supersede the $20.57 caveat.** The tee's
-  earlier number was worked out while the blank was still the RU0010 and was
-  about $3.80 light for the RT0063; $19.57 is measured on the blank and the
-  fulfillment actually in use, so that open caveat is closed. The stale
+- **Costs are Evan's figures**, measured on the blank and the fulfillment
+  actually in use. The stale
   international shipping line items were REMOVED from the configs rather than
   left sitting beside the new all-in numbers, where they would have read as
   current.
-
-**MARGIN, and one thing worth a second look:**
-
-| Line | Price | All-in | Gross | Change since this afternoon |
-|---|---|---|---|---|
-| tee | $44.99 | $19.57 | $25.42 | cost down $1.00, and down about $4.80 against the RT0063-corrected figure |
-| crew | $64.99 | $34.10 | $30.89 | cost UP $1.55 |
-| hoodie | $74.99 | $34.67 | $40.32 | cost down $2.10 |
-
-  The crew is the one to look at. Its blank costs MORE than the hoodie's ($16.57
-  against $14.92) and its all-in is within $0.57 of the hoodie's, while it sells
-  for $10.00 less. That is $9.43 less gross on a garment that costs essentially
-  the same to make and ship. Either the crew price rises or the gap is accepted
-  deliberately; prices are unchanged for now and this is flagged, not decided.
-  Against the $22 to $40 acquisition cost in BRAND.md section 16, the tee at
-  $25.42 still does not reliably pay for its own customer.
-
-**OPEN, all small, none blocking the editor session:**
-
-1. **Is Flower Gray dark enough to print white?** Every colourway until now was
-   obviously dark. Its `ink` is set to white on the assumption that it follows
-   the rest, and if a real mockup says otherwise it becomes black and the black
-   art files have to be built for that colourway. Needs Evan's eye.
-2. **Does the RT0063 print DTG from the US center?** DTG is what its
-   international page says, and both fleece blanks print DTF from the US. Confirm
-   before any copy claims a technique.
-3. **The US center's shipping service name** was not readable on the product
-   page. `shipping_method` is null in all three configs rather than carrying the
-   international 'Special Line', which no longer applies.
-4. **Colour swatch spellings stay unverified** for all three blanks, and
-   'Flower Gray' is the likeliest to differ. A mismatch still fails silently.
 
 ## 14 September 2026, last of the day (design sizes, hoodie lead colour)
 
 - **The hoodie opens on Navy Blue**, not Dark Gray. Evan. `storefront_first_color`
   in `garments/hoodie.json`, and the proof-sheet swatch follows it.
 - **The temple is 12.0 inches wide ink to ink at its widest point**, down from the
-  12.5in the Printify catalogue used. Set as `temple_target_ink_width_in` in each
-  Tapstitch garment's `spacing_overrides`, so `spacing_defaults.json` keeps 12.5
-  for the retiring `back_stack` profiles and they are provably untouched.
+  12.5in the old catalogue used. Set as `temple_target_ink_width_in` in each
+  garment's `spacing_overrides`.
 - **The front logo is 6.0 inches wide ink to ink.** This one needed a code change,
   not a config change. `build_front_logo` sized the logo by its FILE FRAME, and
   the logo PNG carries about 2.4% transparent padding across and 6.4% down, so
@@ -710,7 +285,7 @@ finish under 12.0in because the height cap shrinks them first.
   margin, the 0.5in gap and the 0.8in location line. They are the tall narrow
   buildings, so they run out of height before they run out of width and
   `_place_temple` shrinks them to fit. **The 2.5in bottom margin is the binding
-  constraint, not the 12.0in rule.** It was measured off the live Printify
+  constraint, not the 12.0in rule.** It was measured off the old
   catalogue for a layout where the logo sat at the bottom of the back stack, and
   centring made it meaningless: the block is repositioned afterwards anyway.
   Matching it to the 0.6in top margin gives 14.49in of budget and every one of
@@ -760,7 +335,7 @@ retired.
   argue for 150. At 300 the widest back area is 6.89in across, which makes Evan's
   own 12in temple rule impossible on every garment, and the front logo would have
   to shrink with it. At 150 the areas land within half an inch of the 14.98 x
-  16.99in Printify area this catalogue printed on for a year. **Confirm it in the
+  16.99in area this catalogue printed on for a year. **Confirm it in the
   editor, which shows inches.** If it is 300, change `editor_dpi` in the three
   configs and every inch halves; nothing else needs touching, because the layout
   computes from `width_px / dpi`.
@@ -806,7 +381,7 @@ the three lines, which waits only on the size-guide decision.
 
 ## 14 September 2026, the back design stated completely (supersedes all earlier spacing)
 
-Evan, replacing the margin-based spacing the layout inherited from Printify. The
+Evan, replacing the margin-based spacing the layout inherited from the old catalogue. The
 back print is now four rules and nothing else:
 
 1. The temple and the location line are **centred in the print file**, vertically
@@ -816,11 +391,9 @@ back print is now four rules and nothing else:
 4. The **top of the location line sits 0.5in below the temple's lowest ink**.
 
 - **There is no top or bottom margin any more.** `top_margin_in` and
-  `bottom_margin_in` are both 0.0 in the three Tapstitch garment configs.
-  `spacing_defaults.json` keeps 0.6 and 2.5 for the retiring `back_stack`
-  profiles, so the Printify layouts are provably untouched.
+  `bottom_margin_in` are both 0.0 in the three garment configs.
 - **This is what finally cleared the width problem.** The 2.5in bottom margin was
-  measured off the live Printify catalogue, where the back stack ENDED with the
+  measured off the old catalogue, where the back stack ENDED with the
   logo and that space had a job. Once the logo moved to the front, the margin
   reserved space for nothing while still capping how tall a temple could be, and
   height is what caps width for a tall narrow building. Six temples fell short of
@@ -840,7 +413,7 @@ back print is now four rules and nothing else:
   the catalogue today (checked), but the first one added will need trimming.
 - **The 0.5in gap was already the value in use** (`gap_ink_to_text_in`, raised
   from 0.2 by Evan on 19 Aug 2026). It is now stated explicitly per garment rather
-  than inherited, so a change to the Printify defaults cannot move it.
+  than inherited, so a change to the defaults cannot move it.
 
 **VERIFIED ON BUILT FILES, all three garments, the tallest, widest and most
 extreme temples:**
@@ -884,15 +457,6 @@ extreme temples:**
   goes through `layout.temple_manifests()`, which reads both locations with the
   working folder winning. Any new script that reaches for a per-temple pipeline
   file uses these rather than joining a path itself.
-- **The Printify path was moved too, though it is dormant.**
-  `location_text_images()` renders `{Temple} location text {color} (auto).png`
-  and used to drop it in the folder root; it now writes to the working folder.
-  Only the Printify channel calls it and there are zero such files on disk (Evan
-  cleared them in the move), so nothing changed in practice — but running the
-  fallback would otherwise have littered the roots again. The override lookup
-  (`layout.find_text_override()`) still scans the folder root, which is where
-  Evan's own `*location text*` files go; its `(auto)` exclusion now only
-  matters for leftovers from before this move.
 - The fallback is a migration convenience, not a supported second home. Once no
   temple has files at its root (true as of today, checked) it can go.
 
@@ -901,7 +465,7 @@ extreme temples:**
 - **The highest-value unknown in the migration is answered, and the answer is
   yes.** Recording the editor's own traffic while Evan built one tee by hand
   showed that the save is `PUT /api/designs/customized/templates/<id>` carrying
-  the complete design as JSON — piece, source URL, left, top, width, height,
+  the complete design as JSON: piece, source URL, left, top, width, height,
   scaleX, scaleY, angle. Every other step is a JSON call too. Full detail and
   payload shapes in `docs/discovery/2026-09-tapstitch-editor-api.md`.
 - **The blank is addressed by its SKU** (`silSn: "RT0063"`), not by searching a
@@ -909,13 +473,13 @@ extreme temples:**
 - **The flattened-file bet paid off.** Both uploads registered at 4386x5516,
   exactly the tee's real print area, and front and back received identical
   placement differing only in `src`. Because every file is built to the shape of
-  its own print area, the editor places it the same way every time — which is
+  its own print area, the editor places it the same way every time, which is
   what the whole approach rested on and what `config/tapstitch.json` asked to
   have confirmed before any of it was trusted.
 - **Colours are numeric codes to Tapstitch**, so the swatch-name mismatch cannot
   bite on the API path. It is not retired: `shopify_fixups.py` matches on names,
   so `colorway_renames_by_type` must still agree with what Tapstitch publishes.
-- **Saving a draft does not touch Shopify**, checked straight afterwards — the
+- **Saving a draft does not touch Shopify**, checked straight afterwards: the
   newest product in the store is still from 27 August. The store stays dark.
 - **Nothing has been replayed.** Everything above is observation of a human
   session. Whether a scripted call is accepted with only the profile's cookies,
@@ -934,7 +498,7 @@ extreme temples:**
 
 - **The editor's API was driven from Python and it worked.** A design template
   was created from the blank's SKU, a 640KB print file was uploaded through the
-  signed OSS URL, and the design was saved — after which Tapstitch rendered four
+  signed OSS URL, and the design was saved, after which Tapstitch rendered four
   mockups from it. Verified by reading the design back: geometry and source URL
   persisted, new `commitId` minted.
 - **Auth is the dedicated Chrome profile's cookies, nothing more.** No CSRF
@@ -960,7 +524,7 @@ extreme temples:**
 
 - **A real product is live on Shopify**, published through the captured
   `POST /api/services/user/distribution/stores/products/distribute`, which takes
-  a LIST of store-product ids — so 135 products is a batch, not 135 clicks.
+  a LIST of store-product ids, so 135 products is a batch, not 135 clicks.
   "Essential Heavyweight Temple Tee", ACTIVE, 30 variants at $44.99.
 - **Tapstitch published it with an empty `productType`, exactly as documented.**
   Set to "T-Shirt" immediately. Every fixup is keyed on it.
@@ -971,21 +535,21 @@ extreme temples:**
   Gray, Coffee, Navy Blue and Wine Red, all five matching `garments/tee.json`.
   The silent-mismatch risk does not exist for RT0063. Still unchecked for the
   crew and hoodie.
-- **The size guide is decided: the CC1717 section's FORMAT, with RT0063's own
-  measurements.** Evan asked for the CC1717 size guide section. Its numbers are
+- **The size guide is decided: the old tee's section FORMAT, with RT0063's own
+  measurements.** Evan asked for the old tee's size guide section. Its numbers are
   for a different garment and could not be shipped: RT0063 runs ~1.4in wider in
-  the chest and HAS NO 4XL, so the CC1717 table would have advertised an
+  the chest and HAS NO 4XL, so the old table would have advertised an
   unsellable size on every listing. `reference/garment-copy/tee/size-guide.html`
   carries the manufacturer's real figures for S-3XL, labelled in inches.
-- **The CC1717 intro was NOT copied across.** It claims garment-dyed ringspun
+- **The old tee's intro was NOT copied across.** It claims garment-dyed ringspun
   cotton at 6.x oz; RT0063 is 7.7 oz (260 gsm) and not garment-dyed. Copying it
   would have published false product claims. `tee/product-intro.html` therefore
   does not exist, `fixed_description()` still returns empty, and that is the
   guard in its README working as intended rather than a gap to paper over.
-- **No size-guide video for the new blank.** The CC1717 section embeds a
-  per-blank video showing the wrong garment. Omitted. The original decision — new
-  video, or the branded chart images in `Important Elements/` — is still open,
-  and now applies only to the video, since the measurements are settled.
+- **No size-guide video for the new blank.** The old section embeds a
+  per-blank video showing the wrong garment. Omitted. The size guide later left
+  the description entirely (16 Sep), and on 2 Oct Evan left it as is: no new
+  video and no branded chart images for now.
 
 ## 16 September 2026 (the crew blank exercised, and the placement mapping derived)
 
@@ -1044,7 +608,7 @@ extreme temples:**
 2. **A third colourway is US-fulfilled**, 6672 Oat Gray, RGB(237,233,221). The
    config lists two. It is light, so it would print the black art.
 3. **The crew fabric is 42% cotton, 53% polyester, 5% other fibers**, against the
-   CC1566's 80% ring-spun cotton with a 100% cotton face. The CC1566 intro's
+   old crew's 80% ring-spun cotton with a 100% cotton face. The old crew intro's
    closing line claims a ringspun cotton face and garment dyeing, so it cannot be
    copied across for the same reason the tee's could not. The crew intro is still
    unwritten and still blocks descriptions.
@@ -1065,42 +629,22 @@ extreme temples:**
   repo's own section replaced it, and the repo's version says "Measurements
   (inches)".
 
-## 16 September 2026, later (the first crew is live, and handle inheritance is not automatic)
+## 16 September 2026, later (the first crew is live)
 
 - **"Classic Temple Crew Sweatshirt" is LIVE**, ACTIVE, 10 variants at $64.99,
-  Salt Lake on the back, at `salt-lake-temple-sweatshirt`. The old Printify
-  listing at that address was deleted at swap time, as decided on 14 Sep.
+  Salt Lake on the back, at `salt-lake-temple-sweatshirt`. The old listing at
+  that address was deleted to make room, a step retired the same day (see "the
+  end of handle inheritance" below).
 - **Flower Gray keeps WHITE ink (Evan, on the mockup).** Reasoning: Tapstitch
   binds one design to one template and the template carries a LIST of colour
   codes, so a black-ink version of one colourway is a second template and
-  therefore a second listing. There is no per-colourway design the way Printify
-  has colourway groups. CHECKED, not assumed: all 10 variants of the crew's
+  therefore a second listing. There is no per-colourway design the way the old
+  supplier had colourway groups. CHECKED, not assumed: all 10 variants of the crew's
   store-product prefill carry the same `templateId` and the same `commitId`, and
   the production item id is `{templateId}-{commitId}-{colorId}-{size}`. Each
   variant does carry its own `templateId` field, so mixing two designs in one
   listing is not structurally impossible, but nothing in the observed flow does
   it and it has not been tested.
-
-### DELETING THE OLD LISTING IS NOT ENOUGH. The handle must be SET.
-
-This would have broken 90 of 120 replacements quietly and nothing would have
-errored.
-
-The 14 Sep decision says a replacement "inherits the exact address" once the old
-listing is deleted rather than drafted. That is true only when the old handle
-equals what the old title slugs to. **It usually does not.** The handles were
-minted under the pre-22-Aug titles and survived the catalogue rename: the Salt
-Lake crew was titled "Classic Temple Crew Sweatshirt" but lived at
-`salt-lake-temple-sweatshirt`. Measured across the ledger: 90 of 120 rows have an
-old handle that differs from its own title's slug.
-
-Observed on this publish: the old listing was deleted first, and Tapstitch still
-minted the replacement at `classic-temple-crew-sweatshirt`, because Shopify
-derives a new product's handle from its title and not from whatever address just
-came free. The fix is one field: `productUpdate(handle:)` after the product
-appears. `shopify_client.update_product()` already passes arbitrary fields
-through, so no new code was needed, but the RUNNER MUST DO IT. Deleting alone
-frees the address and then leaves it unused.
 
 - **The crew published with an empty `productType`**, exactly as documented, and
   was set to "Sweatshirt" before any fixup ran.
@@ -1122,12 +666,11 @@ frees the address and then leaves it unused.
   the tee, so neither live product is browsable from the storefront's own
   navigation yet.
 
-### There is a FOURTH "default", and it is the one the shopper actually sees
+### The variant's bound image is the "default" the shopper actually sees
 
-The 22 Aug entry names three things called "default" and warns that setting one
-does not set the others: Printify's `is_default`, Shopify's preselected variant
-(option value order), and the featured photo (gallery position 1). Publishing the
-crew found a fourth: **each variant's own bound image**.
+Shopify's preselected variant (option value order) and the featured photo
+(gallery position 1) were already known, and setting one does not set the other.
+Publishing the crew found another: **each variant's own bound image**.
 
 Tapstitch's mockup payload binds every image to a colour
 (`option: {id: "Color", valueIds: ["5720"]}`), and Shopify binds each variant to
@@ -1144,8 +687,8 @@ mediaId}])`, each colour's variants bound to that colour's BACK image.
 **And fixed at the source:** `tapstitch_api.mockups_back_first()` reorders the
 mockups before they are sent, backs first and the `storefront_first_color`
 leading within each side, so the binding lands on the back at import and no
-repair is needed. The order is not a new opinion: the retiring Printify catalogue
-leads with the back on every temple product, checked against the live Bountiful
+repair is needed. The order is not a new opinion: the old catalogue led with the
+back on every temple product, checked against the live Bountiful
 crew the same day.
 
 - **The Easify Temple dropdown does not appear on the new crew.** The option sets
@@ -1175,16 +718,6 @@ crew the same day.
   already been deleted, and had to have `salt-lake-temple-sweatshirt` set on it
   explicitly. That step is needed on every replacement whatever it is called, so
   the rename costs nothing that was not already being paid.
-- **The retiring Printify configs keep the old titles.** `cc1566` stays "Classic
-  Temple Crew Sweatshirt" and `cc1567` stays "Pillar Temple Hoodie", because the
-  live products they describe still carry those titles and
-  `store_pulldown.retiring_patterns()` builds its match patterns from the
-  printify configs. Changing them would stop the pull-down recognising its own
-  targets.
-- **`parent_titles()` now returns both the old and the new names**, which is
-  correct during the changeover: a title still has to be readable back to a
-  temple while the catalogue holds a mix.
-
 ## 16 September 2026, the hoodie (and the end of handle inheritance)
 
 ### Replacements get their OWN web address. Old listings are no longer deleted.
@@ -1210,9 +743,7 @@ Evan's call, in his words: "can't we just make new web address and replace all t
 old ones in easify?" Yes. What it buys:
 
 - **No more permanent deletions.** Deleting was the only irreversible step in the
-  whole migration, and it destroyed the Printify fallback for that product one at
-  a time. HANDOFF says Printify stays untouched as the way back until Tapstitch is
-  proven on real orders, and deleting contradicted that.
+  whole migration.
 - **Addresses finally match titles.** `cloud-temple-hoodie` is what the product is
   called. 90 of 120 old addresses were minted under pre-rename titles.
 - **One fewer step per product.** No delete, and no explicit handle set either.
@@ -1283,14 +814,13 @@ The 15 September tee was still bound to its fronts and has been repaired.
 
 ### The rename would have silently killed the Temple dropdown
 
-`artifacts/easify/sets.json` bound the Sweatshirt and Hoodie option sets to
-`cc1566` and `cc1567`, and `easify_options.live_temple_products()` matches a live
+`artifacts/easify/sets.json` bound the Sweatshirt and Hoodie option sets to the
+old garment configs, and `easify_options.live_temple_products()` matches a live
 product to a set by EXACT EQUALITY against that garment's composed title. While
-`crew.json` and `cc1566.json` shared a title this did not matter. Renaming the
+the old and new crew configs shared a title this did not matter. Renaming the
 lines to Cloud made it matter: a renamed product matches no set, and the next sync
 would have detached the set from every replacement and removed the dropdown from
-those pages. Rebound to `tee`, `crew` and `hoodie`; `cc1717-dated` stays because
-the dated tee is paused rather than replaced.
+those pages. Rebound to `tee`, `crew` and `hoodie`.
 
 Note a populated set whose garment has no live products raises SystemExit, which
 is the guard against blanking a set on a bad catalogue read. A set flagged
@@ -1398,17 +928,6 @@ call with no undo:
 `tests/test_tapstitch_run.py` pins all of it: every resume state, both publish
 gates, and the blocker rules.
 
-## The "with personalizable date" tee line is dead (Evan, 18 Sep 2026)
-
-The 40 DRAFT products titled `Essential Temple Tee – with personalizable date
-(...)` are not coming back. Do not normalise them, do not build galleries for
-them, do not count them in coverage. They are a Printify-era line superseded by
-the Tapstitch `Essential Heavyweight Temple Tee (...)` products.
-
-Worth knowing if they are ever revived: unlike the live line, they carry
-near-white colourways that trip `normalize.separated_gray`'s pale-garment guard,
-so they would need a backdrop decision before anything could run on them.
-
 ## Temple prints are CENTRE anchored (settled before 18 Sep 2026)
 
 Not open for re-derivation. `flatten.py` centres each temple's ink inside the
@@ -1443,7 +962,7 @@ Three calls behind it:
   theme ever goes dark, the icons disappear and the file needs a light variant.
   The five bullets say exactly what the five symbols say, so nothing is lost if
   it is ever dropped.
-- **The retiring Printify lines get nothing.** The 40 dated-tee drafts and the two
+- **The old drafts get nothing.** The 40 old tee drafts and the two
   line-parent products are out of scope, and the shape test that selects targets
   (`<section class="product-details">` plus `<section class="product-intro">`)
   excludes them on its own.
@@ -1453,15 +972,12 @@ The row styling generalised to do it. `description_html.FACTS_STYLE` is now
 live product already carries; `collapse_fixed_sections()` scopes each collapsed
 section's style and block class to that section's OWN class, so a section
 collapses and styles itself wherever it sits. The style is emitted per section
-rather than once at the top of the description on purpose: a description has no
-`<head>`, and a leading style block would stop the dated tee's description
-starting with the visible Personalization section, which `is_broken()` checks,
-marking every dated tee broken forever.
+rather than once at the top of the description, because a description has no
+`<head>`.
 
 The 133 live pages were backfilled by `scripts/collapse_live_sections.py`, which
 SPLICES the section in rather than recomposing the description. Recomposing is
-what `write_description.py` does for the Printify line, and it is wrong here: the
-live Tapstitch pages have drifted from the repo's assets by hand (the Albuquerque
+wrong here: the live pages have drifted from the repo's assets by hand (the Albuquerque
 crew carried inline font-family styles on its Weight row from an admin edit), and
 published copy is not retroactively rewritten unless Evan asks. That script also
 cuts out the hand-pasted Albuquerque block first, so that page ends with one row
@@ -1481,15 +997,6 @@ change is one attribute in `_details_block()`, and re-running
 already collapsed no longer matches the collapse regex. Flipping it back across
 the catalogue would need its own pass.
 
-NOTHING KEEPS THE RETIRING LINES OUT BUT THE HEADING TEXT. `COLLAPSIBLE_FIXED_HEADINGS`
-matches on `<h3>` text, and the CC1566/1567/1717 `product-intro.html` files open
-with `<h3>The Tee</h3>` (or The Sweatshirt, The Hoodie) rather than
-`<h3>From the Founder</h3>`. Same section class, same file name, different
-heading, so the current lines collapse and the retiring ones do not, with no
-garment check anywhere in the code. `tests/test_description_html.py` pins both
-halves of that, which is the test that catches it if those headings are ever
-harmonised.
-
 The backfill script generalised rather than multiplying. `add_care_instructions.py`
 became `scripts/collapse_live_sections.py`, which now runs two passes over each
 live description: SPLICE the sections the pipeline composes that a page predates,
@@ -1501,8 +1008,8 @@ collapsed section fails the regex and is left alone rather than double-wrapped.
 
 Measured on the live catalogue: 133 written, 0 visible characters of copy added
 or removed. The only products out of scope are the two line-parent products
-(their section wrappers were stripped by an old admin save) and the 40 dead
-dated-tee drafts.
+(their section wrappers were stripped by an old admin save) and the 40 old tee
+drafts.
 
 ## 18 September 2026 (colour swatches: the theme list, and the three greys)
 
@@ -1527,3 +1034,13 @@ dated-tee drafts.
 - **The theme's 17 leftover factory colours were dropped**, not kept alongside. Evan's call. No product used any of them, so nothing rendered differently, and leaving a generic `Navy = #000080` next to a real `Navy Blue = #283243` is an invitation to fix a future colour in the theme editor instead of in the registry, which is the one thing this whole arrangement exists to prevent.
 
 - **Verified on the live storefront, not just through the API.** All three lines read back correct in the rendered HTML: the tee's five, the hoodie's six and the sweatshirt's two, every one painting the hex the registry holds.
+
+## 2 October 2026 (size guide, crew price)
+
+- **The size guide stays as is for now.** No new video and no branded chart
+  images from `Important Elements/` for the moment; the guide stays out of the
+  description. Revisit only if Evan raises it.
+- **The crew price stays at $64.99.** The crew blank costs more than the hoodie
+  blank ($16.57 against $14.92) and their all-in costs are within $0.57 of each
+  other, while the crew sells for $10.00 less. Evan looked at that gap and kept
+  the price. Settled, not an open question.

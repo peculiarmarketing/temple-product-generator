@@ -27,7 +27,7 @@ add to store -> details -> price -> save as draft.
 | 3 | `PUT https://ajmall-vc-public-bucket.oss-accelerate.aliyuncs.com/tapstitch/material/custom_printing/<loginId>/<uuid>` | the PNG bytes |
 | 4 | `POST /api/designs/user_cover_img/save` | multipart, registers it in the image library |
 | 5 | `POST /api/designs/user/history/img` | `{"width":4386,"height":5516,"url":"https://files.tapstitch.com/.../<uuid>.png","uniqueId":…}` |
-| 6 | `PUT /api/designs/customized/templates/<templateId>` | **the save** — the whole design, below |
+| 6 | `PUT /api/designs/customized/templates/<templateId>` | **the save**: the whole design, below |
 | 7 | `POST /api/services/user/distribution/stores/<storeId>/products` | title, description HTML, prices, variants (~45KB) |
 
 A draft edit is staged at
@@ -78,12 +78,12 @@ A draft edit is staged at
   newest product in the store is from 27 August 2026. The product stayed inside
   Tapstitch. The `save_draft_price` button does not publish.
 
-## What is NOT settled — do not build on these
+## What is NOT settled: do not build on these
 
 - **The canvas-to-inches mapping is unverified.** The object sits at
   `left: 344, top: 358` on a 700x700 canvas, not at 350/350. That is most likely
   the print area's centre rather than the canvas's, since a print area does not
-  sit centred on a garment — but it was inferred, not measured. The replay
+  sit centred on a garment, but it was inferred, not measured. The replay
   reused the observed numbers rather than deriving them, so DO NOT generate
   placement for another garment until the mapping is worked out.
 - **Only the tee (RT0063, DTG) was exercised.** The crew (R00368) and hoodie
@@ -107,8 +107,8 @@ token, no editor session. 23 cookies lifted from the dedicated Chrome profile
 authenticated every call.
 
 **`srcDetails.srcId` is not required.** `srcDetails: {width, height}` is enough,
-which is what lets step 4 — the multipart `user_cover_img/save` whose payload was
-never captured — be skipped entirely.
+which is what lets step 4 (the multipart `user_cover_img/save` whose payload was
+never captured) be skipped entirely.
 
 ### The traps, each of which fails silently or opaquely
 

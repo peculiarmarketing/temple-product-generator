@@ -11,9 +11,7 @@ facts fragment after them:
 `size-guide.html` is still here and is NOT used. Evan's 16 Sep 2026 call took
 the size guide out of the description entirely. The file stays because it holds
 the blank's real measurements, which is worth keeping; it is simply not assembled
-any more. A garment folder with no `product-details.html` falls back to the older
-`product-intro.html` + `size-guide.html` shape, which is what the retiring
-Printify garments (cc1566, cc1567, cc1717) still use.
+any more.
 
 THE GUARD: if either `product-details.html` or `product-intro.html` is missing,
 `fixed_description()` returns an EMPTY string rather than a partial description.
@@ -38,10 +36,8 @@ same as the temple facts. That is presentation, so it lives there and not in the
 asset: both files on disk stay plain sections with plain `<h3>`s.
 
 Which sections collapse is decided by `COLLAPSIBLE_FIXED_HEADINGS`, matching on
-HEADING TEXT. That is the only thing keeping the retiring Printify lines open:
-their `product-intro.html` starts `<h3>The Tee</h3>` where this one starts
-`<h3>From the Founder</h3>`. Renaming this heading, or theirs, silently changes
-which products collapse.
+HEADING TEXT. Renaming this folder's `<h3>From the Founder</h3>` silently stops
+it collapsing.
 
 These files are stored assets: copied byte-identical at assembly and never touched
 by an editing pass. New outward-facing prose goes through the `humanizer` then

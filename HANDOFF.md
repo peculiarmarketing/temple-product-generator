@@ -62,7 +62,14 @@ Tapstitch puts it. Do not reorder.
 
 **Still open, Evan:** re-import `artifacts/easify/option-sets.csv` in
 the Easify app. Easify binds the Temple dropdown to a product's internal id, so
-every swapped hoodie is missing it until then.
+every swapped hoodie is missing it until then. This is the single highest-value
+manual step outstanding: the catalogue is complete (135 products live, all 45
+temples on all three lines, no unbuilt ledger rows), and each of the three sets
+carries 46 rows, one default plus 45 temples. After importing, export fresh from
+Easify and run `easify_options.py reseed --export <file>`. That reseed has never
+been run, and the CSV still carries one old, unused set under placeholder id
+900001 (sync passes it through untouched), so whether Easify matches an existing
+set by title or creates a second one on each import is still an open question.
 
 **Waiting on that import: one product per garment for hoodies and All Temples.**
 Evan's decision, 23 Sep: garment collections show only the parent (Salt Lake),
@@ -82,179 +89,7 @@ finished; its "State as of" section needs the completed rollout.
 
 ---
 
-# Tapstitch migration: where this stands
-
-**Last worked: 16 September 2026, third session.** Read this first if you are picking the
-migration up on another machine, or in a new session.
-
-**The headline: the catalogue is COMPLETE. 135 products are live**, all 45
-temples across all three garment lines, and the migration ledger has no unbuilt
-rows left. The Tapstitch editor turned out to be a JSON API, it is now driven
-from Python (`tapstitch_api.py`), and the catalogue runner
-(`scripts/tapstitch_run.py`) has published every ready row. All three blanks are
-exercised, the geometry question is closed, and the product copy for all three
-garments is written.
-
-The store is no longer dark, and nothing is waiting on research. The last ten
-temples were unblocked on 17 September: five of them (Logan, Provo, Kirtland,
-Cody, Taylorsville) turned out to have researched facts ALREADY, published on
-their old Printify listings and never saved back to the temple folder, and were
-recovered from the live markup; five (Albuquerque, Billings, Burley, Lehi, Provo
-Rock Canyon) were researched from scratch. Source ledger for all ten:
-`artifacts/description-ledgers/2026-09-16-blocked-ten.txt`.
-
-**One thing needs a person:**
-
-1. `artifacts/easify/option-sets.csv` is WRITTEN AND WAITING TO BE IMPORTED into
-   the Easify app by hand. Until that import happens, the Temple dropdown on all
-   135 live pages still links to the old Printify addresses, which are drafted and
-   therefore dead. This is the single highest-value manual step outstanding. The
-   17 September sync added the last ten temples and repointed every row, so each
-   of the three sets now carries 46 rows: one default plus 45 temples.
-   After importing, export fresh from Easify and run `easify_options.py reseed
-   --export <file>`: the "Tee - With Date" set still carries placeholder id
-   900001 and that reseed has never been run, so whether Easify matches an
-   existing set by title or creates a second one on each import is still the
-   open question `docs/decisions.md:40` wanted closed.
-
-That is the whole list. Every temple is published, so the sync no longer reports
-any dropdown row pointing at a dead page.
-
----
-
-## For Evan, in one minute
-
-**Your store is dark except for four things.** The remaining temple listings are
-still hidden (drafted, not deleted). A visitor can buy the Temple Art File
-download, and three garments:
-
-- **"Essential Heavyweight Temple Tee"**, live since 15 September, ACTIVE, 30
-  variants at $44.99, Salt Lake on the back. Its title names no temple and its
-  handle (`essential-heavyweight-temple-tee`) inherited nothing, so it does not
-  match the catalogue pattern and is best thought of as the route's first test.
-- **"Ultra-soft Temple Sweatshirt"** (renamed from "Classic Temple Crew
-  Sweatshirt" on 16 September), live since 16 September, ACTIVE, 10
-  variants at $64.99, Salt Lake on the back, at `salt-lake-temple-sweatshirt`.
-  This one IS the catalogue pattern: the parent title, and the predecessor's own
-  web address, so the Easify dropdown link to it still resolves. The old Printify
-  listing at that address was deleted to make room, which has no undo.
-
-- **"Ultra-soft Oversized Temple Hoodie"** (renamed from "Cloud Temple Hoodie"
-  on 16 September), live since 16 September, ACTIVE, 30 variants at
-  $74.99, Salt Lake on the back, at `cloud-temple-hoodie`. Six colours: Navy Blue,
-  Black, Gray, Coffee, Mauve and Royal Blue.
-
-All three are real and purchasable. Draft them if you do not want them sold.
-
-**You changed how replacements get their web address, and you confirmed it.**
-The old plan deleted each old listing so its replacement could take over its
-address. That never worked: Shopify builds a new product's address from its title
-and ignores whatever address just came free, so the crew's address had to be set by
-hand afterwards and its predecessor was destroyed for nothing. From now on each
-replacement simply takes its own address (`cloud-temple-hoodie`), old listings stay
-drafted rather than deleted, and the Temple dropdown links are repointed by the
-Easify sync, which reads addresses from the live store. Nothing is permanently
-deleted any more, which also keeps Printify intact as the way back. The one cost is
-that old product addresses stay dead, and they have been dead since 14 September
-anyway because those listings are drafted.
-
-Six products were deleted permanently at your instruction: two stray duplicate
-listings, the three Nauvoo Limited Editions, and Cornerstone Sweatpants.
-
-**Everything fulfills from the USA now**, which is 4-7 days to a customer's door
-against 10-17 from the international center. Two blanks changed with that switch,
-because Tapstitch's fulfillment choice changes which colours and sizes a blank
-even has.
-
-**The blanks are chosen and everything about them is recorded**: the Essential
-Cotton T-Shirt **RT0063** (tee, unchanged), the Fleeced Sweatshirt **R00368**
-(crew, two colourways only, Black and Gray), and the Oversize Fleeced Hoodie
-**R00286** (hoodie, five colourways, Haze Blue gone). Colours, prices, sizes,
-costs, and which colour each product page opens on are all set. The two fleece
-blanks print DTF rather than DTG.
-
-**The designs are settled.** The back is the temple and the city line, centred in
-the print file with no margins anywhere. The temple spans no more than 12 inches
-at its widest, the city line is 0.7 inches tall, and its top sits 0.5 inches below
-the temple's lowest point. The front is the logo at 6 inches wide. Every number is
-ink to ink, the drawn artwork rather than the file around it. All 40 temples now
-reach the full 12 inches on all three garments. The proof sheet at
-https://claude.ai/code/artifact/63f25017-3639-4bb9-96cc-d16cc1e21d57 still shows
-the older spacing and needs one regeneration.
-
-**The real print areas are in**, so the placeholder canvas is gone and every
-garment now has its own.
-
-The 150 DPI reading is CONFIRMED, 15 September 2026, and did not need the editor
-after all. Tapstitch's own API states it: a template's `backSideDpiTip` reads
-"Print area size 2193 x 2758 px (150)DPI", which is exactly `editor_px` and
-`editor_dpi` in `garments/tee.json`, and 14.62 by 18.39 inches.
-
-**The descriptions are written, and their shape changed on 16 September.** Every
-product page now reads: the product details (fit, fabric, weight), then the
-founder message under a "From the Founder" heading, then the temple's history.
-The size guide is no longer in the description at all, your call. The three live
-products carry it already. The CC1717 intro could not simply be reused for the
-tee: it claims garment-dyed ringspun cotton at 6.x oz, and RT0063 is 7.7 oz
-(260 gsm) and not garment-dyed, so copying it would have published false claims.
-
-**Decided 2 October 2026: the size guide stays as is for now.** No new video
-and no branded chart images from `Important Elements/` for the moment; the
-guide stays out of the description. Revisit only if Evan raises it.
-
-**Every temple now has a researched `temple-facts.html`, and the runner has no
-blocked rows.** It still blocks any temple that lacks one, which is correct: the
-history section is researched writing judged against a source hierarchy, not
-something a script can generate. A NEW temple folder therefore stops the sweep
-until someone does that research. That is a step in the workflow, not a bug, and
-it is easy to mistake for one.
-
-**The history files are now BACKED UP IN GIT, as of 17 September.** `Temples/`
-is still not version controlled, so the fragments still live there as the source
-of truth, but `scripts/mirror_facts.py` copies all 45 into
-`artifacts/temple-facts/`, which is tracked. That gives the research version
-history and a second physical location. It is the one part of this pipeline a
-machine cannot regenerate: the five recovered on 17 September were retrievable
-only because their old listings still exist as drafts.
-
-The mirror is one way and `Temples/` stays authoritative; the script never writes
-back. `--check` exits non-zero when the mirror is stale, and a `--apply` run of
-the catalogue runner refreshes it on the way out. Run the script by hand after
-editing a fragment outside a run, and commit the result.
-
-Note while you are in there: fragments belong in the temple's `Working files/`
-folder. `layout.working_path` reads from the folder root as a fallback, so a
-fragment left at the root works and looks fine, which is how ten of them ended up
-in the wrong place on 17 September. The mirror resolves through `working_path`
-for exactly that reason.
-
-**The thing that would have failed quietly is fixed.** The design placement
-numbers used to be copied from watching one tee. They are now worked out from each
-garment's own print area, which Tapstitch states in its own API, and the method
-reproduces the tee exactly. It was a real risk, not a theoretical one: the crew's
-back print area is 16% shorter than the tee's, so the copied numbers would have
-printed the art oversized and off centre on every crew, with no error anywhere.
-
-**The Flower Gray ink question is CLOSED: white, your call on 16 September, made
-on a real mockup.** It was a real question, not a theoretical one. Flower Gray is
-a mid heather, not a dark, and the white line art on it is visibly softer than on
-black. You kept white knowing that, because black ink on one colourway would mean
-a second listing rather than a second option: a Tapstitch design belongs to the
-product, and the colours are just a list attached to it, so there is nothing like
-Printify's per-colour designs. Every other colourway on every line is dark enough
-that white is obvious. One colourway the config leaves out, 6672 Oat Gray, is
-light and would have the same problem more severely.
-
-**Worth a second look on price:** the crew blank costs more than the hoodie blank
-($16.57 against $14.92) and their all-in costs are within $0.57 of each other,
-but the crew sells for $10.00 less. That is $9.43 less gross on a garment that
-costs the same to make. **Decided 2 October 2026: the crew price stays as is**
-($64.99). This is settled, not an open question.
-
-**Nothing else needs you.** Every temple in the catalog is traced, researched
-and published.
-
----
+# Tapstitch pipeline: reference
 
 ## Getting this machine ready
 
@@ -267,7 +102,7 @@ uv venv --python 3.12.8 --seed .venv.nosync
 ```
 
 Then put the tokens in `.env` (gitignored, never committed, never printed):
-`PRINTIFY_TOKEN`, `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_ADMIN_TOKEN`.
+`SHOPIFY_STORE_DOMAIN`, `SHOPIFY_ADMIN_TOKEN`.
 
 ### TRAP: check for iCloud duplicate folders before anything else
 
@@ -287,73 +122,10 @@ for each pair. Do not merge them by hand without checking first.
 
 ---
 
-## What is done
-
-| Piece | Where | State |
-|---|---|---|
-| Flattener (design to print file) | `flatten.py` | Done. 120 of 135 pairs validate clean. |
-| No-logo back layout, centring | `layout.py` (`back_temple_text`) | Done. |
-| Build sweep | `scripts/tapstitch_build.py` | Done. |
-| Proof sheet | `scripts/tapstitch_preview.py` | Done. |
-| Migration ledger | `ledger.py`, `scripts/tapstitch_status.py` | Done. 135 rows. |
-| Store pull-down | `scripts/store_pulldown.py` | Done AND RUN. Store is dark. |
-| Colour renames | `scripts/shopify_fixups.py` | Done, config-driven. |
-| Description plumbing | `generate.fixed_description`, `reference/garment-copy/` | Done. Tee size guide written; tee intro still missing, so it returns EMPTY. |
-| Browser session | `browser_session.py`, `scripts/tapstitch_login.py` | Done AND exercised 15 Sep 2026. |
-| **Tapstitch API client** | `tapstitch_api.py` | **Done and proven against the live account, publish included.** |
-| Traffic capture | `scripts/tapstitch_capture.py` | Done. Records the editor while you work; automates nothing. |
-| Editor automation (click path) | deleted from `config/tapstitch.json` | RETIRED 15 Sep 2026, block DELETED 16 Sep. There is no click path any more; see `_selectors_note`. |
-| Store product + publish | `tapstitch_api.store_product_prefill/store_product_payload/create_store_product` | Done and proven: a live crew and a live hoodie, 16 Sep 2026. |
-| Variant image repair | `scripts/tapstitch_variant_images.py` | Done, idempotent, REQUIRED after every publish. |
-| Geometry and payload tests | `tests/test_tapstitch_placement.py` | Done. Fixtures are trimmed real responses. |
-| Catalogue runner | `scripts/tapstitch_run.py` | RUN 16 Sep 2026: 102 products published, 0 failures. See the post-run defect below. |
-| Runner tests | `tests/test_tapstitch_run.py` | Done. Pins every resume state and both publish gates. |
+## Mechanisms worth knowing
 
 Run `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` any time for
 the live blocker list.
-
-## What is blocked
-
-**On copy, not on Tapstitch.** The API route is finished and proven:
-`create_template` -> signed OSS upload -> `save_design` -> `distribute`, all run
-against the live account, ending in a real published product. See
-`docs/discovery/2026-09-tapstitch-editor-api.md` for payloads and every trap.
-
-1. **The tee intro** (above). Blocks descriptions for all temples. The crew is
-   in the same position and its size guide IS written; only the intro is missing.
-   Evan is handling descriptions separately as of 16 Sep.
-2. **The crew is exercised; the hoodie is not.** The crew (R00368, DTF) has been
-   through create -> upload -> save and Tapstitch rendered mockups from it. Its
-   ids, colour codes, print areas and measurements are all recorded. The hoodie
-   (R00286) has only its `productId` (1356935091779162112) and its DTF technique,
-   both read from the catalogue search. It needs no capture session: the blank
-   lookup is `GET /api/services/site/products/search?q=r00286` and its print areas
-   come from a template of its own, the way the crew's did.
-3. **The catalogue runner is `scripts/tapstitch_run.py`, WRITTEN 16 Sep 2026 and
-   not yet run against the live account.** It drives the sequence the 16 Sep
-   hoodie publish established: create_template -> upload -> save_design ->
-   prefill -> payload -> create -> distribute -> wait for Shopify -> set
-   productType -> fixups -> `tapstitch_variant_images.py` -> ledger. There is NO
-   delete step and NO handle step. Both belonged to the retired
-   inherit-the-address plan; the replacement takes its own address, which Shopify
-   derives from its title with nothing to set.
-
-   Run it with no flags for a plan (it writes nothing and opens no Tapstitch
-   session). `--apply` permits the Tapstitch-side writes; `--publish` is needed
-   as well before anything reaches the storefront, and it also demands a bound
-   (`--limit` or `--temple`) because distribute() has no undo and there are about
-   a hundred ready rows. THE FIRST LIVE RUN SHOULD BE
-   `--apply --publish --limit 1`, watched.
-
-   A six-specialist review on 16 Sep returned Fail before fixes and is worth
-   reading for what it caught, because none of it was visible in plan mode: a
-   guaranteed KeyError one line after the irreversible distribute (Shopify's
-   title lookup did not select `handle`), a resume path that rebuilt and orphaned
-   a template it had deliberately recorded, a missing marker between calling
-   distribute and confirming it that could either publish twice or strand a live
-   product unfinished, and a variant-image repair whose failures were returned as
-   strings and recorded as success. All are fixed and pinned in
-   `tests/test_tapstitch_run.py`.
 
 ### The one that would have failed QUIETLY, now closed
 
@@ -470,27 +242,6 @@ other:
   rename; it reports "maybe Flower Gray -> Gray" for any product still carrying
   the old name.
 
-### DELETING THE OLD LISTING DOES NOT MOVE ITS ADDRESS, WHICH IS WHY IT STOPPED
-
-The 14 Sep plan says a replacement inherits its predecessor's web address once
-the old listing is deleted rather than drafted. That holds only when the old
-address matches the old title. **It usually does not**: the addresses were minted
-under the pre-22-Aug titles and survived the catalogue rename, so the Salt Lake
-crew was titled "Classic Temple Crew Sweatshirt" and lived at
-`salt-lake-temple-sweatshirt`. 90 of the 120 rows that know their old address are
-like that.
-
-Watched happen on the 16 Sep publish: the old listing was deleted FIRST, and the
-replacement was still minted at `classic-temple-crew-sweatshirt`, because Shopify
-builds a new product's address from its title and ignores whatever just came free.
-The crew's address was then set with `productUpdate(handle:)`.
-
-**Evan's decision the same day, asked and confirmed: stop doing this.** Replacements take their own
-address, old listings stay drafted, and the Easify sync repoints the dropdown. The
-Salt Lake crew keeps the inherited address it already has; nothing after it
-inherits one. `delete_old_listing` in `config/tapstitch.json` and the `delete`
-command in `store_pulldown.py` are no longer part of the publish sequence.
-
 ### THE SIZE GUIDE UNIT TRAP
 
 Tapstitch bakes its own size-guide table into `description.content` at the moment
@@ -508,24 +259,11 @@ is why the Shopify-side writer wins in the end.
 ## The one thing to be careful with
 
 `artifacts/tapstitch/pre-migration-catalog.json` is **the only record of what the
-store looked like before it went dark**, and the only way to put the 160 listings
-back:
-
-```bash
-./.venv.nosync/bin/python scripts/store_pulldown.py restore --apply
-```
-
-`snapshot` refuses to overwrite it without `--replace` for exactly this reason. Do
-not pass `--replace` while those listings are still drafted. It cannot restore the
-six deleted products; nothing can.
-
-`delete` is the only operation with no undo, and it is NO LONGER PART OF THE
-PUBLISH SEQUENCE: replacements take their own address and old listings stay
-drafted (Evan's confirmed 16 Sep decision, `post_publish.delete_old_listing` is
-false). It still exists for a deliberate one-off. It needs `--handle` and a
-matching `--confirm-handle`, and it is pinned to the product id in the snapshot
-rather than to whatever the handle resolves to now, because a handle can be
-reassigned to another product and the snapshot's id cannot.
+store looked like before it went dark** on 14 Sep 2026. Never overwrite it. The
+script that could restore the 160 old listings from it was removed on 6 Oct 2026
+and is in git history; the six deleted products cannot come back at all. Old
+listings stay DRAFT and are never deleted (Evan's confirmed 16 Sep decision,
+`post_publish.delete_old_listing` is false).
 
 ## Reading order for a new session
 
@@ -536,20 +274,6 @@ reassigned to another product and the snapshot's id cannot.
 4. `docs/discovery/2026-09-tapstitch-store-findings.md` for what the live store
    revealed, including the empty-productType trap.
 5. `../BRAND.md` sections 6, 7, 8, 18, 19. Not in git; it syncs through iCloud.
-
-## Where to pick up
-
-In order, on a new session:
-
-1. Read this file, then `docs/discovery/2026-09-tapstitch-editor-api.md`.
-2. `./.venv.nosync/bin/python scripts/tapstitch_login.py --check` — the session
-   lives in a dedicated Chrome profile and survives reboots, but not forever.
-3. `./.venv.nosync/bin/python scripts/tapstitch_publish.py check` for the live
-   blocker list.
-4. Then the catalogue runner. All three garments are now proven end to end, so
-   the runner is the 16 Sep sequence written down: prefill, payload, create,
-   distribute, wait for Shopify, set productType, run the fixups, run
-   `tapstitch_variant_images.py`, update the ledger.
 
 ## Review of 2 October 2026
 
@@ -570,9 +294,6 @@ checked every finding against the code. Nothing touched Tapstitch or the store.
 - `tapstitch_capture.py` truncated a body before redacting it, so a JSON body
   over 200KB was no longer JSON and was written unredacted. It now redacts first.
   The console line also printed the unredacted URL.
-- `store_pulldown.py delete` would permanently delete the Temple Art File (a
-  snapshot `kept` record passes every other guard). Titles in
-  `KEEP_LIVE_TITLES` are now refused.
 - `pen_strokes.py` printed a leftover debug line on every run.
 
 **Open, for a decision or live evidence (nothing here is broken today):**
@@ -584,21 +305,14 @@ checked every finding against the code. Nothing touched Tapstitch or the store.
   marker. A lost response then a re-run makes a second store product inside
   Tapstitch. Add a marker like `distribute_started_at`, and never wrap this
   call in retries.
-- *Evan's call:* `first_colors_by_type` lets the Tapstitch tee's first colour
-  (Black) lead on retired Printify tees too, against the Moss decision in
-  docs/decisions.md. Also: the crew's `lead_colorCode` is Black while its
-  storefront first colour is Heather Gray.
+- *Evan's call:* the crew's `lead_colorCode` is Black while its storefront
+  first colour is Heather Gray.
 - *Second entry point:* `tapstitch_publish.py finish` skips the import wait,
   the rebind and the stale-colour check, and leaves the row in a state the
   runner never resumes. Retire it or make it call the runner's finish.
-- *Guard text:* the hoodie copy README says a missing `product-details.html`
-  blocks the publish; the code falls back to intro + size guide instead.
-  `missing_garment_setup` should check `product-details.html`.
 - *Unknown type:* `mockups_back_first` compares Tapstitch's `colorId` with an int;
   if it arrives as a string the lead-colour sort silently does nothing.
   Normalise both with `str()`.
-- *Store pulldown:* whether any `kept` record should be deletable at all. Only
-  the Temple Art File is blocked now; the other four are Tapstitch test products.
 - *Pen drawing script* (`pp-pen-draw.js`, live): an error inside an animation
   frame freezes the showcase; one bad temple hides the whole showcase rather
   than dropping that temple; no load timeouts; a failed load after a fade
@@ -608,13 +322,14 @@ checked every finding against the code. Nothing touched Tapstitch or the store.
 - *Pen strokes:* 54 of 20,314 committed `lens` values are off by up to 0.22
   units (two different roundings); it crashes on art with no lines or one line
   weight; manti takes 43s. Fix at the next regeneration.
-- Smaller: stale comments and docstrings (old colour names, the size-guide
-  description block, "NOT yet replayed"), a few vacuous or mislabelled tests
-  (`test_store_pulldown.py` "two live garments disagreeing", the Easify paused
-  set, the landscape truncation case), no kept-record test.
+- Smaller: stale comments and docstrings (old colour names, "NOT yet
+  replayed"), and a few vacuous or mislabelled tests (the Easify paused set, the
+  landscape truncation case).
 
-Five test files pass here. The other four need the sibling `../Temples/` art
-folder, which a cloud session does not have; run them on the Mac:
+Several test files need the sibling `../Temples/` and `../Important Elements/`
+folders, which a cloud session does not have; run them on the Mac.
+`test_eden_green_rollout.py` fails on its "finished" seed check as of 6 Oct 2026
+(it did before the cleanup too):
 
 ```bash
 for t in tests/test_*.py; do ./.venv.nosync/bin/python "$t"; done
