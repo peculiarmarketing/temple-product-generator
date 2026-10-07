@@ -413,6 +413,9 @@ def check(s, sc, row, rec):
                 probs.append(f"on-model {slug} does not match the new composite ({d:.1f})")
     if gallery.flat_alt(name, garment, "back", gallery.flat_colour(garment)) not in by_alt:
         probs.append("no back flat lay")
+    for a in rec.get("failed_in_resend", []):          # deleted in step_restore
+        if a not in by_alt:
+            probs.append(f"{a!r} failed in the re-send and was not rebuilt")
     lead = gallery.on_model_alt(name, garment, gallery.flat_colour(garment))
     if not have or have[0] != lead:
         probs.append(f"slot 1 (the collection thumbnail) is not {lead!r}")

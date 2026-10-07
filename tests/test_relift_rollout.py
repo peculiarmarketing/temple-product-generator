@@ -290,6 +290,12 @@ one_problem(lambda p, r: p.update(tags=["a"]), "tags changed")
 one_problem(lambda p, r: p.update(descriptionHtml="<p>e</p>"), "description_sha changed")
 one_problem(lambda p, r: p["options"][0]["values"].reverse(), "options changed")
 one_problem(lambda p, r: r.update(commit_after="C3"), "not the new design")
+DET = [a for _, a in G.detail_alts(TEE)][1]
+one_problem(lambda p, r: (r.update(failed_in_resend=[DET]),
+                          N(p).remove(next(m for m in N(p) if m["alt"] == DET))), "not rebuilt")
+shop, rec = good()
+rec["failed_in_resend"] = [DET]                              # rebuilt: present again
+assert RR.check(None, shop, ROW, rec) == []
 STORE["commits"] = {("T1", "C1"), ("T1", "C2")}            # some variants still on the old design
 one_problem(lambda p, r: None, "Tapstitch prints from")
 STORE["commits"] = {("T1", "C2")}
