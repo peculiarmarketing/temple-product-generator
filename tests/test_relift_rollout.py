@@ -197,6 +197,29 @@ assert shop.deleted == [nodes[di]["id"]], shop.deleted
 assert [a for _, a in shop.alts] == [a for i, a in enumerate(ALTS) if i != di]
 assert rec["failed_in_resend"] == [DETAIL]
 
+# A failed chest-logo flat lay is rebuilt by --reface from its archived original,
+# so it is accepted only when that file exists.
+FRONT = ALTS.index(G.flat_alt(NAME, TEE, "front", G.flat_colour(TEE)))
+G_ORIG = G.originals_dir
+for has_archive in (True, False):
+    arch = TMP / f"orig-{has_archive}"
+    arch.mkdir()
+    if has_archive:
+        (arch / f"{TEE}_{G.flat_colour(TEE)}_front.png").write_bytes(b"png")
+    G.originals_dir = lambda name, _a=arch: _a
+    rec = snapshot_rec()
+    nodes = media(f"failfront{has_archive}", [""] * len(ALTS))
+    nodes[FRONT]["status"] = "FAILED"
+    nodes[FRONT]["image"] = None
+    shop = Shop(product(nodes))
+    if has_archive:
+        RR.step_restore(shop, ROW, rec)
+        assert shop.deleted == [nodes[FRONT]["id"]]
+    else:
+        raises(lambda: RR.step_restore(shop, ROW, rec), "cannot rebuild")
+        assert shop.alts == [] and shop.deleted == []
+G.originals_dir = G_ORIG
+
 # The art card cannot be rebuilt here, so a failed one stops before any write.
 ART = ALTS.index("Temple line art close-up - Alpha")
 rec = snapshot_rec()

@@ -245,12 +245,16 @@ def step_resync(sc, row, rec):
 
 def rebuildable(row, name, alt):
     """Alt texts this rollout can upload again from local files: the fabric
-    details (fabric-details/), every on-model back (composites-lift/) and the
-    back flat lay (replaced from Tapstitch's new mockup anyway)."""
-    g = row["garment"]
+    details (fabric-details/), every on-model back (composites-lift/), the back
+    flat lay (replaced from Tapstitch's new mockup anyway) and the chest-logo
+    flat lay, which --reface rebuilds from its archived original when there is
+    one (flat-originals/<temple>/)."""
+    g, fc = row["garment"], gallery.flat_colour(row["garment"])
+    front = gallery.originals_dir(name) / f"{g}_{fc}_front.png"
     return (alt in {a for _, a in gallery.detail_alts(g)}
             or alt.startswith(f"{name} Temple back print on model - ")
-            or alt == gallery.flat_alt(name, g, "back", gallery.flat_colour(g)))
+            or alt == gallery.flat_alt(name, g, "back", fc)
+            or (alt == gallery.flat_alt(name, g, "front", fc) and front.exists()))
 
 
 def step_restore(sc, row, rec):
