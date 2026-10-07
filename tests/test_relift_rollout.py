@@ -220,15 +220,26 @@ for has_archive in (True, False):
         assert shop.alts == [] and shop.deleted == []
 G.originals_dir = G_ORIG
 
-# The art card cannot be rebuilt here, so a failed one stops before any write.
+# The art card is rebuilt by art_images.push from the temple folder, so a failed
+# one is accepted only when that card file exists.
 ART = ALTS.index("Temple line art close-up - Alpha")
-rec = snapshot_rec()
-nodes = media("failart", [""] * len(ALTS))
-nodes[ART]["status"] = "FAILED"
-nodes[ART]["image"] = None
-shop = Shop(product(nodes))
-raises(lambda: RR.step_restore(shop, ROW, rec), "cannot rebuild")
-assert shop.alts == [] and shop.deleted == []
+REAL_CARD = RR.card_file
+for has_card in (True, False):
+    RR.card_file = lambda t, _h=has_card: (TMP / "card.png") if _h and t == "Alpha" else None
+    rec = snapshot_rec()
+    nodes = media(f"failart{has_card}", [""] * len(ALTS))
+    nodes[ART]["status"] = "FAILED"
+    nodes[ART]["image"] = None
+    shop = Shop(product(nodes))
+    if has_card:
+        RR.step_restore(shop, ROW, rec)
+        assert rec["failed_in_resend"] == ["Temple line art close-up - Alpha"]
+    else:
+        raises(lambda: RR.step_restore(shop, ROW, rec), "cannot rebuild")
+        assert shop.alts == [] and shop.deleted == []
+RR.card_file = REAL_CARD
+assert RR.card_temple("Temple line art close-up - Ogden (original)") == "Ogden (original)"
+assert RR.card_temple("Ribbed collar detail, shown in Navy Blue") is None
 
 # Resync treats FAILED as final rather than waiting for it forever.
 rec = snapshot_rec()

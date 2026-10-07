@@ -248,13 +248,27 @@ def rebuildable(row, name, alt):
     details (fabric-details/), every on-model back (composites-lift/), the back
     flat lay (replaced from Tapstitch's new mockup anyway) and the chest-logo
     flat lay, which --reface rebuilds from its archived original when there is
-    one (flat-originals/<temple>/)."""
+    one (flat-originals/<temple>/), and the art card, which art_images.push
+    uploads again from the temple folder."""
     g, fc = row["garment"], gallery.flat_colour(row["garment"])
     front = gallery.originals_dir(name) / f"{g}_{fc}_front.png"
     return (alt in {a for _, a in gallery.detail_alts(g)}
             or alt.startswith(f"{name} Temple back print on model - ")
             or alt == gallery.flat_alt(name, g, "back", fc)
-            or (alt == gallery.flat_alt(name, g, "front", fc) and front.exists()))
+            or (alt == gallery.flat_alt(name, g, "front", fc) and front.exists())
+            or (card_temple(alt) is not None and card_file(card_temple(alt)) is not None))
+
+
+def card_temple(alt):
+    """The temple an art card's alt names ("Temple line art close-up - Cody"), or None."""
+    prefix = art_images.ALT_MARKER + " - "
+    return alt[len(prefix):] if alt.startswith(prefix) else None
+
+
+def card_file(temple):
+    """The art card art_images.push would upload for this temple, if it exists."""
+    card = art_images.override_path(temple) or art_images.card_path(temple)
+    return card if card and card.exists() else None
 
 
 def step_restore(sc, row, rec):
@@ -354,6 +368,10 @@ def step_gallery(s, sc, row, rec):
 
     gallery_cmd("add", pid, garment, name, onmodel)
     gallery_cmd("reface", pid, garment, name, onmodel)
+    # A card deleted as FAILED goes back the way every card goes on: art_images
+    # cards every product of that temple that lacks one, and skips the rest.
+    for t in {card_temple(a) for a in rec.get("failed_in_resend", [])} - {None}:
+        art_images.push_catalog(only_temple=t)
 
     p = fetch(sc, row["shopify_handle"])
     bound = {(v["media"]["nodes"] or [{}])[0].get("id") for v in p["variants"]["nodes"]}
