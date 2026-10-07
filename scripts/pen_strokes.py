@@ -27,7 +27,7 @@ Rules inside that order:
   - An overshoot tail is drawn as part of the line it extends.
   - Inside a tier the pen moves to the nearest next line (or feature).
 
-The drawing's weight classes come from temple-sketch-prompt.md: heavy
+The drawing's weight classes come from prompts/temple-sketch-prompt.md: heavy
 silhouette and structure, medium overshoot tails, light interior detail.
 Weight is measured from the art as the ink's width along each line.
 
