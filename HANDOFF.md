@@ -1,3 +1,38 @@
+# The sweep: built 7 October 2026, not yet run on a real new temple
+
+"Run a sweep" now takes a folder holding only the design PNG to a temple that is
+complete on the live site (Evan, 7 Oct 2026; decisions in `docs/decisions.md`
+under the same date). Driver: `scripts/sweep.py` (`scan`, `run`, `verify`).
+The skill does the research (location into `temples.json`, the facts fragment
+with both humanizer passes), then runs `sweep.py run --all-ready`.
+
+New over the old hand sequence: the approval is recorded by the sweep; products
+get their `temple:` / `garment:` / `country:` / `state:` tags (Tapstitch publishes
+none, and nothing in the repo added them before); the on-model gallery runs for
+every new temple; the drawing, stroke file and city line go straight into the
+live theme through the app token; the black SVG is copied to `Temples/All/`; the
+temple becomes a sold-out option on the Temple Art File; then `verify` reads the
+whole thing back from the store.
+
+**What has not run live yet, so watch the first sweep:**
+
+- The tag step, the Art File variant create and the option reorder. The
+  mutations validate against the Admin schema and the tag rule reproduces all 45
+  live tees, but neither has written to the store.
+- The theme upload of a single temple's files. `swatches.py push` proves the
+  token can write the published theme; this exact upload has not run.
+- `pen_strokes.py` on a brand-new temple. It needs opencv, scipy and
+  scikit-image, now in `requirements.txt`; run `pip install -r requirements.txt`
+  once. The sweep's preflight stops if they are missing.
+- Whether Tapstitch re-sends a new product's images after the gallery build (it
+  does after a design re-save, see below). `verify` would show it as images with
+  no alt text; re-running the sweep rebuilds the gallery.
+
+Offline tests: `tests/test_sweep.py` (tag rule, scan buckets, Art File order, and
+`verify` against the live Boise tee as a fixture). Still manual, printed at the
+end of a run only when needed: the Easify CSV import, and attaching the Art File
+download in the Digital Products app.
+
 # One-quarter lift rollout: DONE 7 October 2026
 
 Evan's call: back prints sit higher (one quarter of the spare height above the

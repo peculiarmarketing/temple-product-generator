@@ -24,8 +24,10 @@ structure, blue openings, green small marks.
 
 ## Upload
 
-The store connector used from Claude sessions cannot write to the live theme,
-so uploads are done from a machine with Shopify CLI logged in to the store:
+A new temple's files are uploaded by `scripts/sweep.py run`, through the PP
+Pipeline app token (it has `write_themes`). The store connector used from Claude
+chat sessions cannot write to the live theme. For a hand upload of many files,
+use Shopify CLI from the Mac:
 
     cd temple-product-generator
     shopify theme push --path theme --theme 194242150772 --nodelete \

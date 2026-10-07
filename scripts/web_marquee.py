@@ -20,9 +20,10 @@ runs `check` itself on the way out).
 
   --theme ID   the theme to compare against; default is the published one.
 
-Making a new temple's two files is still `scripts/pen_strokes.py` (see
-theme/README.md); uploading is Shopify CLI from the Mac, because the store
-connector cannot write to the live theme.
+`scripts/sweep.py run` makes a new temple's two files (web_drawings.py build,
+then pen_strokes.py), regenerates the snippet and uploads all three to the live
+theme through the pipeline app's write_themes token. The upload command printed
+below is the fallback for anything done outside a sweep.
 """
 import argparse
 import subprocess
@@ -157,7 +158,7 @@ def check(theme_id):
         uploads.append("snippets/pp-temple-city.liquid")
     if uploads:
         target = theme_id or "<published theme id>"
-        print("\nUpload from the Mac (the webp comes from the temple's finished art):")
+        print("\n`scripts/sweep.py run --temple <folder>` uploads these. By hand, from the Mac:")
         print(f"  shopify theme push --path theme --theme {target} --nodelete \\")
         print("    " + " \\\n    ".join(f"--only '{u}'" for u in uploads))
     return 1 if found or stale_snippet else 0

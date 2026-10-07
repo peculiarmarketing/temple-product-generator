@@ -1077,3 +1077,44 @@ drafts.
   flat-lay colour** (maroon tee, black crew, navy hoodie), followed by the two
   flat lays, the art card, the other on-model backs and the fabric details.
   Evan's call; supersedes the 18 Sep flat-lay thumbnail.
+
+## 7 October 2026 (the sweep runs a new temple end to end)
+
+- **"Run a sweep" is the whole pipeline and Evan's go-ahead to publish.** Evan
+  drops a temple folder holding only the design PNG; the sweep finds it, researches
+  the location and the temple facts, builds, publishes and finishes every website
+  step, so the live site is complete when it ends. The driver is
+  `scripts/sweep.py` (`scan`, `run`, `verify`); the skill does the research,
+  which needs judgement and web access and so is not a script. Saying "run a
+  sweep" is the explicit confirmation the house rules ask for before a live
+  change, for the new temples the scan lists.
+- **The proof gate is automatic.** The sweep records the approval itself once the
+  tracer's health checks and the build's validation pass. The proof sheet is
+  still rendered, as the record of what shipped. Approval stays manual
+  (`tapstitch_approve.py`) for anything outside a sweep.
+- **Research no longer waits for Evan.** The location goes into `temples.json`
+  as verified when churchofjesuschristtemples.org states the physical city;
+  facts follow the description builder's source hierarchy and both humanizer
+  passes, and the source ledger is printed for Evan to spot-check after the fact.
+  The one stop: a location the sources leave unclear. That temple is skipped and
+  reported, never guessed, and the rest of the sweep carries on.
+- **Website files go straight into the live theme.** The PP Pipeline app token has
+  `write_themes` (18 Sep 2026), so the sweep uploads a new temple's drawing, stroke
+  file and the city-line snippet with `themeFilesUpsert` and reads the checksums
+  back. The Shopify CLI step from the Mac is retired. Never `web_drawings.py push`
+  for this: it uploads every stale first-generation stroke file in
+  `artifacts/web_drawings/` and would undo the 2 October pen-order rebuild.
+- **New products get their tags from the location line.** Tapstitch publishes
+  with no tags, and nothing in the repo added the ones every live product
+  carries: `temple:<slug>`, `garment:<id>`, `country:<x>`, `state:<y>` (US only).
+  The marquee and product band find a temple by `temple:`, and `temple-tees`
+  takes a tee by `garment:tee`. The rule reproduces the tags on all 45 live tees.
+- **The on-model gallery is part of every new temple, not optional.** Slot 1 is
+  the collection thumbnail (decided above), so a temple without it looks unlike
+  the other 45.
+- **The Temple Art File gets each new temple as an option, sold out** until its
+  download is attached in the Digital Products app, the same state the five
+  newest options were left in. Salt Lake first, the rest A to Z.
+- **Still manual, because no API reaches them:** the Easify CSV import, and
+  attaching the Art File download (that app opens a file picker for the
+  merchant). The sweep names both at the end, only when they are needed.

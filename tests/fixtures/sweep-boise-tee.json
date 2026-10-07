@@ -1,0 +1,391 @@
+{
+ "_comment": "Essential Heavyweight Temple Tee (Boise), read from the live store 7 Oct 2026 and trimmed to the fields scripts/sweep.py verify reads. The description is cut down to its section markers.",
+ "product": {
+  "id": "gid://shopify/Product/15303565476212",
+  "title": "Essential Heavyweight Temple Tee (Boise)",
+  "status": "ACTIVE",
+  "productType": "T-Shirt",
+  "tags": [
+   "country:usa",
+   "garment:tee",
+   "state:idaho",
+   "temple:boise"
+  ],
+  "descriptionHtml": "<section class=\"product-details\">...</section>\n<section class=\"temple-facts\">...</section>",
+  "options": [
+   {
+    "name": "Color",
+    "values": [
+     "Black",
+     "Maroon",
+     "Navy Blue",
+     "Coffee",
+     "Charcoal"
+    ]
+   },
+   {
+    "name": "Size",
+    "values": [
+     "S",
+     "M",
+     "L",
+     "XL",
+     "2XL",
+     "3XL"
+    ]
+   }
+  ],
+  "media": {
+   "nodes": [
+    {
+     "id": "gid://shopify/MediaImage/56522169155956",
+     "alt": "Boise Temple back print on model - Maroon"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522170499444",
+     "alt": "Boise Temple back print flat lay - Maroon"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522151494004",
+     "alt": "Boise Temple chest logo flat lay - Maroon"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522151526772",
+     "alt": "Temple line art close-up - Boise"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522168467828",
+     "alt": "Boise Temple back print on model - Black"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522168664436",
+     "alt": "Boise Temple back print on model - Charcoal"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522168992116",
+     "alt": "Boise Temple back print on model - Navy Blue"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522169418100",
+     "alt": "Boise Temple back print on model - Coffee"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522151723380",
+     "alt": "Ribbed collar detail, shown in Navy Blue"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522151756148",
+     "alt": "Cotton jersey texture, shown in Navy Blue"
+    },
+    {
+     "id": "gid://shopify/MediaImage/56522151788916",
+     "alt": "Hem stitching detail, shown in Navy Blue"
+    }
+   ]
+  },
+  "variants": {
+   "nodes": [
+    {
+     "title": "Black / S",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Black / M",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Black / L",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Black / XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Black / 2XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Black / 3XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168467828"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / S",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / M",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / L",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / 2XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Maroon / 3XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169155956"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / S",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / M",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / L",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / 2XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Navy Blue / 3XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168992116"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / S",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / M",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / L",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / 2XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Coffee / 3XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522169418100"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / S",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / M",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / L",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / 2XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Charcoal / 3XL",
+     "media": {
+      "nodes": [
+       {
+        "id": "gid://shopify/MediaImage/56522168664436"
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

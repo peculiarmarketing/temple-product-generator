@@ -48,9 +48,11 @@ it is ever lost, recreate it from `requirements.txt`.
   page. `swatches.py render` prints the block to paste into the theme; `swatches.py
   check` verifies the live store (and the live theme, given a `read_themes` token)
   against the registry. The publish path enforces it; see docs/decisions.md, 18 Sep.
+- `scripts/sweep.py`: the sweep. Finds new temple folders and takes each one from
+  design PNG to complete on the live site; `verify` proves it. Start here.
 - `scripts/tapstitch_build.py`: build every print file from a scan of the Temples folder.
-- `scripts/tapstitch_preview.py`: the proof sheet Evan reviews before anything uploads.
-- `scripts/tapstitch_approve.py`: record Evan's approval, per temple.
+- `scripts/tapstitch_preview.py`: the proof sheet, the record of what each temple shipped with.
+- `scripts/tapstitch_approve.py`: record the approval, per temple (the sweep records its own).
 - `scripts/tapstitch_status.py`: ledger counts and rows.
 - `scripts/tapstitch_publish.py`: `check` (what is blocking a run) and `finish` (the Shopify half for one product).
 - `scripts/tapstitch_run.py`: the catalogue runner. Plans by default; `--apply` builds in Tapstitch, `--publish` reaches the storefront.
@@ -65,11 +67,29 @@ Temple manifests live in the `../Temples/{Name}/Working files/` folders, outside
 
 ## Run sequence
 
+A new temple is one command once its research is in (the `temple-product-generator`
+skill does the research when Evan says "run a sweep"):
+
+```
+scripts/sweep.py scan                          # every temple folder and what it still needs
+scripts/sweep.py run --all-ready               # LIVE: build, publish and finish every ready temple
+scripts/sweep.py verify --temple T             # read only: is this temple complete on the site
+```
+
+`run` takes each temple through build, proof, approve, publish, tags, gallery,
+drawing, download and Art File option, then the Easify CSV and the facts mirror,
+then `verify`. Every step skips what is already done, so re-running finishes a
+temple that stopped anywhere. What stays manual is printed at the end: the
+Easify CSV import, and attaching the Art File download. See `docs/decisions.md`,
+7 October 2026.
+
+The steps underneath, for one-off work:
+
 ```
 scripts/tapstitch_build.py --report-only       # validate every design, write no files
 scripts/tapstitch_build.py --temple T          # write the print files
-scripts/tapstitch_preview.py --temple T        # the proof sheet, for Evan's gate
-scripts/tapstitch_approve.py --temple T        # only after Evan approves
+scripts/tapstitch_preview.py --temple T        # the proof sheet
+scripts/tapstitch_approve.py --temple T        # record the approval
 scripts/tapstitch_publish.py check             # what is still blocking a run
 scripts/tapstitch_run.py --temple T            # plan: what would be built, what is blocked
 scripts/tapstitch_run.py --apply --publish --temple T   # build and publish. LIVE, no undo.
@@ -77,12 +97,12 @@ scripts/easify_options.py sync                 # Temple dropdown CSV; Evan impor
 scripts/web_marquee.py check                   # every live temple on the homepage marquee
 ```
 
-**Every new temple must be added to the homepage marquee.** The marquee on the
-homepage (`theme/sections/pp-temple-marquee.liquid`) shows a temple only once
-the theme has its art (`assets/pp-temple-<slug>.webp`), its stroke file
-(`assets/pp-temple-<slug>.json`, built by `scripts/pen_strokes.py`) and its city
-line (`snippets/pp-temple-city.liquid`). Without them the temple is left off with
-no error. `tapstitch_run.py --publish` runs `scripts/web_marquee.py check` on
-the way out and lists what each new temple is missing; `web_marquee.py sync`
-regenerates the city-line snippet and prints the `shopify theme push` command
-for the rest. A temple is not finished until that check is clean.
+**Every new temple must be on the homepage marquee.** The marquee
+(`theme/sections/pp-temple-marquee.liquid`) shows a temple only once the theme has
+its art (`assets/pp-temple-<slug>.webp`), its stroke file
+(`assets/pp-temple-<slug>.json`, from `web_drawings.py build` then
+`scripts/pen_strokes.py`) and its city line (`snippets/pp-temple-city.liquid`), and
+the tee carries `garment:tee` and `temple:<slug>` tags. Without them the temple is
+left off with no error. `sweep.py run` does all of it and uploads the files to the
+live theme itself; `web_marquee.py check` confirms it. A temple is not finished
+until that check is clean.

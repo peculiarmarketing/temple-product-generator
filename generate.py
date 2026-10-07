@@ -147,8 +147,8 @@ def mirror_black_art(temple_name, manifest):
     """Duplicate the temple's black SVG into Temples/All/ under its clean
     place-token name (folder names can carry ref-finder stars and old
     spellings; the token is the customer-facing name). Refreshes the copy
-    when the source art is newer; the source is never touched. No pipeline
-    script calls this; run it by hand for a new temple's download file."""
+    when the source art is newer; the source is never touched. scripts/sweep.py
+    calls this for every new temple (its download step)."""
     src = TEMPLES_DIR / temple_name / manifest["art"]["black"]
     dest = ALL_ART_DIR / f"{manifest['place_tokens']['default']} black.svg"
     if dest.exists() and dest.stat().st_mtime >= src.stat().st_mtime:
