@@ -182,6 +182,40 @@ class Seq:
         return st
 
 
+# A re-sent image that FAILED (Tapstitch pointed it at a file Shopify no longer
+# has, measured on Albuquerque and Billings): a fabric detail is deleted and left
+# for --add to upload again; everything else gets its alt back.
+DETAIL = [a for _, a in G.detail_alts(TEE)][0]
+di = ALTS.index(DETAIL)
+rec = snapshot_rec()
+nodes = media("fail", [""] * len(ALTS))
+nodes[di]["status"] = "FAILED"
+nodes[di]["image"] = None
+shop = Shop(product(nodes))
+RR.step_restore(shop, ROW, rec)
+assert shop.deleted == [nodes[di]["id"]], shop.deleted
+assert [a for _, a in shop.alts] == [a for i, a in enumerate(ALTS) if i != di]
+assert rec["failed_in_resend"] == [DETAIL]
+
+# The art card cannot be rebuilt here, so a failed one stops before any write.
+ART = ALTS.index("Temple line art close-up - Alpha")
+rec = snapshot_rec()
+nodes = media("failart", [""] * len(ALTS))
+nodes[ART]["status"] = "FAILED"
+nodes[ART]["image"] = None
+shop = Shop(product(nodes))
+raises(lambda: RR.step_restore(shop, ROW, rec), "cannot rebuild")
+assert shop.alts == [] and shop.deleted == []
+
+# Resync treats FAILED as final rather than waiting for it forever.
+rec = snapshot_rec()
+rec["saved_at"] = RR.now()
+nodes = media("fin2", [""] * len(ALTS))
+nodes[di]["status"] = "FAILED"
+seq = Seq([product(nodes)])
+RR.step_resync(seq, ROW, rec)
+assert rec.get("resynced_at")
+
 rec = snapshot_rec()
 rec["saved_at"] = RR.now()
 old_nodes = media("old", ALTS)

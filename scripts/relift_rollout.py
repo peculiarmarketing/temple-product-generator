@@ -231,7 +231,8 @@ def step_resync(sc, row, rec):
     while True:
         p = fetch(sc, row["shopify_handle"])
         ids = {m["id"] for m in p["media"]["nodes"]}
-        ready = all(m.get("status") == "READY" for m in p["media"]["nodes"])
+        # FAILED is final too: see step_restore for what it means and how it is handled.
+        ready = all(m.get("status") in ("READY", "FAILED") for m in p["media"]["nodes"])
         if ids and not (ids & old) and len(ids) == len(old) and ready:
             rec["resynced_at"] = now()
             return
@@ -242,11 +243,37 @@ def step_resync(sc, row, rec):
         time.sleep(POLL_S)
 
 
+def rebuildable(row, name, alt):
+    """Alt texts this rollout can upload again from local files: the fabric
+    details (fabric-details/), every on-model back (composites-lift/) and the
+    back flat lay (replaced from Tapstitch's new mockup anyway)."""
+    g = row["garment"]
+    return (alt in {a for _, a in gallery.detail_alts(g)}
+            or alt.startswith(f"{name} Temple back print on model - ")
+            or alt == gallery.flat_alt(name, g, "back", gallery.flat_colour(g)))
+
+
 def step_restore(sc, row, rec):
+    """Put the alts back, by pixels.
+
+    FAILED IMAGES. Tapstitch re-sends from its own list of the product's image
+    addresses, and on some products that list still names a file Shopify no
+    longer has: the tall fabric details squared and replaced on 18 Sep 2026.
+    Measured 7 Oct 2026 on the Albuquerque and Billings rows, one detail per
+    product came back FAILED with "The file does not exist (404)". A failed image
+    has no picture to match, so it is deleted, and the snapshot image it stood
+    for is left without a match. That is only accepted for photos the gallery
+    step uploads again from local files; anything else stops the run.
+    """
     p = fetch(sc, row["shopify_handle"])
+    name = temple_of(rec["title"])
     snap = [(m["alt"], np.load(THUMBS / m["thumb"])) for m in rec["media"]]
+    nodes = p["media"]["nodes"]
+    failed = [m["id"] for m in nodes if m.get("status") == "FAILED"]
     plan, used = [], set()
-    for m in p["media"]["nodes"]:
+    for m in nodes:
+        if m["id"] in failed:
+            continue
         t = thumb(m["image"]["url"])
         best, i = min((float(np.abs(t - x).mean()), i) for i, (_, x) in enumerate(snap))
         if best > MATCH_MAX or i in used:
@@ -255,12 +282,19 @@ def step_restore(sc, row, rec):
                              "writing any alt text.")
         used.add(i)
         plan.append((m["id"], snap[i][0], best))
-    if len(used) != len(snap):
-        raise SystemExit(f"{key(row)}: {len(snap) - len(used)} snapshot image(s) did not "
-                         "come back")
+    lost = [snap[i][0] for i in range(len(snap)) if i not in used]
+    if len(lost) != len(failed):
+        raise SystemExit(f"{key(row)}: {len(lost)} snapshot image(s) did not come back "
+                         f"but {len(failed)} failed")
+    if not all(rebuildable(row, name, a) for a in lost):
+        raise SystemExit(f"{key(row)}: image(s) {lost} failed in the re-send and this "
+                         "rollout cannot rebuild them. Stopping before writing any alt text.")
     for mid, alt, _ in plan:
         sc.update_media_alt(p["id"], mid, alt)
-    rec.update(restored_at=now(), worst_match=round(max(b for *_, b in plan), 2))
+    if failed:
+        sc.delete_media(p["id"], failed)
+    rec.update(restored_at=now(), worst_match=round(max(b for *_, b in plan), 2),
+               failed_in_resend=lost)
 
 
 def new_flat(s, rec, garment):
