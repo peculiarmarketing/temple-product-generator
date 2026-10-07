@@ -1,4 +1,4 @@
-# One-quarter lift rollout: IN FLIGHT since 7 October 2026
+# One-quarter lift rollout: DONE 7 October 2026
 
 Evan's call: back prints sit higher (one quarter of the spare height above the
 design, three quarters below), on-model photos fold the print into the fabric's
@@ -6,44 +6,34 @@ creases (option C), and every product's first photo, the one collection pages
 show, is the on-model back in the flat-lay colour (maroon tee, black crew, navy
 hoodie). Decisions and reasons: `docs/decisions.md`, 7 October 2026.
 
-**Done locally:** all 135 back print files rebuilt in `../Temples/` and
-validated; all 630 on-model composites built in
-`artifacts/photo-mockup-spike/composites-lift/` (gitignored, rebuild with
-`scripts/composite_catalog.py --garment G --outdir .../composites-lift/G --force`).
+**All 135 live products were updated in place** by `scripts/relift_rollout.py`
+and pass `relift_rollout.py --verify` (read-only): Tapstitch prints every one
+from its new design commit, and every gallery has the new flat back and
+on-model backs, all alt text, its colour bindings and the new order. Per
+product record: `artifacts/tapstitch/relift-rollout.json`. No product was
+swapped, so Easify bindings are untouched.
 
-**Live:** each product is updated in place by `scripts/relift_rollout.py`; no
-product is swapped and Easify bindings survive. Progress per product is in
-`artifacts/tapstitch/relift-rollout.json`. Done and verified so far: the three
-Monticello products. Resume with
-
-    ./.venv.nosync/bin/python scripts/relift_rollout.py              (plan)
-    ./.venv.nosync/bin/python scripts/relift_rollout.py --apply --limit 30
-    ./.venv.nosync/bin/python scripts/relift_rollout.py --verify     (read-only)
-
-It stops on the first product that fails any check and resumes from the step it
-stopped at. Each product's page has about six seconds with no photos and a
-couple of minutes with photos missing their alt text while Tapstitch re-sends
-them; the script puts the alt text back by pixel match.
+**What the run met, for the next time a design is re-saved on live products:**
+Tapstitch re-sends each product's images about two minutes after a save, from
+its own stored list, with no alt text. On 39 products that list still named a
+file Shopify no longer had (photos replaced since publishing), so one image per
+product came back FAILED: 16 flat lays, 23 fabric details, 4 art cards. The
+script deletes those and rebuilds them from local files, and `check()` proves
+each came back. Use `relift_rollout.py` (or its steps) for any future in-place
+design change; do not call `art_images.py push` while siblings are mid-update,
+since it cards any product whose alts are blank.
 
 **Revert path:** the centred print files are in
-`artifacts/tapstitch/print-backup-centred-2026-10-07/` (gitignored, on this Mac
-only). Copying them back and re-running the rollout with `space_above_frac`
-back at 0.5 would undo the lift the same way it was applied.
+`artifacts/tapstitch/print-backup-centred-2026-10-07/` (gitignored, this Mac
+only). Copying them back and re-running the rollout with `space_above_frac` at
+0.5 would undo the lift the same way it was applied.
 
-**Known traps:**
-
-- Hoodie templates are shared with the retired DRAFT hoodies from the Eden Green
-  swap, so those drafts get the new design and a photo re-send too. Not for sale;
-  nothing touches them.
-- The Salt Lake tee had no template id in the ledger. The rollout finds its
-  Tapstitch store product by the Shopify id it is bound to and writes both ids
-  into the ledger row.
-- `scripts/tapstitch_build.py --report-only` rewrites `artifacts/tapstitch/ledger.json`
-  (every `updated_at`, and it clears the Salt Lake tee's problems note). Check
-  `git diff` after running it.
-- Local allow rules in `.claude/settings.local.json` let Claude run
-  `relift_rollout.py` and `build_product_gallery.py` without a prompt. Narrow or
-  remove them once the rollout is finished.
+**Side effects to know:** the retired DRAFT hoodies share templates with the live
+ones, so they also got the new design and a re-send (their alt text is blank;
+not for sale, untouched otherwise). The Salt Lake tee's template and store
+product ids are now in the ledger. The local allow rules added for the run were
+narrowed on 7 Oct to `relift_rollout.py --verify` and `build_product_gallery.py
+--report` (read-only).
 
 # Pen-drawn temples: live since 2 October 2026
 

@@ -1837,15 +1837,15 @@
       "files": {
         "white": "Salt Lake tee white back print (auto).png"
       },
-      "problems": [
-        "tapstitch_template_id unknown: published 15 Sep 2026 before the ledger recorded ids, so tapstitch_variant_images.py cannot target this row until the id is read back from Tapstitch"
-      ],
+      "problems": [],
       "old_shopify_handle": "salt-lake-city-temple-tee",
       "old_shopify_id": "gid://shopify/Product/15210482762100",
       "old_title": "Essential Temple Tee",
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee",
-      "updated_at": "2026-09-16T16:09:29"
+      "updated_at": "2026-10-07T13:27:37",
+      "tapstitch_template_id": "1549714541104005120",
+      "tapstitch_store_product_id": "1549715710526234624"
     },
     {
       "temple": "San Antonio",
@@ -2442,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-09-23T09:33:43"
+  "updated_at": "2026-10-07T13:27:37"
 }
