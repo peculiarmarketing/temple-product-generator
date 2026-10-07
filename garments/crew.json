@@ -69,6 +69,7 @@
   "_naming_note": "Was 'Classic Temple Crew Sweatshirt', then 'Cloud Temple Crew Sweatshirt' from 16 Sep 2026. EVAN, 16 Sep 2026: renamed again to 'Ultra-soft Temple Sweatshirt' (dropping 'Crew' from the name) to lead with feel instead of a cut name, matching the hoodie's new 'Ultra-soft Oversized Temple Hoodie' naming. This config only governs titles for every sweatshirt generated from here on; existing live products keep whatever title they were published with until changed by hand. The rest of the 16 Sep reasoning still applies: this closes the 'whether the product line names carry over' question in BRAND.md section 7, and renaming costs nothing extra because a replacement never inherited its predecessor's web address by title anyway -- Shopify builds the address from the title, so the address is always set explicitly with productUpdate(handle:) after publish.",
   "spacing_overrides": {
     "vertical_anchor": "center",
+    "space_above_frac": 0.25,
     "temple_target_ink_width_in": 12.0,
     "location_text_height_in": 0.7,
     "gap_ink_to_text_in": 0.5,

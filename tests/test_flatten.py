@@ -81,16 +81,34 @@ assert abs(ys_top.min() / dpi - sp_top["top_margin_in"]) < 0.05, \
 assert abs((ys_top.max() + 1) / dpi
            - r_top["geometry"]["location_text"]["bottom_in"]) < 0.05
 
-# Centred: equal space above and below, and the block is the same height either way.
-ctr_cfg = dict(TEE, spacing_overrides={**(TEE.get("spacing_overrides") or {}),
-                                       "vertical_anchor": "center"})
-r_ctr = flatten.build_back("Salt Lake", manifest, ctr_cfg, "white")
-ys_ctr = np.where(np.asarray(r_ctr["image"].getchannel("A")) > 10)[0]
-above, below = ys_ctr.min(), AREA["height_px"] - 1 - ys_ctr.max()
+# Centre-anchored: space_above_frac of the leftover height goes above the block.
+# 0.5 is true centring; the garment configs ship 0.25 (Evan, 7 Oct 2026). Either
+# way the block is the same height as top-anchored, so it moves and never resizes.
+def ink_rows(temple, frac):
+    cfg = dict(TEE, spacing_overrides={**(TEE.get("spacing_overrides") or {}),
+                                       "vertical_anchor": "center",
+                                       "space_above_frac": frac})
+    img = flatten.build_back(temple, load_manifest(temple), cfg, "white")["image"]
+    ys = np.where(np.asarray(img.getchannel("A")) > 10)[0]
+    return ys.min(), AREA["height_px"] - 1 - ys.max(), ys.max() - ys.min()
+
+above, below, block = ink_rows("Salt Lake", 0.5)
 assert abs(above - below) < 0.1 * dpi, \
     f"centred design is not balanced: {above/dpi:.2f}in above, {below/dpi:.2f}in below"
-assert abs((ys_ctr.max() - ys_ctr.min()) - (ys_top.max() - ys_top.min())) < 0.05 * dpi, \
+assert abs(block - (ys_top.max() - ys_top.min())) < 0.05 * dpi, \
     "centring must move the block, not resize it"
+
+shipped = layout.load_spacing(TEE)["space_above_frac"]
+lifts = {}
+for temple in ("Salt Lake", "Monticello"):
+    a_ctr, _, _ = ink_rows(temple, 0.5)
+    a, b, blk = ink_rows(temple, shipped)
+    assert abs(a - shipped * (a + b)) < 0.05 * dpi, \
+        f"{temple}: {a/dpi:.2f}in above of {(a+b)/dpi:.2f}in spare, want {shipped} of it"
+    assert a >= 0 and b >= 0, f"{temple}: ink leaves the canvas"
+    lifts[temple] = (a_ctr - a) / dpi
+# A tall temple has little spare height so it barely moves; a wide short one rises most.
+assert lifts["Salt Lake"] < 1.0 < lifts["Monticello"], lifts
 
 # The location line is a fixed height on every temple: it is the temple art that
 # varies, never the type. Regression guard for Evan's 14 Sep 2026 rule.

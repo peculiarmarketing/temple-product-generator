@@ -1,0 +1,294 @@
+{
+ "id": "gid://shopify/Product/15303609581940",
+ "title": "Essential Heavyweight Temple Tee (Monticello)",
+ "status": "ACTIVE",
+ "updatedAt": "2026-10-07T16:25:24Z",
+ "options": [
+  {
+   "name": "Color",
+   "values": [
+    "Black",
+    "Maroon",
+    "Navy Blue",
+    "Coffee",
+    "Charcoal"
+   ]
+  },
+  {
+   "name": "Size",
+   "values": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ]
+  }
+ ],
+ "media": {
+  "nodes": [
+   {
+    "id": "gid://shopify/MediaImage/56521340027252",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/9f4b8c2d2f7e44869cc9f6d037fae508.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340060020",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/b3f76d12597847ab9f46604960111b95.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340092788",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/7c1962988d7649a7a815aa04039c09da.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340125556",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340158324",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340191092",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340223860",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340256628",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340289396",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/f986fd224eb54c69b0292387d79b3bef.jpg?v=1791390323"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340322164",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/7737d4648daa4dfc849f7619dcf4050f.jpg?v=1791390324"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56521340354932",
+    "alt": "",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/f154d65eeb7f445d8c6db7c722b961fe.jpg?v=1791390323"
+    }
+   }
+  ]
+ },
+ "variants": {
+  "nodes": [
+   {
+    "title": "Black / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Black / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Black / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Black / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Black / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Black / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/177e6e9a16174d8db128a985debe93b5.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Maroon / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/8538cc08fedf442f98720e517f0a1878.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Navy Blue / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/dc906c2db51b4562bea7add59e92bdff.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Coffee / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Coffee / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Coffee / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Coffee / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Coffee / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Coffee / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/3954fc4b69e84a24bfa50d560b0eb57b.jpg?v=1791390322"
+    }
+   },
+   {
+    "title": "Charcoal / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Charcoal / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Charcoal / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Charcoal / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Charcoal / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   },
+   {
+    "title": "Charcoal / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/a001c57960e54ed6bcfec9331a94d764.jpg?v=1791390321"
+    }
+   }
+  ]
+ }
+}

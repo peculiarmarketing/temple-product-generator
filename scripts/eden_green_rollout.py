@@ -117,7 +117,7 @@ STATE_PATH = ROOT / "artifacts/tapstitch/eden-green-rollout.json"
 BLANKS = ROOT / "artifacts/photo-mockup-spike/colourway-photos"
 STEPS = ("resolved", "built", "distributed", "hidden", "finished", "gallery",
          "cutover", "verified")
-SUPERSEDED = "superseded - "
+SUPERSEDED = gallery.SUPERSEDED
 
 # Measured 22 Sep 2026 on Boise's composites against their blank colourway
 # photos: the share of the back panel the print lifts by more than 60 levels.
@@ -499,12 +499,7 @@ def check(sc, entry, row, cfg, comps, domain=None):
     if meta(new) != meta(old):
         probs.append("peculiar metafields differ from the old product")
 
-    fc = gallery.flat_colour(GARMENT)
-    want = ([gallery.flat_alt(alt_temple, GARMENT, "back", fc),
-             gallery.flat_alt(alt_temple, GARMENT, "front", fc),
-             f"{art_images.ALT_MARKER} - {card_temple}"]
-            + [gallery.on_model_alt(alt_temple, GARMENT, c) for c in gallery.ORDER[GARMENT]]
-            + [a for _, a in gallery.detail_alts(GARMENT)])
+    want = gallery.gallery_order(alt_temple, GARMENT, f"{art_images.ALT_MARKER} - {card_temple}")
     have = [m.get("alt") or "" for m in new["media"]["nodes"]]
     if any(a.startswith(SUPERSEDED) for a in have):
         probs.append("superseded photos are still in the gallery")

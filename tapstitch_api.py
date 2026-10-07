@@ -300,6 +300,43 @@ def store_product_prefill(s, store_id, template_id):
                        f"/products/templates/{template_id}/new", timeout=60))
 
 
+def store_products(s, q="", page=1, page_size=24):
+    """One page of the account's store products, as Tapstitch's own list shows.
+
+    Returns the page: {pageNum, pageSize, totalPage, totalCount, data}. `q` is a
+    SUBSTRING search on the title, so the bare Salt Lake title matches every
+    temple's product of that line. Each record names the Shopify product it is
+    bound to (`clientProductEditUrl` ends in its numeric id) and, per variant,
+    the template and design commit an order is printed from
+    (`variants[].productionItems[].templateId` / `.commitId`).
+    """
+    return _data(s.get(f"{BASE}/api/services/user/distribution/stores/products",
+                       params={"pageNum": page, "pageSize": page_size, "q": q},
+                       timeout=60))["page"]
+
+
+def store_product_for(s, shopify_gid, title):
+    """The store product bound to one Shopify product, matched by Shopify id.
+
+    Searched by title first (one page for any title that names a temple), then
+    the whole list, because a title renamed by hand on Shopify is not renamed in
+    Tapstitch. Matching on the bound Shopify id rather than the title is what
+    makes the retired DRAFT hoodies, which share titles with the live ones, safe.
+    """
+    want = "/admin/products/" + shopify_gid.rsplit("/", 1)[-1]
+    for q in (title, ""):
+        page = 1
+        while True:
+            pg = store_products(s, q, page)
+            for d in pg["data"]:
+                if (d.get("clientProductEditUrl") or "").endswith(want):
+                    return d
+            if page >= (pg.get("totalPage") or 1):
+                break
+            page += 1
+    raise TapstitchError(f"no Tapstitch store product is bound to {shopify_gid}")
+
+
 def mockups_back_first(mockups, lead_color_id=None):
     """Order the gallery so the temple leads, not a near-blank front.
 

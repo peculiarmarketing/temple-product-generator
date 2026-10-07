@@ -1044,3 +1044,36 @@ drafts.
   blank ($16.57 against $14.92) and their all-in costs are within $0.57 of each
   other, while the crew sells for $10.00 less. Evan looked at that gap and kept
   the price. Settled, not an open question.
+
+## 7 October 2026 (the one-quarter lift, fold option C, slot 1 on model)
+
+- **Back prints sit higher: one quarter of the spare height above, three
+  quarters below** (`space_above_frac: 0.25` in all three garment configs).
+  Evan's call, after true centring left wide short temples (Albuquerque,
+  Billings, Monticello) around mid-back. The share is of the LEFTOVER height, not
+  a fixed point on the canvas, so a tall temple barely moves (Salt Lake rises
+  0.9in) and a short one rises most (Monticello 2.7in), and nothing can be pushed
+  off the top. Option one third was shown alongside and not chosen. `vertical_anchor:
+  "center"` with 0.5 is still true centring. This amends the "CENTRE anchored"
+  entry above for the print files; the on-model compositor still places the
+  canvas centre, which is what carries the lift through to the photos.
+- **On-model photos fold the print into the fabric's creases** (option C,
+  `print_geometry.json` `fold`). The tee's back has a crease down the left side
+  that every full-width temple's left edge reaches once lifted. A hand-marked
+  crease that cut a strip out of the art was tried first and rejected by Evan as
+  unnatural (only the top corner reacted, and it hit the hoodie as hard as the
+  tee). What shipped is the standard mockup displacement map: the photo's own
+  band-passed log luminance moves the art, one strength for every photo, so a
+  softer fold moves it less without per-garment tuning. Three strengths were
+  shown; Evan chose the strongest, C.
+- **Live products are updated in place, not swapped.** Re-saving a template
+  moves the existing store product onto the new design commit (every variant's
+  productionItems.commitId changes), so orders print the new file. Proved on the
+  Monticello tee. The save makes Tapstitch re-send the gallery about two minutes
+  later with new media ids and no alt text; `scripts/relift_rollout.py` restores
+  the alts by pixel match and then swaps the photos. Easify bindings survive
+  because the product id does not change.
+- **Slot 1, the collection and search thumbnail, is the on-model back in the
+  flat-lay colour** (maroon tee, black crew, navy hoodie), followed by the two
+  flat lays, the art card, the other on-model backs and the fabric details.
+  Evan's call; supersedes the 18 Sep flat-lay thumbnail.

@@ -1,0 +1,294 @@
+{
+ "id": "gid://shopify/Product/15303609581940",
+ "title": "Essential Heavyweight Temple Tee (Monticello)",
+ "status": "ACTIVE",
+ "updatedAt": "2026-09-24T02:20:44Z",
+ "options": [
+  {
+   "name": "Color",
+   "values": [
+    "Black",
+    "Maroon",
+    "Navy Blue",
+    "Coffee",
+    "Charcoal"
+   ]
+  },
+  {
+   "name": "Size",
+   "values": [
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL"
+   ]
+  }
+ ],
+ "media": {
+  "nodes": [
+   {
+    "id": "gid://shopify/MediaImage/56216709923188",
+    "alt": "Monticello Temple back print flat lay - Maroon",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_back_8dcd98ad-440e-46fc-b9e0-4752cf1f4a0e.png?v=1789786328"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56216709955956",
+    "alt": "Monticello Temple chest logo flat lay - Maroon",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_front_c7bfb4b7-042a-4cef-9f74-e8cb96aa0564.png?v=1789786333"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56157383295348",
+    "alt": "Temple line art close-up - Monticello",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/Monticello_art_closeup_auto_3b18769b-82dc-4c39-98e6-4e39c9245fcf.png?v=1789613593"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215183950196",
+    "alt": "Monticello Temple back print on model - Black",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215185031540",
+    "alt": "Monticello Temple back print on model - Charcoal",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215185817972",
+    "alt": "Monticello Temple back print on model - Navy Blue",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215186899316",
+    "alt": "Monticello Temple back print on model - Maroon",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215187259764",
+    "alt": "Monticello Temple back print on model - Coffee",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215189324148",
+    "alt": "Ribbed collar detail, shown in Navy Blue",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/D1_32343d0a-1af3-48c6-af17-7fe795369ec7.png?v=1789768999"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215190569332",
+    "alt": "Cotton jersey texture, shown in Navy Blue",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/D5_801f11e2-33b2-47d3-95ce-52b5983bc017.png?v=1789769005"
+    }
+   },
+   {
+    "id": "gid://shopify/MediaImage/56215191945588",
+    "alt": "Hem stitching detail, shown in Navy Blue",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/D6_1058e044-d3da-437d-a72f-bd1376e57376.png?v=1789769011"
+    }
+   }
+  ]
+ },
+ "variants": {
+  "nodes": [
+   {
+    "title": "Black / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Black / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Black / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Black / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Black / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Black / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_black_67936bf4-07fc-4c3b-a8f8-069ce5a9b861.jpg?v=1789768977"
+    }
+   },
+   {
+    "title": "Maroon / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Maroon / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Maroon / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Maroon / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Maroon / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Maroon / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_maroon_e6273139-19a2-47fb-bc42-209db88e8f07.jpg?v=1789768988"
+    }
+   },
+   {
+    "title": "Navy Blue / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Navy Blue / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Navy Blue / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Navy Blue / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Navy Blue / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Navy Blue / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_navy-blue_fb758e46-7eba-4c2d-9917-b3b0a36666de.jpg?v=1789768985"
+    }
+   },
+   {
+    "title": "Coffee / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Coffee / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Coffee / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Coffee / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Coffee / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Coffee / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_coffee_3696d6e6-d777-4e78-bf78-2593ef6cc6f0.jpg?v=1789768992"
+    }
+   },
+   {
+    "title": "Charcoal / S",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "title": "Charcoal / M",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "title": "Charcoal / L",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "title": "Charcoal / XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "title": "Charcoal / 2XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   },
+   {
+    "title": "Charcoal / 3XL",
+    "image": {
+     "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/tee_dark-gray_6ae7bcb4-c0eb-4bac-a411-0de0ed8e300a.jpg?v=1789768981"
+    }
+   }
+  ]
+ }
+}

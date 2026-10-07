@@ -73,3 +73,17 @@ artifacts/web_drawings/
 
 # Page-layout backups written by scripts/pen_templates.py golive, the revert path.
 artifacts/pen_templates/
+
+# Centred print files from before the one-quarter lift (7 Oct 2026), the revert
+# path for the back prints. Out of git: 73MB of regenerable PNGs.
+artifacts/tapstitch/print-backup-centred-2026-10-07/
+
+# On-model composites for the one-quarter lift with fold option C (7 Oct 2026),
+# the --composites folder for build_garment_catalog.py. Regenerable.
+artifacts/photo-mockup-spike/composites-lift/
+
+# Relift rollout working files: pre-save gallery thumbnails the alt-text restore
+# matches against, and the pilot's downloaded mockups. Regenerable, out of git.
+artifacts/tapstitch/relift-thumbs/
+artifacts/tapstitch/pilot-monticello-tee/*.png
+artifacts/tapstitch/pilot-monticello-tee/storeproducts_*.json

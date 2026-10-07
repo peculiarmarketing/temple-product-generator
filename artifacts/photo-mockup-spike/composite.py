@@ -84,7 +84,7 @@ def load_art(path, quad, supersample=3.0):
 
 
 def build(photo, art, quad, displace, shade_gain, texture_gain, opacity,
-          scale=1.0, flat=False):
+          scale=1.0, flat=False, fold_strength=0.0, fold_band=(4, 20)):
     ah, aw = art.shape[:2]
     H, W = photo.shape[:2]
 
@@ -120,6 +120,21 @@ def build(photo, art, quad, displace, shade_gain, texture_gain, opacity,
         # a point on screen shows the art that sat here before the fabric moved
         X = X - displace * gx[y0:y1, x0:x1]
         Y = Y - displace * gy[y0:y1, x0:x1]
+
+        # Pull the print into the creases. The usual mockup displacement map:
+        # a band-pass of the photo's log luminance, so only crease-sized shading
+        # counts and the effect is relative to the garment's own brightness.
+        # Moving along its slope draws art in from both walls of a dark crease,
+        # so every line that crosses a fold bends into it along the fold's whole
+        # length, in proportion to how deep the fold looks. One strength for
+        # every photo: a soft fold (the hoodie) moves the art less than a sharp
+        # one (the tee) without any per-garment number.
+        if fold_strength:
+            L = np.log(lum + 8.0)
+            band = gauss(L, fold_band[0] * scale) - gauss(L, fold_band[1] * scale)
+            by, bx = np.gradient(band)
+            X = X + fold_strength * bx[y0:y1, x0:x1]
+            Y = Y + fold_strength * by[y0:y1, x0:x1]
 
     den = hinv[2, 0] * X + hinv[2, 1] * Y + hinv[2, 2]
     u = (hinv[0, 0] * X + hinv[0, 1] * Y + hinv[0, 2]) / den

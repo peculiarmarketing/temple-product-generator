@@ -1,0 +1,35 @@
+{
+  "_what": "Redacted excerpt of the Tapstitch store-product list for the Monticello tee, before and after re-saving its template design on 7 Oct 2026. Only the ids that prove the store product followed the template onto the new design commit; store domain, admin URLs and account ids removed.",
+  "snapshots": {
+    "before": {
+      "template_commitId": "1550097201844420608",
+      "store_product_uniqueId": "1550097204981673984",
+      "productionItems_commitIds": [
+        "1550097201844420608"
+      ],
+      "productionItems_templateIds": [
+        "1550097164208914432"
+      ]
+    },
+    "after1": {
+      "template_commitId": "1557549293546635264",
+      "store_product_uniqueId": "1550097204981673984",
+      "productionItems_commitIds": [
+        "1557549293546635264"
+      ],
+      "productionItems_templateIds": [
+        "1550097164208914432"
+      ]
+    },
+    "after2": {
+      "template_commitId": "1557549293546635264",
+      "store_product_uniqueId": "1550097204981673984",
+      "productionItems_commitIds": [
+        "1557549293546635264"
+      ],
+      "productionItems_templateIds": [
+        "1550097164208914432"
+      ]
+    }
+  }
+}

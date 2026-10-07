@@ -1,0 +1,1537 @@
+{
+ "resourceId": null,
+ "userServiceId": null,
+ "templateId": "1550097164208914432",
+ "commitId": "1550097201844420608",
+ "resourceCode": -1,
+ "productId": "1529865635893596160",
+ "colorCode": "8079,8088,8084,8085,8081",
+ "customerColor": false,
+ "rgbNums": null,
+ "size": "",
+ "name": "Essential Cotton T-Shirt",
+ "printing": null,
+ "config": "[{\"piece\":\"back\",\"embs\":[],\"objects\":[{\"visible\":true,\"srcDetails\":{\"width\":4386,\"height\":5516},\"src\":\"https://files.tapstitch.com/tapstitch/material/custom_printing/dVpv4f80UMM9jb16/bc338c3671f345b08203a7d7dab8e35c.png\",\"designPart\":\"back\",\"scaleX\":0.46714285714285714,\"scaleY\":0.46714285714285714,\"top\":357.5,\"left\":344.0,\"clipId\":\"LAYER_CLIP0\",\"width\":556,\"angle\":0,\"customAreaId\":\"back_side_middle\",\"flipX\":false,\"flipY\":false,\"customAreaAngle\":0,\"zIndex\":3,\"height\":700}],\"canvasSize\":{\"width\":700,\"height\":700}},{\"piece\":\"front\",\"embs\":[],\"objects\":[{\"visible\":true,\"srcDetails\":{\"width\":4386,\"height\":5516},\"src\":\"https://files.tapstitch.com/tapstitch/material/custom_printing/dVpv4f80UMM9jb16/a219f89b7d0d40b583f72a470b69c239.png\",\"designPart\":\"front\",\"scaleX\":0.46714285714285714,\"scaleY\":0.46714285714285714,\"top\":357.5,\"left\":344.0,\"clipId\":\"LAYER_CLIP0\",\"width\":556,\"angle\":0,\"customAreaId\":\"front_side_middle\",\"flipX\":false,\"flipY\":false,\"customAreaAngle\":0,\"zIndex\":3,\"height\":700}],\"canvasSize\":{\"width\":700,\"height\":700}}]",
+ "designTools": "2d-layers",
+ "printType": 1,
+ "isUsedHd": false,
+ "printingPrice": 299,
+ "pictureUrlList": {
+  "BackEndImage": [
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/c78525f75dfc44f98ef54714f8ef5c68.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/f118687ada244078ba935db90878ec74.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/ba685a6d392d4773ae08ded0d9702fa3.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/670671e87428413c9d54de5d621e70b7.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/a31778357a8e4e35821b46544786cb27.png"
+  ],
+  "RightSleeveImage_Line": [
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/04ccffaa98554bc28b0c378217ab16b0.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/350cb73c40374029b1907482898c71ac.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/8b74e34bceb24e7da2c2bfe5cbbbec4e.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/cd8a777fac164f66b0d501090ccee4d8.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/103d1c8c20204e51bcb2d1c85123a9a4.png"
+  ],
+  "FrontImage": [
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/c81b416888ad4cde9b1d64042ba18dd4.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/85679b39557047ccbdcd443a46509d47.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/676a95e806db4be091df65b50d4f73cb.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/8b9e2b17556d430c80dbb9931f7280da.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/a34ef8c220e541c5a22bebbac2165453.png"
+  ],
+  "LeftSleeveImage_Line": [
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/b2862c26124644c983c1710269959e6d.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/5cae392719084ce68e3190897e5ed82d.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/38d83c825cab4b53b2df1a3c0a22d99b.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/6c6cd403b91f4e5889443ff0f3f20d70.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/0c31c294e3a84b6f8579278a3c8ed197.png"
+  ]
+ },
+ "selected": 0,
+ "craftItemDto": {
+  "uniqueId": "1529865635893596160",
+  "itemName": "Essential Cotton T-Shirt",
+  "itemNameEnglish": "Essential Cotton T-Shirt",
+  "tags": "",
+  "price": 599,
+  "displayPrice": "5.99",
+  "silhouetteCode": "RT0063",
+  "basicStyleCode": "RT0063-C001-V5",
+  "cover": "https://files.tapstitch.com/material/style/transparency/modelFront-11-v1760927022.jpg",
+  "pics": "[{\"layers\":[{\"url\":\"https://files.tapstitch.com/material/style/transparency/modelFront-11-v1760927022.jpg\"}],\"name\":\"Front\",\"offsetArea\":{\"angle\":0,\"height\":247,\"left\":179,\"scaleX\":1,\"scaleY\":1,\"skewX\":0,\"skewY\":0,\"top\":130,\"width\":247},\"url\":\"https://files.tapstitch.com/material/style/transparency/modelFront-11-v1760927022.jpg\"}]",
+  "availableDesign": [
+   {
+    "id": 1,
+    "name": "front",
+    "supportedUsFulfillment": true
+   },
+   {
+    "id": 2,
+    "name": "back",
+    "supportedUsFulfillment": true
+   },
+   {
+    "id": 8,
+    "name": "left_sleeve",
+    "supportedUsFulfillment": true
+   },
+   {
+    "id": 9,
+    "name": "right_sleeve",
+    "supportedUsFulfillment": true
+   }
+  ],
+  "labelColorRela": "{\"RE864\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"BU619\":{\"insideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/insideLabel-v1.1.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/gray/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/outsideLabel.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"OR609\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"GR206\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"PU251\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"YL124\":{\"insideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/insideLabel-v1.1.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/gray/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/outsideLabel.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"GY282\":{\"insideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/insideLabel-v1.1.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/gray/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/outsideLabel.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"OR964\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"BU302\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"WH107\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"GY494\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"OR500\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"BU527\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"RE918\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"OR186\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"GY598\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"BL22\":{\"insideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/insideLabel-v1.1.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/gray/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u6b63\u5f0f\u7070\u8272\",\"colorNo\":\"GY427\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/gray/outsideLabel.png\",\"pantone\":\"16-5102TPG\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"GY427\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}},\"RE1292\":{\"insideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/insideLabel-v1.1.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"1.5cm\",\"productionImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/production_Image/black/insideLabel-v1.1.png\",\"productionSize\":\"3cm * 3cm\"},\"outsideLabelColor\":{\"colorCn\":\"\u9ed1\u7f8e\u4eba\",\"colorNo\":\"BL22\",\"designImage\":\"https://files.tapstitch.com/popshowroom/material/style/label/design_Image/black/outsideLabel.png\",\"pantone\":\"19-3911TCX\",\"price\":199,\"productionDistance\":\"2cm\",\"productionImage\":\"\",\"productionSize\":\"3cm * 3cm\"}}}",
+  "material": "100% cotton",
+  "weight": 275,
+  "competePrice": null,
+  "sizeChart": null,
+  "detail": null,
+  "colorList": [
+   {
+    "id": 8079,
+    "coNo": "BL345",
+    "name": "Black",
+    "englishName": "Black",
+    "value": "RGB(26,26,26)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8080,
+    "coNo": "WH387",
+    "name": "White",
+    "englishName": "White",
+    "value": "RGB(234,235,235)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8086,
+    "coNo": "GY1308",
+    "name": "White Gray",
+    "englishName": "White Gray",
+    "value": "RGB(231,231,233)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8087,
+    "coNo": "YL703",
+    "name": "Apricot",
+    "englishName": "Apricot",
+    "value": "RGB(242,228,203)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8082,
+    "coNo": "RE1609",
+    "name": "Pink",
+    "englishName": "Pink",
+    "value": "RGB(233,178,187)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8083,
+    "coNo": "BU1034",
+    "name": "Blue",
+    "englishName": "Blue",
+    "value": "RGB(169,206,245)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8088,
+    "coNo": "GY1309",
+    "name": "Dark Gray",
+    "englishName": "Dark Gray",
+    "value": "RGB(86,87,91)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8084,
+    "coNo": "RE1610",
+    "name": "Wine Red",
+    "englishName": "Wine Red",
+    "value": "RGB(111,27,37)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8085,
+    "coNo": "YL702",
+    "name": "Coffee",
+    "englishName": "Coffee",
+    "value": "RGB(85,60,47)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   },
+   {
+    "id": 8081,
+    "coNo": "BU1033",
+    "name": "Navy Blue",
+    "englishName": "Navy Blue",
+    "value": "RGB(44,46,68)",
+    "orderFulfillmentServices": [
+     "LA",
+     "BLUETALE"
+    ],
+    "newColor": false
+   }
+  ],
+  "sizeList": [
+   "S",
+   "M",
+   "L",
+   "XL",
+   "2XL",
+   "3XL"
+  ],
+  "processMethods": [
+   1,
+   13,
+   2
+  ],
+  "brandingList": [
+   "branding_inner_neck_label",
+   "branding_hang_tag"
+  ],
+  "customArea": [
+   {
+    "name": "front",
+    "cnName": "\u6b63\u9762",
+    "details": [
+     {
+      "x": "214",
+      "y": "194",
+      "width": "260",
+      "height": "327",
+      "id": "front_side_middle",
+      "title": "Front Side Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": "",
+      "maskLineUrl": "",
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     },
+     {
+      "x": "555",
+      "y": "168",
+      "width": "82",
+      "height": "82",
+      "id": "left_sleeve_middle",
+      "title": null,
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "-59",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "left_sleeve"
+     },
+     {
+      "x": "54",
+      "y": "168",
+      "width": "82",
+      "height": "82",
+      "id": "right_sleeve_middle",
+      "title": null,
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "59",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "right_sleeve"
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": "Length",
+      "realLength": "57",
+      "areas": [
+       {
+        "x": "165",
+        "y": "194",
+        "width": "360",
+        "height": "399",
+        "id": null,
+        "title": null,
+        "price": null,
+        "displayPrice": null,
+        "fulfillmentLAPrice": null,
+        "angle": null,
+        "inclusionPriority": null,
+        "maskUrl": null,
+        "maskLineUrl": null,
+        "dimension": [
+         {
+          "type": "reference_point",
+          "value": "1"
+         },
+         {
+          "type": "inches",
+          "value": "17.7"
+         },
+         {
+          "type": "centimeter",
+          "value": "7.0"
+         }
+        ],
+        "platenNameList": null,
+        "type": null,
+        "designPart": null
+       }
+      ]
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20260617/image-v1781665322-BB.png",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "user",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "3",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732317-RT0063-AA.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8081
+       ]
+      }
+     },
+     {
+      "key": "4",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732325-RT0063-A2.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8080
+       ]
+      }
+     },
+     {
+      "key": "5",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732330-RT0063-A3.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8083
+       ]
+      }
+     },
+     {
+      "key": "6",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732335-RT0063-A4.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8087
+       ]
+      }
+     },
+     {
+      "key": "7",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732338-RT0063-A5.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8086
+       ]
+      }
+     },
+     {
+      "key": "8",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251030/image-v1761817884-RT0063-A6.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8079
+       ]
+      }
+     },
+     {
+      "key": "9",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251029/image-v1761732343-RT0063-A7.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8088
+       ]
+      }
+     },
+     {
+      "key": "10",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763971882-RT0063-A8.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8084
+       ]
+      }
+     },
+     {
+      "key": "11",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763971884-RT0063-A9.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8085
+       ]
+      }
+     },
+     {
+      "key": "12",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763971886-RT0063-A10.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8082
+       ]
+      }
+     },
+     {
+      "key": "13",
+      "type": "color",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": [
+     {
+      "cmToPxValue": "7.00",
+      "x": "344",
+      "y": "126"
+     }
+    ],
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "back",
+    "cnName": "\u80cc\u9762",
+    "details": [
+     {
+      "x": "214",
+      "y": "194",
+      "width": "260",
+      "height": "327",
+      "id": "back_side_middle",
+      "title": "Back Side Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     },
+     {
+      "x": "56",
+      "y": "168",
+      "width": "82",
+      "height": "82",
+      "id": "left_sleeve_middle",
+      "title": null,
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "59",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "left_sleeve"
+     },
+     {
+      "x": "552",
+      "y": "168",
+      "width": "82",
+      "height": "82",
+      "id": "right_sleeve_middle",
+      "title": null,
+      "price": 0,
+      "displayPrice": "0",
+      "fulfillmentLAPrice": null,
+      "angle": "-59",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null,
+      "type": "virtual",
+      "designPart": "right_sleeve"
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": "Length",
+      "realLength": "57",
+      "areas": [
+       {
+        "x": "165",
+        "y": "194",
+        "width": "360",
+        "height": "399",
+        "id": null,
+        "title": null,
+        "price": null,
+        "displayPrice": null,
+        "fulfillmentLAPrice": null,
+        "angle": null,
+        "inclusionPriority": null,
+        "maskUrl": null,
+        "maskLineUrl": null,
+        "dimension": [
+         {
+          "type": "reference_point",
+          "value": "1"
+         },
+         {
+          "type": "inches",
+          "value": "17.7"
+         },
+         {
+          "type": "centimeter",
+          "value": "7.0"
+         }
+        ],
+        "platenNameList": null,
+        "type": null,
+        "designPart": null
+       }
+      ]
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image/style/item_image/20260617/image-v1781665811-AA.png",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "user",
+      "url": "",
+      "mask": null,
+      "skc": null
+     },
+     {
+      "key": "3",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133533-RT0063-BB.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8081
+       ]
+      }
+     },
+     {
+      "key": "4",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133536-RT0063-B2.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8080
+       ]
+      }
+     },
+     {
+      "key": "5",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133538-RT0063-B3.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8083
+       ]
+      }
+     },
+     {
+      "key": "6",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133541-RT0063-B4.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8087
+       ]
+      }
+     },
+     {
+      "key": "7",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133544-RT0063-B5.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8086
+       ]
+      }
+     },
+     {
+      "key": "8",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133547-RT0063-B6.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8079
+       ]
+      }
+     },
+     {
+      "key": "9",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251103/image-v1762133549-RT0063-B7.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8088
+       ]
+      }
+     },
+     {
+      "key": "10",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763972119-RT0063-B8.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8084
+       ]
+      }
+     },
+     {
+      "key": "11",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763972121-RT0063-B9.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8085
+       ]
+      }
+     },
+     {
+      "key": "12",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20251124/image-v1763972124-RT0063-B10.png",
+      "mask": [],
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8082
+       ]
+      }
+     },
+     {
+      "key": "13",
+      "type": "color",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "left_sleeve",
+    "cnName": "\u5de6\u8896",
+    "details": [
+     {
+      "x": "315",
+      "y": "205",
+      "width": "124",
+      "height": "124",
+      "id": "left_sleeve_middle",
+      "title": "Left Sleeve Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": "Sleeve length",
+      "realLength": "22.5",
+      "areas": [
+       {
+        "x": "309",
+        "y": "118",
+        "width": "136",
+        "height": "236",
+        "id": null,
+        "title": null,
+        "price": null,
+        "displayPrice": null,
+        "fulfillmentLAPrice": null,
+        "angle": null,
+        "inclusionPriority": null,
+        "maskUrl": null,
+        "maskLineUrl": null,
+        "dimension": [
+         {
+          "type": "reference_point",
+          "value": "1"
+         },
+         {
+          "type": "inches",
+          "value": "26.4"
+         },
+         {
+          "type": "centimeter",
+          "value": "10.4"
+         }
+        ],
+        "platenNameList": null,
+        "type": null,
+        "designPart": null
+       }
+      ]
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "user",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "line",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20260617/image-v1781665122-image-T-Shirt-Left-Sleeve-v1759977332.png",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "99",
+      "type": "color",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "right_sleeve",
+    "cnName": "\u53f3\u8896",
+    "details": [
+     {
+      "x": "262",
+      "y": "205",
+      "width": "124",
+      "height": "124",
+      "id": "right_sleeve_middle",
+      "title": "Right Sleeve Middle",
+      "price": 299,
+      "displayPrice": "2.99",
+      "fulfillmentLAPrice": "3.49",
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": [
+       "16*21",
+       "14*16"
+      ],
+      "type": null,
+      "designPart": null
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": "Sleeve length",
+      "realLength": "22.5",
+      "areas": [
+       {
+        "x": "256",
+        "y": "118",
+        "width": "136",
+        "height": "236",
+        "id": null,
+        "title": null,
+        "price": null,
+        "displayPrice": null,
+        "fulfillmentLAPrice": null,
+        "angle": null,
+        "inclusionPriority": null,
+        "maskUrl": null,
+        "maskLineUrl": null,
+        "dimension": [
+         {
+          "type": "reference_point",
+          "value": "1"
+         },
+         {
+          "type": "inches",
+          "value": "26.4"
+         },
+         {
+          "type": "centimeter",
+          "value": "10.4"
+         }
+        ],
+        "platenNameList": null,
+        "type": null,
+        "designPart": null
+       }
+      ]
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "user",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "line",
+      "url": "https://files.tapstitch.com/material/style/item_image/style/item_image/20260617/image-v1781676838-image-T-Shirt-Right-Sleeve-v1759977332.png",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "99",
+      "type": "color",
+      "url": "",
+      "mask": [],
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   }
+  ],
+  "customAreaMockup": [
+   {
+    "name": "front",
+    "cnName": "\u6b63\u9762",
+    "details": [
+     {
+      "x": "206",
+      "y": "147",
+      "ratio": 1.1102756892230576,
+      "width": "288",
+      "height": "363",
+      "id": "front_side_middle",
+      "title": "Front Side Middle",
+      "price": 299,
+      "displayPrice": null,
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": "",
+      "maskLineUrl": "",
+      "dimension": null,
+      "platenNameList": null
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": null,
+      "realLength": null,
+      "areas": null
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-CC-v1781666303.png",
+      "mask": null,
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "user",
+      "url": "",
+      "mask": null,
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "3",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20CC-v1767601927.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8079
+       ]
+      }
+     },
+     {
+      "key": "4",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C2-v1767601932.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8080
+       ]
+      }
+     },
+     {
+      "key": "5",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C3-v1767601949.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8086
+       ]
+      }
+     },
+     {
+      "key": "6",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C4-v1767601951.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8087
+       ]
+      }
+     },
+     {
+      "key": "7",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C5-v1767601959.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8082
+       ]
+      }
+     },
+     {
+      "key": "8",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C6-v1767601961.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8083
+       ]
+      }
+     },
+     {
+      "key": "9",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C7-v1767601960.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8088
+       ]
+      }
+     },
+     {
+      "key": "10",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C8-v1767601966.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8084
+       ]
+      }
+     },
+     {
+      "key": "11",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C9-v1767601969.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8085
+       ]
+      }
+     },
+     {
+      "key": "12",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20C10-v1767601970.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8081
+       ]
+      }
+     },
+     {
+      "key": "13",
+      "type": "color",
+      "url": "",
+      "mask": null,
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": [
+     {
+      "cmToPxValue": "7.77",
+      "x": "352",
+      "y": "99"
+     }
+    ],
+    "platenSizeTemplate": "16*21"
+   },
+   {
+    "name": "back",
+    "cnName": "\u80cc\u9762",
+    "details": [
+     {
+      "x": "206",
+      "y": "179",
+      "ratio": 1.1102756892230576,
+      "width": "288",
+      "height": "363",
+      "id": "back_side_middle",
+      "title": "Back Side Middle",
+      "price": 299,
+      "displayPrice": null,
+      "angle": "0",
+      "inclusionPriority": null,
+      "maskUrl": null,
+      "maskLineUrl": null,
+      "dimension": null,
+      "platenNameList": null
+     }
+    ],
+    "gradingAreas": [
+     {
+      "realLengthField": null,
+      "realLength": null,
+      "areas": null
+     }
+    ],
+    "layers": [
+     {
+      "key": "1",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-DD-v1781666320.png",
+      "mask": null,
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     },
+     {
+      "key": "2",
+      "type": "user",
+      "url": "",
+      "mask": null,
+      "skc": null
+     },
+     {
+      "key": "3",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20DD-v1767602144.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8079
+       ]
+      }
+     },
+     {
+      "key": "4",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D2-v1767602148.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8080
+       ]
+      }
+     },
+     {
+      "key": "5",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D3-v1767602154.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8086
+       ]
+      }
+     },
+     {
+      "key": "6",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D4-v1767602155.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8087
+       ]
+      }
+     },
+     {
+      "key": "7",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D5-v1767602159.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8082
+       ]
+      }
+     },
+     {
+      "key": "8",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D6-v1767602161.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8083
+       ]
+      }
+     },
+     {
+      "key": "9",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D7-v1767602161.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8088
+       ]
+      }
+     },
+     {
+      "key": "10",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D8-v1767602167.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8084
+       ]
+      }
+     },
+     {
+      "key": "11",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D9-v1767602170.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8085
+       ]
+      }
+     },
+     {
+      "key": "12",
+      "type": "image",
+      "url": "https://files.tapstitch.com/material/style/item_image/image-RT0063%20D10-v1767602172.png",
+      "mask": null,
+      "skc": {
+       "type": "partial",
+       "colors": [
+        8081
+       ]
+      }
+     },
+     {
+      "key": "13",
+      "type": "color",
+      "url": "",
+      "mask": null,
+      "skc": {
+       "type": null,
+       "colors": null
+      }
+     }
+    ],
+    "insideNeckLabelDetails": null,
+    "platenSizeTemplate": "16*21"
+   }
+  ],
+  "specialProcessList": [
+   {
+    "spId": 1,
+    "spUniqueId": "1",
+    "spName": "DTG",
+    "spType": "PLACEMENT_PRINTING",
+    "spDesc": "\u533a\u57df-\u76f4\u55b7",
+    "publicDescription": "Direct to Garment (DTG) printing uses water-based inks that absorb into the fabric, creating a soft, breathable feel. It is ideal for natural-looking designs with smooth gradients, subtle textures, and fine details, offering a more blended, fabric-like appearance. ",
+    "designTools": "2d-layers",
+    "spCost": null,
+    "spPrice": 299,
+    "spMaxSize": "40*52",
+    "images": "",
+    "processSn": null,
+    "supportedUsFulfillment": true
+   },
+   {
+    "spId": 13,
+    "spUniqueId": "13",
+    "spName": "DTF",
+    "spType": "HEATTRANSFER",
+    "spDesc": "\u70eb\u753b",
+    "publicDescription": "Direct to Film (DTF) printing delivers vibrant, highly saturated colors with strong opacity. It is ideal for high-contrast designs and solid graphics. The print forms a thin film layer on the fabric, resulting in sharp details, though large areas may feel less breathable and gradients may appear less smooth. ",
+    "designTools": "2d-layers",
+    "spCost": null,
+    "spPrice": 299,
+    "spMaxSize": "40*52",
+    "images": "",
+    "processSn": null,
+    "supportedUsFulfillment": true
+   },
+   {
+    "spId": 2,
+    "spUniqueId": "2",
+    "spName": "Embroidery",
+    "spType": "EMBROIDERY",
+    "spDesc": "\u523a\u7ee3",
+    "publicDescription": "Embroidery adds a premium, textured finish to garments with durable and intricate stitching, perfect for logos and badges, and maintains a professional appearance.",
+    "designTools": "2d-layers",
+    "spCost": null,
+    "spPrice": 299,
+    "spMaxSize": "4*4",
+    "images": "",
+    "processSn": null,
+    "supportedUsFulfillment": false
+   }
+  ],
+  "designAllowed": true,
+  "fullPrintingVo": null,
+  "processCodes": [
+   {
+    "name": "PLACEMENT_PRINTING",
+    "value": 1,
+    "desc": "\u533a\u57df\u5370\u82b1"
+   },
+   {
+    "name": "EMBROIDERY",
+    "value": 2,
+    "desc": "\u7ee3\u82b1"
+   },
+   {
+    "name": "FULL_PRINTING",
+    "value": 3,
+    "desc": "\u6ee1\u5370"
+   },
+   {
+    "name": "HEATTRANSFER",
+    "value": 13,
+    "desc": "\u70eb\u753b"
+   }
+  ],
+  "modelSize": "L",
+  "fullPrinting": false,
+  "productType": "normal",
+  "designRecommend": null,
+  "currency": {
+   "code": "USD",
+   "symbol": "$"
+  },
+  "fulfillmentInfos": [
+   {
+    "fulfillmentService": "BLUETALE",
+    "blankPrice": 599,
+    "printAreaList": [
+     {
+      "title": "Front",
+      "value": "front"
+     },
+     {
+      "title": "Back",
+      "value": "back"
+     },
+     {
+      "title": "Left Sleeve",
+      "value": "left_sleeve"
+     },
+     {
+      "title": "Right Sleeve",
+      "value": "right_sleeve"
+     }
+    ],
+    "specialProcessList": [
+     {
+      "title": "DTG"
+     },
+     {
+      "title": "DTF"
+     },
+     {
+      "title": "Embroidery"
+     }
+    ],
+    "brandingList": [
+     "branding_inner_neck_label",
+     "branding_hang_tag"
+    ]
+   },
+   {
+    "fulfillmentService": "LA",
+    "blankPrice": 599,
+    "printAreaList": [
+     {
+      "title": "Front",
+      "value": "front"
+     },
+     {
+      "title": "Back",
+      "value": "back"
+     },
+     {
+      "title": "Left Sleeve",
+      "value": "left_sleeve"
+     },
+     {
+      "title": "Right Sleeve",
+      "value": "right_sleeve"
+     }
+    ],
+    "specialProcessList": [
+     {
+      "title": "DTG"
+     },
+     {
+      "title": "DTF"
+     }
+    ],
+    "brandingList": []
+   }
+  ],
+  "rapidDesign": true,
+  "syncDesign": true
+ },
+ "new3dProductId": null,
+ "frontSideDpiTip": "Print area size 2193 \u00d7 2758 px (150)DPI",
+ "frontSidePixelTip": "2193 x 2758 px",
+ "backSideDpiTip": "Print area size 2193 \u00d7 2758 px (150)DPI",
+ "backSidePixelTip": "2193 x 2758 px",
+ "dimension": true,
+ "printingPreferenceType": "",
+ "dimensionList": [
+  {
+   "type": "reference_point",
+   "value": "Reference point"
+  },
+  {
+   "type": "inches",
+   "value": "Inches"
+  },
+  {
+   "type": "centimeter",
+   "value": "Centimeter"
+  }
+ ],
+ "branding": {
+  "innerNeckLabelCommitId": "0",
+  "hangtagCommitId": "0"
+ },
+ "bindType": null,
+ "specialProcessTags": [
+  "DTG"
+ ],
+ "techniqueChange": false,
+ "hasShop": true,
+ "embPlatens": [
+  {
+   "type": "12*12",
+   "width": 3048,
+   "height": 3048,
+   "widthIn": 12,
+   "heightIn": 12
+  }
+ ],
+ "issue": {
+  "hasEmbroideryIssue": false,
+  "message": null,
+  "level": "INFO",
+  "layerIssues": []
+ },
+ "embroideryResourcesDetail": null,
+ "designPricing": {
+  "piece": [],
+  "currency": {
+   "code": "USD",
+   "symbol": "$"
+  }
+ },
+ "promotionTemplateReference": null
+}

@@ -39,5 +39,14 @@
   "print_centre_below_collar_in": 13.482867
  },
  "_scale_nudge_note": "Art direction, not physics. 1.0 renders the true 11.98in temple. Checked 17 Sep 2026 against the size chart and the base photos. CREW: not a size problem - the landmarks are off. Collar 430 is ~30px above the top of the ribbed collar band (~460) and hem 1830 is ~30px below the garment edge (~1800), which inflates the span ~4.5%. Correcting the landmarks would replace this nudge, but moves the print ~0.4in lower, so it is left as a nudge for now. HOODIE: cannot be a size problem. 1.10 implies length_in 26.48in, shorter than size S (27.56). Even assuming S only justifies x1.057. The hoodie's low 35.0 px/in is vertical foreshortening: the thick fleece bows over the back so the straight-line collar-to-hem distance in the photo under-reads the fabric's true 29.13in.",
- "_anchor": "CENTRE ANCHORED, and this is settled, not a preference to be re-derived. Every temple's ink is centred inside the 4386x5516 print canvas by flatten.py, to within 3px across all 45 files. The canvas IS the print area, so placing the CANVAS centre is what reproduces where the design actually lands on the garment. print_centre_below_collar_in holds that position per garment. Temple artwork is normalised to ~12in wide but runs from 7.45in tall (Monticello) to 15.34in (West Jordan), so anchoring the INK BBOX top instead drags every short temple up under the collar and looks wrong. ink_top_below_collar_in is kept only to record what Salt Lake was approved at; the centre values below were derived from it so Salt Lake is unchanged."
+ "_anchor": "CENTRE ANCHORED, and this is settled, not a preference to be re-derived. Every temple's ink is centred inside the 4386x5516 print canvas by flatten.py, to within 3px across all 45 files. The canvas IS the print area, so placing the CANVAS centre is what reproduces where the design actually lands on the garment. print_centre_below_collar_in holds that position per garment. Temple artwork is normalised to ~12in wide but runs from 7.45in tall (Monticello) to 15.34in (West Jordan), so anchoring the INK BBOX top instead drags every short temple up under the collar and looks wrong. ink_top_below_collar_in is kept only to record what Salt Lake was approved at; the centre values below were derived from it so Salt Lake is unchanged.",
+ "fold": {
+  "strength": 220,
+  "band_px": [
+   4,
+   20
+  ],
+  "shade_gain": 1.8,
+  "_note": "Evan, 7 Oct 2026, option C of three, after the one-quarter lift moved designs up onto the tee's left-side crease. strength is pixels of shift per unit slope of the band-passed log luminance (composite.build); 0 turns it off. shade_gain 1.8 (was 1.0) darkens ink lying in a crease. Same values for every garment on purpose: a softer fold moves the art less on its own. A hand-marked crease that cut a strip out of the art was tried first the same day and rejected as unnatural."
+ }
 }

@@ -41,6 +41,10 @@ TMP = Path(tempfile.mkdtemp(prefix="eden-test-"))
 E.STATE_PATH = TMP / "state.json"
 ledger.LEDGER_PATH = TMP / "ledger.json"
 ledger.LEDGER_MD = TMP / "LEDGER.md"
+# Module globals this test replaces. Put back at the end: unittest discover runs
+# every test module in one process, and test_tapstitch_run needs the real ones.
+_RUN_REAL = {n: getattr(tapstitch_run, n) for n in
+             ("SHOPIFY_WAIT_S", "SHOPIFY_POLL_S", "wait_for_import", "stale_colorways")}
 tapstitch_run.SHOPIFY_WAIT_S = 0
 tapstitch_run.SHOPIFY_POLL_S = 0
 SLEEPS = []
@@ -58,6 +62,11 @@ HANDLE = "ultra-soft-oversized-temple-hoodie-alpha"
 ALT_T, FOLDER_T, CARD_T = "Alpha", "Alpha", "Alpha"
 E.names_for = lambda row, title: (ALT_T, row["temple"], CARD_T)
 REAL = {n: getattr(E, n) for n in ("_builder", "check", "wrong_onmodel", "run_temple")}
+
+# The fakes carry fixed 20 Sep 2026 createdAt stamps and find_new() only accepts
+# products created after the distribute call, so the clock is pinned just before
+# them. Left on the real clock the test started failing once that date passed.
+E.now = lambda: "2026-09-20T09:58:00+00:00"
 
 # The fakes below accept whatever they are called with, so pin the real
 # signatures they stand in for: a renamed keyword would otherwise surface only
@@ -79,12 +88,16 @@ def raises(fn, exc, needle=""):
 # ---------------------------------------------------------------- fixtures
 
 def gallery_alts():
+    # Spelled out rather than taken from gallery_order, so a change to the order
+    # breaks this test instead of passing with it. Slot 1 is the on-model back in
+    # the flat-lay colour (Evan, 7 Oct 2026).
     fc = build_product_gallery.flat_colour("hoodie")
-    return ([build_product_gallery.flat_alt(ALT_T, "hoodie", "back", fc),
+    return ([build_product_gallery.on_model_alt(ALT_T, "hoodie", fc),
+             build_product_gallery.flat_alt(ALT_T, "hoodie", "back", fc),
              build_product_gallery.flat_alt(ALT_T, "hoodie", "front", fc),
              f"Temple line art close-up - {CARD_T}"]
             + [build_product_gallery.on_model_alt(ALT_T, "hoodie", c)
-               for c in build_product_gallery.ORDER["hoodie"]]
+               for c in build_product_gallery.ORDER["hoodie"] if c != fc]
             + [a for _, a in build_product_gallery.detail_alts("hoodie")])
 
 
@@ -267,7 +280,8 @@ seed = json.loads((Path(__file__).resolve().parent.parent
 allowed = set(E.STEPS) | {"_seeded", "old_id", "new_id", "handle", "title",
                           "store_product_id", "distribute_started_at", "problem"}
 assert set(seed) <= allowed, set(seed) - allowed
-assert E.next_step(seed) == "finished", E.next_step(seed)
+# Boise finished on 23 Sep 2026, so its record has every step and nothing is next.
+assert E.next_step(seed) is None, E.next_step(seed)
 
 # The gallery's colour list must be the garment's, lead colour first: a colour
 # missing from ORDER is built with no photo and ships with its variants unbound.
@@ -511,7 +525,7 @@ one_problem(lambda sh: N(sh)["media"]["nodes"].reverse(), "gallery is")
 one_problem(lambda sh: N(sh)["media"]["nodes"][0]["image"].update(height=1200), "not square")
 one_problem(lambda sh: N(sh)["media"]["nodes"][5].update(alt=E.SUPERSEDED + "x"), "superseded")
 one_problem(lambda sh: N(sh)["variants"]["nodes"][0]["media"].update(
-    nodes=[{"id": N(sh)["media"]["nodes"][0]["id"]}]), "is bound to")
+    nodes=[{"id": N(sh)["media"]["nodes"][1]["id"]}]), "is bound to")   # the flat back lay
 PAGE["gid"] = OLD
 one_problem(lambda sh: None, "storefront")
 PAGE["gid"] = NEW
@@ -714,5 +728,8 @@ E.save_state({"temples": {"Alpha": {"problem": "gallery timed out"}}})
 E.run_temple = lambda *a: False
 E.main(["--apply", "--temple", "Alpha"])
 assert json.loads(E.STATE_PATH.read_text())["temples"]["Alpha"]["problem"] == "gallery timed out"
+
+for _n, _v in _RUN_REAL.items():
+    setattr(tapstitch_run, _n, _v)
 
 print("all tests passed")

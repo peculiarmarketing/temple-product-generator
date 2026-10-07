@@ -1,0 +1,322 @@
+{
+  "products": {
+    "Monticello|crew": {
+      "commit_after": "1557562440131182592",
+      "commit_before": "1550096895546970112",
+      "fingerprint": {
+        "description_sha": "46ca26b5e057d283916cb07c28b3c025c698d23cdc6bb323ee78e1fa4edab314",
+        "options": [
+          {
+            "name": "Color",
+            "values": [
+              "Heather Gray",
+              "Black"
+            ]
+          },
+          {
+            "name": "Size",
+            "values": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "2XL"
+            ]
+          }
+        ],
+        "productType": "Sweatshirt",
+        "status": "ACTIVE",
+        "tags": [
+          "country:usa",
+          "garment:crew",
+          "state:utah",
+          "temple:monticello"
+        ],
+        "title": "Ultra-soft Temple Sweatshirt (Monticello)"
+      },
+      "gallery_at": "2026-10-07T17:18:05+00:00",
+      "media": [
+        {
+          "alt": "Monticello Temple back print flat lay - Black",
+          "id": "gid://shopify/MediaImage/56216044503412",
+          "thumb": "56216044503412.npy"
+        },
+        {
+          "alt": "Monticello Temple chest logo flat lay - Black",
+          "id": "gid://shopify/MediaImage/56216044536180",
+          "thumb": "56216044536180.npy"
+        },
+        {
+          "alt": "Temple line art close-up - Monticello",
+          "id": "gid://shopify/MediaImage/56157365207412",
+          "thumb": "56157365207412.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Heather Gray",
+          "id": "gid://shopify/MediaImage/56216044110196",
+          "thumb": "56216044110196.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Black",
+          "id": "gid://shopify/MediaImage/56216044175732",
+          "thumb": "56216044175732.npy"
+        },
+        {
+          "alt": "Heavyweight fleece texture, shown in a sample colourway",
+          "id": "gid://shopify/MediaImage/56216044208500",
+          "thumb": "56216044208500.npy"
+        },
+        {
+          "alt": "Ribbed collar detail, shown in a sample colourway",
+          "id": "gid://shopify/MediaImage/56216044241268",
+          "thumb": "56216044241268.npy"
+        },
+        {
+          "alt": "Ribbed cuff detail, shown in a sample colourway",
+          "id": "gid://shopify/MediaImage/56216044274036",
+          "thumb": "56216044274036.npy"
+        }
+      ],
+      "product_id": "gid://shopify/Product/15303607386484",
+      "restored_at": "2026-10-07T17:17:40+00:00",
+      "resynced_at": "2026-10-07T17:17:33+00:00",
+      "save_started_at": "2026-10-07T17:16:59+00:00",
+      "saved_at": "2026-10-07T17:17:04+00:00",
+      "snapshot_at": "2026-10-07T17:16:59+00:00",
+      "store_product_id": "1550096898231259136",
+      "template_id": "1550096868409819136",
+      "title": "Ultra-soft Temple Sweatshirt (Monticello)",
+      "verified_at": "2026-10-07T17:18:06+00:00",
+      "worst_match": 0.26
+    },
+    "Monticello|hoodie": {
+      "commit_after": "1557562478894940160",
+      "commit_before": "1552162496255754240",
+      "fingerprint": {
+        "description_sha": "3237cc9204dbac04fe6f00204c1f0cfcd6138403fe4e77f377ece4750381d373",
+        "options": [
+          {
+            "name": "Color",
+            "values": [
+              "Navy Blue",
+              "Gray",
+              "Eden Green",
+              "Black",
+              "Coffee",
+              "Mauve",
+              "Royal Blue"
+            ]
+          },
+          {
+            "name": "Size",
+            "values": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "2XL"
+            ]
+          }
+        ],
+        "productType": "Hoodie",
+        "status": "ACTIVE",
+        "tags": [
+          "country:usa",
+          "garment:hoodie",
+          "state:utah",
+          "temple:monticello"
+        ],
+        "title": "Ultra-soft Oversized Temple Hoodie (Monticello)"
+      },
+      "gallery_at": "2026-10-07T17:19:11+00:00",
+      "media": [
+        {
+          "alt": "Monticello Temple back print flat lay - Navy Blue",
+          "id": "gid://shopify/MediaImage/56297876652404",
+          "thumb": "56297876652404.npy"
+        },
+        {
+          "alt": "Monticello Temple chest logo flat lay - Navy Blue",
+          "id": "gid://shopify/MediaImage/56297876717940",
+          "thumb": "56297876717940.npy"
+        },
+        {
+          "alt": "Temple line art close-up - Monticello",
+          "id": "gid://shopify/MediaImage/56297873703284",
+          "thumb": "56297873703284.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Navy Blue",
+          "id": "gid://shopify/MediaImage/56297874489716",
+          "thumb": "56297874489716.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Gray",
+          "id": "gid://shopify/MediaImage/56297874620788",
+          "thumb": "56297874620788.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Black",
+          "id": "gid://shopify/MediaImage/56297874784628",
+          "thumb": "56297874784628.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Coffee",
+          "id": "gid://shopify/MediaImage/56297874882932",
+          "thumb": "56297874882932.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Mauve",
+          "id": "gid://shopify/MediaImage/56297875046772",
+          "thumb": "56297875046772.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Royal Blue",
+          "id": "gid://shopify/MediaImage/56297875276148",
+          "thumb": "56297875276148.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Eden Green",
+          "id": "gid://shopify/MediaImage/56297875374452",
+          "thumb": "56297875374452.npy"
+        },
+        {
+          "alt": "Hood construction detail, shown in Mauve",
+          "id": "gid://shopify/MediaImage/56297875636596",
+          "thumb": "56297875636596.npy"
+        },
+        {
+          "alt": "Ribbed cuff detail, shown in Mauve",
+          "id": "gid://shopify/MediaImage/56297875734900",
+          "thumb": "56297875734900.npy"
+        },
+        {
+          "alt": "Heavyweight fleece texture, shown in Mauve",
+          "id": "gid://shopify/MediaImage/56297875833204",
+          "thumb": "56297875833204.npy"
+        }
+      ],
+      "product_id": "gid://shopify/Product/15317392458100",
+      "restored_at": "2026-10-07T17:18:16+00:00",
+      "resynced_at": "2026-10-07T17:18:06+00:00",
+      "save_started_at": "2026-10-07T17:17:08+00:00",
+      "saved_at": "2026-10-07T17:17:13+00:00",
+      "snapshot_at": "2026-10-07T17:17:08+00:00",
+      "store_product_id": "1552446322290905088",
+      "template_id": "1550097007174172672",
+      "title": "Ultra-soft Oversized Temple Hoodie (Monticello)",
+      "verified_at": "2026-10-07T17:19:13+00:00",
+      "worst_match": 0.29
+    },
+    "Monticello|tee": {
+      "commit_after": "1557549293546635264",
+      "commit_before": "1550097201844420608",
+      "fingerprint": {
+        "description_sha": "3ac28a5ebda3a1b33274857d058a621a2e94cd8cfe53fc85d01995c5f1ae0ba4",
+        "options": [
+          {
+            "name": "Color",
+            "values": [
+              "Black",
+              "Maroon",
+              "Navy Blue",
+              "Coffee",
+              "Charcoal"
+            ]
+          },
+          {
+            "name": "Size",
+            "values": [
+              "S",
+              "M",
+              "L",
+              "XL",
+              "2XL",
+              "3XL"
+            ]
+          }
+        ],
+        "productType": "T-Shirt",
+        "status": "ACTIVE",
+        "tags": [
+          "country:usa",
+          "garment:tee",
+          "state:utah",
+          "temple:monticello"
+        ],
+        "title": "Essential Heavyweight Temple Tee (Monticello)"
+      },
+      "gallery_at": "2026-10-07T17:02:58+00:00",
+      "media": [
+        {
+          "alt": "Monticello Temple back print flat lay - Maroon",
+          "id": "gid://shopify/MediaImage/56521340027252",
+          "thumb": "56521340027252.npy"
+        },
+        {
+          "alt": "Monticello Temple chest logo flat lay - Maroon",
+          "id": "gid://shopify/MediaImage/56521340060020",
+          "thumb": "56521340060020.npy"
+        },
+        {
+          "alt": "Temple line art close-up - Monticello",
+          "id": "gid://shopify/MediaImage/56521340092788",
+          "thumb": "56521340092788.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Black",
+          "id": "gid://shopify/MediaImage/56521340125556",
+          "thumb": "56521340125556.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Charcoal",
+          "id": "gid://shopify/MediaImage/56521340158324",
+          "thumb": "56521340158324.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Navy Blue",
+          "id": "gid://shopify/MediaImage/56521340191092",
+          "thumb": "56521340191092.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Maroon",
+          "id": "gid://shopify/MediaImage/56521340223860",
+          "thumb": "56521340223860.npy"
+        },
+        {
+          "alt": "Monticello Temple back print on model - Coffee",
+          "id": "gid://shopify/MediaImage/56521340256628",
+          "thumb": "56521340256628.npy"
+        },
+        {
+          "alt": "Ribbed collar detail, shown in Navy Blue",
+          "id": "gid://shopify/MediaImage/56521340289396",
+          "thumb": "56521340289396.npy"
+        },
+        {
+          "alt": "Cotton jersey texture, shown in Navy Blue",
+          "id": "gid://shopify/MediaImage/56521340322164",
+          "thumb": "56521340322164.npy"
+        },
+        {
+          "alt": "Hem stitching detail, shown in Navy Blue",
+          "id": "gid://shopify/MediaImage/56521340354932",
+          "thumb": "56521340354932.npy"
+        }
+      ],
+      "note": "pilot: saved by Evan by hand, alts restored by Claude by position + pixel check",
+      "product_id": "gid://shopify/Product/15303609581940",
+      "restored_at": "2026-10-07T16:27:34+00:00",
+      "resynced_at": "2026-10-07T16:25:24+00:00",
+      "save_started_at": "2026-10-07T16:23:00+00:00",
+      "saved_at": "2026-10-07T16:23:30+00:00",
+      "snapshot_at": "2026-10-07T17:01:56+00:00",
+      "store_product_id": "1550097204981673984",
+      "template_id": "1550097164208914432",
+      "title": "Essential Heavyweight Temple Tee (Monticello)",
+      "verified_at": "2026-10-07T17:02:59+00:00",
+      "worst_match": null
+    }
+  },
+  "updated_at": "2026-10-07T17:38:21+00:00"
+}

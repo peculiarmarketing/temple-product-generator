@@ -187,10 +187,14 @@ def back_temple_text(temple, garment_cfg, sp, logo_aspect, text_aspect):
     # 40 temples: 2.5in to 8.6in of empty canvas below the text). Centring the
     # block instead makes every temple sit at the same height on the garment.
     # Top-anchoring stays the default because it is what the live catalogue used.
+    # space_above_frac is the share of the leftover height that goes above the
+    # block: 0.5 is true centring, lower lifts it. A tall temple has almost no
+    # leftover height, so it barely moves; a wide short one rises the most.
     if sp.get("vertical_anchor") == "center":
         block_top = sp["top_margin_in"]          # _place_temple puts ink top here
         block_bottom = text_layer["bottom_in"]
-        shift = (area_h_in - (block_bottom - block_top)) / 2 - block_top
+        above = sp.get("space_above_frac", 0.5)
+        shift = (area_h_in - (block_bottom - block_top)) * above - block_top
         for lyr in layers:
             for key in ("cy_in", "top_in", "bottom_in", "ink_bottom_in"):
                 if key in lyr:

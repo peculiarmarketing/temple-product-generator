@@ -39,7 +39,8 @@ def main():
     ap.add_argument("--force", action="store_true", help="redo temples already written")
     args = ap.parse_args()
 
-    geo = json.loads((SPIKE / "print_geometry.json").read_text())[args.garment]
+    geometry = json.loads((SPIKE / "print_geometry.json").read_text())
+    geo, fold = geometry[args.garment], geometry["fold"]
     out = Path(args.outdir)
     out.mkdir(parents=True, exist_ok=True)
 
@@ -73,7 +74,8 @@ def main():
             geo.get("print_centre_below_collar_in"))
         art = load_art(str(art_path), quad)
         for stem, rgb in photos.items():
-            img, _ = build(rgb, art, quad, args.displace, 1.0, 0.35, 0.93, scale=1.0)
+            img, _ = build(rgb, art, quad, args.displace, fold["shade_gain"], 0.35, 0.93, scale=1.0,
+                           fold_strength=fold["strength"], fold_band=fold["band_px"])
             Image.fromarray(img).save(dst / f"{stem}.jpg", quality=94)
         done += 1
         el = time.time() - t0

@@ -83,6 +83,7 @@ def main():
     args = p.parse_args()
 
     geo = json.load(open(args.geometry))
+    fold = geo["fold"]
     src, dst = Path(args.indir), Path(args.outdir)
     dst.mkdir(parents=True, exist_ok=True)
     td = Path(args.temple_dir)
@@ -105,7 +106,9 @@ def main():
               f"centred {g['print_centre_below_collar_in']:.2f} in below collar{flag}")
         for f in sorted(src.glob(f"{garment}_*.png")):
             rgb = np.asarray(Image.open(f).convert("RGB"), dtype=np.float64)
-            out, _ = build(rgb, art_arr, quad, args.displace, 1.0, 0.35, 0.93, scale=1.0)
+            out, _ = build(rgb, art_arr, quad, args.displace, fold["shade_gain"], 0.35, 0.93,
+                           scale=1.0, fold_strength=fold["strength"],
+                           fold_band=fold["band_px"])
             Image.fromarray(out).save(dst / f"{f.stem}.jpg", quality=94)
 
 

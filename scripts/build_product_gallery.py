@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 """Build one product's gallery to the agreed layout. THE process, per Evan, 17 Sep 2026.
 
-Gallery, in order. Evan, 18 Sep 2026, superseding the on-model-first order:
+Gallery, in order. Evan, 7 Oct 2026, putting a worn shot back in slot 1:
 
-  1  flat back mockup, flat colour       the design, read clearly. THE THUMBNAIL.
-  2  flat front mockup with chest logo
-  3  temple art closeup                  the design card
-  4+ on-model back, every colour         lead first, each bound to its variant
+  1  on-model back, flat-lay colour      THE THUMBNAIL. Maroon tee, black crew,
+                                         navy hoodie.
+  2  flat back mockup, flat colour       the design, read clearly
+  3  flat front mockup with chest logo
+  4  temple art closeup                  the design card
+  5+ on-model back, every other colour   each bound to its variant
   .. fabric and construction details     captioned with the colourway shown
 
 Slot 1 is what Shopify features, so it is the image on collection pages and in
-search. The flat lay is there deliberately: it shows the temple bigger and
-flatter than a worn shot does, which is what survives being shrunk to a grid
-thumbnail.
+search. From 18 Sep to 7 Oct 2026 the flat lay held it, chosen because it shows
+the temple bigger and flatter; Evan then moved the on-model shot of the same
+colour there, during the one-quarter lift rollout.
 
 Runs in stages so the destructive ones are never a surprise:
 
@@ -120,6 +122,30 @@ def flat_alt(temple, garment, side, colour):
 
 def flat_colour(garment):
     return FLAT.get(garment, LEAD[garment])
+
+
+# The prefix a replaced photo's alt text gets while its successor is uploaded.
+# Shared by every script that replaces gallery photos, so each one's checks see
+# the others' leftovers.
+SUPERSEDED = "superseded - "
+
+
+def gallery_order(temple, garment, art_alt):
+    """The finished gallery as alt texts, slot 1 first. The one definition of the
+    order: --prune builds it and the rollout checks compare against it.
+
+    Slot 1 is the on-model back in the flat-lay colour (Evan, 7 Oct 2026), then
+    the two flat lays, the art card, the other on-model backs in ORDER and the
+    fabric details. A colour a product does not sell simply has no photo, so a
+    caller comparing a real gallery drops the alts it does not carry.
+    """
+    fc = flat_colour(garment)
+    return ([on_model_alt(temple, garment, fc),
+             flat_alt(temple, garment, "back", fc),
+             flat_alt(temple, garment, "front", fc),
+             art_alt]
+            + [on_model_alt(temple, garment, c) for c in ORDER[garment] if c != fc]
+            + [a for _, a in detail_alts(garment)])
 
 
 def _captions(garment):
@@ -503,11 +529,11 @@ def main():
 
     prod = fetch(sc, args.product_gid)
     by_alt = {m.get("alt"): m["id"] for m in prod["media"]["nodes"] if m.get("alt")}
-    # SLOTS 2 AND LAST. Look these up by alt text first. The pixel classifier
+    # THE TWO FLAT LAYS. Look these up by alt text first. The pixel classifier
     # only ever sees UNLABELLED media, so once a flat has been refaced it carries
     # an alt and drops out of `still` entirely: relying on the classifier here
-    # would silently resolve both to None and rebuild the gallery with slot 2 and
-    # the last slot missing. The classifier is a tool for identifying Tapstitch's
+    # would silently resolve both to None and rebuild the gallery with both flat
+    # lays missing. The classifier is a tool for identifying Tapstitch's
     # unlabelled uploads, not the source of truth for gallery position.
     still = {m["id"] for m in prod["media"]["nodes"] if not m.get("alt")}
     lead_back = by_alt.get(flat_alt(args.temple, args.garment, "back", flat_colour(args.garment))) or \
@@ -515,24 +541,21 @@ def main():
     lead_front = by_alt.get(flat_alt(args.temple, args.garment, "front", flat_colour(args.garment))) or \
         next((m for m in still if seen.get(m, (None, None))[1] == "front"), None)
     if not lead_back:
-        raise SystemExit("no flat back mockup for slot 2, refaced or otherwise. "
+        raise SystemExit("no flat back mockup, refaced or otherwise. "
                          "Refusing to reorder into a gallery that is missing it.")
+    fc = flat_colour(args.garment)
+    if on_model_alt(args.temple, args.garment, fc) not in by_alt:
+        raise SystemExit("no on-model back in the flat-lay colour for slot 1. Run --add first.")
+    # The two flat lays and the art card may still be unlabelled Tapstitch
+    # uploads, so they are placed by id; everything else by its alt text.
+    by_slot = {flat_alt(args.temple, args.garment, "back", fc): lead_back,
+               flat_alt(args.temple, args.garment, "front", fc): lead_front}
+    art_alt = art[0].get("alt") if art else None
     target = []
-    if lead_back:
-        target.append(lead_back)
-    if lead_front:
-        target.append(lead_front)
-    if art:
-        target.append(art[0]["id"])
-    # ORDER already starts with the lead colour, so the on-model run keeps the
-    # lead first without a special case.
-    for c in ORDER[args.garment]:
-        mid = by_alt.get(on_model_alt(args.temple, args.garment, c))
-        if mid:
+    for alt in gallery_order(args.temple, args.garment, art_alt):
+        mid = by_slot.get(alt) or (art[0]["id"] if art and alt == art_alt else by_alt.get(alt))
+        if mid and mid not in target:
             target.append(mid)
-    for _, alt in caps:
-        if alt in by_alt:
-            target.append(by_alt[alt])
     for idx, mid in enumerate(target):
         sc.move_media_to_position(args.product_gid, mid, idx)
     print("\nFINAL GALLERY:")
