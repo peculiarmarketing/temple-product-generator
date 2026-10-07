@@ -248,8 +248,8 @@ def rebuildable(row, name, alt):
     details (fabric-details/), every on-model back (composites-lift/), the back
     flat lay (replaced from Tapstitch's new mockup anyway) and the chest-logo
     flat lay, which --reface rebuilds from its archived original when there is
-    one (flat-originals/<temple>/), and the art card, which art_images.push
-    uploads again from the temple folder."""
+    one (flat-originals/<temple>/), and the art card, uploaded again from the
+    card file art_images made for the temple."""
     g, fc = row["garment"], gallery.flat_colour(row["garment"])
     front = gallery.originals_dir(name) / f"{g}_{fc}_front.png"
     return (alt in {a for _, a in gallery.detail_alts(g)}
@@ -368,10 +368,16 @@ def step_gallery(s, sc, row, rec):
 
     gallery_cmd("add", pid, garment, name, onmodel)
     gallery_cmd("reface", pid, garment, name, onmodel)
-    # A card deleted as FAILED goes back the way every card goes on: art_images
-    # cards every product of that temple that lacks one, and skips the rest.
-    for t in {card_temple(a) for a in rec.get("failed_in_resend", [])} - {None}:
-        art_images.push_catalog(only_temple=t)
+    # A card deleted as FAILED is uploaded again to THIS product only; --prune
+    # puts it in its slot. Not art_images.push_catalog: that cards every product
+    # of the temple whose alts lack the marker, and a sibling mid-rollout has
+    # blank alts, so on 7 Oct 2026 it put a second card on the Cody crew and both
+    # Cody hoodies (removed by hand).
+    for a in rec.get("failed_in_resend", []):
+        t = card_temple(a)
+        if t and a not in {m.get("alt") for m in fetch(sc, row["shopify_handle"])["media"]["nodes"]}:
+            mid = sc.upload_media_image(pid, card_file(t), a)
+            sc.wait_for_media_ready(mid)
 
     p = fetch(sc, row["shopify_handle"])
     bound = {(v["media"]["nodes"] or [{}])[0].get("id") for v in p["variants"]["nodes"]}

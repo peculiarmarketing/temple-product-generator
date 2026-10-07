@@ -167,6 +167,35 @@ shop = Shop(product(media("short", [""] * (len(ALTS) - 1))))
 raises(lambda: RR.step_restore(shop, ROW, rec), "did not come back")
 assert shop.alts == []
 
+# step_gallery puts a failed art card back on THIS product only, once.
+UPLOADS = []
+class GalleryShop(Shop):
+    def upload_media_image(self, pid, path, alt):
+        UPLOADS.append((pid, alt))
+        return "new-card"
+
+    def wait_for_media_ready(self, mid):
+        pass
+
+REAL_G = (RR.gallery_cmd, RR.new_flat, RR.card_file, RR.COMPOSITES)
+RR.gallery_cmd = lambda *a: ""
+RR.new_flat = lambda s, rec, g: ("maroon", __import__("PIL.Image").Image.new("RGB", (4, 4)))
+RR.card_file = lambda t: TMP / "card.png"
+RR.COMPOSITES = TMP / "comp"
+(RR.COMPOSITES / TEE / NAME).mkdir(parents=True)
+G_ORIG2 = G.originals_dir
+G.originals_dir = lambda name: TMP / "orig-gallery"
+rec = snapshot_rec()
+rec["failed_in_resend"] = ["Temple line art close-up - Alpha"]
+nodes = media("gal", [a for a in ALTS if a != "Temple line art close-up - Alpha"])
+gp = product(nodes)
+for v in gp["variants"]["nodes"]:          # --add (stubbed here) is what rebinds them
+    v["media"]["nodes"] = []
+RR.step_gallery(None, GalleryShop(gp), ROW, rec)
+assert UPLOADS == [("gid://shopify/Product/1", "Temple line art close-up - Alpha")], UPLOADS
+RR.gallery_cmd, RR.new_flat, RR.card_file, RR.COMPOSITES = REAL_G
+G.originals_dir = G_ORIG2
+
 # ---------------------------------------------------------------- resync
 
 
