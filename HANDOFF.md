@@ -53,9 +53,12 @@ colour has a blank. The map line (branch claude/happy-volta-gmsrac) is merged in
   keyed by handle, which the swaps kept, so it is ready as it is. `easify_options
   .py sync` needs the Mac's Temples/ folder for the temple sets (it refuses to run
   without it, correctly); `--maps-only --report-only` showed no changes.
-- The seven Be Peculiar / Sé Singular / bomber drafts carry the v2 on-model
-  photos (option F wordmark, black-on-white cards, re-angled unzipped bomber).
-  Waiting on his preview and his word to set them live.
+- Kiwi Size Chart for the bomber (`reference/garment-copy/bomber/size-chart.md`).
+
+**Be Peculiar line and the seal bomber: LIVE (8 Oct 2026, night).** All seven set
+ACTIVE on Evan's word, each storefront page serving with its v2 on-model gallery
+(option F wordmark, black-on-white cards, re-angled unzipped bomber) and in its
+garment collection, Temple Design Products and All Products.
 
 # START HERE (8 Oct 2026, late): on-model photos v2 for the seven draft products, then the 45-tee colour rollout
 
