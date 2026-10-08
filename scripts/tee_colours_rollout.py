@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Add Pink, Light Blue and Cream to every live tee: the 45 temple tees and the
-Nauvoo map tee (Evan, 8 Oct 2026).
+Nauvoo and Salt Lake City map tees (Evan, 8 Oct 2026).
 
 Same shape as scripts/eden_green_rollout.py (read its docstring: why each
 product is a SWAP, the cutover order, the Easify consequence), with three
@@ -74,7 +74,8 @@ OLD_COLOURS = {"Black", "Charcoal", "Coffee", "Navy Blue", "Maroon"}
 NEW = [("pink", "Pink"), ("light-blue", "Light Blue"), ("cream", "Cream")]
 # Map products made by scripts/map_run.py (branch claude/happy-volta-gmsrac);
 # not in the ledger. name -> (handle, template id from artifacts/maps/<place>/state.json)
-MAPS = {"Nauvoo map": ("essential-heavyweight-map-tee-nauvoo", "1557934356767600640")}
+MAPS = {"Nauvoo map": ("essential-heavyweight-map-tee-nauvoo", "1557934356767600640"),
+        "Salt Lake City map": ("essential-heavyweight-map-tee-salt-lake-city", "1557943287829123072")}
 MIN_PRINT = 0.0005     # as eden_green_rollout: a composite must lift the panel
 
 
