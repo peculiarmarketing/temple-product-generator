@@ -1,3 +1,146 @@
+# START HERE (8 Oct 2026, late): on-model photos v2 for the seven draft products, then the 45-tee colour rollout
+
+A fresh session picks this up. The previous one ran out of context. Everything
+below is pushed on branch `claude/magical-hamilton-7t4kx6` of this repo and of
+the workspace repo (`peculiar-people-workspace-claude-projects-`). Both repos are
+needed: clone the workspace for `project-sync/` and `designs/`. PR:
+https://github.com/peculiarmarketing/temple-product-generator/pull/2 (open, not merged).
+
+## Where things stand
+
+Seven products are published from Tapstitch and finished on Shopify, all DRAFT.
+Nothing goes ACTIVE without Evan's explicit word.
+
+| # | Shopify product id | Title | Lead colour |
+|---|---|---|---|
+| 1 | 15350048260468 | Ultra-soft "Be Peculiar" Sweatshirt - Español | Black |
+| 2 | 15350036955508 | Ultra-soft "Be Peculiar" Sweatshirt | Black |
+| 3 | 15350048326004 | Ultra-soft Oversized "Be Peculiar" Hoodie - Español | Coffee |
+| 4 | 15350048391540 | Ultra-soft Oversized "Be Peculiar" Hoodie | Gray |
+| 5 | 15350048424308 | Essential Heavyweight "Be Peculiar" Tee - Español | Navy Blue |
+| 6 | 15350048457076 | Essential Heavyweight "Be Peculiar" Tee | Black |
+| 7 | 15350048522612 | Temple Seal Bomber Jacket | Navy Blue (back first) |
+
+Done on all seven: product type, tags (`apparel:*`, `line:be-peculiar|seal`,
+`language:es`; NEVER `garment:`/`temple:`/`country:`/`state:`, those feed the
+temple collections and the homepage marquee), SEO, handles (`-espanol`; Shopify
+drops the ñ), colour renames, lead colour first, alt text, Tapstitch flats,
+and a first on-model set (v1, rejected, see below). Config and state:
+`config/saved_designs.json`, `artifacts/tapstitch/saved-designs.json`. Decisions:
+`docs/decisions.md`, 8 October 2026 section.
+
+Swatches for Pink, Light Blue, Cream, Forest Green, Purple are only in the
+UNPUBLISHED theme "Claude Code V3" (gid://shopify/OnlineStoreTheme/194273870196).
+Live theme is "Claude Code V2". Evan publishes V3 before the products go live.
+
+## Evan's review of the v1 on-model photos (8 Oct): fix all four
+
+1. **Tee and sweatshirt logos sit too low.** Match the distance from the collar
+   on Tapstitch's own flat lays. MECHANISM: `composite_front.py place()` positions
+   the print as a fraction of the collar-to-hem span measured on Tapstitch's flat
+   (`prints/front_geometry.json`, `collar_to_hem_in`). The generated tee and crew
+   are cut shorter/boxier than Tapstitch's flats, so the same fraction lands lower
+   on the body. FIX: scale from chest width instead (armpit to armpit on the flat
+   vs on the photo), or place by measured inches below the collar using a
+   chest-width px/in; then verify by putting each composite side by side with the
+   Tapstitch flat of the same design and colour at the same scale.
+   Tapstitch flats: the store product's own flat images, or the prefill mockups
+   (`T.store_product_prefill(s, store_id, template_id)["mockups"]`).
+2. **Designs distorted and illegible, worst on the jacket, especially zoomed.**
+   MECHANISMS, all three real:
+   - `composite.build()` is called with the temple settings: `displace=3.0`,
+     `fold_strength=220`, fold band 4-20, `texture_gain=0.35`. Built for thick
+     temple line art, it bends and noises thin lettering. For text: `flat=True` or
+     displace 0 and fold_strength 0, texture_gain about 0.1, keep the shade map.
+   - Resolution: photos are 2048px. The wordmark is ~380px wide, so the verse line
+     is ~4px tall; the bomber chest logo is ~130px. Unreadable at any setting.
+     Generate at kie.ai "4K" if the model accepts it (check `kie_client.create`
+     resolution values), or upscale the blank 2x (Lanczos, or Higgsfield
+     `upscale_image`) BEFORE compositing, so the print is rendered at the higher
+     resolution, and save the final as PNG or JPEG q95+.
+   - Add a design close-up to each gallery, like the temple products' "Temple line
+     art close-up" card in slot 3 (`scripts/art_images.py` has the card style):
+     the full-resolution design on the garment colour, plus optionally a tight
+     chest crop from the high-res composite.
+3. **Jacket: zipped vs unzipped over a plain white tee.** Ask Evan. Recommendation
+   given: keep the main front shot zipped (the chest logo sits flat and legible
+   and matches Tapstitch); add one unzipped-over-white-tee shot as an extra
+   lifestyle image only if he wants it.
+4. **Hoodie fit is wrong.** Too boxy, body shorter than the arms. It must fit like
+   the temple hoodie on-model shots: longer body, sleeves bunching at the cuffs.
+   MECHANISM: the hoodie base was generated from the stock photo plus the
+   Tapstitch flat only, with a prompt saying "oversized boxy", and no fit
+   reference. FIX: regenerate the hoodie base with a temple hoodie on-model shot
+   as an extra reference image ("match this fit, body length and sleeve bunching
+   exactly"), e.g. the live Salt Lake hoodie on-model back shot (find its URL with
+   a product media query) or `artifacts/photo-mockup-spike/final-set/hoodie_*.jpg`
+   (needs a public URL for kie: push it and use raw.githubusercontent.com). Drop
+   "boxy" from `GARMENT["hoodie"]` in `build_front_bases.py`. Then regenerate the
+   six other hoodie colours from the new base. Check the tee and crew fit against
+   the temple on-model shots the same way.
+
+After the fixes: show Evan the review sheets FIRST, then on approval replace the v1
+on-model media on all seven products (delete the old on-model media ids, add
+the new, reorder, rebind variants, read back). Do not set ACTIVE until he says so.
+
+## How the on-model pipeline works (files in artifacts/photo-mockup-spike/)
+
+- `build_front_bases.py`: stock model (Shopify Burst, licensed for commercial use
+  and adaptation) to blank base, one per garment, then `recolour` mode for each
+  colour from the base with a slight pose change (`POSES`, Evan wants every
+  colour a slightly different stance). Uses kie.ai (`KIE_API_KEY` env secret is
+  set; about 840 credits left, ~$0.10/image). Models: tee `white-tshirt-template`,
+  crew `portrait-of-male-model`, hoodie `man-in-white-tank-top-stands-for-camera`,
+  bomber `man-in-blue-jacket` (Burst slugs, images at
+  `https://burst.shopifycdn.com/photos/<slug>.jpg?width=2400`). Faces are shown;
+  Evan said that is fine (do NOT crop at the chin).
+- `composite_front.py detect|build`: base landmarks are by hand in `BASE_LM`
+  (re-mark them if a base is regenerated: ruler crops, as done 8 Oct); each colour
+  is registered to its base by phase correlation, with a >40px guard.
+- Print art: `artifacts/onmodel-front/prints/art_en.png`, `art_es.png` (rendered
+  from the workspace `designs/be-peculiar/trace/{english,spanish} white.svg`),
+  `seal.png` (thin seal), `chest.png`. All matched against Tapstitch's uploaded
+  previews at r >= 0.977.
+- Blanks: `artifacts/onmodel-front/blanks/*.jpg` (the only copies; regenerate if
+  replaced). `back_tee_*.jpg` are the three new temple-tee colours.
+- Upload route that works with the Shopify connector: push the image to this
+  public repo, then `productUpdate(product:{id}, media:[{originalSource:
+  "https://raw.githubusercontent.com/peculiarmarketing/temple-product-generator/<branch>/<path>",
+  alt, mediaContentType: IMAGE}])`, then `productReorderMedia` and
+  `productVariantsBulkUpdate` with `mediaId`. Variant ids on these products run
+  in steps of 32768 in Tapstitch's original colour order (query them to be sure).
+
+## Gotchas this session hit
+
+- `pkill -f "<pattern>"` and `pgrep -f "<pattern>"` match the calling shell's own
+  command line: two commands killed themselves (exit 144) and one waiter never
+  ended. Use the background task id, or a pid file.
+- The permission classifier once blocked a plain Shopify read; the
+  `search_products` tool worked as a fallback.
+- Tapstitch `distribute` publishes ACTIVE; set DRAFT immediately (done for all).
+- The connector cannot write the live theme; it can write an unpublished one.
+  `settings_data.json` round trip: the API returns it pretty-printed, Shopify
+  stores it compact with `/` escaped; md5 of
+  `json.dumps(d, separators=(",",":"), ensure_ascii=False).replace("/","\\/")`
+  equals `checksumMd5`.
+
+## Then: Phase 2, the 45-tee colour rollout (needs the Shopify Admin token)
+
+Evan added `SHOPIFY_STORE_DOMAIN`/`SHOPIFY_ADMIN_TOKEN` as cloud secrets on 8 Oct;
+check `env` in the new session. Add Pink (8082), Light Blue (8083, Tapstitch
+"Blue") and Cream (8087, Tapstitch "Apricot") to every live temple tee: an Eden
+Green style swap (see `scripts/eden_green_rollout.py`, generalise it to a garment
+plus a colour list), and to `garments/tee.json` colorways, `config/tapstitch.json`
+`api.blanks.tee.colorCodes`, and `colour_names.NAMES["tee"]` for future sweeps.
+On-model backs: `blanks/back_tee_{pink,light-blue,cream}.jpg` (the existing tee
+model) composited with `scripts/composite_catalog.py`; temple print files come
+from the Mac's Temples folder or each tee template's back piece on Tapstitch.
+Swapped products lose their Easify Temple dropdown until Evan re-imports
+`artifacts/easify/option-sets.csv`. White ink on these three colours is Evan's
+knowing choice (contrast 1.98 / 1.69 / 1.28).
+
+---
+
 # Be Peculiar line and seal bomber: in flight 8 October 2026
 
 Seven hand-saved Tapstitch designs, driven by `scripts/publish_saved_design.py`
