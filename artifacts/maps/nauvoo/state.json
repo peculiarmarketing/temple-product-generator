@@ -1,0 +1,35 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo tee white front print (map).png"
+    ],
+    "template_id": "1557934356767600640",
+    "store_product_id": "1557934409204834304",
+    "distribute_started_at": "2026-10-08T17:55:08",
+    "shopify_handle": "essential-heavyweight-map-tee-nauvoo",
+    "state": "live"
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo crew white front print (map).png"
+    ],
+    "template_id": "1557934605003288576",
+    "store_product_id": "1557934632476024832",
+    "distribute_started_at": "2026-10-08T17:56:02",
+    "shopify_handle": "ultra-soft-map-sweatshirt-nauvoo",
+    "state": "live"
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/nauvoo/nauvoo hoodie white front print (map).png"
+    ],
+    "template_id": "1557934877180055552",
+    "store_product_id": "1557934919093788672",
+    "distribute_started_at": "2026-10-08T17:57:10",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-nauvoo",
+    "state": "live"
+  }
+}

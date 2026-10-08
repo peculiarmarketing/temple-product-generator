@@ -97,3 +97,6 @@ artifacts/onmodel-front/**/*.png
 artifacts/onmodel-v2/final/
 artifacts/onmodel-v2/flats/
 artifacts/onmodel-v2/gen/**/*.png
+
+# Map print files, rebuilt by scripts/map_run.py from designs/city-map-back/out/.
+artifacts/maps/*/*.png
