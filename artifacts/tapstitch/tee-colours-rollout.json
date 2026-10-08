@@ -1503,12 +1503,48 @@
     "Ogden": {
       "built": "2026-10-08T19:35:51+00:00",
       "copied": "2026-10-08T19:35:49+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56522993828212": "gid://shopify/MediaImage/56542415913332",
+        "gid://shopify/MediaImage/56522993860980": "gid://shopify/MediaImage/56542416011636",
+        "gid://shopify/MediaImage/56522994057588": "gid://shopify/MediaImage/56542416404852",
+        "gid://shopify/MediaImage/56522994090356": "gid://shopify/MediaImage/56542416535924",
+        "gid://shopify/MediaImage/56522994123124": "gid://shopify/MediaImage/56542417387892",
+        "gid://shopify/MediaImage/56523003199860": "gid://shopify/MediaImage/56542416109940",
+        "gid://shopify/MediaImage/56523004641652": "gid://shopify/MediaImage/56542416175476",
+        "gid://shopify/MediaImage/56523005591924": "gid://shopify/MediaImage/56542416273780",
+        "gid://shopify/MediaImage/56523007164788": "gid://shopify/MediaImage/56542415782260",
+        "gid://shopify/MediaImage/56523008868724": "gid://shopify/MediaImage/56542416372084",
+        "gid://shopify/MediaImage/56523011850612": "gid://shopify/MediaImage/56542415815028"
+      },
+      "cutover": "2026-10-08T19:37:50+00:00",
       "distribute_started_at": "2026-10-08T19:35:51+00:00",
       "distributed": "2026-10-08T19:36:09+00:00",
       "finished": "2026-10-08T19:36:42+00:00",
+      "gallery": "2026-10-08T19:37:46+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542415782260",
+        "gid://shopify/MediaImage/56542415815028",
+        "gid://shopify/MediaImage/56542415913332",
+        "gid://shopify/MediaImage/56542416011636",
+        "gid://shopify/MediaImage/56542416109940",
+        "gid://shopify/MediaImage/56542416175476",
+        "gid://shopify/MediaImage/56542416273780",
+        "gid://shopify/MediaImage/56542416372084",
+        "gid://shopify/MediaImage/56542423318900",
+        "gid://shopify/MediaImage/56542424072564",
+        "gid://shopify/MediaImage/56542424367476",
+        "gid://shopify/MediaImage/56542416404852",
+        "gid://shopify/MediaImage/56542416535924",
+        "gid://shopify/MediaImage/56542417387892"
+      ],
       "handle": "essential-heavyweight-temple-tee-ogden",
       "hidden": "2026-10-08T19:36:26+00:00",
       "new_id": "gid://shopify/Product/15350388556148",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542424367476",
+        "light-blue": "gid://shopify/MediaImage/56542424072564",
+        "pink": "gid://shopify/MediaImage/56542423318900"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -1521,8 +1557,32 @@
       "source_template_id": "1550099072613040128",
       "store_product_id": "1557959755371323392",
       "template_id": "1557959719950381056",
-      "title": "Essential Heavyweight Temple Tee (Ogden)"
+      "title": "Essential Heavyweight Temple Tee (Ogden)",
+      "verified": "2026-10-08T19:37:52+00:00"
+    },
+    "Ogden (original)": {
+      "built": "2026-10-08T19:38:01+00:00",
+      "copied": "2026-10-08T19:37:59+00:00",
+      "distribute_started_at": "2026-10-08T19:38:02+00:00",
+      "distributed": "2026-10-08T19:38:20+00:00",
+      "finished": "2026-10-08T19:39:08+00:00",
+      "handle": "essential-heavyweight-temple-tee-ogden-original",
+      "hidden": "2026-10-08T19:38:53+00:00",
+      "new_id": "gid://shopify/Product/15350393962868",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303620657524",
+      "resolved": "2026-10-08T19:37:53+00:00",
+      "source_template_id": "1550099551162155008",
+      "store_product_id": "1557960301301932032",
+      "template_id": "1557960271811727360",
+      "title": "Essential Heavyweight Temple Tee (Ogden Original)"
     }
   },
-  "updated_at": "2026-10-08T19:36:42+00:00"
+  "updated_at": "2026-10-08T19:39:08+00:00"
 }
