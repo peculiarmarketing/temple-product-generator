@@ -1843,9 +1843,9 @@
       "old_title": "Essential Temple Tee",
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee",
-      "updated_at": "2026-10-07T13:27:37",
-      "tapstitch_template_id": "1549714541104005120",
-      "tapstitch_store_product_id": "1549715710526234624"
+      "updated_at": "2026-10-08T19:55:52",
+      "tapstitch_template_id": "1557964261618245632",
+      "tapstitch_store_product_id": "1557964290890342400"
     },
     {
       "temple": "San Antonio",
@@ -1896,9 +1896,9 @@
       "old_title": "Essential Temple Tee (San Antonio)",
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee-san-antonio",
-      "updated_at": "2026-09-16T21:12:19",
-      "tapstitch_template_id": "1550101936710303744",
-      "tapstitch_store_product_id": "1550101980708483072",
+      "updated_at": "2026-10-08T19:58:01",
+      "tapstitch_template_id": "1557964800791826432",
+      "tapstitch_store_product_id": "1557964824326119424",
       "distribute_started_at": "2026-09-16T21:11:51"
     },
     {
@@ -2442,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-10-08T19:53:43"
+  "updated_at": "2026-10-08T19:58:01"
 }
