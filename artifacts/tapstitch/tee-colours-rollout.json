@@ -1576,6 +1576,7 @@
         "gid://shopify/MediaImage/56523021648244": "gid://shopify/MediaImage/56542445601140",
         "gid://shopify/MediaImage/56523021910388": "gid://shopify/MediaImage/56542444814708"
       },
+      "cutover": "2026-10-08T19:40:20+00:00",
       "distribute_started_at": "2026-10-08T19:38:02+00:00",
       "distributed": "2026-10-08T19:38:20+00:00",
       "finished": "2026-10-08T19:39:08+00:00",
@@ -1616,8 +1617,90 @@
       "source_template_id": "1550099551162155008",
       "store_product_id": "1557960301301932032",
       "template_id": "1557960271811727360",
-      "title": "Essential Heavyweight Temple Tee (Ogden Original)"
+      "title": "Essential Heavyweight Temple Tee (Ogden Original)",
+      "verified": "2026-10-08T19:40:21+00:00"
+    },
+    "Orem": {
+      "built": "2026-10-08T19:40:31+00:00",
+      "copied": "2026-10-08T19:40:27+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523031445876": "gid://shopify/MediaImage/56542453268852",
+        "gid://shopify/MediaImage/56523031478644": "gid://shopify/MediaImage/56542453334388",
+        "gid://shopify/MediaImage/56523031675252": "gid://shopify/MediaImage/56542453563764",
+        "gid://shopify/MediaImage/56523031708020": "gid://shopify/MediaImage/56542453596532",
+        "gid://shopify/MediaImage/56523031740788": "gid://shopify/MediaImage/56542453629300",
+        "gid://shopify/MediaImage/56523041964404": "gid://shopify/MediaImage/56542453367156",
+        "gid://shopify/MediaImage/56523042128244": "gid://shopify/MediaImage/56542453432692",
+        "gid://shopify/MediaImage/56523042423156": "gid://shopify/MediaImage/56542453465460",
+        "gid://shopify/MediaImage/56523042816372": "gid://shopify/MediaImage/56542453203316",
+        "gid://shopify/MediaImage/56523043176820": "gid://shopify/MediaImage/56542453530996",
+        "gid://shopify/MediaImage/56523043897716": "gid://shopify/MediaImage/56542453236084"
+      },
+      "cutover": "2026-10-08T19:42:46+00:00",
+      "distribute_started_at": "2026-10-08T19:40:31+00:00",
+      "distributed": "2026-10-08T19:40:49+00:00",
+      "finished": "2026-10-08T19:41:37+00:00",
+      "gallery": "2026-10-08T19:42:42+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542453203316",
+        "gid://shopify/MediaImage/56542453236084",
+        "gid://shopify/MediaImage/56542453268852",
+        "gid://shopify/MediaImage/56542453334388",
+        "gid://shopify/MediaImage/56542453367156",
+        "gid://shopify/MediaImage/56542453432692",
+        "gid://shopify/MediaImage/56542453465460",
+        "gid://shopify/MediaImage/56542453530996",
+        "gid://shopify/MediaImage/56542455071092",
+        "gid://shopify/MediaImage/56542455136628",
+        "gid://shopify/MediaImage/56542455169396",
+        "gid://shopify/MediaImage/56542453563764",
+        "gid://shopify/MediaImage/56542453596532",
+        "gid://shopify/MediaImage/56542453629300"
+      ],
+      "handle": "essential-heavyweight-temple-tee-orem",
+      "hidden": "2026-10-08T19:41:22+00:00",
+      "new_id": "gid://shopify/Product/15350398681460",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542455169396",
+        "light-blue": "gid://shopify/MediaImage/56542455136628",
+        "pink": "gid://shopify/MediaImage/56542455071092"
+      },
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303624917364",
+      "resolved": "2026-10-08T19:40:22+00:00",
+      "source_template_id": "1550100006302859264",
+      "store_product_id": "1557960928719478784",
+      "template_id": "1557960896775606272",
+      "title": "Essential Heavyweight Temple Tee (Orem)",
+      "verified": "2026-10-08T19:42:48+00:00"
+    },
+    "Provo": {
+      "built": "2026-10-08T19:42:55+00:00",
+      "copied": "2026-10-08T19:42:53+00:00",
+      "distribute_started_at": "2026-10-08T19:42:56+00:00",
+      "distributed": "2026-10-08T19:43:14+00:00",
+      "handle": "essential-heavyweight-temple-tee-provo",
+      "new_id": "gid://shopify/Product/15350403072372",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15305802154356",
+      "resolved": "2026-10-08T19:42:49+00:00",
+      "source_template_id": "1550274692806557696",
+      "store_product_id": "1557961534683160576",
+      "template_id": "1557961513266999296",
+      "title": "Essential Heavyweight Temple Tee (Provo)"
     }
   },
-  "updated_at": "2026-10-08T19:40:15+00:00"
+  "updated_at": "2026-10-08T19:43:14+00:00"
 }
