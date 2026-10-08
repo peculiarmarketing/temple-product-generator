@@ -1,0 +1,102 @@
+{
+ "model_tee": {
+  "media_id": "5199749f-181a-44ad-a0b3-5a74d81f98c2",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/5199749f-181a-44ad-a0b3-5a74d81f98c2.jpg",
+  "put": "200"
+ },
+ "model_crew": {
+  "media_id": "cf39b2d8-db9c-4368-9d60-78a88bb096c8",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/cf39b2d8-db9c-4368-9d60-78a88bb096c8.jpg",
+  "put": "200"
+ },
+ "model_hoodie": {
+  "media_id": "7580fc2c-3e4d-4539-831a-46924f42b8c6",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/7580fc2c-3e4d-4539-831a-46924f42b8c6.jpg",
+  "put": "200"
+ },
+ "tee_maroon": {
+  "media_id": "f1e0feb8-e0ad-4ec3-bae4-80263a7375f7",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/f1e0feb8-e0ad-4ec3-bae4-80263a7375f7.png",
+  "put": "200"
+ },
+ "tee_black": {
+  "media_id": "19caa2cf-e122-43ff-ad3d-c29e83d65e29",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/19caa2cf-e122-43ff-ad3d-c29e83d65e29.png",
+  "put": "200"
+ },
+ "tee_charcoal": {
+  "media_id": "647c31ef-fae6-4b1a-aa3a-bf58ed8c9d5e",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/647c31ef-fae6-4b1a-aa3a-bf58ed8c9d5e.png",
+  "put": "200"
+ },
+ "tee_coffee": {
+  "media_id": "7facd5a7-fd29-466b-9df7-cacfc6928d39",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/7facd5a7-fd29-466b-9df7-cacfc6928d39.png",
+  "put": "200"
+ },
+ "tee_navy-blue": {
+  "media_id": "84cc5ec7-c8b2-4eb7-930c-3bf0e2b27b5b",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/84cc5ec7-c8b2-4eb7-930c-3bf0e2b27b5b.png",
+  "put": "200"
+ },
+ "tee_pink": {
+  "media_id": "b676ff54-f768-41f6-a20f-753510fa7f9f",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/b676ff54-f768-41f6-a20f-753510fa7f9f.png",
+  "put": "200"
+ },
+ "tee_light-blue": {
+  "media_id": "15ea952d-7d82-44ad-bc7b-38714f713e45",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/15ea952d-7d82-44ad-bc7b-38714f713e45.png",
+  "put": "200"
+ },
+ "tee_cream": {
+  "media_id": "b911ee17-d6fe-4ac6-82e0-4057d7390dc5",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/b911ee17-d6fe-4ac6-82e0-4057d7390dc5.png",
+  "put": "200"
+ },
+ "crew_black": {
+  "media_id": "0dbf802c-3a8f-475b-86b6-83c59708a3b9",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/0dbf802c-3a8f-475b-86b6-83c59708a3b9.png",
+  "put": "200"
+ },
+ "crew_heather-gray": {
+  "media_id": "4f181ea7-cdeb-4945-a919-e0ac975ee330",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/4f181ea7-cdeb-4945-a919-e0ac975ee330.png",
+  "put": "200"
+ },
+ "hoodie_navy-blue": {
+  "media_id": "5d9eb5a4-063e-4eb1-997c-85d47bf06471",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/5d9eb5a4-063e-4eb1-997c-85d47bf06471.png",
+  "put": "200"
+ },
+ "hoodie_black": {
+  "media_id": "abbfcb3c-0c2e-4346-8569-963913119aaa",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/abbfcb3c-0c2e-4346-8569-963913119aaa.png",
+  "put": "200"
+ },
+ "hoodie_gray": {
+  "media_id": "99a2fa35-80a0-401a-b8bf-cb241b3a0108",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/99a2fa35-80a0-401a-b8bf-cb241b3a0108.png",
+  "put": "200"
+ },
+ "hoodie_coffee": {
+  "media_id": "9c416c45-c0e2-4b3a-8cd3-1c9ea5a323f8",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/9c416c45-c0e2-4b3a-8cd3-1c9ea5a323f8.png",
+  "put": "200"
+ },
+ "hoodie_mauve": {
+  "media_id": "b643bcd8-e801-4633-b8a4-9d5c2464a19b",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/b643bcd8-e801-4633-b8a4-9d5c2464a19b.png",
+  "put": "200"
+ },
+ "hoodie_royal-blue": {
+  "media_id": "29135254-2f3d-4dcb-8d6a-27ebf20ff16b",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/29135254-2f3d-4dcb-8d6a-27ebf20ff16b.png",
+  "put": "200"
+ },
+ "hoodie_eden-green": {
+  "media_id": "4ed1e6da-a145-45fd-91ad-6af1bd31cbc6",
+  "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/4ed1e6da-a145-45fd-91ad-6af1bd31cbc6.png",
+  "put": "200"
+ }
+}

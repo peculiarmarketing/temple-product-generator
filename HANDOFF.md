@@ -1,3 +1,21 @@
+# (8 Oct 2026, late night) Map on-model photos: built, waiting on Evan's review
+
+The six map products (Nauvoo and Salt Lake City on tee, sweatshirt, hoodie) had
+only flat lays. 68 on-model shots are built (front and back, every colour) in
+`artifacts/onmodel-maps/` and sent to Evan; nothing is on the store yet.
+- New stock models per garment (Burst, `models.json`), front and back bases and
+  every colour made on Higgsfield gpt_image_2_5 sunburst at 4k (2880px), pose and
+  framing varied per colour (`gen/recolour_spec.json`). 34 bases, 144.5 credits.
+- Placement from Tapstitch's own flats of the map products, carried by
+  collar-to-hem length (`composite_maps.py` docstring, `flat_geometry.json`).
+- Full fold at the temple settings (Evan's choice). Output 5000px.
+- White ink nearly vanishes on the Cream tee, faint on Pink and Light Blue: a
+  product question flagged to Evan, true to the print, not a compositing fault.
+- Next, on approval: `scripts/onmodel_maps_apply.py` (to write) uploads, binds
+  variants to the back shots, orders galleries, verifies. Finals are gitignored;
+  rebuild with `python composite_maps.py build` (bases re-download from
+  `gen/jobs.json`).
+
 # (8 Oct 2026, night) Salt Lake parent descriptions fixed; homepage collection tabs live
 
 - The Salt Lake temple hoodie and sweatshirt descriptions were rebuilt with their

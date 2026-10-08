@@ -1,0 +1,307 @@
+{
+ "crew_back_black": {
+  "collar": [
+   1412,
+   700
+  ],
+  "hem": 2380,
+  "how": "hand"
+ },
+ "crew_back_heather-gray": {
+  "collar": [
+   1245,
+   700
+  ],
+  "hem": 2382,
+  "how": "hand"
+ },
+ "crew_front_black": {
+  "collar": [
+   1412,
+   825
+  ],
+  "hem": 2375,
+  "how": "hand"
+ },
+ "crew_front_heather-gray": {
+  "collar": [
+   1266,
+   822
+  ],
+  "hem": 2379,
+  "how": "registered",
+  "scale": 0.9961
+ },
+ "hoodie_back_black": {
+  "collar": [
+   1354,
+   802
+  ],
+  "hem": 2522,
+  "how": "registered",
+  "scale": 1.0164,
+  "hood_point": 1097
+ },
+ "hoodie_back_coffee": {
+  "collar": [
+   1437,
+   859
+  ],
+  "hem": 2461,
+  "how": "registered",
+  "scale": 0.9337,
+  "hood_point": 1134
+ },
+ "hoodie_back_eden-green": {
+  "collar": [
+   1435,
+   821
+  ],
+  "hem": 2539,
+  "how": "registered",
+  "scale": 1.0058,
+  "hood_point": 1116
+ },
+ "hoodie_back_gray": {
+  "collar": [
+   1527,
+   810
+  ],
+  "hem": 2566,
+  "how": "registered",
+  "scale": 1.0397,
+  "hood_point": 1111
+ },
+ "hoodie_back_mauve": {
+  "collar": [
+   1464,
+   807
+  ],
+  "hem": 2522,
+  "how": "registered",
+  "scale": 1.0071,
+  "hood_point": 1101
+ },
+ "hoodie_back_navy-blue": {
+  "collar": [
+   1437,
+   800
+  ],
+  "hem": 2520,
+  "hood_point": 1095,
+  "how": "hand"
+ },
+ "hoodie_back_royal-blue": {
+  "collar": [
+   1407,
+   847
+  ],
+  "hem": 2517,
+  "how": "registered",
+  "scale": 0.929,
+  "hood_point": 1133
+ },
+ "hoodie_front_black": {
+  "collar": [
+   1250,
+   895
+  ],
+  "hem": 2520,
+  "how": "hand"
+ },
+ "hoodie_front_coffee": {
+  "collar": [
+   1436,
+   915
+  ],
+  "hem": 2487,
+  "how": "registered",
+  "scale": 0.9556
+ },
+ "hoodie_front_eden-green": {
+  "collar": [
+   1438,
+   938
+  ],
+  "hem": 2570,
+  "how": "registered",
+  "scale": 0.9985
+ },
+ "hoodie_front_gray": {
+  "collar": [
+   1528,
+   900
+  ],
+  "hem": 2552,
+  "how": "registered",
+  "scale": 1.0184
+ },
+ "hoodie_front_mauve": {
+  "collar": [
+   1506,
+   894
+  ],
+  "hem": 2525,
+  "how": "registered",
+  "scale": 1.0095
+ },
+ "hoodie_front_navy-blue": {
+  "collar": [
+   1437,
+   895
+  ],
+  "hem": 2520,
+  "how": "hand"
+ },
+ "hoodie_front_royal-blue": {
+  "collar": [
+   1334,
+   900
+  ],
+  "hem": 2540,
+  "how": "registered",
+  "scale": 1.0183
+ },
+ "tee_back_black": {
+  "collar": [
+   1327,
+   727
+  ],
+  "hem": 2620,
+  "how": "registered",
+  "scale": 1.0024
+ },
+ "tee_back_charcoal": {
+  "collar": [
+   1572,
+   729
+  ],
+  "hem": 2640,
+  "how": "registered",
+  "scale": 1.0346
+ },
+ "tee_back_coffee": {
+  "collar": [
+   1441,
+   719
+  ],
+  "hem": 2544,
+  "how": "registered",
+  "scale": 0.9569
+ },
+ "tee_back_cream": {
+  "collar": [
+   1439,
+   734
+  ],
+  "hem": 2613,
+  "how": "registered",
+  "scale": 0.9905
+ },
+ "tee_back_light-blue": {
+  "collar": [
+   1444,
+   723
+  ],
+  "hem": 2627,
+  "how": "registered",
+  "scale": 1.005
+ },
+ "tee_back_maroon": {
+  "collar": [
+   1437,
+   730
+  ],
+  "hem": 2620,
+  "how": "hand"
+ },
+ "tee_back_navy-blue": {
+  "collar": [
+   1481,
+   727
+  ],
+  "hem": 2627,
+  "how": "registered",
+  "scale": 1.0131
+ },
+ "tee_back_pink": {
+  "collar": [
+   1390,
+   726
+  ],
+  "hem": 2618,
+  "how": "registered",
+  "scale": 0.9139
+ },
+ "tee_front_black": {
+  "collar": [
+   1331,
+   896
+  ],
+  "hem": 2628,
+  "how": "registered",
+  "scale": 0.9995
+ },
+ "tee_front_charcoal": {
+  "collar": [
+   1570,
+   898
+  ],
+  "hem": 2634,
+  "how": "registered",
+  "scale": 1.0246
+ },
+ "tee_front_coffee": {
+  "collar": [
+   1444,
+   899
+  ],
+  "hem": 2495,
+  "how": "registered",
+  "scale": 0.931
+ },
+ "tee_front_cream": {
+  "collar": [
+   1442,
+   869
+  ],
+  "hem": 2567,
+  "how": "registered",
+  "scale": 0.9795
+ },
+ "tee_front_light-blue": {
+  "collar": [
+   1441,
+   903
+  ],
+  "hem": 2633,
+  "how": "registered",
+  "scale": 0.9989
+ },
+ "tee_front_maroon": {
+  "collar": [
+   1437,
+   900
+  ],
+  "hem": 2625,
+  "how": "hand"
+ },
+ "tee_front_navy-blue": {
+  "collar": [
+   1504,
+   897
+  ],
+  "hem": 2624,
+  "how": "registered",
+  "scale": 0.9991
+ },
+ "tee_front_pink": {
+  "collar": [
+   1409,
+   893
+  ],
+  "hem": 2625,
+  "how": "registered",
+  "scale": 1.0085
+ }
+}
