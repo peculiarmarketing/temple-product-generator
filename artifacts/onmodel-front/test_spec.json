@@ -1,0 +1,28 @@
+{
+ "tee_black": {
+  "garment": "tee",
+  "colour_words": "a deep true black",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/3170eee134154f609da659db53394f86.png"
+ },
+ "crew_black": {
+  "garment": "crew",
+  "colour_words": "a deep true black",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/ea37063f5fd241bda5321ea9e8c05ae8.png"
+ },
+ "hoodie_gray": {
+  "garment": "hoodie",
+  "colour_words": "a medium sage gray with a faint warm olive cast",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/5aa9ce67de5c404abb287779b409f3f9.png"
+ },
+ "bomber_navy-blue_front": {
+  "garment": "bomber",
+  "colour_words": "a very dark navy blue, almost black with a cool blue cast, with white stripes in the ribbing",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/3af97e6676344133a79a3359ec0d32f7.png"
+ },
+ "bomber_navy-blue_back": {
+  "garment": "bomber",
+  "view": "back",
+  "colour_words": "a very dark navy blue, almost black with a cool blue cast, with white stripes in the ribbing",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/3af97e6676344133a79a3359ec0d32f7.png"
+ }
+}

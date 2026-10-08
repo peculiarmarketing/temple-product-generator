@@ -1,0 +1,13 @@
+{
+ "bomber_navy-blue_front": {
+  "garment": "bomber",
+  "colour_words": "a very dark navy blue, almost black with a cool blue cast, with white stripes in the ribbing",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/3af97e6676344133a79a3359ec0d32f7.png"
+ },
+ "bomber_navy-blue_back": {
+  "garment": "bomber",
+  "view": "back",
+  "colour_words": "a very dark navy blue, almost black with a cool blue cast, with white stripes in the ribbing",
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/3af97e6676344133a79a3359ec0d32f7.png"
+ }
+}

@@ -87,3 +87,7 @@ artifacts/photo-mockup-spike/composites-lift/
 artifacts/tapstitch/relift-thumbs/
 artifacts/tapstitch/pilot-monticello-tee/*.png
 artifacts/tapstitch/pilot-monticello-tee/storeproducts_*.json
+
+# on-model work files: the committed copies are onmodel-front/blanks/*.jpg and final/*.jpg
+artifacts/onmodel-front/**/*.png
+!artifacts/onmodel-front/prints/*.png
