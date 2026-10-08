@@ -184,11 +184,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--swap-wordmarks", action="store_true",
+                    help="replace the tee/crew/hoodie on-model shots in place (option F, 8 Oct)")
     ap.add_argument("--swap-cards", action="store_true",
                     help="replace the close-up cards and the unzipped bomber in place")
     a = ap.parse_args()
     c = ShopifyClient()
     state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    if a.swap_wordmarks:
+        for pid, spec in PRODUCTS.items():
+            if spec[0] == "bomber":
+                continue
+            keys = [i["key"] for i in plan_for(pid, c.gql(Q, {"id": f"gid://shopify/Product/{pid}"})["product"])
+                    if not i["key"].startswith("card_")]
+            print(pid)
+            swap(c, pid, keys)
+        a.verify = True
+        state = json.loads(STATE.read_text())
     if a.swap_cards:
         for pid, spec in PRODUCTS.items():
             keys = list(spec[3]) + (["bomber_navy-blue_open"] if spec[0] == "bomber" else [])
@@ -213,7 +225,8 @@ def main():
 def swap(c, pid, keys, drop=()):
     """Replace single v2 images in place (same alt, same gallery slot) and drop
     others. For changes after the first apply: the black-on-white cards and the
-    re-angled unzipped bomber (Evan, 8 Oct 2026). Never touches bound images."""
+    re-angled unzipped bomber, then the option F wordmark shots (Evan, 8 Oct
+    2026). A bound image's variants are re-pointed to its replacement first."""
     gid = f"gid://shopify/Product/{pid}"
     state = json.loads(STATE.read_text())
     st = state[str(pid)]
@@ -232,9 +245,16 @@ def swap(c, pid, keys, drop=()):
             print("   dropped", k)
     for k in keys:
         old = st["uploaded"][k]
-        assert old not in bound, f"{k} is bound to variants"
         new = c.upload_media_image(gid, items[k]["path"], alt[old])
         c.wait_for_media_ready(new, timeout_s=300)
+        if old in bound:   # re-point this colour's variants before the old image goes
+            vs = [{"id": v["id"], "mediaId": new} for v in p["variants"]["nodes"]
+                  if any(m["id"] == old for m in v["media"]["nodes"])]
+            r = c.gql("""mutation($pid: ID!, $v: [ProductVariantsBulkInput!]!) {
+                productVariantsBulkUpdate(productId: $pid, variants: $v) { userErrors { message } } }""",
+                      {"pid": gid, "v": vs})["productVariantsBulkUpdate"]
+            if r["userErrors"]:
+                raise ShopifyError(str(r["userErrors"]))
         c.delete_media(gid, [old])
         ids[ids.index(old)] = new
         st["uploaded"][k] = new

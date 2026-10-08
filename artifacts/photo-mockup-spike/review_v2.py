@@ -258,6 +258,12 @@ def verify():
             a = Image.open(ART[art]).convert("RGBA")
             a = a.crop(a.getchannel("A").getbbox())
             W, H = round(w), round(w * a.height / a.width)
+            ang = L.get("angle", 0.0)
+            if ang:   # same rotate-then-resize as composite_front_v2.composite
+                kk = a.width / W
+                a = a.rotate(ang, resample=Image.BICUBIC, expand=True)
+                W2, H2 = round(a.width / kk), round(a.height / kk)
+                left, top, W, H = left + (W - W2) / 2, top + (H - H2) / 2, W2, H2
             box = (round(left), round(top), round(left) + W, round(top) + H)
             fin = np.asarray(Image.open(p).convert("L").crop(box), float)
             bl = np.asarray(blank.crop(box), float)

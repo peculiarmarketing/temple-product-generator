@@ -51,8 +51,23 @@ def geo_key(photo, art):
     return f"{g}_{art}"
 
 
+# Evan, 8 Oct 2026, option F from placement_options.py, picked on the black tee:
+# 11 in wide, top 5 in below the collar, at the tee's 21.65 in chest. Carried to
+# the crew and hoodie as the same SHARE OF THE VISIBLE CHEST (51% wide, top 23%
+# of the chest below the collar), not as inches: an oversized garment wraps the
+# body, so its visible width is a smaller share of its size-chart chest than the
+# tee's, and inches converted through the size chart drew the hoodie print
+# smaller than v1. The flat-lay ratios (flat_geometry.json) drew it too small
+# and too low on every garment.
+WORDMARK = {"w": 11.0 / 21.65, "top": 5.0 / 21.65}
+
+
 def place(L, key, art):
     """Return the print's (left, top, width) in photo pixels."""
+    if art in ("en", "es"):
+        chest = L["chest"][1] - L["chest"][0]
+        w = WORDMARK["w"] * chest
+        return L["collar"][0] - w / 2, L["collar"][1] + WORDMARK["top"] * chest, w
     F = FLAT[key]
     chest = L["chest"][1] - L["chest"][0]
     w = F["w"] * chest
