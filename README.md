@@ -25,6 +25,13 @@ and must never be committed or printed. Tapstitch needs no token: Evan logs in o
 with `scripts/tapstitch_login.py` and the session lives in a dedicated Chrome
 profile. Full steps: `docs/new-machine-setup.md`.
 
+In a cloud session there is no Chrome profile, so `tapstitch_api.session()` reads
+the login cookies from the `TAPSTITCH_COOKIES` environment secret instead (the
+Cookie header copied from DevTools on tapstitch.com, or a JSON cookie export). It
+is a full login, not a read-only key, and it expires after a few days like the
+profile's session. Check it with `python scripts/tapstitch_designs.py`, which
+lists the Designs tab and stops with "Not logged in" if the cookies are stale.
+
 The venv is named `.venv.nosync` so iCloud Drive does not sync interpreter files. If
 it is ever lost, recreate it from `requirements.txt`.
 
@@ -37,6 +44,7 @@ it is ever lost, recreate it from `requirements.txt`.
 - `flatten.py`: composites one temple into one flattened, print-area-shaped PNG, and validates it.
 - `ledger.py`: the ledger, one row per temple per garment (`artifacts/tapstitch/ledger.json`).
 - `tapstitch_api.py`: the Tapstitch JSON API client.
+- `scripts/tapstitch_designs.py`: lists the Designs tab, published or not. Read-only.
 - `browser_session.py`, `scripts/tapstitch_login.py`: the dedicated-Chrome session, on port 9223.
 - `garments/{tee,crew,hoodie}.json`: blank, print areas, colourways, names, prices and costs per line.
 - `config/tapstitch.json`: the API endpoints, timings and post-publish switches.

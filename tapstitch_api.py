@@ -9,9 +9,12 @@ mockups from. `docs/discovery/2026-09-tapstitch-editor-api.md` has the evidence.
 This module is that route, as code. It replaces the selector block in
 config/tapstitch.json, which described a click path nobody needs to write.
 
-AUTH is the dedicated Chrome profile's cookies, nothing else: no CSRF header, no
-bearer token, no editor session. Evan logs in once with scripts/tapstitch_login.py
-and the profile keeps the session for days. Never print the cookie jar.
+AUTH is the account's login cookies, nothing else: no CSRF header, no bearer
+token, no editor session. On the Mac they come from the dedicated Chrome profile:
+Evan logs in once with scripts/tapstitch_login.py and the profile keeps the
+session for days. In a cloud session, where there is no Chrome profile, they come
+from the TAPSTITCH_COOKIES environment secret instead (see session()). Never print
+the cookie jar or the secret.
 
 WHICH CALL REACHES THE LIVE STOREFRONT: only `distribute()`. Everything else,
 including `create_store_product()`, stays inside Tapstitch. The store product is
@@ -21,12 +24,11 @@ live account on 16 Sep 2026 and put two real products on the storefront.
 """
 
 import json
+import os
 from pathlib import Path
 from urllib.parse import urlsplit
 
 import requests
-
-from browser_session import TAPSTITCH, connect
 
 BASE = "https://www.tapstitch.com"
 CDN = "https://files.tapstitch.com"
@@ -39,27 +41,69 @@ class TapstitchError(Exception):
 
 
 def session():
-    """A requests.Session carrying the dedicated Chrome profile's cookies.
+    """A requests.Session carrying the account's Tapstitch login cookies.
 
-    Opening a Playwright connection purely to read cookies is wasteful but it is
-    the only way to get them: the profile's cookie store is an encrypted SQLite
-    file that Chrome holds open.
+    Two sources, in this order:
+
+    1. TAPSTITCH_COOKIES, an environment secret, for cloud sessions that have
+       no Chrome profile. See _env_cookies() for the formats it takes.
+    2. The dedicated Chrome profile on the Mac. Opening a Playwright connection
+       purely to read cookies is wasteful but it is the only way to get them:
+       the profile's cookie store is an encrypted SQLite file that Chrome holds
+       open. Imported here, not at the top, so the cloud route never needs
+       Playwright or Chrome installed.
+
+    Either way the cookies are a full login, not a read-only key: anything that
+    holds them can publish to the live store.
     """
-    p, browser = connect(TAPSTITCH)
-    try:
-        jar = {c["name"]: c["value"]
-               for c in browser.contexts[0].cookies()
-               if "tapstitch" in c.get("domain", "")}
-    finally:
-        browser.close()
-        p.stop()
+    jar = _env_cookies()
     if not jar:
-        raise TapstitchError("No Tapstitch cookies in the profile. Run "
-                             "scripts/tapstitch_login.py first.")
+        try:
+            from browser_session import TAPSTITCH, connect
+        except ImportError:
+            raise TapstitchError("No TAPSTITCH_COOKIES secret and no Playwright "
+                                 "for the Chrome profile route. In a cloud "
+                                 "session, set the TAPSTITCH_COOKIES secret.") from None
+        p, browser = connect(TAPSTITCH)
+        try:
+            jar = {c["name"]: c["value"]
+                   for c in browser.contexts[0].cookies()
+                   if "tapstitch" in c.get("domain", "")}
+        finally:
+            browser.close()
+            p.stop()
+    if not jar:
+        raise TapstitchError("No Tapstitch cookies. On the Mac run "
+                             "scripts/tapstitch_login.py; in the cloud set the "
+                             "TAPSTITCH_COOKIES secret.")
     s = requests.Session()
     s.cookies.update(jar)
     s.headers.update({"accept": "*/*", "device": "pc", "User-Agent": UA})
     return s
+
+
+def _env_cookies():
+    """The TAPSTITCH_COOKIES secret as a {name: value} dict, or {} if unset.
+
+    Takes either of the two things a browser hands over without extra tools:
+    the Cookie request header copied from DevTools ("a=1; b=2"), or a JSON
+    cookie export (a list of {name, value, domain} objects, as cookie-editor
+    extensions write). From a JSON export only tapstitch.com cookies are kept.
+    """
+    raw = os.environ.get("TAPSTITCH_COOKIES", "").strip()
+    if not raw:
+        return {}
+    if raw.lower().startswith("cookie:"):
+        raw = raw[len("cookie:"):].strip()
+    if raw.startswith("["):
+        return {c["name"]: c["value"] for c in json.loads(raw)
+                if "tapstitch" in c.get("domain", "tapstitch")}
+    jar = {}
+    for part in raw.split(";"):
+        name, sep, value = part.strip().partition("=")
+        if sep and name:
+            jar[name] = value
+    return jar
 
 
 def _data(r):
@@ -313,6 +357,25 @@ def store_products(s, q="", page=1, page_size=24):
     return _data(s.get(f"{BASE}/api/services/user/distribution/stores/products",
                        params={"pageNum": page, "pageSize": page_size, "q": q},
                        timeout=60))["page"]
+
+
+def designs(s, page=1, page_size=24, q=""):
+    """One page of the Designs tab (tapstitch.com/account/products-pool).
+
+    These are the account's saved designs, published to a store or not, as
+    opposed to store_products(), which only holds what was added to a store.
+    Found 8 Oct 2026 in the site's own code: the tab's list calls this endpoint
+    with pageNum and pageSize plus its filters. `q` is passed as the tab's
+    search box; untested until a logged-in run confirms it filters.
+
+    Returns the page: {pageNum, pageSize, totalPage, totalCount, data}.
+    Read-only.
+    """
+    params = {"pageNum": page, "pageSize": page_size}
+    if q:
+        params["q"] = q
+    return _data(s.get(f"{BASE}/api/services/user/products/page",
+                       params=params, timeout=60))["page"]
 
 
 def store_product_for(s, shopify_gid, title):
