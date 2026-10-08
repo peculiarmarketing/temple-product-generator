@@ -903,12 +903,48 @@
     "Lehi*": {
       "built": "2026-10-08T19:11:39+00:00",
       "copied": "2026-10-08T19:11:37+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56522609721716": "gid://shopify/MediaImage/56542043373940",
+        "gid://shopify/MediaImage/56522609754484": "gid://shopify/MediaImage/56542043505012",
+        "gid://shopify/MediaImage/56522609983860": "gid://shopify/MediaImage/56542044029300",
+        "gid://shopify/MediaImage/56522610016628": "gid://shopify/MediaImage/56542044127604",
+        "gid://shopify/MediaImage/56522635411828": "gid://shopify/MediaImage/56542043603316",
+        "gid://shopify/MediaImage/56522635739508": "gid://shopify/MediaImage/56542043701620",
+        "gid://shopify/MediaImage/56522636099956": "gid://shopify/MediaImage/56542043799924",
+        "gid://shopify/MediaImage/56522636886388": "gid://shopify/MediaImage/56542042980724",
+        "gid://shopify/MediaImage/56522637312372": "gid://shopify/MediaImage/56542043865460",
+        "gid://shopify/MediaImage/56522638197108": "gid://shopify/MediaImage/56542043898228",
+        "gid://shopify/MediaImage/56522639409524": "gid://shopify/MediaImage/56542043144564"
+      },
+      "cutover": "2026-10-08T19:13:45+00:00",
       "distribute_started_at": "2026-10-08T19:11:40+00:00",
       "distributed": "2026-10-08T19:11:58+00:00",
       "finished": "2026-10-08T19:12:31+00:00",
+      "gallery": "2026-10-08T19:13:41+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542042980724",
+        "gid://shopify/MediaImage/56542043144564",
+        "gid://shopify/MediaImage/56542043373940",
+        "gid://shopify/MediaImage/56542043505012",
+        "gid://shopify/MediaImage/56542043603316",
+        "gid://shopify/MediaImage/56542043701620",
+        "gid://shopify/MediaImage/56542043799924",
+        "gid://shopify/MediaImage/56542043865460",
+        "gid://shopify/MediaImage/56542047994228",
+        "gid://shopify/MediaImage/56542048289140",
+        "gid://shopify/MediaImage/56542048452980",
+        "gid://shopify/MediaImage/56542043898228",
+        "gid://shopify/MediaImage/56542044029300",
+        "gid://shopify/MediaImage/56542044127604"
+      ],
       "handle": "essential-heavyweight-temple-tee-lehi",
       "hidden": "2026-10-08T19:12:15+00:00",
       "new_id": "gid://shopify/Product/15350339371380",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542048452980",
+        "light-blue": "gid://shopify/MediaImage/56542048289140",
+        "pink": "gid://shopify/MediaImage/56542047994228"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -921,8 +957,32 @@
       "source_template_id": "1550273209566445568",
       "store_product_id": "1557953666554732544",
       "template_id": "1557953622329937920",
-      "title": "Essential Heavyweight Temple Tee (Lehi)"
+      "title": "Essential Heavyweight Temple Tee (Lehi)",
+      "verified": "2026-10-08T19:13:47+00:00"
+    },
+    "Lindon": {
+      "built": "2026-10-08T19:14:00+00:00",
+      "copied": "2026-10-08T19:13:58+00:00",
+      "distribute_started_at": "2026-10-08T19:14:00+00:00",
+      "distributed": "2026-10-08T19:14:18+00:00",
+      "finished": "2026-10-08T19:15:07+00:00",
+      "handle": "essential-heavyweight-temple-tee-lindon",
+      "hidden": "2026-10-08T19:14:51+00:00",
+      "new_id": "gid://shopify/Product/15350343729524",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303602635124",
+      "resolved": "2026-10-08T19:13:48+00:00",
+      "source_template_id": "1550095271223050240",
+      "store_product_id": "1557954255376293888",
+      "template_id": "1557954209993871360",
+      "title": "Essential Heavyweight Temple Tee (Lindon)"
     }
   },
-  "updated_at": "2026-10-08T19:12:31+00:00"
+  "updated_at": "2026-10-08T19:15:07+00:00"
 }
