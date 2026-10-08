@@ -1,4 +1,4 @@
-# STATUS (8 Oct 2026, evening): v2 on-model photos LIVE ON THE SEVEN DRAFTS, Evan previewing
+# (8 Oct 2026, evening) v2 on-model photos: what was built
 
 Evan asked for the full replace so he can preview in Shopify. `scripts/onmodel_v2_apply.py --apply` ran;
 `--verify` passes on all seven (order, alts, every variant bound to a v2 shot, still DRAFT). Media ids:
@@ -27,6 +27,35 @@ On approval: upload the 45 finals + 8 cards with `ShopifyClient.upload_media_ima
 <Colour>"), order on-model first with the lead colour in slot 1, then cards, then
 Tapstitch flats; bind each colour's variants to its new on-model shot (bomber: the
 back shot); read back. Products stay DRAFT. Then Phase 2 below.
+
+# STATUS (8 Oct 2026, night): tee colour rollout DONE; v2 on-model photos on the drafts
+
+**Tee colours, done.** Pink, Light Blue and Cream are live on all 45 temple tees
+and the Nauvoo and Salt Lake City map tees. `scripts/tee_colours_rollout.py
+--verify` passes on all 47 (read-only). Each was a swap: old listings are DRAFT
+at `<handle>-retired-2026-10-08`; ids and timestamps in
+`artifacts/tapstitch/tee-colours-rollout.json`; the ledger carries the new
+template and store product ids. Swatches for the new names were pushed to the
+live theme first (backup in artifacts/swatches/). Process and reasons:
+`docs/decisions.md`, "8 October 2026, evening"; how to add any future colour:
+the skill's "Adding a colour to a garment".
+
+**Pipeline, for every new product from here:** `garments/tee.json`,
+`config/tapstitch.json`, `colour_names`, gallery `ORDER` carry eight tee colours,
+so `sweep.py` and `map_run.py` build them; `composite_catalog.py` reads the new
+colours' blank photos from `artifacts/onmodel-front/blanks/back_tee_*.jpg` when
+the Mac's `colourway-photos/` lacks them, and the sweep preflight checks every
+colour has a blank. The map line (branch claude/happy-volta-gmsrac) is merged in.
+
+**Still open, Evan:**
+- Re-import `artifacts/easify/option-sets.csv` in Easify: every swapped tee
+  (and the hoodies, and both map tees) lacks its dropdown until then. The CSV is
+  keyed by handle, which the swaps kept, so it is ready as it is. `easify_options
+  .py sync` needs the Mac's Temples/ folder for the temple sets (it refuses to run
+  without it, correctly); `--maps-only --report-only` showed no changes.
+- The seven Be Peculiar / Sé Singular / bomber drafts carry the v2 on-model
+  photos (option F wordmark, black-on-white cards, re-angled unzipped bomber).
+  Waiting on his preview and his word to set them live.
 
 # START HERE (8 Oct 2026, late): on-model photos v2 for the seven draft products, then the 45-tee colour rollout
 
