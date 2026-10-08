@@ -281,6 +281,18 @@ def preflight():
     if not any(photos.glob("*.png")):
         problems.append(f"no colourway photos in {photos.relative_to(ROOT)}; the on-model "
                         f"composites need them (gitignored, on the Mac)")
+    else:
+        # Every colour each garment sells needs a blank to composite onto, from
+        # colourway-photos/ or the committed recolours composite_catalog.py also
+        # reads (artifacts/onmodel-front/blanks/back_<garment>_<slug>.jpg).
+        import build_product_gallery
+        extra = ROOT / "artifacts" / "onmodel-front" / "blanks"
+        for g, slugs in build_product_gallery.ORDER.items():
+            for slug in slugs:
+                if not ((photos / f"{g}_{slug}.png").exists()
+                        or (extra / f"back_{g}_{slug}.jpg").exists()):
+                    problems.append(f"no blank photo for the {g} in {slug}: add "
+                                    f"{g}_{slug}.png to {photos.relative_to(ROOT)}")
     if problems:
         return problems
     code, out = sh(["tapstitch_login.py", "--check"], "login", check=False)

@@ -1144,3 +1144,50 @@ runners. Evan's calls, the same day:
 - **Swatches** for the five new names were written to the unpublished theme
   "Claude Code V3" through the connector (it refuses writes to the live theme) and
   proved by checksum. They show on the store when V3 is published.
+
+## 8 October 2026, evening (on-model photos v2, the tee colour rollout)
+
+On-model photos for the Be Peculiar line and the bomber, Evan's review of v1 and
+the calls after it (`artifacts/onmodel-v2/`, `composite_front_v2.py`):
+
+- **Prints are laid flat, never warped.** The temple line's fold displacement
+  bends lettering, so a wordmark, logo or seal gets only the photo's light and
+  shade and a light knit texture (0.1). Blank photos are 4K (Higgsfield's upscaler
+  on an approved photo, checked pixel-aligned, or kie.ai at 4K); finals are 5000px
+  JPEG q95, Shopify's maximum, so small text reads at full zoom.
+- **Wordmark placement is option F**, picked on the black tee: 11 in wide, top 5
+  in below the collar at the tee's 21.65 in chest, carried to the crew and hoodie
+  as the same share of the visible chest (51 percent wide, top 23 percent of the
+  chest below the collar). Inches through the size chart drew the hoodie print
+  small, because an oversized garment wraps the body; Tapstitch's flat lays draw
+  every print too small (a 9.95 in print at 41 percent of the chest).
+- **The bomber's main shots stay zipped**, plus one unzipped-over-a-white-tee shot
+  in Navy. On it the open panel leans 3.8 degrees and the chest logo leans with it.
+- **Design close-ups are black ink on white**, never white on a garment colour.
+  One per product; the bomber keeps the seal card only (the chest-logo card is off).
+- **The hoodie fits like the temple hoodie**: regenerated with the temple hoodie
+  on-model shot as a fit reference, "boxy" out of the prompt.
+
+The tee colour rollout (`scripts/tee_colours_rollout.py`):
+
+- **Pink, Light Blue and Cream on every live tee**: the 45 temple tees and the
+  Nauvoo and Salt Lake City map tees. Each is a swap, as Eden Green was, with the
+  old product a draft at `<handle>-retired-2026-10-08`.
+- **Copy the design, never re-save a live one.** `tapstitch_api.copy_design` makes
+  a new private design with the live one's exact config and the new colour list;
+  re-saving the live design would make Tapstitch re-send the live product's
+  images. This is the route for any future colour added to a live line.
+- **The finished gallery is carried across**, image for image, and the new
+  colours' on-model backs go after the last on-model shot, composited from the
+  design's own Tapstitch print file (`scripts/tee_new_colour_composites.py`), so
+  the rollout runs without the Mac's Temples folder.
+- **Colour order:** the old product's order with Pink, Light Blue and Cream after
+  it, so a page still opens on the same colour.
+- **Swatches for the five new names are in the live theme** (`swatches.py push`,
+  8 Oct), not only V3: a new colour going live without its swatch shows a white
+  circle.
+- **Future sweeps and map runs get eight tee colours** from `garments/tee.json`
+  and `config/tapstitch.json`; `composite_catalog.py` reads the new colours' blank
+  photos from `artifacts/onmodel-front/blanks/back_tee_<slug>.jpg` when
+  `colourway-photos/` does not hold them, and the sweep's preflight checks every
+  colour has one.

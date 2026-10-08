@@ -663,12 +663,47 @@
     "Heber Valley*": {
       "built": "2026-10-08T19:02:14+00:00",
       "copied": "2026-10-08T19:02:12+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56522537173364": "gid://shopify/MediaImage/56541949755764",
+        "gid://shopify/MediaImage/56522537206132": "gid://shopify/MediaImage/56541949821300",
+        "gid://shopify/MediaImage/56522537402740": "gid://shopify/MediaImage/56541950345588",
+        "gid://shopify/MediaImage/56522537435508": "gid://shopify/MediaImage/56541950378356",
+        "gid://shopify/MediaImage/56522537468276": "gid://shopify/MediaImage/56541950476660",
+        "gid://shopify/MediaImage/56522550051188": "gid://shopify/MediaImage/56541950116212",
+        "gid://shopify/MediaImage/56522550149492": "gid://shopify/MediaImage/56541950148980",
+        "gid://shopify/MediaImage/56522550280564": "gid://shopify/MediaImage/56541950214516",
+        "gid://shopify/MediaImage/56522550477172": "gid://shopify/MediaImage/56541949657460",
+        "gid://shopify/MediaImage/56522550804852": "gid://shopify/MediaImage/56541950280052",
+        "gid://shopify/MediaImage/56522551066996": "gid://shopify/MediaImage/56541949722996"
+      },
       "distribute_started_at": "2026-10-08T19:02:15+00:00",
       "distributed": "2026-10-08T19:02:32+00:00",
       "finished": "2026-10-08T19:03:23+00:00",
+      "gallery": "2026-10-08T19:04:27+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56541949657460",
+        "gid://shopify/MediaImage/56541949722996",
+        "gid://shopify/MediaImage/56541949755764",
+        "gid://shopify/MediaImage/56541949821300",
+        "gid://shopify/MediaImage/56541950116212",
+        "gid://shopify/MediaImage/56541950148980",
+        "gid://shopify/MediaImage/56541950214516",
+        "gid://shopify/MediaImage/56541950280052",
+        "gid://shopify/MediaImage/56541955686772",
+        "gid://shopify/MediaImage/56541955883380",
+        "gid://shopify/MediaImage/56541955981684",
+        "gid://shopify/MediaImage/56541950345588",
+        "gid://shopify/MediaImage/56541950378356",
+        "gid://shopify/MediaImage/56541950476660"
+      ],
       "handle": "essential-heavyweight-temple-tee-heber-valley",
       "hidden": "2026-10-08T19:03:05+00:00",
       "new_id": "gid://shopify/Product/15350324265332",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56541955981684",
+        "light-blue": "gid://shopify/MediaImage/56541955883380",
+        "pink": "gid://shopify/MediaImage/56541955686772"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -684,5 +719,5 @@
       "title": "Essential Heavyweight Temple Tee (Heber Valley)"
     }
   },
-  "updated_at": "2026-10-08T19:03:23+00:00"
+  "updated_at": "2026-10-08T19:04:27+00:00"
 }

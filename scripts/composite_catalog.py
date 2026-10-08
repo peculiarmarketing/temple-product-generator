@@ -28,6 +28,7 @@ from composite_set import quad_for  # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = None
 TEMPLES = ROOT.parent.parent / "Temples"
+EXTRA_BLANKS = ROOT / "artifacts/onmodel-front/blanks"
 
 
 def main():
@@ -48,6 +49,14 @@ def main():
     photos = {}
     for f in sorted((SPIKE / "colourway-photos").glob(f"{args.garment}_*.png")):
         photos[f.stem] = np.asarray(Image.open(f).convert("RGB"), dtype=np.float64)
+    # Colours added after colourway-photos/ was made (gitignored, Mac only) are
+    # committed as recolours of the same model, one generation from the same
+    # base, so the print geometry holds: the tee's Pink, Light Blue and Cream
+    # (8 Oct 2026). A copy in colourway-photos/ wins if there is one.
+    for f in sorted(EXTRA_BLANKS.glob(f"back_{args.garment}_*.jpg")):
+        stem = f.stem[len("back_"):]
+        if stem not in photos:
+            photos[stem] = np.asarray(Image.open(f).convert("RGB"), dtype=np.float64)
     if not photos:
         raise SystemExit(f"no {args.garment} colourway photos in {SPIKE/'colourway-photos'}")
     print(f"{len(photos)} colourway photos: {', '.join(sorted(photos))}\n")
