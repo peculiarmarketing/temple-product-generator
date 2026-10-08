@@ -625,41 +625,45 @@
         "callout_1": {
           "type": "callout",
           "settings": {
-            "eyebrow": "350 GSM · 10.3 oz",
-            "label": "Heavyweight fleece.",
+            "eyebrow": "Hoodie · 350 GSM",
+            "label": "Heavy fleece, 10.3 oz.",
             "side": "left",
-            "x": 38,
-            "y": 56
+            "phone": "above",
+            "x": 21,
+            "y": 65
           }
         },
         "callout_2": {
           "type": "callout",
           "settings": {
-            "eyebrow": "Up to 12 in across",
-            "label": "The full temple, centred on the back.",
+            "eyebrow": "Designed and printed in the USA",
+            "label": "We print yours after you order. It arrives in 4 to 7 business days.",
             "side": "right",
-            "x": 50,
-            "y": 41
+            "phone": "above",
+            "x": 87,
+            "y": 53
           }
         },
         "callout_3": {
           "type": "callout",
           "settings": {
-            "eyebrow": "Printed in the USA",
-            "label": "Arrives in 4 to 7 business days.",
+            "eyebrow": "Tee · 260 GSM",
+            "label": "Heavyweight cotton that's soft from the first wear.",
             "side": "left",
-            "x": 45,
-            "y": 75
+            "phone": "below",
+            "x": 50,
+            "y": 69
           }
         },
         "callout_4": {
           "type": "callout",
           "settings": {
-            "eyebrow": "City line",
-            "label": "Nauvoo, Illinois. The city the temple stands in.",
+            "eyebrow": "Crewneck · 350 GSM",
+            "label": "Same fleece as the hoodie.",
             "side": "right",
-            "x": 50,
-            "y": 65
+            "phone": "below",
+            "x": 86,
+            "y": 69
           }
         }
       },
@@ -673,7 +677,7 @@
         "background": "#0d0e11",
         "text_color": "#ffffff",
         "accent": "#F58000",
-        "image": "shopify://shop_images/hoodie_black_162cc38b-7a8d-4791-94be-54ab39cd587b.jpg"
+        "image": "shopify://shop_images/pp-spec-group-k.jpg"
       }
     },
     "pp_why_chain": {

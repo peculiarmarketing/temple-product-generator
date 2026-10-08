@@ -10,7 +10,8 @@ const { chromium } = require('playwright');
     const el = await pg.$('[data-pp-spec]'); await el.scrollIntoViewIfNeeded(); await pg.waitForTimeout(4000);
     const bb = await el.boundingBox(); await pg.evaluate((y) => scrollTo(0, scrollY + y), bb.y - 40); await pg.waitForTimeout(800);
     await el.screenshot({ path: `${P}/${name}.jpg`, quality: 75 });
-    console.log(name, JSON.stringify(await el.boundingBox()), errs);
+    const sideways = await pg.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    console.log(name, JSON.stringify(await el.boundingBox()), 'sideways', sideways, errs);
     await ctx.close();
   }
   await b.close();

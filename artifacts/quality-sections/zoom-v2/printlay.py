@@ -6,10 +6,13 @@ true printed size for the photo's scale, bends it slightly with the fabric folds
 show through, and, at macro scale, lets the knit texture break up the ink a little
 the way white ink sits on cotton. Used for every frame of the scroll zoom chain.
 """
+import os
 import numpy as np
 from PIL import Image, ImageFilter
 
-LOGO = '/root/.claude/uploads/6fbf1d82-0c82-53e9-9f7e-454ccd9e0762/c44be4e7-image.png'
+# The white logo the store header and the chest prints use (theme setting "logo",
+# Peculiar People Logo - White.png), kept beside these scripts.
+LOGO = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pp-logo-white.png')
 
 
 def _ink_bbox(a):

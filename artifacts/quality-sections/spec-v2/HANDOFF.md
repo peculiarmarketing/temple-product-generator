@@ -1,5 +1,9 @@
 # Handoff: rebuild the homepage spec overlay
 
+**Done 5 Oct 2026: see `README.md` in this folder.** The three-person photo, the
+new callouts and the phone layout are live on V3. What follows is the brief as it
+stood before that round.
+
 Start here in a fresh session. Branch: `claude/homepage-quality-sections` in
 temple-product-generator. Read the workspace `CLAUDE.md` and `BRAND.md` first;
 the house rules there apply (no em dashes anywhere Evan-facing, new copy gets

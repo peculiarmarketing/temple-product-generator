@@ -4,7 +4,8 @@
      on the photo (percent across and down) and how far to zoom; the script keeps
      that point a little above centre so the words never cover it.
    - Spec overlay (sections/pp-spec-overlay.liquid): draws a line from each dot on
-     the photo to its label on desktop, then draws them out when in view.
+     the photo to its label (beside the photo on desktop, above or below it on
+     phones), then draws them out when in view.
    - Why chain (sections/pp-why-chain.liquid): lights the lines one at a time, once.
    - Dive (sections/pp-zoom-dive.liquid) and film (sections/pp-zoom-film.liquid):
      the seamless zoom from the lifestyle shot down to the knit, as a photo chain
@@ -480,21 +481,33 @@
     const svg = section.querySelector('[data-pp-spec-lines]');
     const NS = 'http://www.w3.org/2000/svg';
 
+    const wide = window.matchMedia('(min-width: 990px)');
+
     function draw() {
       svg.textContent = '';
-      if (window.getComputedStyle(svg).display === 'none') return;
       const s = stage.getBoundingClientRect();
+      if (!s.width) return;
       svg.setAttribute('viewBox', `0 0 ${s.width} ${s.height}`);
       section.querySelectorAll('[data-pp-spec-label]').forEach((label, k) => {
         const dot = section.querySelector(`[data-pp-spec-dot="${label.dataset.ppSpecLabel}"]`);
         if (!dot) return;
         const d = dot.getBoundingClientRect();
         const l = label.getBoundingClientRect();
-        const left = label.classList.contains('pp-spec__label--left');
         const x1 = d.left + d.width / 2 - s.left;
         const y1 = d.top + d.height / 2 - s.top;
-        const x2 = (left ? l.right + 10 : l.left - 10) - s.left;
-        const y2 = l.top + 9 - s.top;
+        let x2;
+        let y2;
+        if (wide.matches) {
+          // desktop: to the inner edge of the label, level with the small caps
+          const left = label.classList.contains('pp-spec__label--left');
+          x2 = (left ? l.right + 10 : l.left - 10) - s.left;
+          y2 = l.top + 9 - s.top;
+        } else {
+          // phones: straight up or down to the label, kept under or over its text
+          const above = label.classList.contains('pp-spec__label--above');
+          x2 = Math.min(Math.max(x1 + s.left, l.left + 4), l.right - 4) - s.left;
+          y2 = (above ? l.bottom + 8 : l.top - 8) - s.top;
+        }
         const line = document.createElementNS(NS, 'line');
         line.setAttribute('x1', x1.toFixed(1));
         line.setAttribute('y1', y1.toFixed(1));

@@ -1,18 +1,19 @@
 {%- comment -%}
-  Peculiar People homepage: spec overlay. A garment photo with callouts: a dot on the
-  photo and a label beside it, joined by a thin line that draws out when the section
-  scrolls into view. Each callout is a block (point on the photo, side, small caps
-  label, short line). Desktop puts the labels in columns either side of the photo
-  and pp-quality.js draws the lines; phones show numbered dots and the labels as a
-  numbered list under the photo. With the script off or reduced motion on, the labels
-  are simply shown.
+  Peculiar People homepage: spec overlay. A photo with callouts: a small dot on the
+  photo and a label away from it, joined by a thin line that draws out when the
+  section scrolls into view. Each callout is a block (point on the photo, desktop
+  side, phone place, small caps label, short line). Desktop puts the labels in
+  columns either side of the photo; phones put them in two rows above and below a
+  full-width photo. pp-quality.js draws the lines on both. The photo keeps its own
+  shape. With the script off or reduced motion on, the labels and dots are simply
+  shown.
 {%- endcomment -%}
 {{ 'pp-quality.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
 {%- render 'pp-quality-font' -%}
 {%- liquid
   assign s = section.settings
-  assign image_alt = s.image.alt | default: 'The garment, back view, with its specifications'
+  assign image_alt = s.image.alt | default: 'Three friends in the tee, the hoodie and the crewneck'
   assign left_count = 0
   assign right_count = 0
   for block in section.blocks
@@ -56,7 +57,7 @@
             | image_tag:
               loading: 'lazy',
               widths: '550, 750, 1000, 1400',
-              sizes: '(min-width: 990px) 560px, 100vw',
+              sizes: '(min-width: 990px) 680px, 100vw',
               class: 'pp-spec__img',
               alt: image_alt
           }}
@@ -69,20 +70,17 @@
             style="--x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%;"
             data-pp-spec-dot="{{ forloop.index }}"
             aria-hidden="true"
-          >
-            <span class="pp-spec__num">{{ forloop.index }}</span>
-          </span>
+          ></span>
         {%- endfor -%}
       </div>
 
       {%- for block in section.blocks -%}
         <div
-          class="pp-spec__label pp-spec__label--{{ block.settings.side }}"
+          class="pp-spec__label pp-spec__label--{{ block.settings.side }} pp-spec__label--{{ block.settings.phone | default: 'below' }}"
           style="--i: {{ forloop.index0 }};"
           data-pp-spec-label="{{ forloop.index }}"
           {{ block.shopify_attributes }}
         >
-          <span class="pp-spec__num" aria-hidden="true">{{ forloop.index }}</span>
           <span class="pp-spec__words">
             {%- if block.settings.eyebrow != blank -%}
               <span class="pp-spec__eyebrow">{{ block.settings.eyebrow | escape }}</span>
@@ -108,8 +106,8 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Garment photo",
-      "info": "Square works best. After changing it, move each callout's point to match."
+      "label": "Photo",
+      "info": "Any shape; it is shown whole. After changing it, move each callout's point to match."
     },
     { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
     { "type": "color", "id": "text_color", "label": "Text and lines", "default": "#ffffff" },
@@ -130,7 +128,19 @@
             { "value": "left", "label": "Left" },
             { "value": "right", "label": "Right" }
           ],
-          "default": "right"
+          "default": "right",
+          "info": "Desktop: the column the label sits in. Phones: left or right half of its row."
+        },
+        {
+          "type": "select",
+          "id": "phone",
+          "label": "On phones",
+          "options": [
+            { "value": "above", "label": "Above the photo" },
+            { "value": "below", "label": "Below the photo" }
+          ],
+          "default": "below",
+          "info": "Use one left and one right callout per row."
         },
         { "type": "range", "id": "x", "label": "Point across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
         { "type": "range", "id": "y", "label": "Point down the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
@@ -142,22 +152,10 @@
     {
       "name": "PP spec overlay",
       "blocks": [
-        {
-          "type": "callout",
-          "settings": { "eyebrow": "350 GSM · 10.3 oz", "label": "Heavyweight fleece.", "side": "left", "x": 38, "y": 56 }
-        },
-        {
-          "type": "callout",
-          "settings": { "eyebrow": "Up to 12 in across", "label": "The full temple, centred on the back.", "side": "right", "x": 50, "y": 41 }
-        },
-        {
-          "type": "callout",
-          "settings": { "eyebrow": "Printed in the USA", "label": "Arrives in 4 to 7 business days.", "side": "left", "x": 45, "y": 75 }
-        },
-        {
-          "type": "callout",
-          "settings": { "eyebrow": "City line", "label": "Nauvoo, Illinois. The city the temple stands in.", "side": "right", "x": 50, "y": 65 }
-        }
+        { "type": "callout", "settings": { "eyebrow": "Hoodie · 350 GSM", "label": "Heavy fleece, 10.3 oz.", "side": "left", "phone": "above", "x": 21, "y": 65 } },
+        { "type": "callout", "settings": { "eyebrow": "Designed and printed in the USA", "label": "We print yours after you order. It arrives in 4 to 7 business days.", "side": "right", "phone": "above", "x": 87, "y": 53 } },
+        { "type": "callout", "settings": { "eyebrow": "Tee · 260 GSM", "label": "Heavyweight cotton that's soft from the first wear.", "side": "left", "phone": "below", "x": 50, "y": 69 } },
+        { "type": "callout", "settings": { "eyebrow": "Crewneck · 350 GSM", "label": "Same fleece as the hoodie.", "side": "right", "phone": "below", "x": 86, "y": 69 } }
       ]
     }
   ]
