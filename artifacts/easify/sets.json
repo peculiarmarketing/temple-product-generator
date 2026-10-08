@@ -15,6 +15,37 @@
       "garment": "hoodie",
       "set_title": "Hoodie",
       "option_name": "Temple Hoodie"
+    },
+    {
+      "garment": "tee",
+      "kind": "map",
+      "set_title": "Map Tee",
+      "option_name": "Map Tee",
+      "option_label": "Map",
+      "placeholder": "Choose your map",
+      "browse_label": "Browse other maps",
+      "clone_from": "Tee"
+    },
+    {
+      "garment": "crew",
+      "kind": "map",
+      "set_title": "Map Sweatshirt",
+      "option_name": "Map Sweatshirt",
+      "option_label": "Map",
+      "placeholder": "Choose your map",
+      "browse_label": "Browse other maps",
+      "clone_from": "Sweatshirt"
+    },
+    {
+      "garment": "hoodie",
+      "kind": "map",
+      "set_title": "Map Hoodie",
+      "option_name": "Map Hoodie",
+      "option_label": "Map",
+      "placeholder": "Choose your map",
+      "browse_label": "Browse other maps",
+      "clone_from": "Hoodie"
     }
-  ]
+  ],
+  "_comment_maps": "Map sets (kind map, 8 Oct 2026) list live city map products by their exact title prefix (the line name with Map for Temple, place in brackets) and label each by the bracketed place. They are created by cloning the garment's Temple set and relabelled with option_label, placeholder and browse_label."
 }

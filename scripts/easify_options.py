@@ -9,6 +9,7 @@ something actually changed. Importing into Easify stays manual, like publishing.
 
   python scripts/easify_options.py sync                  # verify, fix, add
   python scripts/easify_options.py sync --report-only    # print, write nothing
+  python scripts/easify_options.py sync --maps-only      # map sets only (cloud)
   python scripts/easify_options.py reseed --export PATH  # adopt a fresh Easify
                                                          # export as canonical
                                                          # (one-time, after an
@@ -153,6 +154,46 @@ def live_temple_products(config, tokens):
     return expected, conflicted, attention
 
 
+def live_map_products(spec, live=None):
+    """{place slug: (label, handle)} for one map set (8 Oct 2026).
+
+    A map product is tagged line:map and map:<slug> (scripts/map_run.py) and is
+    titled with the garment's line name, Temple swapped for Map, place in
+    brackets: "Essential Heavyweight Map Tee (Nauvoo)". Matched by that exact
+    title prefix, so a map on another garment can never land in this set. The
+    bracketed place is the dropdown label."""
+    cfg = load_garment_config(spec["garment"])
+    prefix = cfg["naming"]["title_parent"].replace("Temple", "Map") + " ("
+    if live is None:
+        client = ShopifyClient()
+        live, cursor = [], None
+        while True:
+            data = client.gql("""query($after: String) { products(first: 100, after: $after,
+                query: "tag:'line:map'") { pageInfo { hasNextPage endCursor }
+                nodes { title handle status publishedAt tags } } }""", {"after": cursor})["products"]
+            live += data["nodes"]
+            if not data["pageInfo"]["hasNextPage"]:
+                break
+            cursor = data["pageInfo"]["endCursor"]
+    out, attention = {}, []
+    for p in live:
+        if p["status"] not in ("ACTIVE", "UNLISTED") or not p["publishedAt"]:
+            continue
+        title = p["title"].strip()
+        if not (title.startswith(prefix) and title.endswith(")")):
+            continue
+        slug = next((t[4:] for t in p["tags"] if t.startswith("map:")), None)
+        if not slug:
+            attention.append(f"{spec['set_title']}: {title!r} has no map: tag; skipped")
+            continue
+        if slug in out:
+            attention.append(f"{spec['set_title']}: two live products for {slug}; "
+                             f"skipped {p['handle']}")
+            continue
+        out[slug] = (title[len(prefix):-1], p["handle"])
+    return out, attention
+
+
 def new_value_row(template, label, url):
     row = dict(template)
     row["option_value_id"] = str(uuid.uuid4())
@@ -282,6 +323,9 @@ def new_set_rows(spec, clone_rows, expected, set_id):
         row["option_set_id"] = str(set_id)
         row["option_set_title"] = spec["set_title"]
         row["option_name"] = spec["option_name"]
+        for key in ("option_label", "placeholder"):
+            if spec.get(key):
+                row[key] = spec[key]
         row["option_id"] = ""
         row["option_id_unique"] = new_unique
         row["default_value"] = browse_id
@@ -289,6 +333,8 @@ def new_set_rows(spec, clone_rows, expected, set_id):
 
     rows = [rebrand(dict(clone_default))]
     rows[0]["option_value_id"] = browse_id
+    if spec.get("browse_label"):
+        rows[0]["option_value_label"] = spec["browse_label"]
     for label, handle in sorted(expected.values()):
         rows.append(rebrand(new_value_row(clone_value, label, STORE + handle)))
     cell = products_cell([h for _, h in expected.values()])
@@ -371,16 +417,38 @@ def print_report(changes, attention, set_order):
             print(f"  {line}")
 
 
-def cmd_sync(report_only):
+def cmd_sync(report_only, maps_only=False):
     config = load_config()
+    if maps_only:
+        # The temple sets need the Temples folder (temple_tokens reads each
+        # temple's manifest), which only the Mac has. Leaving them out of config
+        # passes them through untouched, which validate_output asserts.
+        config = [s for s in config if s.get("kind") == "map"]
     fieldnames, in_rows = load_canonical()
     in_sets = group_by_set(in_rows)
     for title, rows in in_sets.items():
         if len({r["option_set_products"] for r in rows}) != 1:
             raise SystemExit(f"Canonical CSV is inconsistent: option_set_products differs "
                              f"between rows of {title!r}. Reseed from a fresh Easify export first.")
-    tokens = temple_tokens()
-    expected, conflicted, attention = live_temple_products(config, tokens)
+    temple_specs = [s for s in config if s.get("kind", "temple") == "temple"]
+    tokens = temple_tokens() if temple_specs else {}
+    temple_specs = [s for s in config if s.get("kind", "temple") == "temple"]
+    by_garment, conflicted_g, attention = (live_temple_products(temple_specs, tokens)
+                                           if temple_specs else ({}, {}, []))
+    # Keyed by SET title from here on: a garment can carry a Temple set and a
+    # Map set, so the garment alone no longer names one set's products.
+    expected, conflicted, tokens_of = {}, {}, {}
+    for s in temple_specs:
+        expected[s["set_title"]] = by_garment[s["garment"]]
+        conflicted[s["set_title"]] = conflicted_g[s["garment"]]
+        tokens_of[s["set_title"]] = tokens
+    for s in config:
+        if s.get("kind") == "map":
+            expected[s["set_title"]], att = live_map_products(s)
+            attention += att
+            conflicted[s["set_title"]] = set()
+            tokens_of[s["set_title"]] = {label: slug for slug, (label, _)
+                                         in expected[s["set_title"]].items()}
     cfg_by_title = {s["set_title"]: s for s in config}
 
     set_order = list(dict.fromkeys(r["option_set_title"] for r in in_rows))
@@ -399,23 +467,23 @@ def cmd_sync(report_only):
                 # line relaunches, skipping the set silently would leave its
                 # dropdown pointing at the old drafted handles and say nothing,
                 # so a paused set with live products is an error, not a skip.
-                if expected[garment]:
+                if expected[title]:
                     raise SystemExit(
                         f"{title}: {garment} is marked paused in sets.json but "
-                        f"{len(expected[garment])} live product(s) were found. "
+                        f"{len(expected[title])} live product(s) were found. "
                         f"Set paused to false there and rerun.")
                 out_sets[title] = in_sets[title]
                 attention.append(f"{title}: {garment} is paused, set left untouched")
                 continue
-            if not expected[garment] and len(in_sets[title]) > 1:
+            if not expected[title] and len(in_sets[title]) > 1:
                 # A populated set losing every live product means a broken
                 # catalog read (wrong store, bad filter), not mass retirement.
                 raise SystemExit(
                     f"Shopify returned no live {garment} products but the set {title!r} "
                     f"has {len(in_sets[title]) - 1} temple options. Refusing to blank it; "
                     f"check SHOPIFY_STORE_DOMAIN and the catalog before rerunning.")
-            new_rows, ch, att = reconcile_set(title, in_sets[title], expected[garment],
-                                              tokens, conflicted[garment])
+            new_rows, ch, att = reconcile_set(title, in_sets[title], expected[title],
+                                              tokens_of[title], conflicted[title])
             out_sets[title] = new_rows
             attention += att
             touched.add(title)
@@ -429,21 +497,25 @@ def cmd_sync(report_only):
         title = spec["set_title"]
         if title in out_sets:
             continue
-        exp = expected[spec["garment"]]
+        exp = expected[title]
         if not exp:
             attention.append(f"{title}: no live {spec['garment']} products, set not created")
             continue
         clone = in_sets.get(spec.get("clone_from"))
         if not clone:
             raise SystemExit(f"{title}: clone_from {spec.get('clone_from')!r} not found in the CSV")
-        out_sets[title] = new_set_rows(spec, clone, exp, PLACEHOLDER_SET_ID_BASE + n_created)
+        # Above every id already in the file: "Tee - With Date" holds 900001,
+        # and two sets sharing a placeholder id could merge on import.
+        used = [int(r["option_set_id"]) for r in in_rows if r["option_set_id"].isdigit()]
+        base = max([PLACEHOLDER_SET_ID_BASE - 1] + [u for u in used if u >= PLACEHOLDER_SET_ID_BASE]) + 1
+        out_sets[title] = new_set_rows(spec, clone, exp, base + n_created)
         n_created += 1
         set_order.append(title)
         touched.add(title)
         labels = sorted(label for label, _ in exp.values())
         changes[title] = [
             f"New set with a placeholder id; the Easify import should create it",
-            f"Added {len(labels)} temples: {', '.join(labels)}",
+            f"Added {len(labels)} options: {', '.join(labels)}",
             f"Applies to {len(exp)} products",
         ]
 
@@ -454,7 +526,7 @@ def cmd_sync(report_only):
         print("\nNo changes. CSV not written.")
         return
 
-    expected_by_title = {s["set_title"]: expected[s["garment"]] for s in config
+    expected_by_title = {s["set_title"]: expected[s["set_title"]] for s in config
                          if s["set_title"] in touched}
     text = validate_output(fieldnames, out_rows, in_sets, touched, expected_by_title)
     print_report(changes, attention, set_order)
@@ -521,13 +593,15 @@ def main():
     sub = ap.add_subparsers(dest="command", required=True)
     sync = sub.add_parser("sync", help="reconcile the CSV with the live catalog")
     sync.add_argument("--report-only", action="store_true", help="print changes, write nothing")
+    sync.add_argument("--maps-only", action="store_true",
+                      help="sync only the map sets (no Temples folder needed)")
     reseed = sub.add_parser("reseed", help="adopt a fresh Easify export as canonical")
     reseed.add_argument("--export", required=True, help="path to the downloaded Easify export")
     args = ap.parse_args()
     if args.command == "reseed":
         cmd_reseed(args.export)
     else:
-        cmd_sync(args.report_only)
+        cmd_sync(args.report_only, args.maps_only)
 
 
 if __name__ == "__main__":

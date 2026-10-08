@@ -20,7 +20,9 @@ What differs from a temple, all decided by Evan on 8 Oct 2026:
   - Description: the same fixed product-details sections, no temple facts, and
     a Church history section (`site-history`) for a Church history site, from
     designs/city-map-back/history/<place>.html.
-  - Tags: map:<place> and line:map, and NOT garment:, country: or state:. The
+  - Tags: map:<place>, line:map and apparel:<garment> (plus listing:parent with
+    --parent, for the one map per garment that is the line's collection card;
+    Salt Lake City since 8 Oct 2026), and NOT garment:, country: or state:. The
     temple collections are smart collections on those three (temple-tees,
     temple-crewnecks, temple-hoodies, all-temples), and the homepage marquee
     reads temple-tees, so a garment: tag would put a map in the temple marquee.
@@ -48,6 +50,7 @@ second template or a second distribute (the same rules as tapstitch_run.py).
   python scripts/map_run.py nauvoo                     # build print files, plan
   python scripts/map_run.py nauvoo --apply             # Tapstitch products, not public
   python scripts/map_run.py nauvoo --apply --publish   # LIVE
+  python scripts/map_run.py salt-lake-city --apply --publish --parent
 """
 
 import argparse
@@ -230,8 +233,16 @@ def description_for(name, p, garment_cfg):
     return html
 
 
-def tags_for(name):
-    return [f"map:{name}", COLLECTION["tag"]]
+APPAREL = {"tee": "tee", "crew": "crew", "hoodie": "hoodie"}
+
+
+def tags_for(name, garment_id, parent=False):
+    """map:<place> for the drawing band and the Easify map set, line:map for
+    Church History Maps, apparel:<garment> for the garment collections, and
+    listing:parent on the one map per garment that is the line's card there
+    (scripts/garment_collections.py)."""
+    tags = [f"map:{name}", COLLECTION["tag"], f"apparel:{APPAREL[garment_id]}"]
+    return tags + (["listing:parent"] if parent else [])
 
 
 # ------------------------------------------------------------- state
@@ -338,7 +349,7 @@ def upload_drawing(client, name):
 
 # ------------------------------------------------------------- run
 
-def run_garment(s, client, name, p, garment_id, publish, state, note):
+def run_garment(s, client, name, p, garment_id, publish, state, note, parent=False):
     cfg = generate.load_garment_config(garment_id)
     st = state.setdefault(garment_id, {})
     title = title_for(name, p, cfg)
@@ -359,7 +370,7 @@ def run_garment(s, client, name, p, garment_id, publish, state, note):
             payload = T.store_product_payload(
                 prefill, title, int(round(cfg["price_usd"] * 100)),
                 description_for(name, p, cfg), lead_color_id(cfg))
-            payload["tags"] = tags_for(name)
+            payload["tags"] = tags_for(name, garment_id, parent)
             st["store_product_id"] = T.create_store_product(s, STORE_ID, payload)
             save_state(name, state)
             note(f"store product {st['store_product_id']} ({title!r})")
@@ -390,7 +401,7 @@ def run_garment(s, client, name, p, garment_id, publish, state, note):
         raise SystemExit(f"variant image repair did not run: {rebound}")
     note(rebound or "variant images already on the back")
     pid = client.find_product_by_handle(handle)["id"]
-    note(add_tags(client, pid, tags_for(name)))
+    note(add_tags(client, pid, tags_for(name, garment_id, parent)))
     note(set_place_line(client, pid, p))
     # templates/product.map.json (8 Oct 2026, Evan): the product template without
     # the temple Reference / Final drawing slider, with the design-suggestion
@@ -412,6 +423,8 @@ def main():
     ap.add_argument("--garment", action="append", choices=GARMENTS)
     ap.add_argument("--apply", action="store_true", help="Tapstitch writes (not public)")
     ap.add_argument("--publish", action="store_true", help="distribute: LIVE, no undo")
+    ap.add_argument("--parent", action="store_true",
+                    help="this map is the map line's card in the garment collections")
     a = ap.parse_args()
     if a.publish and not a.apply:
         raise SystemExit("--publish needs --apply")
@@ -439,7 +452,7 @@ def main():
     for g in garments:
         def note(msg, g=g):
             print(f"  [{g}] {msg}", flush=True)
-        run_garment(s, client, name, p, g, a.publish, state, note)
+        run_garment(s, client, name, p, g, a.publish, state, note, a.parent)
     if a.publish:
         print(f"  {upload_drawing(client, name)}")
         cid, msg = ensure_collection(client)
