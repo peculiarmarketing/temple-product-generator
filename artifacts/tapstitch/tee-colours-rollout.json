@@ -1683,10 +1683,48 @@
     "Provo": {
       "built": "2026-10-08T19:42:55+00:00",
       "copied": "2026-10-08T19:42:53+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523037344116": "gid://shopify/MediaImage/56542469030260",
+        "gid://shopify/MediaImage/56523037376884": "gid://shopify/MediaImage/56542469063028",
+        "gid://shopify/MediaImage/56523037573492": "gid://shopify/MediaImage/56542469226868",
+        "gid://shopify/MediaImage/56523037606260": "gid://shopify/MediaImage/56542469292404",
+        "gid://shopify/MediaImage/56523037639028": "gid://shopify/MediaImage/56542469325172",
+        "gid://shopify/MediaImage/56523065459060": "gid://shopify/MediaImage/56542469095796",
+        "gid://shopify/MediaImage/56523065753972": "gid://shopify/MediaImage/56542469128564",
+        "gid://shopify/MediaImage/56523066016116": "gid://shopify/MediaImage/56542469161332",
+        "gid://shopify/MediaImage/56523066311028": "gid://shopify/MediaImage/56542468899188",
+        "gid://shopify/MediaImage/56523066409332": "gid://shopify/MediaImage/56542469194100",
+        "gid://shopify/MediaImage/56523066769780": "gid://shopify/MediaImage/56542468931956"
+      },
+      "cutover": "2026-10-08T19:44:53+00:00",
       "distribute_started_at": "2026-10-08T19:42:56+00:00",
       "distributed": "2026-10-08T19:43:14+00:00",
+      "finished": "2026-10-08T19:43:47+00:00",
+      "gallery": "2026-10-08T19:44:49+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542468899188",
+        "gid://shopify/MediaImage/56542468931956",
+        "gid://shopify/MediaImage/56542469030260",
+        "gid://shopify/MediaImage/56542469063028",
+        "gid://shopify/MediaImage/56542469095796",
+        "gid://shopify/MediaImage/56542469128564",
+        "gid://shopify/MediaImage/56542469161332",
+        "gid://shopify/MediaImage/56542469194100",
+        "gid://shopify/MediaImage/56542473355636",
+        "gid://shopify/MediaImage/56542473421172",
+        "gid://shopify/MediaImage/56542473486708",
+        "gid://shopify/MediaImage/56542469226868",
+        "gid://shopify/MediaImage/56542469292404",
+        "gid://shopify/MediaImage/56542469325172"
+      ],
       "handle": "essential-heavyweight-temple-tee-provo",
+      "hidden": "2026-10-08T19:43:32+00:00",
       "new_id": "gid://shopify/Product/15350403072372",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542473486708",
+        "light-blue": "gid://shopify/MediaImage/56542473421172",
+        "pink": "gid://shopify/MediaImage/56542473355636"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -1699,8 +1737,32 @@
       "source_template_id": "1550274692806557696",
       "store_product_id": "1557961534683160576",
       "template_id": "1557961513266999296",
-      "title": "Essential Heavyweight Temple Tee (Provo)"
+      "title": "Essential Heavyweight Temple Tee (Provo)",
+      "verified": "2026-10-08T19:44:55+00:00"
+    },
+    "Provo City Center": {
+      "built": "2026-10-08T19:45:13+00:00",
+      "copied": "2026-10-08T19:45:11+00:00",
+      "distribute_started_at": "2026-10-08T19:45:14+00:00",
+      "distributed": "2026-10-08T19:45:31+00:00",
+      "finished": "2026-10-08T19:46:05+00:00",
+      "handle": "essential-heavyweight-temple-tee-provo-city-center",
+      "hidden": "2026-10-08T19:45:48+00:00",
+      "new_id": "gid://shopify/Product/15350407332212",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303629013364",
+      "resolved": "2026-10-08T19:44:57+00:00",
+      "source_template_id": "1550100522084810752",
+      "store_product_id": "1557962113056710656",
+      "template_id": "1557962046463700992",
+      "title": "Essential Heavyweight Temple Tee (Provo City Center)"
     }
   },
-  "updated_at": "2026-10-08T19:43:14+00:00"
+  "updated_at": "2026-10-08T19:46:05+00:00"
 }
