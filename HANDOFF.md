@@ -1,3 +1,14 @@
+# (8 Oct 2026, night) Salt Lake parent descriptions fixed; homepage collection tabs live
+
+- The Salt Lake temple hoodie and sweatshirt descriptions were rebuilt with their
+  collapsible rows (an old admin-editor save had stripped them). Words unchanged.
+  Every garment product now has rows (148 of 148). `scripts/rebuild_parent_descriptions.py`.
+- Homepage "Shop by garment" is four tabs: Hoodies, Tees, Sweatshirts, All Products
+  (`sections/pp-collection-tabs.liquid`, `scripts/home_collection_tabs.py`, revert
+  available). Tees, Sweatshirts and Hoodies are now published; card order by
+  `scripts/collection_order.py`. Verified on the live site, desktop and mobile.
+- Details: `docs/decisions.md`, "8 October 2026, night".
+
 # (8 Oct 2026, evening) v2 on-model photos: what was built
 
 Evan asked for the full replace so he can preview in Shopify. `scripts/onmodel_v2_apply.py --apply` ran;

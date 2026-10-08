@@ -15,124 +15,302 @@
         "heading": "Made to start the conversation",
         "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
         "button_label": "Find your temple",
-        "link": "shopify://collections/all-temples",
-        "temples": "salt-lake, kirtland, nauvoo, logan, mexico-city, rome"
+        "link": "shopify://collections/temple-design-products",
+        "temples": "salt-lake, kirtland, nauvoo, logan, mexico-city, rome",
+        "drawing_label": "Line drawings of temples, drawn one after another"
       }
     },
-    "hero": {
-      "type": "slideshow",
+    "pp_zoom_dive": {
+      "type": "pp-zoom-dive",
       "blocks": {
-        "hero_slide": {
-          "type": "slide",
+        "story_1": {
+          "type": "step",
           "settings": {
-            "image": "shopify://shop_images/product_lay.png",
-            "image_overlay_opacity": 0,
-            "heading": "Made to start the conversation",
-            "title_highlight_color": "#001A58",
-            "heading_size": "h1",
-            "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
-            "button_label": "Find your temple",
-            "link": "shopify://collections/all-temples",
-            "button_style_secondary": false,
-            "box_align": "middle-center",
-            "show_text_box": true,
-            "text_alignment": "center",
-            "text_alignment_mobile": "center",
-            "color_scheme": "custom",
-            "custom_colors_background": "#ffffff",
-            "custom_colors_text": "#111111",
-            "custom_colors_solid_button_background": "#F58000",
-            "custom_colors_solid_button_text": "#ffffff",
-            "custom_colors_outline_button": "#001A58",
-            "transparent_container_color": "white"
+            "image": "shopify://shop_images/pp-dive-purpose-1-why.jpg",
+            "eyebrow": "Why we make it",
+            "text": "We make temple apparel for one reason: so someone asks you about it.",
+            "transition": "fade",
+            "next_x": 37.5,
+            "next_y": 37.5,
+            "next_size": 25,
+            "focus_x": 66,
+            "focus_y": 42
+          }
+        },
+        "story_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-2-opening.jpg",
+            "eyebrow": "An opening",
+            "text": "A question about your shirt is an easy one to answer. Sometimes it leads somewhere you didn't plan.",
+            "transition": "fade",
+            "next_x": 37.5,
+            "next_y": 37.5,
+            "next_size": 25,
+            "focus_x": 55,
+            "focus_y": 40
+          }
+        },
+        "story_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-3-every-day.jpg",
+            "eyebrow": "Worn every day",
+            "text": "None of that happens if the shirt stays in the drawer. It has to be the one you reach for first.",
+            "transition": "fade",
+            "next_x": 37.5,
+            "next_y": 37.5,
+            "next_size": 25,
+            "focus_x": 36,
+            "focus_y": 42,
+            "pan_x": 68
+          }
+        },
+        "story_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
+            "eyebrow": "The blank",
+            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
+            "transition": "zoom",
+            "next_x": 41.4,
+            "next_y": 32.5,
+            "next_size": 19.4,
+            "focus_x": 50,
+            "focus_y": 40
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "transition": "zoom",
+            "next_x": 46.0,
+            "next_y": 48.4,
+            "next_size": 21.5,
+            "focus_x": 50,
+            "focus_y": 55
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "transition": "zoom",
+            "next_x": 43.9,
+            "next_y": 76.0,
+            "next_size": 23.8,
+            "focus_x": 50,
+            "focus_y": 50
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "transition": "zoom",
+            "next_x": 37.5,
+            "next_y": 37.5,
+            "next_size": 25,
+            "focus_x": 50,
+            "focus_y": 50
           }
         }
       },
       "block_order": [
-        "hero_slide"
+        "story_1",
+        "story_2",
+        "story_3",
+        "story_4",
+        "step_2",
+        "step_3",
+        "step_4"
       ],
       "settings": {
-        "visibility": "always-display",
-        "layout": "full_bleed",
-        "slide_height": "medium",
-        "slider_visual": "dots",
-        "desktop_pagination_position": "over",
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "show_text_below": true,
-        "mobile_pagination_position": "under",
-        "accessibility_info": "Peculiar People temple apparel"
-      },
-      "disabled": true
+        "heading": "",
+        "scroll_length": "story",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
     },
-    "featured_products": {
-      "type": "featured-collection",
+    "pp_zoom_film": {
+      "type": "pp-zoom-film",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "The blank",
+            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
+            "time": 0
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "time": 3.9
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "time": 8.6
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "time": 13
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "disabled": true,
       "settings": {
-        "visibility": "always-display",
-        "title": "The temples",
-        "title_highlight_1": "solid-color",
-        "title_highlight_1_color": "#001A58",
-        "heading_size": "h2",
-        "collection": "all-temples",
-        "products_to_show": 12,
-        "show_view_all": true,
-        "view_all_style": "outline",
-        "image_ratio": "square",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "enable_quick_add": false,
-        "color_scheme": "background-1",
-        "cards_color_scheme": "background-1",
-        "columns_desktop": 4,
-        "slider_desktop": false,
-        "desktop_spacing": 20,
-        "columns_mobile": "2",
-        "slider_mobile": false,
-        "desktop_dots_position": "hidden",
-        "desktop_arrows_position": "hidden",
-        "mobile_dots_position": "hidden",
-        "mobile_arrows_position": "hidden",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "heading": "",
+        "video_url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-1080.mp4?v=1791066303",
+        "video_url_small": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-720.mp4?v=1791066303",
+        "poster": "shopify://shop_images/pp-dive-slc-1-temple-square.jpg",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
+    },
+    "pp_scroll_zoom": {
+      "type": "pp-scroll-zoom",
+      "blocks": {
+        "stop_1": {
+          "type": "stop",
+          "settings": {
+            "text": "Look closer.",
+            "tags": "",
+            "zoom": 1,
+            "x": 50,
+            "y": 48,
+            "show_macro": false
+          }
+        },
+        "stop_2": {
+          "type": "stop",
+          "settings": {
+            "text": "The whole temple, up to 12 inches across the back.",
+            "tags": "Up to 12 in across",
+            "zoom": 2.3,
+            "x": 50,
+            "y": 51,
+            "show_macro": false
+          }
+        },
+        "stop_3": {
+          "type": "stop",
+          "settings": {
+            "text": "260 GSM cotton. You'll notice the weight the first time you put it on.",
+            "tags": "260 GSM, 7.7 oz",
+            "zoom": 4,
+            "x": 40,
+            "y": 66,
+            "show_macro": true
+          }
+        },
+        "stop_4": {
+          "type": "stop",
+          "settings": {
+            "text": "SARATOGA SPRINGS, UTAH. Under every temple, the city it actually stands in.",
+            "tags": "Real city line",
+            "zoom": 3.4,
+            "x": 50,
+            "y": 61,
+            "show_macro": false
+          }
+        }
+      },
+      "block_order": [
+        "stop_1",
+        "stop_2",
+        "stop_3",
+        "stop_4"
+      ],
+      "disabled": true,
+      "settings": {
+        "garment_image": "shopify://shop_images/tee_black_68c7ee89-a942-4c3e-871b-390824e49e06.jpg",
+        "macro_image": "shopify://shop_images/pp-jersey-black-macro.jpg",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
       }
     },
     "browse": {
-      "type": "featured-collection",
+      "type": "pp-collection-tabs",
+      "blocks": {
+        "tab_hoodies": {
+          "type": "collection_tab",
+          "settings": {
+            "label": "Hoodies",
+            "collection": "hoodies",
+            "limit": 16
+          }
+        },
+        "tab_tees": {
+          "type": "collection_tab",
+          "settings": {
+            "label": "Tees",
+            "collection": "tees",
+            "limit": 16
+          }
+        },
+        "tab_sweatshirts": {
+          "type": "collection_tab",
+          "settings": {
+            "label": "Sweatshirts",
+            "collection": "sweatshirts",
+            "limit": 16
+          }
+        },
+        "tab_temple_design_products": {
+          "type": "collection_tab",
+          "settings": {
+            "label": "All Products",
+            "collection": "temple-design-products",
+            "limit": 16
+          }
+        }
+      },
+      "block_order": [
+        "tab_hoodies",
+        "tab_tees",
+        "tab_sweatshirts",
+        "tab_temple_design_products"
+      ],
       "settings": {
-        "visibility": "always-display",
         "title": "Shop by garment",
-        "title_highlight_1": "solid-color",
-        "title_highlight_1_color": "#001A58",
-        "heading_size": "h2",
-        "collection": "temple-design-products",
-        "products_to_show": 3,
-        "show_view_all": false,
-        "view_all_style": "outline",
+        "columns_desktop": 4,
         "image_ratio": "square",
         "show_secondary_image": true,
-        "badges": "disabled",
-        "show_vendor": false,
-        "show_rating": false,
-        "enable_quick_add": false,
         "color_scheme": "background-1",
         "cards_color_scheme": "background-1",
-        "columns_desktop": 3,
-        "slider_desktop": false,
-        "desktop_spacing": 20,
-        "columns_mobile": "1",
-        "slider_mobile": true,
-        "enable_mobile_preview": true,
-        "desktop_dots_position": "hidden",
-        "desktop_arrows_position": "hidden",
-        "mobile_dots_position": "under",
-        "mobile_arrows_position": "hidden",
         "padding_top": 36,
         "padding_bottom": 36
       }
     },
     "anatomy": {
       "type": "pp-garment-anatomy",
+      "disabled": true,
       "settings": {
         "heading": "\"What's on your shirt?\"",
         "text": "<p>That question is the whole point. Every piece is a temple you know, drawn in line and printed heavy, so the person who asks gets to hear why it matters to you.</p>",
@@ -150,24 +328,137 @@
         "city_label": "Printed under the temple",
         "city_x": 59,
         "city_y": 67
+      }
+    },
+    "pp_spec_overlay": {
+      "type": "pp-spec-overlay",
+      "blocks": {
+        "callout_1": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Hoodie · 350 GSM",
+            "label": "Heavy fleece, 10.3 oz.",
+            "side": "left",
+            "phone": "above",
+            "x": 21,
+            "y": 65
+          }
+        },
+        "callout_2": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Designed and printed in the USA",
+            "label": "We print yours after you order. It arrives in 4 to 7 business days.",
+            "side": "right",
+            "phone": "above",
+            "x": 87,
+            "y": 53
+          }
+        },
+        "callout_3": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Tee · 260 GSM",
+            "label": "Heavyweight cotton that's soft from the first wear.",
+            "side": "left",
+            "phone": "below",
+            "x": 50,
+            "y": 69
+          }
+        },
+        "callout_4": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Crewneck · 350 GSM",
+            "label": "Same fleece as the hoodie.",
+            "side": "right",
+            "phone": "below",
+            "x": 86,
+            "y": 69
+          }
+        }
       },
-      "disabled": true
+      "block_order": [
+        "callout_1",
+        "callout_2",
+        "callout_3",
+        "callout_4"
+      ],
+      "settings": {
+        "heading": "",
+        "text": "",
+        "image": "shopify://shop_images/pp-spec-group-k.jpg",
+        "background": "#0d0e11",
+        "text_color": "#ffffff",
+        "accent": "#f58000"
+      }
     },
     "process": {
       "type": "comparison-slider",
       "name": "The temple, the drawing",
       "settings": {
+        "display_id": false,
         "visibility": "always-display",
         "title": "Carefully made designs",
         "title_highlight_1": "solid-color",
-        "title_highlight_1_color": "#001A58",
+        "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_bg-color": "#f9efff",
+        "title_highlight_1_color": "#001a58",
+        "highlighted-1_border_radius": 8,
+        "highlighted-1_border_width": 0,
+        "highlighted-1_border": "solid",
+        "highlighted-1_border_color": "#6d388b",
+        "highlighted-1_padding-block": 0.3,
+        "highlighted-1_padding-inline": 0.3,
+        "title_highlight_1_underline-thickness": 2,
+        "title_highlight_1_underline-color": "#6d388b",
+        "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_underline-color-position": 25,
+        "title_highlight_1_handwritten-color": "#6d388b",
+        "title_highlight_1_handwritten-stroke-width": 3,
+        "title_highlight_1_handwritten-position": 60,
+        "title_highlight_2": "none",
+        "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_bg-color": "#f9efff",
+        "title_highlight_2_color": "#6d388b",
+        "highlighted-2_border_radius": 8,
+        "highlighted-2_border_width": 0,
+        "highlighted-2_border": "solid",
+        "highlighted-2_border_color": "#6d388b",
+        "highlighted-2_padding-block": 0.3,
+        "highlighted-2_padding-inline": 0.3,
+        "title_highlight_2_underline-thickness": 2,
+        "title_highlight_2_underline-color": "#6d388b",
+        "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_underline-color-position": 25,
+        "title_highlight_2_handwritten-color": "#6d388b",
+        "title_highlight_2_handwritten-stroke-width": 3,
+        "title_highlight_2_handwritten-position": 60,
         "heading_size": "h2",
+        "custom_desktop_size": 39,
+        "custom_mobile_size": 28,
         "text": "<p>Made to capture all the details that are important to you.</p>",
+        "button_label": "",
+        "link": "",
+        "button_style_secondary": false,
+        "atc_button_label": "",
+        "atc_product": "",
+        "atc_skip_cart": false,
         "color_scheme": "background-1",
-        "custom_colors_solid_button_background": "#F58000",
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_solid_button_background": "#f58000",
         "custom_colors_solid_button_text": "#ffffff",
-        "custom_colors_outline_button": "#001A58",
-        "pattern_color": "#001A58",
+        "custom_colors_outline_button": "#001a58",
+        "pattern_bg": "none",
+        "pattern_color": "#001a58",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
         "layout": "slider_second",
         "before_label": "The temple",
         "after_label": "The drawing",
@@ -180,97 +471,46 @@
         "padding_bottom": 36
       }
     },
-    "suggest_heading": {
-      "type": "rich-text",
+    "pp_why_chain": {
+      "type": "pp-why-chain",
       "blocks": {
-        "sug_h": {
-          "type": "heading",
+        "line_1": {
+          "type": "line",
           "settings": {
-            "visibility": "always-display",
-            "title": "Have a design suggestion?",
-            "heading_tag": "h2",
-            "heading_size": "h2",
-            "alignment": "center",
-            "mobile_alignment": "mobile-center",
-            "title_highlight_1": "solid-color",
-            "title_highlight_1_color": "#001A58",
-            "highlighted-1_border_color": "#001A58",
-            "title_highlight_1_underline-color": "#001A58",
-            "title_highlight_1_handwritten-color": "#001A58",
-            "title_highlight_2_color": "#001A58",
-            "highlighted-2_border_color": "#001A58",
-            "title_highlight_2_underline-color": "#001A58",
-            "title_highlight_2_handwritten-color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
+            "text": "Comfortable from the first wear."
           }
         },
-        "sug_t": {
-          "type": "text",
+        "line_2": {
+          "type": "line",
           "settings": {
-            "visibility": "always-display",
-            "text": "<p>Temple you want that we haven't drawn yet? Tell us and we'll move it up the list. We'll email you once, the day it goes live.</p>",
-            "alignment": "center",
-            "mobile_alignment": "mobile-center",
-            "text_size": 16,
-            "bold_solid_color": "#001A58",
-            "italic_solid_color": "#001A58",
-            "margin_top": 15,
-            "margin_bottom": 15
+            "text": "So it's the one you grab."
+          }
+        },
+        "line_3": {
+          "type": "line",
+          "settings": {
+            "text": "So people see it."
+          }
+        },
+        "line_4": {
+          "type": "line",
+          "settings": {
+            "text": "<b>So someone asks what's on your shirt.</b>"
           }
         }
       },
       "block_order": [
-        "sug_h",
-        "sug_t"
+        "line_1",
+        "line_2",
+        "line_3",
+        "line_4"
       ],
       "settings": {
-        "visibility": "always-display",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "full_width": true,
-        "color_scheme": "background-1",
-        "pattern_color": "#001A58",
-        "padding_top": 40,
-        "padding_bottom": 0
-      }
-    },
-    "suggest_form": {
-      "type": "contact-form",
-      "blocks": {
-        "field_row_twjC7R": {
-          "type": "field_row",
-          "settings": {
-            "input_1_enabled": true,
-            "input_1_type": "custom",
-            "input_1_required": true,
-            "input_1_error_message": "Tell us which temple",
-            "input_1_custom_name": "Design suggestion",
-            "input_2_enabled": true,
-            "input_2_type": "email",
-            "input_2_required": true,
-            "input_2_error_message": "We need an email to tell you when it is live",
-            "input_2_custom_name": "Custom input name"
-          }
-        }
-      },
-      "block_order": [
-        "field_row_twjC7R"
-      ],
-      "settings": {
-        "visibility": "always-display",
-        "title": "",
-        "heading_size": "h2",
-        "button_full_width": true,
-        "color_scheme": "background-1",
-        "custom_colors_solid_button_background": "#F58000",
-        "custom_colors_solid_button_text": "#ffffff",
-        "pattern_color": "#001A58",
-        "input_styling": "theme",
-        "dropdown_styling": "theme",
-        "padding_top": 24,
-        "padding_bottom": 36
+        "image": "shopify://shop_images/pp-fleece-black-fold.jpg",
+        "overlay": 45,
+        "text_color": "#ffffff",
+        "height": "medium",
+        "alignment": "left"
       }
     },
     "founder": {
@@ -287,7 +527,7 @@
       "type": "pp-temple-marquee",
       "settings": {
         "collection": "temple-tees",
-        "heading": "",
+        "heading": "Dotting the earth...",
         "seconds_per_temple": 4,
         "label": "Temple designs"
       }
@@ -298,29 +538,41 @@
         "wyg_0": {
           "type": "column",
           "settings": {
+            "muted_autoplay": true,
             "title": "Heavier than your usual tee",
-            "text": "<p>The tee is 7.7 oz cotton. The sweatshirt and hoodie are 10.3 oz fleece, and they feel broken in the day they arrive.</p>"
+            "text": "<p>The tee is 7.7 oz cotton. The sweatshirt and hoodie are 10.3 oz fleece, and they feel broken in the day they arrive.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
         "wyg_1": {
           "type": "column",
           "settings": {
+            "muted_autoplay": true,
             "title": "Drawn one temple at a time",
-            "text": "<p>Every design is original line art of a single temple, with its city printed underneath. Our logo goes on the front.</p>"
+            "text": "<p>Every design is original line art of a single temple, with its city printed underneath. Our logo goes on the front.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
         "wyg_2": {
           "type": "column",
           "settings": {
+            "muted_autoplay": true,
             "title": "Printed in the USA",
-            "text": "<p>We print your order after you place it. Most orders arrive in 4 to 7 business days.</p>"
+            "text": "<p>We print your order after you place it. Most orders arrive in 4 to 7 business days.</p>",
+            "link_label": "",
+            "link": ""
           }
         },
         "wyg_3": {
           "type": "column",
           "settings": {
+            "muted_autoplay": true,
             "title": "Made right, or we replace it",
-            "text": "<p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p>"
+            "text": "<p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p>",
+            "link_label": "",
+            "link": ""
           }
         }
       },
@@ -330,30 +582,115 @@
         "wyg_2",
         "wyg_3"
       ],
+      "disabled": true,
       "settings": {
+        "display_id": false,
+        "visibility": "always-display",
         "title": "What you get",
-        "heading_size": "h2",
         "title_highlight_1": "solid-color",
-        "title_highlight_1_color": "#001A58",
+        "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_bg-color": "#f9efff",
+        "title_highlight_1_color": "#001a58",
+        "highlighted-1_border_radius": 8,
+        "highlighted-1_border_width": 0,
+        "highlighted-1_border": "solid",
+        "highlighted-1_border_color": "#6d388b",
+        "highlighted-1_padding-block": 0.3,
+        "highlighted-1_padding-inline": 0.3,
+        "title_highlight_1_underline-thickness": 2,
+        "title_highlight_1_underline-color": "#6d388b",
+        "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_underline-color-position": 25,
+        "title_highlight_1_handwritten-color": "#6d388b",
+        "title_highlight_1_handwritten-stroke-width": 3,
+        "title_highlight_1_handwritten-position": 60,
+        "title_highlight_2": "none",
+        "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_bg-color": "#f9efff",
+        "title_highlight_2_color": "#6d388b",
+        "highlighted-2_border_radius": 8,
+        "highlighted-2_border_width": 0,
+        "highlighted-2_border": "solid",
+        "highlighted-2_border_color": "#6d388b",
+        "highlighted-2_padding-block": 0.3,
+        "highlighted-2_padding-inline": 0.3,
+        "title_highlight_2_underline-thickness": 2,
+        "title_highlight_2_underline-color": "#6d388b",
+        "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_underline-color-position": 25,
+        "title_highlight_2_handwritten-color": "#6d388b",
+        "title_highlight_2_handwritten-stroke-width": 3,
+        "title_highlight_2_handwritten-position": 60,
+        "heading_size": "h2",
+        "custom_desktop_size": 39,
+        "custom_mobile_size": 28,
+        "button_label": "",
+        "button_link": "",
+        "atc_button_label": "",
+        "atc_product": "",
+        "atc_skip_cart": false,
         "color_scheme": "background-1",
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_solid_button_background": "#dd1d1d",
+        "custom_colors_solid_button_text": "#ffffff",
+        "custom_colors_outline_button": "#dd1d1d",
+        "pattern_bg": "none",
+        "pattern_color": "#001a58",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
         "cards_color_scheme": "accent-1",
+        "custom_cards_colors_background": "#f3f3f3",
+        "custom_cards_gradient_background": "",
+        "custom_cards_colors_heading": "#222126",
+        "custom_cards_colors_text": "#2e2a39",
+        "cards_corner_radius": 20,
+        "stretch_cards": false,
+        "stretched_cards_content_alignment": "center",
         "image_width": "third",
+        "image_ratio": "square",
+        "media_position": "top",
         "column_alignment": "center",
-        "columns_desktop": 4,
-        "columns_mobile": "1",
-        "slider_mobile": false,
-        "slider_desktop": false,
-        "desktop_dots_position": "hidden",
-        "desktop_arrows_position": "hidden",
-        "mobile_dots_position": "hidden",
-        "mobile_arrows_position": "hidden",
         "desktop_heading_size": 18,
         "mobile_heading_size": 18,
-        "pattern_color": "#001A58",
+        "desktop_text_size": 16,
+        "mobile_text_size": 15,
+        "desktop_text_top_margin": 10,
+        "mobile_text_top_margin": 10,
+        "desktop_container_padding_y": 24,
+        "desktop_container_padding_x": 24,
+        "mobile_container_padding_y": 24,
+        "mobile_container_padding_x": 24,
+        "type": "slide",
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "arrows_color_scheme": "inverse",
+        "transparent_arrows": true,
+        "dots_color_scheme": "inverse",
+        "desktop_full_page": false,
+        "columns_desktop": 4,
+        "slider_desktop": false,
+        "per_move_desktop": 1,
+        "desktop_spacing": 40,
+        "desktop_side_padding": 0,
+        "desktop_padding_calc": true,
+        "desktop_adaptive_height": false,
+        "desktop_dots_position": "hidden",
+        "desktop_arrows_position": "hidden",
+        "columns_mobile": "1",
+        "slider_mobile": false,
+        "enable_mobile_preview": false,
+        "mobile_adaptive_height": false,
+        "mobile_dots_position": "hidden",
+        "mobile_arrows_position": "hidden",
         "padding_top": 36,
         "padding_bottom": 36
-      },
-      "disabled": true
+      }
     },
     "faq": {
       "type": "collapsible-content",
@@ -474,35 +811,35 @@
         "title_highlight_1": "solid-color",
         "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_1_bg-color": "#eef1f8",
-        "title_highlight_1_color": "#001A58",
+        "title_highlight_1_color": "#001a58",
         "highlighted-1_border_radius": 8,
         "highlighted-1_border_width": 0,
         "highlighted-1_border": "solid",
-        "highlighted-1_border_color": "#001A58",
+        "highlighted-1_border_color": "#001a58",
         "highlighted-1_padding-block": 0.3,
         "highlighted-1_padding-inline": 0.3,
         "title_highlight_1_underline-thickness": 2,
-        "title_highlight_1_underline-color": "#001A58",
+        "title_highlight_1_underline-color": "#001a58",
         "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_1_underline-color-position": 25,
-        "title_highlight_1_handwritten-color": "#001A58",
+        "title_highlight_1_handwritten-color": "#001a58",
         "title_highlight_1_handwritten-stroke-width": 3,
         "title_highlight_1_handwritten-position": 60,
         "title_highlight_2": "none",
         "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_2_bg-color": "#eef1f8",
-        "title_highlight_2_color": "#001A58",
+        "title_highlight_2_color": "#001a58",
         "highlighted-2_border_radius": 8,
         "highlighted-2_border_width": 0,
         "highlighted-2_border": "solid",
-        "highlighted-2_border_color": "#001A58",
+        "highlighted-2_border_color": "#001a58",
         "highlighted-2_padding-block": 0.3,
         "highlighted-2_padding-inline": 0.3,
         "title_highlight_2_underline-thickness": 2,
-        "title_highlight_2_underline-color": "#001A58",
+        "title_highlight_2_underline-color": "#001a58",
         "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
         "title_highlight_2_underline-color-position": 25,
-        "title_highlight_2_handwritten-color": "#001A58",
+        "title_highlight_2_handwritten-color": "#001a58",
         "title_highlight_2_handwritten-stroke-width": 3,
         "title_highlight_2_handwritten-position": 60,
         "heading_size": "h2",
@@ -513,7 +850,7 @@
         "custom_gradient_background": "",
         "custom_colors_text": "#2e2a39",
         "pattern_bg": "none",
-        "pattern_color": "#001A58",
+        "pattern_color": "#001a58",
         "pattern_size": 20,
         "pattern_thickness": 2,
         "pattern_angle": 45,
@@ -550,345 +887,351 @@
         "open_state_border": "#c9d1e6",
         "open_state_header_bg": "#f5f7fb",
         "open_state_header_text": "#000000",
-        "open_state_row_icon": "#001A58",
+        "open_state_row_icon": "#001a58",
         "open_state_collapse_icon": "#121212",
         "open_state_collapse_icon_solid": "#fff",
-        "open_state_collapse_bg": "#001A58",
+        "open_state_collapse_bg": "#001a58",
         "open_state_content_bg": "#f5f7fb",
         "open_state_content_text": "#121212",
         "padding_top": 36,
         "padding_bottom": 36
       }
     },
-    "pp_scroll_zoom": {
-      "type": "pp-scroll-zoom",
+    "suggest_heading": {
+      "type": "rich-text",
       "blocks": {
-        "stop_1": {
-          "type": "stop",
+        "sug_h": {
+          "type": "heading",
           "settings": {
-            "text": "Look closer.",
-            "zoom": 1,
-            "x": 50,
-            "y": 48
-          }
+            "visibility": "always-display",
+            "title": "Have a design suggestion?",
+            "heading_tag": "h2",
+            "heading_size": "h2",
+            "custom_desktop_size": 39,
+            "custom_mobile_size": 28,
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "enable_custom_color": false,
+            "custom_color": "#ff0000",
+            "title_highlight_1": "solid-color",
+            "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_1_bg-color": "#f9efff",
+            "title_highlight_1_color": "#001a58",
+            "highlighted-1_border_radius": 8,
+            "highlighted-1_border_width": 0,
+            "highlighted-1_border": "solid",
+            "highlighted-1_border_color": "#001a58",
+            "highlighted-1_padding-block": 0.3,
+            "highlighted-1_padding-inline": 0.3,
+            "title_highlight_1_underline-thickness": 2,
+            "title_highlight_1_underline-color": "#001a58",
+            "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_1_underline-color-position": 25,
+            "title_highlight_1_handwritten-color": "#001a58",
+            "title_highlight_1_handwritten-stroke-width": 3,
+            "title_highlight_1_handwritten-position": 60,
+            "title_highlight_2": "none",
+            "highlight_2_keep_italic": false,
+            "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_2_bg-color": "#f9efff",
+            "title_highlight_2_color": "#001a58",
+            "highlighted-2_border_radius": 8,
+            "highlighted-2_border_width": 0,
+            "highlighted-2_border": "solid",
+            "highlighted-2_border_color": "#001a58",
+            "highlighted-2_padding-block": 0.3,
+            "highlighted-2_padding-inline": 0.3,
+            "title_highlight_2_underline-thickness": 2,
+            "title_highlight_2_underline-color": "#001a58",
+            "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "title_highlight_2_underline-color-position": 25,
+            "title_highlight_2_handwritten-color": "#001a58",
+            "title_highlight_2_handwritten-stroke-width": 3,
+            "title_highlight_2_handwritten-position": 60,
+            "text_animation": "none",
+            "split_type": "chars",
+            "split_delay": 30,
+            "split_duration": 600,
+            "split_y_offset": 40,
+            "split_animate_on_scroll": true,
+            "shiny_speed": 5,
+            "shiny_on_scroll": false,
+            "blur_type": "words",
+            "blur_direction": "top",
+            "blur_delay": 200,
+            "blur_duration": 350,
+            "blur_animate_on_scroll": true,
+            "highlight_bold_only": false,
+            "remove_bold_styling": false,
+            "highlight_color": "#ffd1dc",
+            "highlight_height": 40,
+            "highlight_position": 10,
+            "highlighter_underline_color": "#000000",
+            "highlighter_underline_thickness": 2,
+            "highlighter_underline_offset": 0,
+            "highlighter_strike_color": "#ff0000",
+            "highlighter_strike_thickness": 2,
+            "highlighter_strike_offset": 0,
+            "highlighter_animation_duration": 800,
+            "highlighter_animation_delay": 200,
+            "highlighter_animate_on_scroll": false,
+            "typing_speed": 50,
+            "typing_initial_delay": 0,
+            "typing_pause_duration": 2000,
+            "typing_deleting_speed": 30,
+            "typing_loop": true,
+            "typing_show_cursor": true,
+            "typing_cursor_character": "|",
+            "typing_cursor_blink_duration": 500,
+            "typing_hide_cursor_while_typing": false,
+            "typing_start_on_visible": false,
+            "typing_reverse_mode": false,
+            "margin_top": 15,
+            "margin_bottom": 15
+          },
+          "blocks": {}
         },
-        "stop_2": {
-          "type": "stop",
+        "sug_t": {
+          "type": "text",
           "settings": {
-            "text": "The whole temple, up to 12 inches across the back.",
-            "tags": "Up to 12 in across",
-            "zoom": 2.3,
-            "x": 50,
-            "y": 51
-          }
-        },
-        "stop_3": {
-          "type": "stop",
-          "settings": {
-            "text": "260 GSM cotton. You'll notice the weight the first time you put it on.",
-            "tags": "260 GSM, 7.7 oz",
-            "zoom": 4,
-            "x": 40,
-            "y": 66,
-            "show_macro": true
-          }
-        },
-        "stop_4": {
-          "type": "stop",
-          "settings": {
-            "text": "SARATOGA SPRINGS, UTAH. Under every temple, the city it actually stands in.",
-            "tags": "Real city line",
-            "zoom": 3.4,
-            "x": 50,
-            "y": 61
-          }
+            "visibility": "always-display",
+            "text": "<p>Temple you want that we haven't drawn yet? Tell us and we'll move it up the list. We'll email you once, the day it goes live.</p>",
+            "alignment": "center",
+            "mobile_alignment": "mobile-center",
+            "text_size": 16,
+            "enable_custom_color": false,
+            "custom_text_color": "#ff0000",
+            "bold_text_style": "none",
+            "bold_solid_color": "#001a58",
+            "bold_gradient_color": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "bold_bg_color": "#ffd700",
+            "bold_bg_text_color": "#000000",
+            "bold_bg_padding_inline": 0.7,
+            "bold_bg_padding_block": 0.2,
+            "bold_bg_border_radius": 8,
+            "bold_bg_border_width": 0,
+            "bold_bg_border_style": "solid",
+            "bold_bg_border_color": "#121212",
+            "bold_remove_weight": false,
+            "italic_text_style": "none",
+            "italic_solid_color": "#001a58",
+            "italic_gradient_color": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+            "italic_bg_color": "#ffd700",
+            "italic_bg_text_color": "#121212",
+            "italic_bg_padding_inline": 0.7,
+            "italic_bg_padding_block": 0.2,
+            "italic_bg_border_radius": 8,
+            "italic_bg_border_width": 0,
+            "italic_bg_border_style": "solid",
+            "italic_bg_border_color": "#121212",
+            "italic_remove_style": false,
+            "text_animation": "none",
+            "split_type": "chars",
+            "split_delay": 30,
+            "split_duration": 600,
+            "split_y_offset": 40,
+            "split_animate_on_scroll": true,
+            "shiny_speed": 5,
+            "shiny_on_scroll": false,
+            "blur_type": "words",
+            "blur_direction": "top",
+            "blur_delay": 200,
+            "blur_duration": 350,
+            "blur_animate_on_scroll": true,
+            "highlight_bold_only": false,
+            "remove_bold_weight": false,
+            "highlight_color": "#ffd1dc",
+            "highlight_height": 40,
+            "highlight_position": 10,
+            "highlighter_underline_color": "#000000",
+            "highlighter_underline_thickness": 2,
+            "highlighter_underline_offset": 0,
+            "highlighter_strike_color": "#ff0000",
+            "highlighter_strike_thickness": 2,
+            "highlighter_strike_offset": 0,
+            "highlighter_animation_duration": 800,
+            "highlighter_animation_delay": 200,
+            "highlighter_animate_on_scroll": false,
+            "typing_speed": 50,
+            "typing_initial_delay": 0,
+            "typing_pause_duration": 2000,
+            "typing_deleting_speed": 30,
+            "typing_loop": true,
+            "typing_show_cursor": true,
+            "typing_cursor_character": "|",
+            "typing_cursor_blink_duration": 500,
+            "typing_hide_cursor_while_typing": false,
+            "typing_start_on_visible": false,
+            "typing_reverse_mode": false,
+            "margin_top": 15,
+            "margin_bottom": 15
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "stop_1",
-        "stop_2",
-        "stop_3",
-        "stop_4"
+        "sug_h",
+        "sug_t"
       ],
       "settings": {
-        "scroll_length": "medium",
-        "background": "#0d0e11",
-        "text_color": "#ffffff",
-        "garment_image": "shopify://shop_images/tee_black_68c7ee89-a942-4c3e-871b-390824e49e06.jpg",
-        "macro_image": "shopify://shop_images/pp-jersey-black-macro.jpg"
-      },
-      "disabled": true
-    },
-    "pp_spec_overlay": {
-      "type": "pp-spec-overlay",
-      "blocks": {
-        "callout_1": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Hoodie · 350 GSM",
-            "label": "Heavy fleece, 10.3 oz.",
-            "side": "left",
-            "phone": "above",
-            "x": 21,
-            "y": 65
-          }
-        },
-        "callout_2": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Designed and printed in the USA",
-            "label": "We print yours after you order. It arrives in 4 to 7 business days.",
-            "side": "right",
-            "phone": "above",
-            "x": 87,
-            "y": 53
-          }
-        },
-        "callout_3": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Tee · 260 GSM",
-            "label": "Heavyweight cotton that's soft from the first wear.",
-            "side": "left",
-            "phone": "below",
-            "x": 50,
-            "y": 69
-          }
-        },
-        "callout_4": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Crewneck · 350 GSM",
-            "label": "Same fleece as the hoodie.",
-            "side": "right",
-            "phone": "below",
-            "x": 86,
-            "y": 69
-          }
-        }
-      },
-      "block_order": [
-        "callout_1",
-        "callout_2",
-        "callout_3",
-        "callout_4"
-      ],
-      "settings": {
-        "background": "#0d0e11",
-        "text_color": "#ffffff",
-        "accent": "#F58000",
-        "image": "shopify://shop_images/pp-spec-group-k.jpg"
+        "display_id": false,
+        "visibility": "always-display",
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "full_width": true,
+        "mobile_narrow_width": false,
+        "color_scheme": "background-1",
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_solid_button_background": "#dd1d1d",
+        "custom_colors_solid_button_text": "#ffffff",
+        "custom_colors_outline_button": "#dd1d1d",
+        "pattern_bg": "none",
+        "pattern_color": "#001a58",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
+        "padding_top": 40,
+        "padding_bottom": 0
       }
     },
-    "pp_why_chain": {
-      "type": "pp-why-chain",
+    "suggest_form": {
+      "type": "contact-form",
       "blocks": {
-        "line_1": {
-          "type": "line",
+        "field_row_twjC7R": {
+          "type": "field_row",
           "settings": {
-            "text": "Comfortable from the first wear."
-          }
-        },
-        "line_2": {
-          "type": "line",
-          "settings": {
-            "text": "So it's the one you grab."
-          }
-        },
-        "line_3": {
-          "type": "line",
-          "settings": {
-            "text": "So people see it."
-          }
-        },
-        "line_4": {
-          "type": "line",
-          "settings": {
-            "text": "<b>So someone asks what's on your shirt.</b>"
+            "input_1_enabled": true,
+            "input_1_type": "custom",
+            "input_1_required": true,
+            "input_1_error_message": "Tell us which temple",
+            "input_1_custom_name": "Design suggestion",
+            "input_2_enabled": true,
+            "input_2_type": "email",
+            "input_2_required": true,
+            "input_2_error_message": "We need an email to tell you when it is live",
+            "input_2_custom_name": "Custom input name"
           }
         }
       },
       "block_order": [
-        "line_1",
-        "line_2",
-        "line_3",
-        "line_4"
+        "field_row_twjC7R"
       ],
       "settings": {
-        "overlay": 45,
-        "text_color": "#ffffff",
-        "height": "medium",
-        "alignment": "left",
-        "image": "shopify://shop_images/pp-fleece-black-fold.jpg"
+        "display_id": false,
+        "visibility": "always-display",
+        "title": "",
+        "title_highlight_1": "solid-color",
+        "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_bg-color": "#f9efff",
+        "title_highlight_1_color": "#6d388b",
+        "highlighted-1_border_radius": 8,
+        "highlighted-1_border_width": 0,
+        "highlighted-1_border": "solid",
+        "highlighted-1_border_color": "#6d388b",
+        "highlighted-1_padding-block": 0.3,
+        "highlighted-1_padding-inline": 0.3,
+        "title_highlight_1_underline-thickness": 2,
+        "title_highlight_1_underline-color": "#6d388b",
+        "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_1_underline-color-position": 25,
+        "title_highlight_1_handwritten-color": "#6d388b",
+        "title_highlight_1_handwritten-stroke-width": 3,
+        "title_highlight_1_handwritten-position": 60,
+        "title_highlight_2": "none",
+        "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_bg-color": "#f9efff",
+        "title_highlight_2_color": "#6d388b",
+        "highlighted-2_border_radius": 8,
+        "highlighted-2_border_width": 0,
+        "highlighted-2_border": "solid",
+        "highlighted-2_border_color": "#6d388b",
+        "highlighted-2_padding-block": 0.3,
+        "highlighted-2_padding-inline": 0.3,
+        "title_highlight_2_underline-thickness": 2,
+        "title_highlight_2_underline-color": "#6d388b",
+        "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
+        "title_highlight_2_underline-color-position": 25,
+        "title_highlight_2_handwritten-color": "#6d388b",
+        "title_highlight_2_handwritten-stroke-width": 3,
+        "title_highlight_2_handwritten-position": 60,
+        "heading_size": "h2",
+        "custom_desktop_size": 39,
+        "custom_mobile_size": 28,
+        "button_full_width": true,
+        "color_scheme": "background-1",
+        "custom_colors_background": "#ffffff",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#2e2a39",
+        "custom_colors_solid_button_background": "#f58000",
+        "custom_colors_solid_button_text": "#ffffff",
+        "pattern_bg": "none",
+        "pattern_color": "#001a58",
+        "pattern_size": 20,
+        "pattern_thickness": 2,
+        "pattern_angle": 45,
+        "pattern_opacity_mode": "low",
+        "pattern_opacity_low": 7,
+        "pattern_opacity_normal": 80,
+        "input_styling": "theme",
+        "custom_input_color_scheme": "background-1",
+        "custom_input_border_color": "text",
+        "custom_input_text_color": "text",
+        "custom_input_overlay_color": "text",
+        "custom_input_overlay_opacity": 0,
+        "custom_input_border_thickness": 1,
+        "custom_input_border_opacity": 15,
+        "custom_input_radius": 10,
+        "custom_input_shadow_opacity": 0,
+        "custom_input_shadow_horizontal_offset": 0,
+        "custom_input_shadow_vertical_offset": 0,
+        "custom_input_shadow_blur": 0,
+        "custom_input_hover_overlay_opacity": 10,
+        "custom_input_hover_border_opacity": 100,
+        "dropdown_styling": "theme",
+        "custom_dropdown_color_scheme": "background-1",
+        "custom_dropdown_border_color": "text",
+        "custom_dropdown_text_color": "text",
+        "custom_dropdown_overlay_color": "text",
+        "custom_dropdown_overlay_opacity": 0,
+        "custom_dropdown_border_thickness": 1,
+        "custom_dropdown_border_opacity": 15,
+        "custom_dropdown_radius": 10,
+        "custom_dropdown_shadow_opacity": 0,
+        "custom_dropdown_shadow_horizontal_offset": 0,
+        "custom_dropdown_shadow_vertical_offset": 0,
+        "custom_dropdown_shadow_blur": 0,
+        "custom_dropdown_hover_overlay_opacity": 0,
+        "custom_dropdown_hover_border_opacity": 15,
+        "success_icon": "check_circle",
+        "success_icon_filled": false,
+        "success_text_color": "#28c100",
+        "success_bg_color": "#f2ffed",
+        "success_border_radius": 8,
+        "success_border_width": 1,
+        "success_border_color": "#28c100",
+        "errors_icon": "error",
+        "errors_icon_filled": false,
+        "errors_text_color": "#ff0000",
+        "errors_bg_color": "#fff5f5",
+        "errors_border_radius": 8,
+        "errors_border_width": 1,
+        "errors_border_color": "#ff0000",
+        "padding_top": 24,
+        "padding_bottom": 36
       }
-    },
-    "pp_zoom_dive": {
-      "type": "pp-zoom-dive",
-      "blocks": {
-        "story_1": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-1-why.jpg",
-            "eyebrow": "Why we make it",
-            "text": "We make temple apparel for one reason: so someone asks you about it.",
-            "transition": "fade",
-            "focus_x": 66,
-            "focus_y": 42
-          }
-        },
-        "story_2": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-2-opening.jpg",
-            "eyebrow": "An opening",
-            "text": "A question about your shirt is an easy one to answer. Sometimes it leads somewhere you didn't plan.",
-            "transition": "fade",
-            "focus_x": 55,
-            "focus_y": 40
-          }
-        },
-        "story_3": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-3-every-day.jpg",
-            "eyebrow": "Worn every day",
-            "text": "None of that happens if the shirt stays in the drawer. It has to be the one you reach for first.",
-            "transition": "fade",
-            "focus_x": 36,
-            "focus_y": 42,
-            "pan_x": 68
-          }
-        },
-        "story_4": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
-            "eyebrow": "The blank",
-            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
-            "transition": "zoom",
-            "next_x": 41.4101,
-            "next_y": 32.5427,
-            "next_size": 19.4148,
-            "focus_x": 50,
-            "focus_y": 40
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
-            "eyebrow": "Ribbed collar",
-            "text": "Ribbed knit, stitched down.",
-            "next_x": 46.0449,
-            "next_y": 48.4375,
-            "next_size": 21.4844,
-            "focus_x": 50,
-            "focus_y": 55,
-            "transition": "zoom"
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
-            "eyebrow": "Printed into the cotton",
-            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
-            "next_x": 43.9453,
-            "next_y": 75.9766,
-            "next_size": 23.8281,
-            "focus_x": 50,
-            "focus_y": 50,
-            "transition": "zoom"
-          }
-        },
-        "step_4": {
-          "type": "step",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
-            "eyebrow": "260 GSM, 100% cotton",
-            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
-            "focus_x": 50,
-            "focus_y": 50
-          }
-        }
-      },
-      "block_order": [
-        "story_1",
-        "story_2",
-        "story_3",
-        "story_4",
-        "step_2",
-        "step_3",
-        "step_4"
-      ],
-      "settings": {
-        "heading": "",
-        "scroll_length": "story",
-        "background": "#0d0e11",
-        "text_color": "#ffffff"
-      }
-    },
-    "pp_zoom_film": {
-      "type": "pp-zoom-film",
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "The blank",
-            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
-            "time": 0
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "Ribbed collar",
-            "text": "Ribbed knit, stitched down.",
-            "time": 3.9
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "Printed into the cotton",
-            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
-            "time": 8.6
-          }
-        },
-        "step_4": {
-          "type": "step",
-          "settings": {
-            "eyebrow": "260 GSM, 100% cotton",
-            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
-            "time": 13.0
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3",
-        "step_4"
-      ],
-      "settings": {
-        "heading": "",
-        "video_url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-1080.mp4?v=1791066303",
-        "video_url_small": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-720.mp4?v=1791066303",
-        "poster": "shopify://shop_images/pp-dive-slc-1-temple-square.jpg",
-        "scroll_length": "medium",
-        "background": "#0d0e11",
-        "text_color": "#ffffff"
-      },
-      "disabled": true
     }
   },
   "order": [
     "pp_temple_showcase",
-    "hero",
     "pp_zoom_dive",
     "pp_zoom_film",
     "pp_scroll_zoom",
-    "featured_products",
     "browse",
     "anatomy",
     "pp_spec_overlay",

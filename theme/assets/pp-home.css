@@ -1,11 +1,13 @@
 /* Peculiar People homepage sections: sections/pp-garment-anatomy.liquid,
-   sections/pp-temple-marquee.liquid and sections/pp-founder.liquid.
+   sections/pp-temple-marquee.liquid, sections/pp-founder.liquid and
+   sections/pp-collection-tabs.liquid.
    Behaviour lives in pp-home.js. Every animation here is opt-in: it only runs once
    the script has marked a section as armed, and never under reduced motion. */
 
 .pp-anatomy,
 .pp-marquee,
-.pp-founder {
+.pp-founder,
+.pp-tabs {
   --pp-black: #121212;
   --pp-navy: #001A58;
   --pp-ink: #2e2a39;
@@ -314,4 +316,65 @@
   .pp-founder__band { padding: 48px 20px; }
   .pp-founder__mark { font-size: 72px; }
   .pp-founder__split { padding: 36px 20px 40px; }
+}
+
+/* Collection tabs ("Shop by garment") */
+.pp-tabs__title { margin: 0 0 20px; }
+.pp-tabs__list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.pp-tabs__list[hidden] { display: none; }
+.pp-tabs__tab {
+  font-family: var(--font-heading-family, inherit);
+  font-size: 1.5rem;
+  white-space: nowrap;
+  letter-spacing: .04em;
+  padding: 10px 20px;
+  min-height: 44px;
+  border: 1px solid var(--pp-navy);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pp-navy);
+  cursor: pointer;
+  transition: background-color .2s, color .2s;
+}
+.pp-tabs__tab:hover { background: rgba(0, 26, 88, .08); }
+.pp-tabs__tab[aria-selected="true"] { background: var(--pp-navy); color: var(--pp-white); }
+.pp-tabs__tab:focus-visible { outline: 2px solid var(--pp-navy); outline-offset: 3px; }
+.pp-tabs__panel + .pp-tabs__panel { margin-top: 40px; }
+.pp-tabs.is-tabbed .pp-tabs__panel + .pp-tabs__panel { margin-top: 0; }
+.pp-tabs.is-tabbed .pp-tabs__fallback-label { display: none; }
+.pp-tabs__fallback-label { text-align: center; margin: 0 0 16px; }
+.pp-tabs__panel:focus-visible { outline: 2px solid var(--pp-navy); outline-offset: 6px; }
+.pp-tabs__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--pp-tabs-columns, 4), minmax(0, 1fr));
+  gap: 20px;
+}
+.pp-tabs__item { min-width: 0; }
+.pp-tabs__all { margin: 28px 0 0; }
+@media (max-width: 989px) {
+  .pp-tabs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+@media (max-width: 749px) {
+  .pp-tabs__tab { font-size: 1.3rem; padding: 6px 11px; letter-spacing: .02em; }
+  .pp-tabs__list { gap: 5px; margin-bottom: 20px; flex-wrap: nowrap; }
+  /* One row that scrolls sideways, the next card peeking in. */
+  .pp-tabs__grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem 8px;
+    scroll-padding-inline: 1.5rem;
+  }
+  .pp-tabs__item { flex: 0 0 72%; scroll-snap-align: start; }
 }

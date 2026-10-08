@@ -1,0 +1,125 @@
+{%- comment -%}
+  Peculiar People homepage: "Shop by garment". One row of tabs, one collection per
+  tab (Evan, 8 Oct 2026: Hoodies, Tees, Sweatshirts, All Products). Each panel
+  prints the collection's cards in its own manual order, through the theme's own
+  card-product snippet, so the cards match every other product grid in the store.
+
+  The collections are smart (scripts/garment_collections.py, design_collection.py)
+  and their order is set by scripts/collection_order.py. A collection that is not
+  published to the Online Store renders as an empty panel here.
+
+  Without JavaScript every panel is shown, one after another, with its label as
+  a heading. pp-home.js turns the labels into tabs.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ 'template-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'template-collection.css' | asset_url | stylesheet_tag }}</noscript>
+{{ 'pp-home.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-home.js' | asset_url }}" defer></script>
+{%- assign s = section.settings -%}
+<section
+  class="pp-tabs color-{{ s.color_scheme }} gradient"
+  data-pp-tabs
+  style="--pp-tabs-columns: {{ s.columns_desktop }}; padding-top: {{ s.padding_top }}px; padding-bottom: {{ s.padding_bottom }}px;"
+>
+  <div class="page-width">
+    {%- if s.title != blank -%}
+      <h2 class="pp-tabs__title title h2 center">{{ s.title | escape }}</h2>
+    {%- endif -%}
+
+    <div class="pp-tabs__list" role="tablist" aria-label="{{ s.title | escape }}" hidden>
+      {%- for block in section.blocks -%}
+        <button
+          type="button"
+          class="pp-tabs__tab"
+          role="tab"
+          id="PPTab-{{ section.id }}-{{ forloop.index }}"
+          aria-controls="PPPanel-{{ section.id }}-{{ forloop.index }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          {{- block.settings.label | escape -}}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- assign c = block.settings.collection -%}
+      <div
+        class="pp-tabs__panel"
+        role="tabpanel"
+        id="PPPanel-{{ section.id }}-{{ forloop.index }}"
+        aria-labelledby="PPTab-{{ section.id }}-{{ forloop.index }}"
+        tabindex="0"
+      >
+        <h3 class="pp-tabs__fallback-label h4">{{ block.settings.label | escape }}</h3>
+        <ul class="pp-tabs__grid contains-card contains-card--product" role="list">
+          {%- for product in c.products limit: block.settings.limit -%}
+            {%- unless product.tags contains 'collection-hidden' -%}
+              <li class="pp-tabs__item">
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: s.image_ratio,
+                  badges: 'disabled',
+                  show_secondary_image: s.show_secondary_image,
+                  show_vendor: false,
+                  show_rating: false,
+                  show_quick_add: false,
+                  custom_color_scheme: s.cards_color_scheme,
+                  section_id: section.id
+                %}
+              </li>
+            {%- endunless -%}
+          {%- endfor -%}
+        </ul>
+        {%- if c != blank and c.products_count > block.settings.limit -%}
+          <p class="pp-tabs__all center">
+            <a class="button button--secondary" href="{{ c.url }}">View all {{ block.settings.label | escape }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP collection tabs",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop by garment" },
+    {
+      "type": "range", "id": "columns_desktop", "label": "Cards per row on desktop",
+      "min": 2, "max": 5, "step": 1, "default": 4
+    },
+    {
+      "type": "select", "id": "image_ratio", "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "square"
+    },
+    { "type": "checkbox", "id": "show_secondary_image", "label": "Show second image on hover", "default": true },
+    { "type": "select", "id": "color_scheme", "label": "Colour scheme", "options": [{ "value": "accent-1", "label": "Accent 1" }, { "value": "accent-2", "label": "Accent 2" }, { "value": "background-1", "label": "Background 1" }, { "value": "background-2", "label": "Background 2" }, { "value": "inverse", "label": "Inverse" }], "default": "background-1" },
+    { "type": "select", "id": "cards_color_scheme", "label": "Card colour scheme", "options": [{ "value": "accent-1", "label": "Accent 1" }, { "value": "accent-2", "label": "Accent 2" }, { "value": "background-1", "label": "Background 1" }, { "value": "background-2", "label": "Background 2" }, { "value": "inverse", "label": "Inverse" }], "default": "background-1" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Hoodies" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        {
+          "type": "range", "id": "limit", "label": "Most cards shown",
+          "min": 4, "max": 24, "step": 1, "default": 16
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PP collection tabs" }]
+}
+{% endschema %}
