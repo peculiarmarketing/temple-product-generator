@@ -1563,12 +1563,47 @@
     "Ogden (original)": {
       "built": "2026-10-08T19:38:01+00:00",
       "copied": "2026-10-08T19:37:59+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523004281204": "gid://shopify/MediaImage/56542444880244",
+        "gid://shopify/MediaImage/56523004313972": "gid://shopify/MediaImage/56542445142388",
+        "gid://shopify/MediaImage/56523004510580": "gid://shopify/MediaImage/56542445699444",
+        "gid://shopify/MediaImage/56523004543348": "gid://shopify/MediaImage/56542445797748",
+        "gid://shopify/MediaImage/56523004576116": "gid://shopify/MediaImage/56542445863284",
+        "gid://shopify/MediaImage/56523020763508": "gid://shopify/MediaImage/56542445240692",
+        "gid://shopify/MediaImage/56523020927348": "gid://shopify/MediaImage/56542445306228",
+        "gid://shopify/MediaImage/56523021222260": "gid://shopify/MediaImage/56542445470068",
+        "gid://shopify/MediaImage/56523021451636": "gid://shopify/MediaImage/56542444716404",
+        "gid://shopify/MediaImage/56523021648244": "gid://shopify/MediaImage/56542445601140",
+        "gid://shopify/MediaImage/56523021910388": "gid://shopify/MediaImage/56542444814708"
+      },
       "distribute_started_at": "2026-10-08T19:38:02+00:00",
       "distributed": "2026-10-08T19:38:20+00:00",
       "finished": "2026-10-08T19:39:08+00:00",
+      "gallery": "2026-10-08T19:40:15+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542444716404",
+        "gid://shopify/MediaImage/56542444814708",
+        "gid://shopify/MediaImage/56542444880244",
+        "gid://shopify/MediaImage/56542445142388",
+        "gid://shopify/MediaImage/56542445240692",
+        "gid://shopify/MediaImage/56542445306228",
+        "gid://shopify/MediaImage/56542445470068",
+        "gid://shopify/MediaImage/56542445601140",
+        "gid://shopify/MediaImage/56542449992052",
+        "gid://shopify/MediaImage/56542450057588",
+        "gid://shopify/MediaImage/56542450090356",
+        "gid://shopify/MediaImage/56542445699444",
+        "gid://shopify/MediaImage/56542445797748",
+        "gid://shopify/MediaImage/56542445863284"
+      ],
       "handle": "essential-heavyweight-temple-tee-ogden-original",
       "hidden": "2026-10-08T19:38:53+00:00",
       "new_id": "gid://shopify/Product/15350393962868",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542450090356",
+        "light-blue": "gid://shopify/MediaImage/56542450057588",
+        "pink": "gid://shopify/MediaImage/56542449992052"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -1584,5 +1619,5 @@
       "title": "Essential Heavyweight Temple Tee (Ogden Original)"
     }
   },
-  "updated_at": "2026-10-08T19:39:08+00:00"
+  "updated_at": "2026-10-08T19:40:15+00:00"
 }
