@@ -308,6 +308,100 @@ def get_template(s, template_id):
                        timeout=30))
 
 
+def resave_body(template, color_codes):
+    """The PUT body that re-saves a design unchanged except for its colours.
+
+    Built from the template as get_template() returns it, so a design made by
+    hand in the editor keeps its own artwork, placement and print settings.
+    Those differ from what save_design() sends for pipeline designs: the editor
+    saves printType 13, not 1. get_template() returns no mockupConfig, so it is
+    rebuilt from `config` the way save_design() builds it (same objects, no
+    embs), which Tapstitch accepts and renders mockups from.
+    """
+    cfg = json.loads(template["config"])
+    mock = [{"piece": c["piece"], "objects": c["objects"],
+             "canvasSize": c.get("canvasSize") or {"width": CANVAS, "height": CANVAS}}
+            for c in cfg]
+    return {"colorCode": ",".join(str(c) for c in color_codes),
+            "uniqueId": template["templateId"],
+            "resourceCode": template.get("resourceCode", -1),
+            "productId": template["productId"],
+            "designTools": template.get("designTools") or "2d-layers",
+            "printType": template.get("printType") or 1,
+            "isUsedHd": bool(template.get("isUsedHd")),
+            "dimension": "inches",
+            "printingPreferenceType": template.get("printingPreferenceType"),
+            "specialProcessTags": template["specialProcessTags"],
+            "branding": template.get("branding") or {"innerNeckLabelCommitId": "0",
+                                                     "hangtagCommitId": "0"},
+            "virtualConfig": "[]",
+            "mockupConfig": json.dumps(mock),
+            "config": template["config"]}
+
+
+def resave_colours(s, template_id, color_codes):
+    """Re-save a saved design with a new colour list, then prove it took.
+
+    Writes to Tapstitch only. A design already feeding a store product would
+    re-sync that product's images (see relift_rollout.py), so this refuses
+    unless the caller has checked the design is unlinked. Returns the new
+    commit id.
+    """
+    before = get_template(s, template_id)
+    _data(s.put(f"{BASE}/api/designs/customized/templates/{template_id}",
+                data=json.dumps(resave_body(before, color_codes)),
+                headers={"Content-Type": "application/json"}, timeout=120))
+    after = get_template(s, template_id)
+    want = {str(c) for c in color_codes}
+    got = set(str(after["colorCode"]).split(","))
+    if got != want:
+        raise TapstitchError(f"re-save of {template_id}: colours read back {sorted(got)}, "
+                             f"wanted {sorted(want)}")
+    if after["config"] != before["config"]:
+        raise TapstitchError(f"re-save of {template_id} changed the design itself")
+    return after["commitId"]
+
+
+def filter_colours(prefill, keep_ids):
+    """A copy of a prefill with only the colours in `keep_ids` (Tapstitch ids).
+
+    Drops the variants, the Color option values and the mockups of every other
+    colour. Raises if a wanted colour is not in the prefill, because a colour
+    the template does not carry cannot be added here (resave_colours() first).
+    """
+    keep = {str(c) for c in keep_ids}
+    color = next(o for o in prefill["options"] if o["id"] == "Color" or o["name"] == "Color")
+    have = {str(v["id"]) for v in color["values"]}
+    if keep - have:
+        raise TapstitchError(f"prefill has no colour {sorted(keep - have)}; it has {sorted(have)}")
+
+    def colour_of(v):
+        return next(str(o["valueId"]) for o in v["selectedOptions"] if o["id"] == "Color")
+
+    options = [dict(o, values=[v for v in o["values"] if str(v["id"]) in keep])
+               if o is color else o for o in prefill["options"]]
+    return dict(prefill, options=options,
+                variants=[v for v in prefill["variants"] if colour_of(v) in keep],
+                mockups=[m for m in prefill["mockups"]
+                         if str(m["media"]["attributes"][0]["payload"].get("colorId")) in keep])
+
+
+def order_mockups(mockups, lead_side="back", lead_color_id=None, drop_side=None):
+    """mockups_back_first() for a design that may lead with either side.
+
+    A front-only design's back mockup is a blank garment, so it leads with the
+    front, and `drop_side="back"` leaves the blank backs out of the gallery.
+    """
+    lead = "BackEndImage" if lead_side == "back" else "FrontImage"
+    drop = {"back": "BackEndImage", "front": "FrontImage"}.get(drop_side)
+
+    def payload(m):
+        return m["media"]["attributes"][0]["payload"]
+    kept = [m for m in mockups if payload(m).get("placement") != drop]
+    return sorted(kept, key=lambda m: (payload(m).get("placement") != lead,
+                                       str(payload(m).get("colorId")) != str(lead_color_id)))
+
+
 def distribute(s, store_product_ids):
     """PUBLISH store products to Shopify. This reaches the live storefront.
 
