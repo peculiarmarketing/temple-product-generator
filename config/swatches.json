@@ -13,21 +13,58 @@
     "Royal Blue": "#374FC0",
     "Maroon": "#6D1E24",
     "Mauve": "#C4A3AB",
-    "Eden Green": "#2E614B"
+    "Eden Green": "#2E614B",
+    "Pink": "#E1AAB4",
+    "Light Blue": "#AACAEE",
+    "Cream": "#F2E1C9",
+    "Forest Green": "#1B452F",
+    "Purple": "#5B366C"
   },
   "_samples": {
-    "Black": {"tee": "#1F1F1F", "crew": "#151515", "hoodie": "#181818"},
-    "Charcoal": {"tee": "#56575B"},
-    "Gray": {"hoodie": "#6E7168"},
-    "Heather Gray": {"crew": "#B4B3B5"},
-    "Coffee": {"tee": "#594033", "hoodie": "#57402A"},
-    "Navy Blue": {"tee": "#2A2D41", "hoodie": "#263645"},
-    "Royal Blue": {"hoodie": "#374FC0"},
-    "Maroon": {"tee": "#6D1E24"},
-    "Mauve": {"hoodie": "#C4A3AB"}
+    "Black": {
+      "tee": "#1F1F1F",
+      "crew": "#151515",
+      "hoodie": "#181818"
+    },
+    "Charcoal": {
+      "tee": "#56575B"
+    },
+    "Gray": {
+      "hoodie": "#6E7168"
+    },
+    "Heather Gray": {
+      "crew": "#B4B3B5"
+    },
+    "Coffee": {
+      "tee": "#594033",
+      "hoodie": "#57402A"
+    },
+    "Navy Blue": {
+      "tee": "#2A2D41",
+      "hoodie": "#263645"
+    },
+    "Royal Blue": {
+      "hoodie": "#374FC0"
+    },
+    "Maroon": {
+      "tee": "#6D1E24"
+    },
+    "Mauve": {
+      "hoodie": "#C4A3AB"
+    }
   },
   "_retired": {
     "_note": "Names carried only by the 40 old DRAFT tees, a dead line that is never published. Listed so `swatches.py check` reports them as knowingly ignored rather than as missing swatches.",
-    "names": ["Moss", "Brick", "Graphite", "Ice Blue", "Khaki", "Orchid", "True Navy", "Ivory"]
-  }
+    "names": [
+      "Moss",
+      "Brick",
+      "Graphite",
+      "Ice Blue",
+      "Khaki",
+      "Orchid",
+      "True Navy",
+      "Ivory"
+    ]
+  },
+  "_provenance_saved_designs": "Pink, Light Blue (Tapstitch 'Blue') and Cream (Tapstitch 'Apricot') on RT0063, Forest Green (Tapstitch 'Dark Green') and Purple on the RQ0034 bomber: median fabric colour of Tapstitch's own mockups, 8 Oct 2026, the method that reproduces Charcoal exactly. Names approved by Evan the same day."
 }

@@ -1118,3 +1118,29 @@ drafts.
 - **Still manual, because no API reaches them:** the Easify CSV import, and
   attaching the Art File download (that app opens a file picker for the
   merchant). The sweep names both at the end, only when they are needed.
+
+## 8 October 2026 (hand-saved designs: the Be Peculiar line and the seal bomber)
+
+Seven designs Evan saved by hand in the Tapstitch editor go to the store through
+`scripts/publish_saved_design.py` and `config/saved_designs.json`, not the temple
+runners. Evan's calls, the same day:
+
+- **Names carry the garment line.** `Essential Heavyweight "Be Peculiar" Tee`,
+  `Ultra-soft "Be Peculiar" Sweatshirt`, `Ultra-soft Oversized "Be Peculiar" Hoodie`;
+  the Sé Singular versions add ` - Español`. The bomber is the `Temple Seal Bomber
+  Jacket`. Its title starts with "Temple", so the " Temple" title gates in
+  shopify_fixups, art_images and easify_options skip it, as they should.
+- **Prices:** the line prices ($44.99 / $64.99 / $74.99); bomber $79.99.
+- **Lead colour per product**, on the collection card and the product page alike:
+  both sweatshirts Black; hoodie Gray, Español hoodie Coffee; tee Black, Español
+  tee Navy Blue; bomber Navy Blue, back first.
+- **Pink, Light Blue and Cream (Tapstitch Apricot) on the tees, white ink kept**,
+  knowing the contrast (white on fabric 1.98, 1.69, 1.28). They also go onto every
+  live tee and future sweeps (Phase 2, not started).
+- **Scripture on garments approved** for the seal and for the small verse line
+  under both wordmarks (BRAND.md section 19).
+- **Never `garment:` tags on these.** Temple Crewnecks, Temple Hoodies and the
+  homepage marquee are smart collections on `garment:`; these carry `apparel:`.
+- **Swatches** for the five new names were written to the unpublished theme
+  "Claude Code V3" through the connector (it refuses writes to the live theme) and
+  proved by checksum. They show on the store when V3 is published.

@@ -1,3 +1,23 @@
+# Be Peculiar line and seal bomber: in flight 8 October 2026
+
+Seven hand-saved Tapstitch designs, driven by `scripts/publish_saved_design.py`
+(decisions in `docs/decisions.md`, 8 October). State per product:
+`artifacts/tapstitch/saved-designs.json`.
+
+- All seven are built as Tapstitch store products (not public).
+- #2, `Ultra-soft "Be Peculiar" Sweatshirt`, is distributed and finished on Shopify
+  as DRAFT, waiting on Evan's review.
+- #1 and #3 to #7 wait for Evan's go. Each one then: `--apply --publish --only N`,
+  then at once through the Shopify connector: DRAFT, product type, tags, SEO,
+  colour renames, lead colour first, alt text, read back. The bomber also needs its
+  variants bound to back images so the page opens on the seal.
+- All seven go ACTIVE together on Evan's word.
+- The five new swatches are only in the unpublished "Claude Code V3" theme.
+- Manual for Evan: the bomber's Kiwi size chart (`reference/garment-copy/bomber/size-chart.md`).
+- Phase 2, not started: Pink, Light Blue and Cream on all 45 live tees (an Eden
+  Green style swap) and in `garments/tee.json` for future sweeps. Needs the Admin
+  token or the Mac.
+
 # The sweep: built 7 October 2026, not yet run on a real new temple
 
 "Run a sweep" now takes a folder holding only the design PNG to a temple that is
