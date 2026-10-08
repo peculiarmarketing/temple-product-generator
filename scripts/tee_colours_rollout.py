@@ -275,7 +275,9 @@ def new_composites(s, entry, tmp):
     files = newcomp.composite(art, out)
     for slug, p in files.items():
         blank = Image.open(newcomp.BLANKS / f"back_tee_{slug}.jpg")
-        share = float(((_panel(Image.open(p)) - _panel(blank)) > 60).mean())
+        # 15 levels, not eden_green_rollout's 60: white ink on Cream (~225) can
+        # only lift a pixel ~30. A bare blank measures 0.0000 either way.
+        share = float(((_panel(Image.open(p)) - _panel(blank)) > 15).mean())
         if share < MIN_PRINT:
             raise StepError(f"{slug} composite carries no print ({share:.4f})")
     return files
