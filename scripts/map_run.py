@@ -24,6 +24,9 @@ What differs from a temple, all decided by Evan on 8 Oct 2026:
     temple collections are smart collections on those three (temple-tees,
     temple-crewnecks, temple-hoodies, all-temples), and the homepage marquee
     reads temple-tees, so a garment: tag would put a map in the temple marquee.
+  - Page template product.map (theme/templates/product.map.json): the product
+    template minus the temple Reference / Final drawing slider, with the
+    design-suggestion row and section worded for maps.
   - No art card, Temple Art File option, Easify row or marquee entry: those
     are temple-only.
   - On-model gallery: not run. The blank colourway photos it composites onto
@@ -389,6 +392,15 @@ def run_garment(s, client, name, p, garment_id, publish, state, note):
     pid = client.find_product_by_handle(handle)["id"]
     note(add_tags(client, pid, tags_for(name)))
     note(set_place_line(client, pid, p))
+    # templates/product.map.json (8 Oct 2026, Evan): the product template without
+    # the temple Reference / Final drawing slider, with the design-suggestion
+    # copy worded for maps ("Don't see your city?").
+    e = client.gql("""mutation($i: ProductInput!) { productUpdate(input: $i) {
+        userErrors { message } } }""", {"i": {"id": pid, "templateSuffix": "map"}}
+    )["productUpdate"]["userErrors"]
+    if e:
+        raise SystemExit(f"templateSuffix: {e}")
+    note("page template product.map")
     st["state"] = "live"
     save_state(name, state)
 
