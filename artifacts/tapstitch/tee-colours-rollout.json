@@ -676,6 +676,7 @@
         "gid://shopify/MediaImage/56522550804852": "gid://shopify/MediaImage/56541950280052",
         "gid://shopify/MediaImage/56522551066996": "gid://shopify/MediaImage/56541949722996"
       },
+      "cutover": "2026-10-08T19:04:32+00:00",
       "distribute_started_at": "2026-10-08T19:02:15+00:00",
       "distributed": "2026-10-08T19:02:32+00:00",
       "finished": "2026-10-08T19:03:23+00:00",
@@ -716,8 +717,32 @@
       "source_template_id": "1550093956908544000",
       "store_product_id": "1557951296441622528",
       "template_id": "1557951263113637888",
-      "title": "Essential Heavyweight Temple Tee (Heber Valley)"
+      "title": "Essential Heavyweight Temple Tee (Heber Valley)",
+      "verified": "2026-10-08T19:04:34+00:00"
+    },
+    "Jordan River": {
+      "built": "2026-10-08T19:04:46+00:00",
+      "copied": "2026-10-08T19:04:43+00:00",
+      "distribute_started_at": "2026-10-08T19:04:46+00:00",
+      "distributed": "2026-10-08T19:05:04+00:00",
+      "finished": "2026-10-08T19:05:53+00:00",
+      "handle": "essential-heavyweight-temple-tee-jordan-river",
+      "hidden": "2026-10-08T19:05:37+00:00",
+      "new_id": "gid://shopify/Product/15350328983924",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303600046452",
+      "resolved": "2026-10-08T19:04:35+00:00",
+      "source_template_id": "1550094390998024192",
+      "store_product_id": "1557951932428132352",
+      "template_id": "1557951890002702336",
+      "title": "Essential Heavyweight Temple Tee (Jordan River)"
     }
   },
-  "updated_at": "2026-10-08T19:04:27+00:00"
+  "updated_at": "2026-10-08T19:05:53+00:00"
 }
