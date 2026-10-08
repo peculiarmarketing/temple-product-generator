@@ -1443,9 +1443,45 @@
     "Nauvoo map": {
       "built": "2026-10-08T20:20:49+00:00",
       "copied": "2026-10-08T20:20:46+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56541322772852": "gid://shopify/MediaImage/56542905991540",
+        "gid://shopify/MediaImage/56541322805620": "gid://shopify/MediaImage/56542906188148",
+        "gid://shopify/MediaImage/56541322838388": "gid://shopify/MediaImage/56542906286452",
+        "gid://shopify/MediaImage/56541322871156": "gid://shopify/MediaImage/56542906384756",
+        "gid://shopify/MediaImage/56541322903924": "gid://shopify/MediaImage/56542906483060",
+        "gid://shopify/MediaImage/56541322936692": "gid://shopify/MediaImage/56542906614132",
+        "gid://shopify/MediaImage/56541322969460": "gid://shopify/MediaImage/56542906712436",
+        "gid://shopify/MediaImage/56541323002228": "gid://shopify/MediaImage/56542906810740",
+        "gid://shopify/MediaImage/56541323034996": "gid://shopify/MediaImage/56542906909044",
+        "gid://shopify/MediaImage/56541323067764": "gid://shopify/MediaImage/56542906974580",
+        "gid://shopify/MediaImage/56541805412724": "gid://shopify/MediaImage/56542906057076",
+        "gid://shopify/MediaImage/56541807444340": "gid://shopify/MediaImage/56542906122612"
+      },
+      "cutover": "2026-10-08T20:24:26+00:00",
       "distribute_started_at": "2026-10-08T20:20:49+00:00",
       "distributed": "2026-10-08T20:21:07+00:00",
       "finished": "2026-10-08T20:21:40+00:00",
+      "gallery": "2026-10-08T20:24:22+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542905991540",
+        "gid://shopify/MediaImage/56542906057076",
+        "gid://shopify/MediaImage/56542906122612",
+        "gid://shopify/MediaImage/56542906188148",
+        "gid://shopify/MediaImage/56542906286452",
+        "gid://shopify/MediaImage/56542906384756",
+        "gid://shopify/MediaImage/56542906483060",
+        "gid://shopify/MediaImage/56542888788340",
+        "gid://shopify/MediaImage/56542888821108",
+        "gid://shopify/MediaImage/56542888853876",
+        "gid://shopify/MediaImage/56542906614132",
+        "gid://shopify/MediaImage/56542906712436",
+        "gid://shopify/MediaImage/56542906810740",
+        "gid://shopify/MediaImage/56542906909044",
+        "gid://shopify/MediaImage/56542906974580",
+        "gid://shopify/MediaImage/56542889050484",
+        "gid://shopify/MediaImage/56542889083252",
+        "gid://shopify/MediaImage/56542889116020"
+      ],
       "handle": "essential-heavyweight-map-tee-nauvoo",
       "hidden": "2026-10-08T20:21:24+00:00",
       "new_id": "gid://shopify/Product/15350484205940",
@@ -1457,12 +1493,12 @@
         "Charcoal"
       ],
       "old_id": "gid://shopify/Product/15350211641716",
-      "problem": "StepError: old map gallery has 12 alt texts; expected one for the set",
       "resolved": "2026-10-08T20:20:42+00:00",
       "source_template_id": "1557934356767600640",
       "store_product_id": "1557971070399750144",
       "template_id": "1557971043778453504",
-      "title": "Essential Heavyweight Map Tee (Nauvoo)"
+      "title": "Essential Heavyweight Map Tee (Nauvoo)",
+      "verified": "2026-10-08T20:24:29+00:00"
     },
     "Oakland": {
       "built": "2026-10-08T19:33:19+00:00",
@@ -2067,9 +2103,45 @@
     "Salt Lake City map": {
       "built": "2026-10-08T20:21:51+00:00",
       "copied": "2026-10-08T20:21:50+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56541542449524": "gid://shopify/MediaImage/56542912020852",
+        "gid://shopify/MediaImage/56541542482292": "gid://shopify/MediaImage/56542912282996",
+        "gid://shopify/MediaImage/56541542515060": "gid://shopify/MediaImage/56542912381300",
+        "gid://shopify/MediaImage/56541542547828": "gid://shopify/MediaImage/56542912479604",
+        "gid://shopify/MediaImage/56541542580596": "gid://shopify/MediaImage/56542912577908",
+        "gid://shopify/MediaImage/56541542613364": "gid://shopify/MediaImage/56542912643444",
+        "gid://shopify/MediaImage/56541542646132": "gid://shopify/MediaImage/56542912774516",
+        "gid://shopify/MediaImage/56541542678900": "gid://shopify/MediaImage/56542913757556",
+        "gid://shopify/MediaImage/56541542711668": "gid://shopify/MediaImage/56542913855860",
+        "gid://shopify/MediaImage/56541542744436": "gid://shopify/MediaImage/56542913954164",
+        "gid://shopify/MediaImage/56541822779764": "gid://shopify/MediaImage/56542912086388",
+        "gid://shopify/MediaImage/56541827531124": "gid://shopify/MediaImage/56542912217460"
+      },
+      "cutover": "2026-10-08T20:25:29+00:00",
       "distribute_started_at": "2026-10-08T20:21:52+00:00",
       "distributed": "2026-10-08T20:22:09+00:00",
       "finished": "2026-10-08T20:22:43+00:00",
+      "gallery": "2026-10-08T20:25:25+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542912020852",
+        "gid://shopify/MediaImage/56542912086388",
+        "gid://shopify/MediaImage/56542912217460",
+        "gid://shopify/MediaImage/56542912282996",
+        "gid://shopify/MediaImage/56542912381300",
+        "gid://shopify/MediaImage/56542912479604",
+        "gid://shopify/MediaImage/56542912577908",
+        "gid://shopify/MediaImage/56542894686580",
+        "gid://shopify/MediaImage/56542894719348",
+        "gid://shopify/MediaImage/56542894752116",
+        "gid://shopify/MediaImage/56542912643444",
+        "gid://shopify/MediaImage/56542912774516",
+        "gid://shopify/MediaImage/56542913757556",
+        "gid://shopify/MediaImage/56542913855860",
+        "gid://shopify/MediaImage/56542913954164",
+        "gid://shopify/MediaImage/56542894948724",
+        "gid://shopify/MediaImage/56542894981492",
+        "gid://shopify/MediaImage/56542895014260"
+      ],
       "handle": "essential-heavyweight-map-tee-salt-lake-city",
       "hidden": "2026-10-08T20:22:27+00:00",
       "new_id": "gid://shopify/Product/15350485746036",
@@ -2081,12 +2153,12 @@
         "Charcoal"
       ],
       "old_id": "gid://shopify/Product/15350265119092",
-      "problem": "StepError: old map gallery has 12 alt texts; expected one for the set",
       "resolved": "2026-10-08T20:21:45+00:00",
       "source_template_id": "1557943287829123072",
       "store_product_id": "1557971333634269184",
       "template_id": "1557971310209032192",
-      "title": "Essential Heavyweight Map Tee (Salt Lake City)"
+      "title": "Essential Heavyweight Map Tee (Salt Lake City)",
+      "verified": "2026-10-08T20:25:31+00:00"
     },
     "San Antonio": {
       "built": "2026-10-08T19:55:59+00:00",
@@ -2749,5 +2821,5 @@
       "verified": "2026-10-08T20:20:40+00:00"
     }
   },
-  "updated_at": "2026-10-08T20:22:47+00:00"
+  "updated_at": "2026-10-08T20:25:31+00:00"
 }
