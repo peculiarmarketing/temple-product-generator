@@ -163,6 +163,18 @@ PRODUCTS = {   # sheet -> (finals prefix filter, lead first, cards)
 }
 
 
+def gallery_order(names, lead):
+    """Lead colour first; on the bomber each colour's back then front (the order
+    the v1 gallery used), the lead colour's pair first, the unzipped shot last."""
+    if not lead.startswith("bomber"):
+        return [lead] + [n for n in names if n != lead]
+    colour = lambda n: n.split("_")[1]
+    lc = colour(lead)
+    cols = [lc] + sorted({colour(n) for n in names} - {lc})
+    out = [f"bomber_{c}_{side}" for c in cols for side in ("back", "front")]
+    return [n for n in out if n in names] + [n for n in names if n not in out]
+
+
 def finals():
     return sorted(p.stem for p in (V2 / "final").glob("*.jpg"))
 
@@ -171,7 +183,7 @@ def sheets(tile=760, cols=4):
     OUT.mkdir(exist_ok=True)
     for sheet, (keep, lead, cards_) in PRODUCTS.items():
         names = [f for f in finals() if keep(f)]
-        names = ([lead] if lead in names else []) + [n for n in names if n != lead]
+        names = gallery_order(names, lead)
         items = [(n, V2 / "final" / f"{n}.jpg") for n in names] + \
                 [(c, V2 / "cards" / f"{c}.png") for c in cards_]
         rows = (len(items) + cols - 1) // cols
