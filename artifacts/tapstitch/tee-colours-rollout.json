@@ -2583,8 +2583,48 @@
     "Washington DC": {
       "built": "2026-10-08T20:16:28+00:00",
       "copied": "2026-10-08T20:16:26+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523638931828": "gid://shopify/MediaImage/56542850548084",
+        "gid://shopify/MediaImage/56523638964596": "gid://shopify/MediaImage/56542850613620",
+        "gid://shopify/MediaImage/56523639161204": "gid://shopify/MediaImage/56542851432820",
+        "gid://shopify/MediaImage/56523639193972": "gid://shopify/MediaImage/56542851465588",
+        "gid://shopify/MediaImage/56523639226740": "gid://shopify/MediaImage/56542851531124",
+        "gid://shopify/MediaImage/56523662754164": "gid://shopify/MediaImage/56542850908532",
+        "gid://shopify/MediaImage/56523662983540": "gid://shopify/MediaImage/56542850974068",
+        "gid://shopify/MediaImage/56523663147380": "gid://shopify/MediaImage/56542851006836",
+        "gid://shopify/MediaImage/56523663475060": "gid://shopify/MediaImage/56542850449780",
+        "gid://shopify/MediaImage/56523663704436": "gid://shopify/MediaImage/56542851137908",
+        "gid://shopify/MediaImage/56523664097652": "gid://shopify/MediaImage/56542850515316"
+      },
+      "cutover": "2026-10-08T20:18:29+00:00",
       "distribute_started_at": "2026-10-08T20:16:29+00:00",
+      "distributed": "2026-10-08T20:16:47+00:00",
+      "finished": "2026-10-08T20:17:21+00:00",
+      "gallery": "2026-10-08T20:18:24+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542850449780",
+        "gid://shopify/MediaImage/56542850515316",
+        "gid://shopify/MediaImage/56542850548084",
+        "gid://shopify/MediaImage/56542850613620",
+        "gid://shopify/MediaImage/56542850908532",
+        "gid://shopify/MediaImage/56542850974068",
+        "gid://shopify/MediaImage/56542851006836",
+        "gid://shopify/MediaImage/56542851137908",
+        "gid://shopify/MediaImage/56542857363828",
+        "gid://shopify/MediaImage/56542857888116",
+        "gid://shopify/MediaImage/56542858576244",
+        "gid://shopify/MediaImage/56542851432820",
+        "gid://shopify/MediaImage/56542851465588",
+        "gid://shopify/MediaImage/56542851531124"
+      ],
       "handle": "essential-heavyweight-temple-tee-washington-dc",
+      "hidden": "2026-10-08T20:17:05+00:00",
+      "new_id": "gid://shopify/Product/15350475686260",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542858576244",
+        "light-blue": "gid://shopify/MediaImage/56542857888116",
+        "pink": "gid://shopify/MediaImage/56542857363828"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -2597,8 +2637,32 @@
       "source_template_id": "1550105606755663872",
       "store_product_id": "1557969978869882880",
       "template_id": "1557969925585399808",
-      "title": "Essential Heavyweight Temple Tee (Washington D.C.)"
+      "title": "Essential Heavyweight Temple Tee (Washington D.C.)",
+      "verified": "2026-10-08T20:18:31+00:00"
+    },
+    "West Jordan*": {
+      "built": "2026-10-08T20:18:38+00:00",
+      "copied": "2026-10-08T20:18:36+00:00",
+      "distribute_started_at": "2026-10-08T20:18:38+00:00",
+      "distributed": "2026-10-08T20:18:56+00:00",
+      "finished": "2026-10-08T20:19:29+00:00",
+      "handle": "essential-heavyweight-temple-tee-west-jordan",
+      "hidden": "2026-10-08T20:19:13+00:00",
+      "new_id": "gid://shopify/Product/15350480830836",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303675380084",
+      "resolved": "2026-10-08T20:18:32+00:00",
+      "source_template_id": "1550106065461526528",
+      "store_product_id": "1557970521977724928",
+      "template_id": "1557970498648961024",
+      "title": "Essential Heavyweight Temple Tee (West Jordan)"
     }
   },
-  "updated_at": "2026-10-08T20:16:29+00:00"
+  "updated_at": "2026-10-08T20:19:29+00:00"
 }
