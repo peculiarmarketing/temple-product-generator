@@ -59,7 +59,23 @@
       "template_id": "1557943961224638464",
       "title": "Essential Heavyweight Temple Tee (Albuquerque)",
       "verified": "2026-10-08T18:38:56+00:00"
+    },
+    "Billings": {
+      "copied": "2026-10-08T18:39:46+00:00",
+      "handle": "essential-heavyweight-temple-tee-billings",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303836860788",
+      "resolved": "2026-10-08T18:39:34+00:00",
+      "source_template_id": "1550118834894225408",
+      "template_id": "1557945595388391424",
+      "title": "Essential Heavyweight Temple Tee (Billings)"
     }
   },
-  "updated_at": "2026-10-08T18:38:56+00:00"
+  "updated_at": "2026-10-08T18:39:46+00:00"
 }
