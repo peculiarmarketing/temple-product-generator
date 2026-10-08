@@ -1,0 +1,159 @@
+{
+ "_what": "Print placement measured on Tapstitch's own flat lays, as ratios of the garment's chest width (armpit to armpit). d = (ink top - collar) / chest, w = ink width / chest, cx = (ink centre x - collar x) / chest. Applied to each on-model photo by composite_front_v2.py.",
+ "_collar": "tee and crew: top edge of the front neck rib at centre; hoodie: the point of the V where the hood's two sides cross at centre front; bomber front: the V where the collar ribs meet the zip; bomber back: bottom of the collar band at centre",
+ "_marks": {
+  "tee": {
+   "flat": "Be Peculiar tee front print - Black",
+   "collar": [
+    693,
+    226
+   ],
+   "chest": [
+    290,
+    1082
+   ],
+   "ink": {
+    "en": [
+     528,
+     501,
+     854,
+     587
+    ],
+    "es": [
+     529,
+     509,
+     853,
+     609
+    ]
+   }
+  },
+  "crew": {
+   "flat": "Be Peculiar sweatshirt front print - Black",
+   "collar": [
+    699,
+    288
+   ],
+   "chest": [
+    382,
+    1018
+   ],
+   "ink": {
+    "en": [
+     556,
+     506,
+     845,
+     582
+    ],
+    "es": [
+     557,
+     502,
+     844,
+     590
+    ]
+   }
+  },
+  "hoodie": {
+   "flat": "Be Peculiar hoodie front print - Black",
+   "collar": [
+    700,
+    525
+   ],
+   "chest": [
+    355,
+    1045
+   ],
+   "ink": {
+    "en": [
+     562,
+     637,
+     859,
+     716
+    ],
+    "es": [
+     564,
+     638,
+     859,
+     729
+    ]
+   }
+  },
+  "bomber_front": {
+   "flat": "Temple Seal bomber jacket chest logo - Navy Blue",
+   "collar": [
+    700,
+    393
+   ],
+   "chest": [
+    382,
+    1022
+   ],
+   "ink": {
+    "chest": [
+     769,
+     490,
+     875,
+     585
+    ]
+   }
+  },
+  "bomber_back": {
+   "flat": "Temple Seal bomber jacket back print - Navy Blue",
+   "collar": [
+    702,
+    262
+   ],
+   "chest": [
+    382,
+    1022
+   ],
+   "ink": {
+    "seal": [
+     520,
+     420,
+     888,
+     788
+    ]
+   }
+  }
+ },
+ "tee_en": {
+  "d": 0.3472,
+  "w": 0.4129,
+  "cx": -0.0025
+ },
+ "tee_es": {
+  "d": 0.3573,
+  "w": 0.4104,
+  "cx": -0.0025
+ },
+ "crew_en": {
+  "d": 0.3428,
+  "w": 0.456,
+  "cx": 0.0024
+ },
+ "crew_es": {
+  "d": 0.3365,
+  "w": 0.4528,
+  "cx": 0.0024
+ },
+ "hoodie_en": {
+  "d": 0.1623,
+  "w": 0.4319,
+  "cx": 0.0152
+ },
+ "hoodie_es": {
+  "d": 0.1638,
+  "w": 0.429,
+  "cx": 0.0167
+ },
+ "bomber_front": {
+  "d": 0.1516,
+  "w": 0.1672,
+  "cx": 0.1906
+ },
+ "bomber_back": {
+  "d": 0.2469,
+  "w": 0.5766,
+  "cx": 0.0031
+ }
+}

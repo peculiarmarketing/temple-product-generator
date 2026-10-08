@@ -1,0 +1,228 @@
+{
+  "_comment": "Products published from designs saved by hand in the Tapstitch editor, not built by the temple pipeline. Driven by scripts/publish_saved_design.py. An entry is only built while `approved` is true, which Evan sets after reviewing its title, copy and colours. Colour codes are Tapstitch ids; `renames` maps a Tapstitch colour name to what the storefront shows, and every storefront name needs a hex in config/swatches.json. Tags never use garment:, temple:, country: or state:, because the temple collections and the homepage marquee are smart collections keyed on those (garment:tee feeds 'Marquee: designed temples'). Titles, lead colours and copy approved by Evan 8 Oct 2026.",
+  "store_id": "1402569694703132672",
+  "care_copy": "reference/garment-copy/care-instructions.html",
+  "products": {
+    "1": {
+      "design": "SÉ SINGULAR crew",
+      "approved": true,
+      "template_id": "1557727258268028928",
+      "garment": "crew",
+      "title": "Ultra-soft \"Be Peculiar\" Sweatshirt - Español",
+      "handle": "ultra-soft-be-peculiar-sweatshirt-espanol",
+      "price_usd": 64.99,
+      "product_type": "Sweatshirt",
+      "colours": [
+        5720,
+        6551
+      ],
+      "resave_colours": true,
+      "lead_colour": 5720,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Flower Gray": "Heather Gray"
+      },
+      "tags": [
+        "apparel:crew",
+        "line:be-peculiar",
+        "language:es"
+      ],
+      "details": "reference/garment-copy/crew/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "2": {
+      "design": "BE PECULIAR crew",
+      "approved": true,
+      "template_id": "1557726867853832192",
+      "garment": "crew",
+      "title": "Ultra-soft \"Be Peculiar\" Sweatshirt",
+      "handle": "ultra-soft-be-peculiar-sweatshirt",
+      "price_usd": 64.99,
+      "product_type": "Sweatshirt",
+      "colours": [
+        5720,
+        6551
+      ],
+      "lead_colour": 5720,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Flower Gray": "Heather Gray"
+      },
+      "tags": [
+        "apparel:crew",
+        "line:be-peculiar"
+      ],
+      "details": "reference/garment-copy/crew/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "3": {
+      "design": "SÉ SINGULAR hoodie",
+      "approved": true,
+      "template_id": "1557726061654077440",
+      "garment": "hoodie",
+      "title": "Ultra-soft Oversized \"Be Peculiar\" Hoodie - Español",
+      "handle": "ultra-soft-oversized-be-peculiar-hoodie-espanol",
+      "price_usd": 74.99,
+      "product_type": "Hoodie",
+      "colours": [
+        5720,
+        6674,
+        6645,
+        6655,
+        6657,
+        6650,
+        6654
+      ],
+      "lead_colour": 6657,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Dark Purple": "Mauve",
+        "Klein Blue": "Royal Blue"
+      },
+      "tags": [
+        "apparel:hoodie",
+        "line:be-peculiar",
+        "language:es"
+      ],
+      "details": "reference/garment-copy/hoodie/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "4": {
+      "design": "BE PECULIAR hoodie",
+      "approved": true,
+      "template_id": "1557725504625340416",
+      "garment": "hoodie",
+      "title": "Ultra-soft Oversized \"Be Peculiar\" Hoodie",
+      "handle": "ultra-soft-oversized-be-peculiar-hoodie",
+      "price_usd": 74.99,
+      "product_type": "Hoodie",
+      "colours": [
+        5720,
+        6674,
+        6645,
+        6655,
+        6657,
+        6650,
+        6654
+      ],
+      "lead_colour": 6645,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Dark Purple": "Mauve",
+        "Klein Blue": "Royal Blue"
+      },
+      "tags": [
+        "apparel:hoodie",
+        "line:be-peculiar"
+      ],
+      "details": "reference/garment-copy/hoodie/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "5": {
+      "design": "SÉ SINGULAR tee",
+      "approved": true,
+      "template_id": "1557724761864425472",
+      "garment": "tee",
+      "title": "Essential Heavyweight \"Be Peculiar\" Tee - Español",
+      "handle": "essential-heavyweight-be-peculiar-tee-espanol",
+      "price_usd": 44.99,
+      "product_type": "T-Shirt",
+      "colours": [
+        8079,
+        8084,
+        8081,
+        8085,
+        8088,
+        8082,
+        8083,
+        8087
+      ],
+      "lead_colour": 8081,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Dark Gray": "Charcoal",
+        "Wine Red": "Maroon",
+        "Blue": "Light Blue",
+        "Apricot": "Cream"
+      },
+      "tags": [
+        "apparel:tee",
+        "line:be-peculiar",
+        "language:es"
+      ],
+      "details": "reference/garment-copy/tee/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "6": {
+      "design": "BE PECULIAR tee",
+      "approved": true,
+      "template_id": "1557724267418898432",
+      "garment": "tee",
+      "title": "Essential Heavyweight \"Be Peculiar\" Tee",
+      "handle": "essential-heavyweight-be-peculiar-tee",
+      "price_usd": 44.99,
+      "product_type": "T-Shirt",
+      "colours": [
+        8079,
+        8084,
+        8081,
+        8085,
+        8088,
+        8082,
+        8083,
+        8087
+      ],
+      "resave_colours": true,
+      "lead_colour": 8079,
+      "lead_side": "front",
+      "drop_side": "back",
+      "renames": {
+        "Dark Gray": "Charcoal",
+        "Wine Red": "Maroon",
+        "Blue": "Light Blue",
+        "Apricot": "Cream"
+      },
+      "tags": [
+        "apparel:tee",
+        "line:be-peculiar"
+      ],
+      "details": "reference/garment-copy/tee/product-details.html",
+      "intro": "reference/garment-copy/lines/be-peculiar/product-intro.html"
+    },
+    "7": {
+      "design": "Seal bomber jacket",
+      "approved": true,
+      "template_id": "1557672378782347264",
+      "garment": "bomber",
+      "title": "Temple Seal Bomber Jacket",
+      "handle": "temple-seal-bomber-jacket",
+      "price_usd": 79.99,
+      "product_type": "Jacket",
+      "colours": [
+        8624,
+        8620,
+        8619,
+        8617,
+        8623
+      ],
+      "lead_colour": 8623,
+      "lead_side": "back",
+      "drop_side": null,
+      "renames": {
+        "Wine Red": "Maroon",
+        "Dark Green": "Forest Green"
+      },
+      "tags": [
+        "apparel:bomber",
+        "line:seal"
+      ],
+      "details": "reference/garment-copy/bomber/product-details.html",
+      "intro": "reference/garment-copy/bomber/product-intro.html"
+    }
+  }
+}

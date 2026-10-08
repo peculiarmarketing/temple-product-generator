@@ -1,0 +1,422 @@
+{
+ "bomber_black_back": {
+  "collar": [
+   2013,
+   1144
+  ],
+  "chest": [
+   1313,
+   2717
+  ],
+  "how": "registered",
+  "scale": 1.0019,
+  "shift": [
+   2,
+   -1
+  ]
+ },
+ "bomber_black_front": {
+  "collar": [
+   2008,
+   1426
+  ],
+  "chest": [
+   1301,
+   2719
+  ],
+  "how": "registered",
+  "scale": 0.9986,
+  "shift": [
+   1,
+   -7
+  ]
+ },
+ "bomber_forest-green_back": {
+  "collar": [
+   2008,
+   1142
+  ],
+  "chest": [
+   1309,
+   2716
+  ],
+  "how": "registered",
+  "scale": 1.0033,
+  "shift": [
+   -11,
+   -13
+  ]
+ },
+ "bomber_forest-green_front": {
+  "collar": [
+   2005,
+   1434
+  ],
+  "chest": [
+   1298,
+   2720
+  ],
+  "how": "registered",
+  "scale": 1.0014,
+  "shift": [
+   -8,
+   8
+  ]
+ },
+ "bomber_maroon_back": {
+  "collar": [
+   2012,
+   1142
+  ],
+  "chest": [
+   1311,
+   2723
+  ],
+  "how": "registered",
+  "scale": 1.007,
+  "shift": [
+   -14,
+   -1
+  ]
+ },
+ "bomber_maroon_front": {
+  "collar": [
+   2009,
+   1427
+  ],
+  "chest": [
+   1305,
+   2720
+  ],
+  "how": "registered",
+  "scale": 0.9967,
+  "shift": [
+   3,
+   -1
+  ]
+ },
+ "bomber_navy-blue_back": {
+  "collar": [
+   2010,
+   1144
+  ],
+  "chest": [
+   1312,
+   2714
+  ],
+  "how": "hand"
+ },
+ "bomber_navy-blue_front": {
+  "collar": [
+   2008,
+   1428
+  ],
+  "chest": [
+   1300,
+   2720
+  ],
+  "how": "hand"
+ },
+ "bomber_navy-blue_open": {
+  "collar": [
+   2156,
+   1428
+  ],
+  "chest": [
+   1448,
+   2868
+  ],
+  "how": "hand",
+  "note": "Generated from bomber_navy-blue_front (same framing, chest 1420px). Unzipped, the left front panel hangs open and leans 3.8 deg (its edge, fitted from y 1500-2350, runs x 2134 -> 2191). The logo is rotated with it and kept 152px in from the panel edge at its own height, as on the zipped jacket (Evan, 8 Oct: a level logo on a leaning panel looked unnatural).",
+  "angle": 3.8
+ },
+ "bomber_purple_back": {
+  "collar": [
+   2013,
+   1141
+  ],
+  "chest": [
+   1315,
+   2719
+  ],
+  "how": "registered",
+  "scale": 1.0013,
+  "shift": [
+   -2,
+   -10
+  ]
+ },
+ "bomber_purple_front": {
+  "collar": [
+   2009,
+   1429
+  ],
+  "chest": [
+   1302,
+   2720
+  ],
+  "how": "registered",
+  "scale": 0.9986,
+  "shift": [
+   3,
+   -1
+  ]
+ },
+ "crew_black": {
+  "collar": [
+   2050,
+   1278
+  ],
+  "chest": [
+   1290,
+   2862
+  ],
+  "how": "hand"
+ },
+ "crew_heather-gray": {
+  "collar": [
+   2049,
+   1270
+  ],
+  "chest": [
+   1291,
+   2868
+  ],
+  "how": "registered",
+  "scale": 1.0035,
+  "shift": [
+   -17,
+   -40
+  ]
+ },
+ "hoodie_black": {
+  "collar": [
+   2032,
+   1180
+  ],
+  "chest": [
+   1466,
+   2597
+  ],
+  "how": "registered",
+  "scale": 1.0212,
+  "shift": [
+   -56,
+   -20
+  ]
+ },
+ "hoodie_coffee": {
+  "collar": [
+   2037,
+   1184
+  ],
+  "chest": [
+   1472,
+   2593
+  ],
+  "how": "registered",
+  "scale": 1.0121,
+  "shift": [
+   -25,
+   -5
+  ]
+ },
+ "hoodie_eden-green": {
+  "collar": [
+   2040,
+   1177
+  ],
+  "chest": [
+   1479,
+   2590
+  ],
+  "how": "registered",
+  "scale": 1.0034,
+  "shift": [
+   -3,
+   -10
+  ]
+ },
+ "hoodie_gray": {
+  "collar": [
+   2037,
+   1180
+  ],
+  "chest": [
+   1479,
+   2586
+  ],
+  "how": "hand"
+ },
+ "hoodie_mauve": {
+  "collar": [
+   2038,
+   1188
+  ],
+  "chest": [
+   1481,
+   2587
+  ],
+  "how": "registered",
+  "scale": 0.9991,
+  "shift": [
+   1,
+   17
+  ]
+ },
+ "hoodie_navy-blue": {
+  "collar": [
+   2038,
+   1174
+  ],
+  "chest": [
+   1481,
+   2589
+  ],
+  "how": "registered",
+  "scale": 1.0013,
+  "shift": [
+   -6,
+   -14
+  ]
+ },
+ "hoodie_royal-blue": {
+  "collar": [
+   2041,
+   1173
+  ],
+  "chest": [
+   1480,
+   2590
+  ],
+  "how": "registered",
+  "scale": 1.0027,
+  "shift": [
+   0,
+   -14
+  ]
+ },
+ "tee_black": {
+  "collar": [
+   2045,
+   1294
+  ],
+  "chest": [
+   1470,
+   2600
+  ],
+  "how": "hand"
+ },
+ "tee_charcoal": {
+  "collar": [
+   2044,
+   1290
+  ],
+  "chest": [
+   1469,
+   2604
+  ],
+  "how": "registered",
+  "scale": 1.0045,
+  "shift": [
+   -18,
+   4
+  ]
+ },
+ "tee_coffee": {
+  "collar": [
+   2035,
+   1300
+  ],
+  "chest": [
+   1456,
+   2601
+  ],
+  "how": "registered",
+  "scale": 1.0137,
+  "shift": [
+   -46,
+   13
+  ]
+ },
+ "tee_cream": {
+  "collar": [
+   2046,
+   1293
+  ],
+  "chest": [
+   1467,
+   2593
+  ],
+  "how": "registered",
+  "scale": 0.9965,
+  "shift": [
+   21,
+   42
+  ]
+ },
+ "tee_light-blue": {
+  "collar": [
+   2046,
+   1290
+  ],
+  "chest": [
+   1466,
+   2608
+  ],
+  "how": "registered",
+  "scale": 1.0105,
+  "shift": [
+   -22,
+   -16
+  ]
+ },
+ "tee_maroon": {
+  "collar": [
+   2040,
+   1293
+  ],
+  "chest": [
+   1461,
+   2602
+  ],
+  "how": "registered",
+  "scale": 1.0097,
+  "shift": [
+   -29,
+   3
+  ]
+ },
+ "tee_navy-blue": {
+  "collar": [
+   2039,
+   1297
+  ],
+  "chest": [
+   1463,
+   2603
+  ],
+  "how": "registered",
+  "scale": 1.0089,
+  "shift": [
+   -32,
+   3
+  ]
+ },
+ "tee_pink": {
+  "collar": [
+   2040,
+   1291
+  ],
+  "chest": [
+   1476,
+   2598
+  ],
+  "how": "registered",
+  "scale": 0.9932,
+  "shift": [
+   -5,
+   -29
+  ]
+ }
+}

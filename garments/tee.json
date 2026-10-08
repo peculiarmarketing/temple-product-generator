@@ -130,6 +130,24 @@
       "shopify": "Maroon",
       "ink": "white",
       "code": 8084
+    },
+    {
+      "tapstitch": "Pink",
+      "shopify": "Pink",
+      "ink": "white",
+      "code": 8082
+    },
+    {
+      "tapstitch": "Blue",
+      "shopify": "Light Blue",
+      "ink": "white",
+      "code": 8083
+    },
+    {
+      "tapstitch": "Apricot",
+      "shopify": "Cream",
+      "ink": "white",
+      "code": 8087
     }
   ],
   "_colorways_note": "tapstitch is the name in their editor; shopify is what the storefront shows, renamed after publish. ink is which art file that colorway prints. Every colorway in the current range is dark, so everything prints white and no black art file is needed; a light colorway added later needs ink 'black'. UNVERIFIED against the blank's own swatch names. These are the names Evan gave, and the tee's were carried over from the RU0010 it replaced, so RT0063 may spell one differently ('Dark Grey', 'Wine', and so on). A mismatch fails quietly: rename_option_value finds nothing to rename and the storefront keeps Tapstitch's name, and the colour reorder cannot find the colour it was told to lead with. Confirm the exact spellings in the editor during the first live session. COLOUR NAMES SPLIT 18 Sep 2026, Evan's call, and the reason is the theme, not the copy. shrine-theme-pro paints a colour swatch from ONE global list keyed on the option value NAME, so a name carries the same hex on every product on the store and nothing per-product can override it. The catalogue had three different greys and two names between them: the crew's Flower Gray #B4B3B5 (light heather) and the hoodie's Gray #6E7168 (warm sage) both published as plain 'Gray', and the tee's Dark Gray #56575B (cool charcoal) was a third colour again. Those hexes are the median fabric colour of the real Tapstitch mockups, print excluded, from artifacts/photo-mockup-spike/true_colors_all.json. Settled: crew -> Heather Gray, hoodie keeps Gray, tee -> Charcoal. The tee moved rather than the hoodie because a warm sage and a cool charcoal are genuinely different and folding either into the other would have put one swatch visibly off its own garment. Hex registry: config/swatches.json. Enforced at publish by scripts/swatches.py via finish_on_shopify.",

@@ -1,0 +1,72 @@
+submitted tee_navy-blue 294705005839f4fe3595d791ab3f9e35
+submitted tee_maroon acd054a4a9a4717e89ca98cb7d8d3358
+submitted tee_coffee f32225559d0bfc5fa071865f411a8e5e
+submitted tee_charcoal 1fb280b92da76ede038409e266e0d08b
+submitted tee_pink d4dcd3669c5cb23b3963e39444ca4d94
+submitted tee_light-blue ac5917597f314cf46f9d15a43ef7aeff
+submitted tee_cream 68aeed3ed2ea1b8a76ee513f05be91a2
+submitted crew_heather-gray e1139a09199bef95cf40abf9ed5c27da
+submitted hoodie_navy-blue 43a1014557667607110b9dedc4542c8a
+submitted hoodie_black c9e79f2baf5cb5290242ab737d5021e5
+submitted hoodie_coffee 77a9780de1347e24617d1c3266c9da1d
+submitted hoodie_mauve 52f23da0647d92514c6466f64f3d6500
+submitted hoodie_royal-blue 95ac49ce085eedd41cd367c7b09a5910
+submitted hoodie_eden-green ffeefea30e3534b1c8e2f4ca32ceaa74
+submitted bomber_black_front dbd07101bc9e94260ed6f5af8ddfd770
+submitted bomber_black_back 50448f05a28a60f0d242f8f2e4f77e61
+submitted bomber_maroon_front 4ade3df94603a2e81123411ce1c7f0ab
+submitted bomber_maroon_back 6d03cb5c401299c76ec0c303d6ea1ade
+submitted bomber_forest-green_front 4db44cf8115b335870c919b8b64773c7
+submitted bomber_forest-green_back 59f34f58408e4ce69fd13309d5686f8a
+submitted bomber_purple_front 52095f222e33d4802c10b64fb5a94888
+submitted bomber_purple_back 840072811826f24e80cad448f28495a5
+  29470500 -> generating
+  29470500 -> success
+  acd054a4 -> success
+  f3222555 -> success
+  1fb280b9 -> success
+  d4dcd366 -> success
+  ac591759 -> success
+  68aeed3e -> generating
+  68aeed3e -> success
+  e1139a09 -> success
+  43a10145 -> success
+  c9e79f2b -> success
+  77a9780d -> generating
+  77a9780d -> success
+  52f23da0 -> success
+  95ac49ce -> generating
+  95ac49ce -> success
+  ffeefea3 -> success
+  dbd07101 -> success
+  50448f05 -> success
+  4ade3df9 -> success
+  6d03cb5c -> success
+  4db44cf8 -> success
+  59f34f58 -> success
+  52095f22 -> success
+  84007281 -> success
+{
+ "tee_navy-blue": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473304158-gkrwqmwg4gs.png",
+ "tee_maroon": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473304276-76ftoqqilln.png",
+ "tee_coffee": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473293507-x49korufb5g.png",
+ "tee_charcoal": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473294551-60pdu6osxgv.png",
+ "tee_pink": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473297044-8vb828kpew7.png",
+ "tee_light-blue": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473305928-qp4vloikir.png",
+ "tee_cream": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473310889-u4js3gpx8zs.png",
+ "crew_heather-gray": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473303918-0an7hx7zyhen.png",
+ "hoodie_navy-blue": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473307993-esyh4je5xia.png",
+ "hoodie_black": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473307116-72m6hbm5uqm.png",
+ "hoodie_coffee": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473321726-yxkrp5wuk8c.png",
+ "hoodie_mauve": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473306165-1iomyuqzdx6.png",
+ "hoodie_royal-blue": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473601821-nwtegm9c8oo.png",
+ "hoodie_eden-green": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473315846-5zvkjac3d68.png",
+ "bomber_black_front": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473315787-yvcxsu90hp.png",
+ "bomber_black_back": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473316188-e40azh1dxl.png",
+ "bomber_maroon_front": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473608999-m3nxioymdlh.png",
+ "bomber_maroon_back": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473314383-s0lzcledn09.png",
+ "bomber_forest-green_front": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473317182-tflt43kloxl.png",
+ "bomber_forest-green_back": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473320572-nboy1ho104q.png",
+ "bomber_purple_front": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473313770-74s4cmcaw0n.png",
+ "bomber_purple_back": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791473323340-xtj0fyeproe.png"
+}

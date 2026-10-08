@@ -25,6 +25,7 @@ live account on 16 Sep 2026 and put two real products on the storefront.
 
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -307,6 +308,130 @@ def get_template(s, template_id):
                        timeout=30))
 
 
+def resave_body(template, color_codes):
+    """The PUT body that re-saves a design unchanged except for its colours.
+
+    Built from the template as get_template() returns it, so a design made by
+    hand in the editor keeps its own artwork, placement and print settings.
+    Those differ from what save_design() sends for pipeline designs: the editor
+    saves printType 13, not 1. get_template() returns no mockupConfig, so it is
+    rebuilt from `config` the way save_design() builds it (same objects, no
+    embs), which Tapstitch accepts and renders mockups from.
+    """
+    cfg = json.loads(template["config"])
+    mock = [{"piece": c["piece"], "objects": c["objects"],
+             "canvasSize": c.get("canvasSize") or {"width": CANVAS, "height": CANVAS}}
+            for c in cfg]
+    return {"colorCode": ",".join(str(c) for c in color_codes),
+            "uniqueId": template["templateId"],
+            "resourceCode": template.get("resourceCode", -1),
+            "productId": template["productId"],
+            "designTools": template.get("designTools") or "2d-layers",
+            "printType": template.get("printType") or 1,
+            "isUsedHd": bool(template.get("isUsedHd")),
+            "dimension": "inches",
+            "printingPreferenceType": template.get("printingPreferenceType"),
+            "specialProcessTags": template["specialProcessTags"],
+            "branding": template.get("branding") or {"innerNeckLabelCommitId": "0",
+                                                     "hangtagCommitId": "0"},
+            "virtualConfig": "[]",
+            "mockupConfig": json.dumps(mock),
+            "config": template["config"]}
+
+
+def resave_colours(s, template_id, color_codes):
+    """Re-save a saved design with a new colour list, then prove it took.
+
+    Writes to Tapstitch only. A design already feeding a store product would
+    re-sync that product's images (see relift_rollout.py), so this refuses
+    unless the caller has checked the design is unlinked. Returns the new
+    commit id.
+    """
+    before = get_template(s, template_id)
+    _data(s.put(f"{BASE}/api/designs/customized/templates/{template_id}",
+                data=json.dumps(resave_body(before, color_codes)),
+                headers={"Content-Type": "application/json"}, timeout=120))
+    after = get_template(s, template_id)
+    want = {str(c) for c in color_codes}
+    got = set(str(after["colorCode"]).split(","))
+    if got != want:
+        raise TapstitchError(f"re-save of {template_id}: colours read back {sorted(got)}, "
+                             f"wanted {sorted(want)}")
+    if after["config"] != before["config"]:
+        raise TapstitchError(f"re-save of {template_id} changed the design itself")
+    return after["commitId"]
+
+
+
+def copy_design(s, src_template_id, blank, color_codes):
+    """A NEW design carrying an existing design's artwork and placement, with a
+    different colour list. Returns the new template id.
+
+    For adding colours to a design that already feeds a live product
+    (scripts/tee_colours_rollout.py, 8 Oct 2026). resave_colours() on the live
+    design would make Tapstitch re-send that product's images two minutes later,
+    without alt text and sometimes FAILED (the 7 Oct relift met that on 39
+    products); a copy leaves the live design, and so the live product, alone
+    until its replacement takes over. Proven the same way: the copy must read
+    back with the source's exact config and the wanted colours.
+    """
+    src = get_template(s, src_template_id)
+    new_id = create_template(s, blank)
+    body = resave_body(src, color_codes)
+    body["uniqueId"] = new_id
+    _data(s.put(f"{BASE}/api/designs/customized/templates/{new_id}",
+                data=json.dumps(body), headers={"Content-Type": "application/json"},
+                timeout=120))
+    after = get_template(s, new_id)
+    want = {str(c) for c in color_codes}
+    got = set(str(after["colorCode"]).split(","))
+    if got != want:
+        raise TapstitchError(f"copy of {src_template_id} -> {new_id}: colours {sorted(got)}, "
+                             f"wanted {sorted(want)}")
+    if json.loads(after["config"]) != json.loads(src["config"]):
+        raise TapstitchError(f"copy of {src_template_id} -> {new_id}: artwork differs")
+    return new_id
+
+def filter_colours(prefill, keep_ids):
+    """A copy of a prefill with only the colours in `keep_ids` (Tapstitch ids).
+
+    Drops the variants, the Color option values and the mockups of every other
+    colour. Raises if a wanted colour is not in the prefill, because a colour
+    the template does not carry cannot be added here (resave_colours() first).
+    """
+    keep = {str(c) for c in keep_ids}
+    color = next(o for o in prefill["options"] if o["id"] == "Color" or o["name"] == "Color")
+    have = {str(v["id"]) for v in color["values"]}
+    if keep - have:
+        raise TapstitchError(f"prefill has no colour {sorted(keep - have)}; it has {sorted(have)}")
+
+    def colour_of(v):
+        return next(str(o["valueId"]) for o in v["selectedOptions"] if o["id"] == "Color")
+
+    options = [dict(o, values=[v for v in o["values"] if str(v["id"]) in keep])
+               if o is color else o for o in prefill["options"]]
+    return dict(prefill, options=options,
+                variants=[v for v in prefill["variants"] if colour_of(v) in keep],
+                mockups=[m for m in prefill["mockups"]
+                         if str(m["media"]["attributes"][0]["payload"].get("colorId")) in keep])
+
+
+def order_mockups(mockups, lead_side="back", lead_color_id=None, drop_side=None):
+    """mockups_back_first() for a design that may lead with either side.
+
+    A front-only design's back mockup is a blank garment, so it leads with the
+    front, and `drop_side="back"` leaves the blank backs out of the gallery.
+    """
+    lead = "BackEndImage" if lead_side == "back" else "FrontImage"
+    drop = {"back": "BackEndImage", "front": "FrontImage"}.get(drop_side)
+
+    def payload(m):
+        return m["media"]["attributes"][0]["payload"]
+    kept = [m for m in mockups if payload(m).get("placement") != drop]
+    return sorted(kept, key=lambda m: (payload(m).get("placement") != lead,
+                                       str(payload(m).get("colorId")) != str(lead_color_id)))
+
+
 def distribute(s, store_product_ids):
     """PUBLISH store products to Shopify. This reaches the live storefront.
 
@@ -364,9 +489,15 @@ def designs(s, page=1, page_size=24, q=""):
 
     These are the account's saved designs, published to a store or not, as
     opposed to store_products(), which only holds what was added to a store.
-    Found 8 Oct 2026 in the site's own code: the tab's list calls this endpoint
-    with pageNum and pageSize plus its filters. `q` is passed as the tab's
-    search box; untested until a logged-in run confirms it filters.
+    Found 8 Oct 2026 in the site's own code and confirmed by the first logged-in
+    run the same day (149 designs). `q` is the tab's search box: it filters on
+    the blank's name ("Hoodie"), the blank SKU (`bsSn`, "R00368") or the design
+    id, never on the title of the store product a design is linked to.
+
+    A record has no date and no design title: `name` is the blank's name, the
+    same for every design on that blank. Use id_time(uniqueId) for when it was
+    saved. `linkedStoresProductList.stores[].products[].uniqueId` are the store
+    products made from it; productCount 0 means it never reached a store.
 
     Returns the page: {pageNum, pageSize, totalPage, totalCount, data}.
     Read-only.
@@ -376,6 +507,18 @@ def designs(s, page=1, page_size=24, q=""):
         params["q"] = q
     return _data(s.get(f"{BASE}/api/services/user/products/page",
                        params=params, timeout=60))["page"]
+
+
+# Tapstitch ids are snowflakes: the high bits are milliseconds since
+# 2015-01-01 00:00 China time (UTC+8). Calibrated 8 Oct 2026 against
+# relift-rollout.json, where every saved_at matches its commit id within a second.
+_ID_EPOCH_MS = 1420041600000
+
+
+def id_time(unique_id):
+    """When a Tapstitch id (design, template, commit, store product) was made, UTC."""
+    ms = (int(unique_id) >> 22) + _ID_EPOCH_MS
+    return datetime.fromtimestamp(ms / 1000, timezone.utc)
 
 
 def store_product_for(s, shopify_gid, title):

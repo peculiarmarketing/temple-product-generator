@@ -1,0 +1,170 @@
+{
+ "1_front": {
+  "file": "artifacts/onmodel-front/prints/1_front.png",
+  "area": "front_side_middle",
+  "w_in": 9.93,
+  "h_in": 3.09,
+  "top_in_area": 2.7,
+  "cx_off_in": 0.03,
+  "canvas": {
+   "obj_left": 349,
+   "obj_top": 272.19000000000005,
+   "dw": 157.00000001,
+   "dh": 48.894285717399995,
+   "area": {
+    "x": 244.0,
+    "y": 205.0,
+    "width": 209.0,
+    "height": 275.0
+   },
+   "in_per_canvas": 0.06322169059011164
+  }
+ },
+ "2_front": {
+  "file": "artifacts/onmodel-front/prints/2_front.png",
+  "area": "front_side_middle",
+  "w_in": 9.93,
+  "h_in": 3.09,
+  "top_in_area": 2.55,
+  "cx_off_in": 0.03,
+  "canvas": {
+   "obj_left": 349,
+   "obj_top": 269.8499999999999,
+   "dw": 157.00000001,
+   "dh": 48.894285717399995,
+   "area": {
+    "x": 244.0,
+    "y": 205.0,
+    "width": 209.0,
+    "height": 275.0
+   },
+   "in_per_canvas": 0.06322169059011164
+  }
+ },
+ "3_front": {
+  "file": "artifacts/onmodel-front/prints/3_front.png",
+  "area": "front_side_middle",
+  "w_in": 10.88,
+  "h_in": 3.39,
+  "top_in_area": 2.75,
+  "cx_off_in": 0.03,
+  "canvas": {
+   "obj_left": 354,
+   "obj_top": 341.06999999999994,
+   "dw": 161.70000000000002,
+   "dh": 50.358000000000004,
+   "area": {
+    "x": 251.0,
+    "y": 275.0,
+    "width": 205.0,
+    "height": 160.0
+   },
+   "in_per_canvas": 0.06728455284552845
+  }
+ },
+ "4_front": {
+  "file": "artifacts/onmodel-front/prints/4_front.png",
+  "area": "front_side_middle",
+  "w_in": 10.88,
+  "h_in": 3.39,
+  "top_in_area": 2.4,
+  "cx_off_in": 0.03,
+  "canvas": {
+   "obj_left": 354,
+   "obj_top": 335.8299999999999,
+   "dw": 161.70000000000002,
+   "dh": 50.358000000000004,
+   "area": {
+    "x": 251.0,
+    "y": 275.0,
+    "width": 205.0,
+    "height": 160.0
+   },
+   "in_per_canvas": 0.06728455284552845
+  }
+ },
+ "5_front": {
+  "file": "artifacts/onmodel-front/prints/5_front.png",
+  "area": "front_side_middle",
+  "w_in": 9.95,
+  "h_in": 3.1,
+  "top_in_area": 3.2,
+  "cx_off_in": 0.0,
+  "canvas": {
+   "obj_left": 344,
+   "obj_top": 278.49,
+   "dw": 177.00000003,
+   "dh": 55.1228571522,
+   "area": {
+    "x": 214.0,
+    "y": 194.0,
+    "width": 260.0,
+    "height": 327.0
+   },
+   "in_per_canvas": 0.05623076923076923
+  }
+ },
+ "6_front": {
+  "file": "artifacts/onmodel-front/prints/6_front.png",
+  "area": "front_side_middle",
+  "w_in": 9.95,
+  "h_in": 3.1,
+  "top_in_area": 2.7,
+  "cx_off_in": 0.0,
+  "canvas": {
+   "obj_left": 344,
+   "obj_top": 269.5799999999999,
+   "dw": 177.00000003,
+   "dh": 55.1228571522,
+   "area": {
+    "x": 214.0,
+    "y": 194.0,
+    "width": 260.0,
+    "height": 327.0
+   },
+   "in_per_canvas": 0.05623076923076923
+  }
+ },
+ "7_front": {
+  "file": "artifacts/onmodel-front/prints/7_front.png",
+  "area": "front_side_top_right",
+  "w_in": 3.47,
+  "h_in": 3.09,
+  "top_in_area": 2.63,
+  "cx_off_in": 0.03,
+  "canvas": {
+   "obj_left": 411,
+   "obj_top": 269,
+   "dw": 53.9,
+   "dh": 48.048,
+   "area": {
+    "x": 367.0,
+    "y": 204.0,
+    "width": 87.0,
+    "height": 130.0
+   },
+   "in_per_canvas": 0.0642911877394636
+  }
+ },
+ "7_back": {
+  "file": "artifacts/onmodel-front/prints/7_back.png",
+  "area": "back_side_middle",
+  "w_in": 11.89,
+  "h_in": 11.89,
+  "top_in_area": 0.39,
+  "cx_off_in": 0.0,
+  "canvas": {
+   "obj_left": 352,
+   "obj_top": 302.3900000000001,
+   "dw": 184.8,
+   "dh": 184.8,
+   "area": {
+    "x": 235.0,
+    "y": 204.0,
+    "width": 234.0,
+    "height": 260.0
+   },
+   "in_per_canvas": 0.06433048433048433
+  }
+ }
+}

@@ -1,0 +1,35 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city tee white front print (map).png"
+    ],
+    "template_id": "1557943287829123072",
+    "store_product_id": "1557943626884128768",
+    "distribute_started_at": "2026-10-08T18:31:46",
+    "shopify_handle": "essential-heavyweight-map-tee-salt-lake-city",
+    "state": "live"
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city crew white front print (map).png"
+    ],
+    "template_id": "1557943892089917440",
+    "store_product_id": "1557943950487265280",
+    "distribute_started_at": "2026-10-08T18:33:04",
+    "shopify_handle": "ultra-soft-map-sweatshirt-salt-lake-city",
+    "state": "live"
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/salt-lake-city/salt-lake-city hoodie white front print (map).png"
+    ],
+    "template_id": "1557944135619604480",
+    "store_product_id": "1557944183849951232",
+    "distribute_started_at": "2026-10-08T18:33:59",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-salt-lake-city",
+    "state": "live"
+  }
+}

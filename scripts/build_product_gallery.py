@@ -95,7 +95,7 @@ LEAD = {"hoodie": "navy-blue", "tee": "black", "crew": "gray"}
 FLAT = {"crew": "black", "tee": "maroon"}
 ORDER = {
     "hoodie": ["navy-blue", "gray", "black", "coffee", "mauve", "royal-blue", "eden-green"],
-    "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee"],
+    "tee": ["black", "dark-gray", "navy-blue", "maroon", "coffee", "pink", "light-blue", "cream"],
     "crew": ["gray", "black"],
 }
 # The slug-to-name map lives in colour_names, not here. It used to be two local

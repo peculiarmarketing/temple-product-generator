@@ -1,0 +1,244 @@
+{
+ "tee_navy-blue": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a dark navy blue, clearly blue rather than black",
+  "rgb": [
+   41,
+   43,
+   63
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/05e3bb4ba7e447318c28586b8b5a7ce9.png"
+ },
+ "tee_maroon": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a deep maroon wine red",
+  "rgb": [
+   108,
+   29,
+   36
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/8c6188d4ed214895a7d51c93d804ea67.png"
+ },
+ "tee_coffee": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a warm mid coffee brown",
+  "rgb": [
+   89,
+   63,
+   51
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/93e26ede002848bcb0e0711e8021d74a.png"
+ },
+ "tee_charcoal": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a medium charcoal gray, a mid-tone cool gray",
+  "rgb": [
+   86,
+   87,
+   91
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/c1dd830f0d1b4eb1b4d42f2575d660c2.png"
+ },
+ "tee_pink": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a soft light pink",
+  "rgb": [
+   225,
+   170,
+   180
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/bc89fd2f28784d74b79e01288ac33ff4.png"
+ },
+ "tee_light-blue": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a soft light sky blue",
+  "rgb": [
+   170,
+   202,
+   238
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/9b556b9a2251469888bfb7329f145d7f.png"
+ },
+ "tee_cream": {
+  "garment": "tee",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472263191-ufvpwq9t9w.png",
+  "colour_words": "a pale warm cream, a light apricot off-white",
+  "rgb": [
+   242,
+   225,
+   201
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/4c52d0ca617149c08852a8ce53c17e94.png"
+ },
+ "crew_heather-gray": {
+  "garment": "crew",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472455232-8lrvbsq5b57.png",
+  "colour_words": "a light heather gray",
+  "rgb": [
+   180,
+   179,
+   181
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/2b2046642f1d4a2581b05beb88d81372.png"
+ },
+ "hoodie_navy-blue": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a dark slate navy blue",
+  "rgb": [
+   40,
+   50,
+   67
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/0bd33b78d4e44d3789f10c3a28010ba9.png"
+ },
+ "hoodie_black": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a deep true black",
+  "rgb": [
+   25,
+   25,
+   25
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/0aa4abbed9c54f8e9e9f9a867825f51c.png"
+ },
+ "hoodie_coffee": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a rich chocolate coffee brown",
+  "rgb": [
+   88,
+   64,
+   46
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/4b3a9be676a04c31ac146b7bb864d7c4.png"
+ },
+ "hoodie_mauve": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a muted dusty mauve, a greyed rose taupe, mid-tone",
+  "rgb": [
+   196,
+   163,
+   171
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/f4ab86730f294349b061099b127f06f1.png"
+ },
+ "hoodie_royal-blue": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a strong royal cobalt blue",
+  "rgb": [
+   55,
+   79,
+   192
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/8416e6f374334aadb1cd534aac8df987.png"
+ },
+ "hoodie_eden-green": {
+  "garment": "hoodie",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472281293-1ti7dj982v8.png",
+  "colour_words": "a deep saturated forest-emerald green",
+  "rgb": [
+   46,
+   97,
+   75
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/f4338393e8d0411b8a3eae97f0901d24.png"
+ },
+ "bomber_black_front": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472561520-jd88twpgm3.png",
+  "colour_words": "a deep true black",
+  "rgb": [
+   18,
+   17,
+   20
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/721796e57bb5489c897c48712b9951c4.png"
+ },
+ "bomber_black_back": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472557177-mjcgvq2pa5k.png",
+  "colour_words": "a deep true black",
+  "rgb": [
+   18,
+   17,
+   20
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/721796e57bb5489c897c48712b9951c4.png"
+ },
+ "bomber_maroon_front": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472561520-jd88twpgm3.png",
+  "colour_words": "a deep maroon wine red",
+  "rgb": [
+   93,
+   25,
+   34
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/33f170c8e7bb4523a3d3ec8699c4ff38.png"
+ },
+ "bomber_maroon_back": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472557177-mjcgvq2pa5k.png",
+  "colour_words": "a deep maroon wine red",
+  "rgb": [
+   93,
+   25,
+   34
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/33f170c8e7bb4523a3d3ec8699c4ff38.png"
+ },
+ "bomber_forest-green_front": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472561520-jd88twpgm3.png",
+  "colour_words": "a deep forest green",
+  "rgb": [
+   27,
+   69,
+   47
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/04b8c32e1c224107a1ed88d01505758d.png"
+ },
+ "bomber_forest-green_back": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472557177-mjcgvq2pa5k.png",
+  "colour_words": "a deep forest green",
+  "rgb": [
+   27,
+   69,
+   47
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/04b8c32e1c224107a1ed88d01505758d.png"
+ },
+ "bomber_purple_front": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472561520-jd88twpgm3.png",
+  "colour_words": "a deep muted purple",
+  "rgb": [
+   91,
+   54,
+   108
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/c361e5ed38a64ec7a14a95e0e121d4e5.png"
+ },
+ "bomber_purple_back": {
+  "garment": "bomber",
+  "base_url": "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791472557177-mjcgvq2pa5k.png",
+  "colour_words": "a deep muted purple",
+  "rgb": [
+   91,
+   54,
+   108
+  ],
+  "sample_url": "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/c361e5ed38a64ec7a14a95e0e121d4e5.png"
+ }
+}

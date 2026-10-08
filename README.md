@@ -44,7 +44,8 @@ it is ever lost, recreate it from `requirements.txt`.
 - `flatten.py`: composites one temple into one flattened, print-area-shaped PNG, and validates it.
 - `ledger.py`: the ledger, one row per temple per garment (`artifacts/tapstitch/ledger.json`).
 - `tapstitch_api.py`: the Tapstitch JSON API client.
-- `scripts/tapstitch_designs.py`: lists the Designs tab, published or not. Read-only.
+- `scripts/tapstitch_designs.py`: lists the Designs tab with when each design was saved and
+  whether it reached the store; `--unpublished` shows only the ones that never did. Read-only.
 - `browser_session.py`, `scripts/tapstitch_login.py`: the dedicated-Chrome session, on port 9223.
 - `garments/{tee,crew,hoodie}.json`: blank, print areas, colourways, names, prices and costs per line.
 - `config/tapstitch.json`: the API endpoints, timings and post-publish switches.

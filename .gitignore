@@ -87,3 +87,16 @@ artifacts/photo-mockup-spike/composites-lift/
 artifacts/tapstitch/relift-thumbs/
 artifacts/tapstitch/pilot-monticello-tee/*.png
 artifacts/tapstitch/pilot-monticello-tee/storeproducts_*.json
+
+# on-model work files: the committed copies are onmodel-front/blanks/*.jpg and final/*.jpg
+artifacts/onmodel-front/**/*.png
+!artifacts/onmodel-front/prints/*.png
+
+# v2 on-model work (8 Oct 2026): finals rebuild from blanks + composite_front_v2.py;
+# flats are Tapstitch's store images; gen/ PNGs are the raw kie.ai outputs (blanks/ keeps the 4K copies)
+artifacts/onmodel-v2/final/
+artifacts/onmodel-v2/flats/
+artifacts/onmodel-v2/gen/**/*.png
+
+# Map print files, rebuilt by scripts/map_run.py from designs/city-map-back/out/.
+artifacts/maps/*/*.png

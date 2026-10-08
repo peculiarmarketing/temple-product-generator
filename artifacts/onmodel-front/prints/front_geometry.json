@@ -1,0 +1,77 @@
+{
+ "tee": {
+  "ink_w_in": 9.21,
+  "ink_top_below_collar_in": 7.82,
+  "ink_cx_off_in": -0.27,
+  "mock_ppi": 35.3,
+  "bbox": [
+   528,
+   501,
+   853,
+   587
+  ],
+  "mock_collar": 225,
+  "mock_hem": 1212,
+  "collar_to_hem_in": 27.96
+ },
+ "crew": {
+  "ink_w_in": 9.19,
+  "ink_top_below_collar_in": 7.28,
+  "ink_cx_off_in": 0.02,
+  "mock_ppi": 31.4,
+  "bbox": [
+   556,
+   506,
+   845,
+   582
+  ],
+  "mock_collar": 277,
+  "mock_hem": 1081,
+  "collar_to_hem_in": 25.61
+ },
+ "hoodie": {
+  "ink_w_in": 10.07,
+  "ink_top_below_collar_in": 4.32,
+  "ink_cx_off_in": 0.37,
+  "mock_ppi": 29.4,
+  "bbox": [
+   563,
+   637,
+   859,
+   716
+  ],
+  "mock_collar": 510,
+  "mock_hem": 1219,
+  "collar_to_hem_in": 24.12
+ },
+ "bomber_front": {
+  "ink_w_in": 3.47,
+  "ink_top_below_collar_in": 5.24,
+  "ink_cx_off_in": 3.99,
+  "mock_ppi": 30.5,
+  "bbox": [
+   769,
+   490,
+   875,
+   585
+  ],
+  "mock_collar": 330,
+  "mock_hem": 1125,
+  "collar_to_hem_in": 26.07
+ },
+ "bomber_back": {
+  "ink_w_in": 11.89,
+  "ink_top_below_collar_in": 5.43,
+  "ink_cx_off_in": 0.13,
+  "mock_ppi": 31.0,
+  "bbox": [
+   520,
+   430,
+   888,
+   788
+  ],
+  "mock_collar": 262,
+  "mock_hem": 1125,
+  "collar_to_hem_in": 27.84
+ }
+}
