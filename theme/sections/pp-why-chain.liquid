@@ -1,0 +1,127 @@
+{%- comment -%}
+  Peculiar People homepage: the why chain (BRAND.md section 5). Lines set large over
+  a dark fabric close-up. When the section scrolls into view they light one at a
+  time and stay, so the chain reads as cause and effect; it plays once and stops on
+  the last line. Optional looping video replaces the photo. With the script off or
+  reduced motion on, every line is simply shown and nothing moves.
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.height
+    when 'small'
+      assign min_h = '60vh'
+    when 'large'
+      assign min_h = '100vh'
+    else
+      assign min_h = '80vh'
+  endcase
+  assign shade = s.overlay | divided_by: 100.0
+-%}
+<section
+  class="pp-chain pp-chain--{{ s.alignment }}"
+  data-pp-chain
+  style="--pp-chain-fg: {{ s.text_color }}; --pp-chain-shade: {{ shade }}; --pp-chain-min: {{ min_h }};"
+>
+  <div class="pp-chain__media" aria-hidden="true">
+    {%- if s.video != blank -%}
+      {{
+        s.video
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          class: 'pp-chain__video',
+          image_size: '2000x'
+      }}
+    {%- elsif s.image != blank -%}
+      {{
+        s.image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          widths: '750, 1100, 1500, 2000, 2400',
+          sizes: '100vw',
+          class: 'pp-chain__img',
+          alt: ''
+      }}
+    {%- endif -%}
+  </div>
+  <div class="pp-chain__shade" aria-hidden="true"></div>
+  <div class="pp-chain__inner">
+    <div class="pp-chain__lines">
+      {%- for block in section.blocks -%}
+        <p class="pp-chain__line" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          {{- block.settings.text -}}
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP why chain",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background photo",
+      "info": "A dark fabric close-up. Keep the side behind the words calm."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video (optional)",
+      "info": "A short, slow loop. Replaces the photo. Plays muted."
+    },
+    { "type": "range", "id": "overlay", "label": "Darken background", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 45 },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Full screen" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Words",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "left"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "line",
+      "name": "Line",
+      "settings": [
+        { "type": "inline_richtext", "id": "text", "label": "Words", "default": "Comfortable from the first wear." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP why chain",
+      "blocks": [
+        { "type": "line", "settings": { "text": "Comfortable from the first wear." } },
+        { "type": "line", "settings": { "text": "So it's the one you grab." } },
+        { "type": "line", "settings": { "text": "So people see it." } },
+        { "type": "line", "settings": { "text": "<b>So someone asks what's on your shirt.</b>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

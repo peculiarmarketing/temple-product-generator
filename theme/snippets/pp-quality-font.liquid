@@ -1,0 +1,17 @@
+{%- doc -%}
+  Loads the light (300) and bold (700) cuts of the theme's heading font for the
+  quality sections (pp-scroll-zoom, pp-spec-overlay, pp-why-chain). The theme only
+  loads the weight picked in Theme settings, and the big lines here are set light.
+  font_modify returns nothing when the font has no such cut; the browser then uses
+  the nearest loaded weight.
+{%- enddoc -%}
+{%- liquid
+  assign pp_light = settings.type_header_font | font_modify: 'weight', '300'
+  assign pp_bold = settings.type_header_font | font_modify: 'weight', '700'
+-%}
+{%- if pp_light or pp_bold -%}
+  <style>
+    {%- if pp_light %}{{ pp_light | font_face: font_display: 'swap' }}{% endif -%}
+    {%- if pp_bold %}{{ pp_bold | font_face: font_display: 'swap' }}{% endif -%}
+  </style>
+{%- endif -%}

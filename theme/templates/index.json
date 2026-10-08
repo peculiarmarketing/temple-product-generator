@@ -150,7 +150,8 @@
         "city_label": "Printed under the temple",
         "city_x": 59,
         "city_y": 67
-      }
+      },
+      "disabled": true
     },
     "process": {
       "type": "comparison-slider",
@@ -312,7 +313,7 @@
           "type": "column",
           "settings": {
             "title": "Printed in the USA",
-            "text": "<p>We print your order after you place it. Most orders arrive in 5 to 7 business days.</p>"
+            "text": "<p>We print your order after you place it. Most orders arrive in 4 to 7 business days.</p>"
           }
         },
         "wyg_3": {
@@ -351,7 +352,8 @@
         "pattern_color": "#001A58",
         "padding_top": 36,
         "padding_bottom": 36
-      }
+      },
+      "disabled": true
     },
     "faq": {
       "type": "collapsible-content",
@@ -557,15 +559,337 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "pp_scroll_zoom": {
+      "type": "pp-scroll-zoom",
+      "blocks": {
+        "stop_1": {
+          "type": "stop",
+          "settings": {
+            "text": "Look closer.",
+            "zoom": 1,
+            "x": 50,
+            "y": 48
+          }
+        },
+        "stop_2": {
+          "type": "stop",
+          "settings": {
+            "text": "The whole temple, up to 12 inches across the back.",
+            "tags": "Up to 12 in across",
+            "zoom": 2.3,
+            "x": 50,
+            "y": 51
+          }
+        },
+        "stop_3": {
+          "type": "stop",
+          "settings": {
+            "text": "260 GSM cotton. You'll notice the weight the first time you put it on.",
+            "tags": "260 GSM, 7.7 oz",
+            "zoom": 4,
+            "x": 40,
+            "y": 66,
+            "show_macro": true
+          }
+        },
+        "stop_4": {
+          "type": "stop",
+          "settings": {
+            "text": "SARATOGA SPRINGS, UTAH. Under every temple, the city it actually stands in.",
+            "tags": "Real city line",
+            "zoom": 3.4,
+            "x": 50,
+            "y": 61
+          }
+        }
+      },
+      "block_order": [
+        "stop_1",
+        "stop_2",
+        "stop_3",
+        "stop_4"
+      ],
+      "settings": {
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff",
+        "garment_image": "shopify://shop_images/tee_black_68c7ee89-a942-4c3e-871b-390824e49e06.jpg",
+        "macro_image": "shopify://shop_images/pp-jersey-black-macro.jpg"
+      },
+      "disabled": true
+    },
+    "pp_spec_overlay": {
+      "type": "pp-spec-overlay",
+      "blocks": {
+        "callout_1": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "350 GSM · 10.3 oz",
+            "label": "Heavyweight fleece.",
+            "side": "left",
+            "x": 38,
+            "y": 56
+          }
+        },
+        "callout_2": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Up to 12 in across",
+            "label": "The full temple, centred on the back.",
+            "side": "right",
+            "x": 50,
+            "y": 41
+          }
+        },
+        "callout_3": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Printed in the USA",
+            "label": "Arrives in 4 to 7 business days.",
+            "side": "left",
+            "x": 45,
+            "y": 75
+          }
+        },
+        "callout_4": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "City line",
+            "label": "Nauvoo, Illinois. The city the temple stands in.",
+            "side": "right",
+            "x": 50,
+            "y": 65
+          }
+        }
+      },
+      "block_order": [
+        "callout_1",
+        "callout_2",
+        "callout_3",
+        "callout_4"
+      ],
+      "settings": {
+        "background": "#0d0e11",
+        "text_color": "#ffffff",
+        "accent": "#F58000",
+        "image": "shopify://shop_images/hoodie_black_162cc38b-7a8d-4791-94be-54ab39cd587b.jpg"
+      }
+    },
+    "pp_why_chain": {
+      "type": "pp-why-chain",
+      "blocks": {
+        "line_1": {
+          "type": "line",
+          "settings": {
+            "text": "Comfortable from the first wear."
+          }
+        },
+        "line_2": {
+          "type": "line",
+          "settings": {
+            "text": "So it's the one you grab."
+          }
+        },
+        "line_3": {
+          "type": "line",
+          "settings": {
+            "text": "So people see it."
+          }
+        },
+        "line_4": {
+          "type": "line",
+          "settings": {
+            "text": "<b>So someone asks what's on your shirt.</b>"
+          }
+        }
+      },
+      "block_order": [
+        "line_1",
+        "line_2",
+        "line_3",
+        "line_4"
+      ],
+      "settings": {
+        "overlay": 45,
+        "text_color": "#ffffff",
+        "height": "medium",
+        "alignment": "left",
+        "image": "shopify://shop_images/pp-fleece-black-fold.jpg"
+      }
+    },
+    "pp_zoom_dive": {
+      "type": "pp-zoom-dive",
+      "blocks": {
+        "story_1": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-1-why.jpg",
+            "eyebrow": "Why we make it",
+            "text": "We make temple apparel for one reason: so someone asks you about it.",
+            "transition": "fade",
+            "focus_x": 66,
+            "focus_y": 42
+          }
+        },
+        "story_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-2-opening.jpg",
+            "eyebrow": "An opening",
+            "text": "A question about your shirt is an easy one to answer. Sometimes it leads somewhere you didn't plan.",
+            "transition": "fade",
+            "focus_x": 55,
+            "focus_y": 40
+          }
+        },
+        "story_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-3-every-day.jpg",
+            "eyebrow": "Worn every day",
+            "text": "None of that happens if the shirt stays in the drawer. It has to be the one you reach for first.",
+            "transition": "fade",
+            "focus_x": 36,
+            "focus_y": 42,
+            "pan_x": 68
+          }
+        },
+        "story_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
+            "eyebrow": "The blank",
+            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
+            "transition": "zoom",
+            "next_x": 41.4101,
+            "next_y": 32.5427,
+            "next_size": 19.4148,
+            "focus_x": 50,
+            "focus_y": 40
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "next_x": 46.0449,
+            "next_y": 48.4375,
+            "next_size": 21.4844,
+            "focus_x": 50,
+            "focus_y": 55,
+            "transition": "zoom"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "next_x": 43.9453,
+            "next_y": 75.9766,
+            "next_size": 23.8281,
+            "focus_x": 50,
+            "focus_y": 50,
+            "transition": "zoom"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "focus_x": 50,
+            "focus_y": 50
+          }
+        }
+      },
+      "block_order": [
+        "story_1",
+        "story_2",
+        "story_3",
+        "story_4",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "heading": "",
+        "scroll_length": "story",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
+    },
+    "pp_zoom_film": {
+      "type": "pp-zoom-film",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "The blank",
+            "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.",
+            "time": 0
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "time": 3.9
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "time": 8.6
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "time": 13.0
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4"
+      ],
+      "settings": {
+        "heading": "",
+        "video_url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-1080.mp4?v=1791066303",
+        "video_url_small": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-dive-slc-film-720.mp4?v=1791066303",
+        "poster": "shopify://shop_images/pp-dive-slc-1-temple-square.jpg",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      },
+      "disabled": true
     }
   },
   "order": [
     "pp_temple_showcase",
     "hero",
+    "pp_zoom_dive",
+    "pp_zoom_film",
+    "pp_scroll_zoom",
     "featured_products",
     "browse",
     "anatomy",
+    "pp_spec_overlay",
     "process",
+    "pp_why_chain",
     "founder",
     "marquee",
     "what_you_get",

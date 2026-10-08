@@ -1,0 +1,144 @@
+{%- comment -%}
+  Peculiar People homepage: the film. The same dive as the photo chain, as one video
+  that scroll plays forward and back. The video is uploaded to Files as a plain file
+  (not as a Shopify video, which would be re-encoded with sparse keyframes and seek
+  slowly) and its URL pasted here. Each step shows its words from its time in the
+  video. Without the script, or with reduced motion on, the poster photo is shown
+  with every step's words under it, and the video never plays.
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.scroll_length
+    when 'short'
+      assign track_vh = 320
+    when 'long'
+      assign track_vh = 560
+    else
+      assign track_vh = 440
+  endcase
+  assign poster_alt = s.poster.alt | default: 'Peculiar People tee, worn outdoors'
+-%}
+<section
+  class="pp-dive pp-dive--film"
+  data-pp-film
+  style="--pp-dive-bg: {{ s.background }}; --pp-dive-fg: {{ s.text_color }}; --pp-dive-track: {{ track_vh }}vh;"
+>
+  <div class="pp-dive__track">
+    <div class="pp-dive__sticky">
+      <div class="pp-dive__inner">
+        <div class="pp-dive__stage">
+          {%- if s.video_url != blank -%}
+            <video
+              class="pp-dive__video"
+              muted
+              playsinline
+              preload="auto"
+              disablepictureinpicture
+              {% if s.poster != blank %}poster="{{ s.poster | image_url: width: 1400 }}"{% endif %}
+              aria-label="{{ poster_alt | escape }}, zooming in to the fabric"
+            >
+              {%- if s.video_url_small != blank -%}
+                <source src="{{ s.video_url_small }}" type="video/mp4" media="(max-width: 749px)">
+              {%- endif -%}
+              <source src="{{ s.video_url }}" type="video/mp4">
+            </video>
+          {%- endif -%}
+          <span class="pp-dive__rail" aria-hidden="true"><span class="pp-dive__bar"></span></span>
+        </div>
+
+        <div class="pp-dive__copy">
+          {%- if s.heading != blank -%}
+            <h2 class="pp-dive__heading">{{ s.heading }}</h2>
+          {%- endif -%}
+          {%- if s.poster != blank -%}
+            <div class="pp-dive__still pp-dive__still--poster">
+              {{
+                s.poster
+                | image_url: width: 1100
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '550, 800, 1100',
+                  sizes: '(min-width: 990px) 560px, 100vw',
+                  alt: poster_alt
+              }}
+            </div>
+          {%- endif -%}
+          <ol class="pp-dive__steps">
+            {%- for block in section.blocks -%}
+              <li
+                class="pp-dive__step"
+                data-pp-dive-step
+                data-time="{{ block.settings.time }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.eyebrow != blank -%}
+                  <p class="pp-dive__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="pp-dive__line">{{ block.settings.text }}</p>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ol>
+          <div class="pp-dive__dots" data-pp-dive-dots></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP film",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Optional. Sits above the words." },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video file URL",
+      "info": "An MP4 uploaded in Content > Files as a file. Square, with a keyframe every few frames so it scrubs smoothly."
+    },
+    { "type": "text", "id": "video_url_small", "label": "Phone video file URL", "info": "Optional smaller MP4 for phones." },
+    { "type": "image_picker", "id": "poster", "label": "First frame", "info": "Shown while the video loads, and in place of it under reduced motion." },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll length",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Small caps label" },
+        { "type": "inline_richtext", "id": "text", "label": "Words" },
+        { "type": "number", "id": "time", "label": "Shows from (seconds into the video)", "default": 0 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP film",
+      "blocks": [
+        { "type": "step", "settings": { "eyebrow": "The blank", "text": "We put the samples side by side. Anything that felt light or stiff, we passed on.", "time": 0 } },
+        { "type": "step", "settings": { "eyebrow": "Ribbed collar", "text": "Ribbed knit, stitched down.", "time": 4 } },
+        { "type": "step", "settings": { "eyebrow": "Printed into the cotton", "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.", "time": 8.5 } },
+        { "type": "step", "settings": { "eyebrow": "260 GSM, 100% cotton", "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.", "time": 13 } }
+      ]
+    }
+  ]
+}
+{% endschema %}
