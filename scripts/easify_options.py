@@ -79,6 +79,19 @@ def parse_products(cell):
     return [d["handle"] for d in json.loads(cell)] if cell else []
 
 
+def is_default(row):
+    """Easify exports wrote TRUE/FALSE until autumn 2026 and true/false after
+    (the 8 Oct 2026 export); read either."""
+    return row["option_value_is_default"].strip().lower() == "true"
+
+
+def flag(like, value):
+    """A boolean cell in the same case as the row it is cloned from, so a set
+    built from a new-format export stays in the new format."""
+    upper = like["option_value_is_default"].strip().isupper()
+    return ("TRUE" if value else "FALSE") if upper else ("true" if value else "false")
+
+
 def products_cell(handles):
     return json.dumps([{"handle": h} for h in sorted(handles)], separators=(",", ":"))
 
@@ -199,8 +212,8 @@ def new_value_row(template, label, url):
     row["option_value_id"] = str(uuid.uuid4())
     row["option_value_label"] = label
     row["option_value_number_color"] = "1"
-    row["option_value_is_default"] = "FALSE"
-    row["option_value_is_hidden"] = "FALSE"
+    row["option_value_is_default"] = flag(template, False)
+    row["option_value_is_hidden"] = flag(template, False)
     row["option_value_image_url"] = ""
     row["option_value_image_id"] = "default_id_image"
     row["swatch_shape"] = "circle"
@@ -212,8 +225,8 @@ def new_value_row(template, label, url):
     row["variant_id"] = ""
     row["product_handle"] = ""
     row["product_name"] = ""
-    row["use_price"] = "FALSE"
-    row["is_created"] = "FALSE"
+    row["use_price"] = flag(template, False)
+    row["is_created"] = flag(template, False)
     row["metadata_type"] = json.dumps({"url": url, "disabled": None}, separators=(",", ":"))
     return row
 
@@ -226,7 +239,7 @@ def reconcile_set(title, rows, expected, tokens, conflicted=frozenset()):
     their URL's handle, then by fuzzy match. Rows are never deleted."""
     rows = [dict(r) for r in rows]
     changes, attention = [], []
-    default_rows = [r for r in rows if r["option_value_is_default"] == "TRUE"]
+    default_rows = [r for r in rows if is_default(r)]
     if len(default_rows) != 1:
         raise SystemExit(f"Set {title!r}: expected exactly one default row, found {len(default_rows)}")
     default_row = default_rows[0]
@@ -279,7 +292,7 @@ def reconcile_set(title, rows, expected, tokens, conflicted=frozenset()):
         new_row = new_value_row(template, label, STORE + handle)
         idx = len(out_rows)
         for i, r in enumerate(out_rows):
-            if r["option_value_is_default"] != "TRUE" and r["option_value_label"] > label:
+            if not is_default(r) and r["option_value_label"] > label:
                 idx = i
                 break
         out_rows.insert(idx, new_row)
@@ -312,8 +325,8 @@ def new_set_rows(spec, clone_rows, expected, set_id):
 
     Placeholder set id and fresh UUIDs mirror Easify's own import sample,
     which is the evidence that importing an unknown set id creates the set."""
-    clone_default = next(r for r in clone_rows if r["option_value_is_default"] == "TRUE")
-    clone_value = next(r for r in clone_rows if r["option_value_is_default"] != "TRUE")
+    clone_default = next(r for r in clone_rows if is_default(r))
+    clone_value = next(r for r in clone_rows if not is_default(r))
     old_unique, old_browse = clone_default["option_id_unique"], clone_default["option_value_id"]
     new_unique, browse_id = str(uuid.uuid4()), str(uuid.uuid4())
 
@@ -372,7 +385,7 @@ def validate_output(fieldnames, out_rows, in_sets, touched, expected_by_title):
     if len(rows2) != len(out_rows):
         raise SystemExit("Validation failed: row count changed on round trip")
     for title, rows in group_by_set(rows2).items():
-        defaults = [r for r in rows if r["option_value_is_default"] == "TRUE"]
+        defaults = [r for r in rows if is_default(r)]
         if len(defaults) != 1:
             raise SystemExit(f"Validation failed: {title!r} has {len(defaults)} default rows")
         browse_id = defaults[0]["option_value_id"]
