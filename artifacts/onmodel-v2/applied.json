@@ -3,12 +3,12 @@
   "uploaded": {
    "crew_black_es": "gid://shopify/MediaImage/56541141729652",
    "crew_heather-gray_es": "gid://shopify/MediaImage/56541142253940",
-   "card_crew_es": "gid://shopify/MediaImage/56541142614388"
+   "card_crew_es": "gid://shopify/MediaImage/56541355868532"
   },
   "order": [
    "gid://shopify/MediaImage/56541141729652",
    "gid://shopify/MediaImage/56541142253940",
-   "gid://shopify/MediaImage/56541142614388",
+   "gid://shopify/MediaImage/56541355868532",
    "gid://shopify/MediaImage/56539934556532",
    "gid://shopify/MediaImage/56539934589300"
   ]
@@ -17,12 +17,12 @@
   "uploaded": {
    "crew_black_en": "gid://shopify/MediaImage/56541143892340",
    "crew_heather-gray_en": "gid://shopify/MediaImage/56541144383860",
-   "card_crew_en": "gid://shopify/MediaImage/56541144678772"
+   "card_crew_en": "gid://shopify/MediaImage/56541356458356"
   },
   "order": [
    "gid://shopify/MediaImage/56541143892340",
    "gid://shopify/MediaImage/56541144383860",
-   "gid://shopify/MediaImage/56541144678772",
+   "gid://shopify/MediaImage/56541356458356",
    "gid://shopify/MediaImage/56539797389684",
    "gid://shopify/MediaImage/56539797422452"
   ]
@@ -36,7 +36,7 @@
    "hoodie_mauve_es": "gid://shopify/MediaImage/56541155787124",
    "hoodie_navy-blue_es": "gid://shopify/MediaImage/56541156770164",
    "hoodie_royal-blue_es": "gid://shopify/MediaImage/56541157491060",
-   "card_hoodie_es": "gid://shopify/MediaImage/56541160046964"
+   "card_hoodie_es": "gid://shopify/MediaImage/56541356949876"
   },
   "order": [
    "gid://shopify/MediaImage/56541146513780",
@@ -46,7 +46,7 @@
    "gid://shopify/MediaImage/56541155787124",
    "gid://shopify/MediaImage/56541156770164",
    "gid://shopify/MediaImage/56541157491060",
-   "gid://shopify/MediaImage/56541160046964",
+   "gid://shopify/MediaImage/56541356949876",
    "gid://shopify/MediaImage/56539934785908",
    "gid://shopify/MediaImage/56539934818676",
    "gid://shopify/MediaImage/56539934851444",
@@ -65,7 +65,7 @@
    "hoodie_mauve_en": "gid://shopify/MediaImage/56541161095540",
    "hoodie_navy-blue_en": "gid://shopify/MediaImage/56541161357684",
    "hoodie_royal-blue_en": "gid://shopify/MediaImage/56541161718132",
-   "card_hoodie_en": "gid://shopify/MediaImage/56541161980276"
+   "card_hoodie_en": "gid://shopify/MediaImage/56541357113716"
   },
   "order": [
    "gid://shopify/MediaImage/56541160407412",
@@ -75,7 +75,7 @@
    "gid://shopify/MediaImage/56541161095540",
    "gid://shopify/MediaImage/56541161357684",
    "gid://shopify/MediaImage/56541161718132",
-   "gid://shopify/MediaImage/56541161980276",
+   "gid://shopify/MediaImage/56541357113716",
    "gid://shopify/MediaImage/56539935441268",
    "gid://shopify/MediaImage/56539935474036",
    "gid://shopify/MediaImage/56539935506804",
@@ -95,7 +95,7 @@
    "tee_light-blue_es": "gid://shopify/MediaImage/56541164700020",
    "tee_maroon_es": "gid://shopify/MediaImage/56541165519220",
    "tee_pink_es": "gid://shopify/MediaImage/56541165814132",
-   "card_tee_es": "gid://shopify/MediaImage/56541166076276"
+   "card_tee_es": "gid://shopify/MediaImage/56541357179252"
   },
   "order": [
    "gid://shopify/MediaImage/56541163422068",
@@ -106,7 +106,7 @@
    "gid://shopify/MediaImage/56541164700020",
    "gid://shopify/MediaImage/56541165519220",
    "gid://shopify/MediaImage/56541165814132",
-   "gid://shopify/MediaImage/56541166076276",
+   "gid://shopify/MediaImage/56541357179252",
    "gid://shopify/MediaImage/56539935900020",
    "gid://shopify/MediaImage/56539935932788",
    "gid://shopify/MediaImage/56539935965556",
@@ -127,7 +127,7 @@
    "tee_maroon_en": "gid://shopify/MediaImage/56541170729332",
    "tee_navy-blue_en": "gid://shopify/MediaImage/56541171188084",
    "tee_pink_en": "gid://shopify/MediaImage/56541172760948",
-   "card_tee_en": "gid://shopify/MediaImage/56541172924788"
+   "card_tee_en": "gid://shopify/MediaImage/56541357277556"
   },
   "order": [
    "gid://shopify/MediaImage/56541168402804",
@@ -138,7 +138,7 @@
    "gid://shopify/MediaImage/56541170729332",
    "gid://shopify/MediaImage/56541171188084",
    "gid://shopify/MediaImage/56541172760948",
-   "gid://shopify/MediaImage/56541172924788",
+   "gid://shopify/MediaImage/56541357277556",
    "gid://shopify/MediaImage/56539936162164",
    "gid://shopify/MediaImage/56539936194932",
    "gid://shopify/MediaImage/56539936227700",
@@ -161,9 +161,8 @@
    "bomber_maroon_front": "gid://shopify/MediaImage/56541178560884",
    "bomber_purple_back": "gid://shopify/MediaImage/56541181116788",
    "bomber_purple_front": "gid://shopify/MediaImage/56541182329204",
-   "bomber_navy-blue_open": "gid://shopify/MediaImage/56541182984564",
-   "card_bomber_chest": "gid://shopify/MediaImage/56541183705460",
-   "card_bomber_seal": "gid://shopify/MediaImage/56541184328052"
+   "bomber_navy-blue_open": "gid://shopify/MediaImage/56541357506932",
+   "card_bomber_seal": "gid://shopify/MediaImage/56541357375860"
   },
   "order": [
    "gid://shopify/MediaImage/56541174399348",
@@ -176,9 +175,8 @@
    "gid://shopify/MediaImage/56541178560884",
    "gid://shopify/MediaImage/56541181116788",
    "gid://shopify/MediaImage/56541182329204",
-   "gid://shopify/MediaImage/56541182984564",
-   "gid://shopify/MediaImage/56541183705460",
-   "gid://shopify/MediaImage/56541184328052",
+   "gid://shopify/MediaImage/56541357506932",
+   "gid://shopify/MediaImage/56541357375860",
    "gid://shopify/MediaImage/56539936686452",
    "gid://shopify/MediaImage/56539936719220",
    "gid://shopify/MediaImage/56539936751988",

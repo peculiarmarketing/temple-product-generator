@@ -119,15 +119,16 @@
  },
  "bomber_navy-blue_open": {
   "collar": [
-   2135,
+   2156,
    1428
   ],
   "chest": [
-   1427,
-   2847
+   1448,
+   2868
   ],
   "how": "hand",
-  "note": "Generated from bomber_navy-blue_front (same framing, chest 1420px). Unzipped, the left front panel's edge moved from the zip line x=2008 to x=2135, so the collar point is shifted +127px to keep the chest logo the same distance in from the panel edge as on the zipped jacket."
+  "note": "Generated from bomber_navy-blue_front (same framing, chest 1420px). Unzipped, the left front panel hangs open and leans 3.8 deg (its edge, fitted from y 1500-2350, runs x 2134 -> 2191). The logo is rotated with it and kept 152px in from the panel edge at its own height, as on the zipped jacket (Evan, 8 Oct: a level logo on a leaning panel looked unnatural).",
+  "angle": 3.8
  },
  "bomber_purple_back": {
   "collar": [

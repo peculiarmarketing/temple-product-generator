@@ -96,8 +96,8 @@ def placement():
 
 # --- design close-up cards ---------------------------------------------------
 # Like the temple products' "Temple line art close-up" (layout.render_art_card):
-# the design centred on a square, here on the garment's own colour (sampled from
-# Tapstitch's flat) because every design is white ink. Rendered from the vector
+# the design centred on a white square in black ink (Evan, 8 Oct 2026: all design
+# files black on white). Rendered from the vector
 # files (matched to the print files at r >= 0.994); the seal from its 3600px
 # print file.
 WS = HERE.parent.parent.parent / "peculiar-people-workspace-claude-projects-" / "designs"
@@ -112,7 +112,6 @@ CARDS = {   # card name -> (art, flat to sample the colour from, coverage)
     "card_crew_es": ("es", "crew_es_black", 0.86),
     "card_hoodie_en": ("en", "hoodie_en_gray", 0.86),
     "card_hoodie_es": ("es", "hoodie_es_coffee", 0.86),
-    "card_bomber_chest": ("chest", "bomber_navy-blue_front", 0.70),
     "card_bomber_seal": ("seal", "bomber_navy-blue_back", 0.86),
 }
 
@@ -140,14 +139,17 @@ def cards():
     out = V2 / "cards"
     out.mkdir(exist_ok=True)
     for name, (art, flat, cov) in CARDS.items():
-        rgb = garment_rgb(flat)
+        # Evan, 8 Oct 2026: every design file shown is black ink on white, never
+        # white on a garment colour. The ink is the art's own alpha, so the shapes
+        # are exactly the print file's.
         ink = render_art(art, CARD_PX)
         k = CARD_PX * cov / max(ink.size)
-        ink = ink.resize((round(ink.width * k), round(ink.height * k)), Image.LANCZOS)
-        card = Image.new("RGB", (CARD_PX, CARD_PX), rgb)
-        card.paste(ink, ((CARD_PX - ink.width) // 2, (CARD_PX - ink.height) // 2), ink)
+        a = ink.getchannel("A").resize((round(ink.width * k), round(ink.height * k)), Image.LANCZOS)
+        card = Image.new("RGB", (CARD_PX, CARD_PX), (255, 255, 255))
+        card.paste((0, 0, 0), ((CARD_PX - a.width) // 2, (CARD_PX - a.height) // 2), a)
+        rgb = "black on white"
         card.save(out / f"{name}.png", optimize=True)
-        print("wrote", name, rgb, ink.size)
+        print("wrote", name, rgb, a.size)
 
 
 # --- product sheets and 100% zooms --------------------------------------------
@@ -159,7 +161,7 @@ PRODUCTS = {   # sheet -> (finals prefix filter, lead first, cards)
     "hoodie_en": (lambda f: f.startswith("hoodie_") and f.endswith("_en"), "hoodie_gray_en", ["card_hoodie_en"]),
     "hoodie_es": (lambda f: f.startswith("hoodie_") and f.endswith("_es"), "hoodie_coffee_es", ["card_hoodie_es"]),
     "bomber": (lambda f: f.startswith("bomber_"), "bomber_navy-blue_back",
-               ["card_bomber_chest", "card_bomber_seal"]),
+               ["card_bomber_seal"]),   # chest-logo card removed (Evan, 8 Oct)
 }
 
 

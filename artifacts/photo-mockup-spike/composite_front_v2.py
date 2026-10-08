@@ -61,11 +61,21 @@ def place(L, key, art):
     return cx - w / 2, top, w
 
 
-def composite(photo, art_path, left, top, w):
+def composite(photo, art_path, left, top, w, angle=0.0):
+    """angle: degrees counter-clockwise, for a garment panel that is not level
+    (the unzipped bomber's open front panel hangs at ~3.8 deg). The art is
+    rotated at full print resolution, then resized once, about its centre."""
     art = Image.open(art_path).convert("RGBA")
     art = art.crop(art.getchannel("A").getbbox())
-    W = max(1, round(w))
-    H = max(1, round(w * art.height / art.width))
+    W0 = max(1, round(w))
+    H0 = max(1, round(w * art.height / art.width))
+    if angle:
+        k = art.width / W0
+        art = art.rotate(angle, resample=Image.BICUBIC, expand=True)
+        W, H = max(1, round(art.width / k)), max(1, round(art.height / k))
+        left, top = left + (W0 - W) / 2, top + (H0 - H) / 2
+    else:
+        W, H = W0, H0
     art = art.resize((W, H), Image.LANCZOS)
     a = np.asarray(art, dtype=np.float64)
 
@@ -217,7 +227,7 @@ def build(only=None):
         for art, fn in jobs_for(name):
             key = geo_key(name, art)
             left, top, w = (v * k for v in place(L, key, art))
-            img = composite(photo, ART[art], left, top, w)
+            img = composite(photo, ART[art], left, top, w, L.get("angle", 0.0))
             Image.fromarray(img).save(out / f"{fn}.jpg", quality=95, subsampling=0)
             print("wrote", fn, f"print {round(w)}px wide at ({round(left)},{round(top)})")
 
