@@ -1,3 +1,29 @@
+# STATUS (8 Oct 2026, evening): v2 on-model photos built, WAITING ON EVAN'S REVIEW
+
+Nothing on the store has changed yet. The four fixes from Evan's v1 review are done
+in `artifacts/onmodel-v2/` (read `review/` first):
+
+- **Placement** from chest width, measured on Tapstitch's own flats
+  (`flat_geometry.json`), checked side by side per colour (`review/placement_*.jpg`).
+- **Sharpness**: no fold warp or displacement; flat ink, shade only, texture 0.1.
+  Blanks are 4096px (tee, crew, bomber: Higgsfield 4K upscale of the approved v1
+  photos, pixel-aligned; hoodie: new kie.ai 4K then the same upscale). Finals are
+  5000px JPEG q95 (`composite_front_v2.py build`). Every print correlates with its
+  design file at r >= 0.99 (`review/verify.json`); 100% crops in `review/zoom_*.png`.
+- **Close-up cards** on the lead colour, from the vector design files: `cards/`.
+- **Bomber**: Evan chose "zipped main shots plus one unzipped-over-white-tee
+  lifestyle shot" (navy only): `bomber_navy-blue_open`.
+- **Hoodie fit**: new base from the v1 model with the temple hoodie on-model as fit
+  reference, "boxy" removed (`build_front_bases_v2.py`), all seven colours
+  regenerated from it. Tee matches its temple shot; sweatshirt is close (temple one
+  a little roomier), flagged to Evan.
+
+On approval: upload the 45 finals + 8 cards with `ShopifyClient.upload_media_image`
+(staged upload, no git needed), delete the v1 on-model media (alts "... on model -
+<Colour>"), order on-model first with the lead colour in slot 1, then cards, then
+Tapstitch flats; bind each colour's variants to its new on-model shot (bomber: the
+back shot); read back. Products stay DRAFT. Then Phase 2 below.
+
 # START HERE (8 Oct 2026, late): on-model photos v2 for the seven draft products, then the 45-tee colour rollout
 
 A fresh session picks this up. The previous one ran out of context. Everything

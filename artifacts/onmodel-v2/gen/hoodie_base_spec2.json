@@ -1,0 +1,4 @@
+{
+ "hoodie_base_c": {"kind":"extend","refs":["https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477734334-a5cbqofpeg9.png","https://raw.githubusercontent.com/peculiarmarketing/temple-product-generator/claude/magical-hamilton-7t4kx6/artifacts/photo-mockup-spike/final-set/hoodie_gray.jpg"]},
+ "hoodie_base_d": {"kind":"extend","note":"The sleeves must not look longer than the body.","refs":["https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477734334-a5cbqofpeg9.png","https://raw.githubusercontent.com/peculiarmarketing/temple-product-generator/claude/magical-hamilton-7t4kx6/artifacts/photo-mockup-spike/final-set/hoodie_gray.jpg"]}
+}

@@ -1,0 +1,92 @@
+{
+ "hoodie_navy-blue": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a dark slate navy blue",
+  "rgb": [
+   40,
+   50,
+   67
+  ],
+  "pose": 0,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/0bd33b78d4e44d3789f10c3a28010ba9.png"
+  ]
+ },
+ "hoodie_black": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a deep true black",
+  "rgb": [
+   25,
+   25,
+   25
+  ],
+  "pose": 1,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/0aa4abbed9c54f8e9e9f9a867825f51c.png"
+  ]
+ },
+ "hoodie_coffee": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a rich chocolate coffee brown",
+  "rgb": [
+   88,
+   64,
+   46
+  ],
+  "pose": 2,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/4b3a9be676a04c31ac146b7bb864d7c4.png"
+  ]
+ },
+ "hoodie_mauve": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a muted dusty mauve, a greyed rose taupe, mid-tone",
+  "rgb": [
+   196,
+   163,
+   171
+  ],
+  "pose": 3,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/f4ab86730f294349b061099b127f06f1.png"
+  ]
+ },
+ "hoodie_royal-blue": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a strong royal cobalt blue",
+  "rgb": [
+   55,
+   79,
+   192
+  ],
+  "pose": 4,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/8416e6f374334aadb1cd534aac8df987.png"
+  ]
+ },
+ "hoodie_eden-green": {
+  "kind": "recolour",
+  "garment": "hoodie",
+  "colour_words": "a deep saturated forest-emerald green",
+  "rgb": [
+   46,
+   97,
+   75
+  ],
+  "pose": 5,
+  "refs": [
+   "https://tempfile.aiquickdraw.com/gpt-image-2-5/1791477832427-nwe7fsnmte9.png",
+   "https://ajmall-vc-public-bucket.oss-us-west-1.aliyuncs.com/hugepod/material/custom_printing/f4338393e8d0411b8a3eae97f0901d24.png"
+  ]
+ }
+}
