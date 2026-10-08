@@ -102,8 +102,8 @@ for key, e in cfg["products"].items():
     assert e["lead_side"] in ("front", "back"), key
     assert e["handle"] not in handles, f"#{key} duplicate handle"
     handles.add(e["handle"])
-    assert not any(t.startswith("temple:") for t in e["tags"]), \
-        f"#{key} must not carry a temple tag: the temple collections and drawing band key on it"
+    assert not any(t.split(":")[0] in ("temple", "garment", "country", "state") for t in e["tags"]), \
+        f"#{key}: the temple collections and the homepage marquee are smart collections on those tags"
     assert "—" not in e["title"], f"#{key} title has an em dash"
 
 print("test_saved_designs: all assertions passed")
