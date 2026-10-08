@@ -31,7 +31,9 @@ TRUE_COLORS = PROJECT_ROOT / "artifacts/photo-mockup-spike/true_colors_all.json"
 # garment -> {file slug: storefront colour name}
 NAMES = {
     "tee": {"black": "Black", "dark-gray": "Charcoal", "navy-blue": "Navy Blue",
-            "maroon": "Maroon", "coffee": "Coffee"},
+            "maroon": "Maroon", "coffee": "Coffee",
+            # Evan, 8 Oct 2026: Tapstitch 8082 Pink, 8083 "Blue", 8087 "Apricot"
+            "pink": "Pink", "light-blue": "Light Blue", "cream": "Cream"},
     "crew": {"gray": "Heather Gray", "black": "Black"},
     "hoodie": {"navy-blue": "Navy Blue", "gray": "Gray", "black": "Black",
                "coffee": "Coffee", "mauve": "Mauve", "royal-blue": "Royal Blue",

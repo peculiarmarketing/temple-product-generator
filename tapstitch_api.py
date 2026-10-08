@@ -362,6 +362,36 @@ def resave_colours(s, template_id, color_codes):
     return after["commitId"]
 
 
+
+def copy_design(s, src_template_id, blank, color_codes):
+    """A NEW design carrying an existing design's artwork and placement, with a
+    different colour list. Returns the new template id.
+
+    For adding colours to a design that already feeds a live product
+    (scripts/tee_colours_rollout.py, 8 Oct 2026). resave_colours() on the live
+    design would make Tapstitch re-send that product's images two minutes later,
+    without alt text and sometimes FAILED (the 7 Oct relift met that on 39
+    products); a copy leaves the live design, and so the live product, alone
+    until its replacement takes over. Proven the same way: the copy must read
+    back with the source's exact config and the wanted colours.
+    """
+    src = get_template(s, src_template_id)
+    new_id = create_template(s, blank)
+    body = resave_body(src, color_codes)
+    body["uniqueId"] = new_id
+    _data(s.put(f"{BASE}/api/designs/customized/templates/{new_id}",
+                data=json.dumps(body), headers={"Content-Type": "application/json"},
+                timeout=120))
+    after = get_template(s, new_id)
+    want = {str(c) for c in color_codes}
+    got = set(str(after["colorCode"]).split(","))
+    if got != want:
+        raise TapstitchError(f"copy of {src_template_id} -> {new_id}: colours {sorted(got)}, "
+                             f"wanted {sorted(want)}")
+    if json.loads(after["config"]) != json.loads(src["config"]):
+        raise TapstitchError(f"copy of {src_template_id} -> {new_id}: artwork differs")
+    return new_id
+
 def filter_colours(prefill, keep_ids):
     """A copy of a prefill with only the colours in `keep_ids` (Tapstitch ids).
 
