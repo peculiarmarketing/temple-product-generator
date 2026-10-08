@@ -1,6 +1,10 @@
-# STATUS (8 Oct 2026, evening): v2 on-model photos built, WAITING ON EVAN'S REVIEW
+# STATUS (8 Oct 2026, evening): v2 on-model photos LIVE ON THE SEVEN DRAFTS, Evan previewing
 
-Nothing on the store has changed yet. The four fixes from Evan's v1 review are done
+Evan asked for the full replace so he can preview in Shopify. `scripts/onmodel_v2_apply.py --apply` ran;
+`--verify` passes on all seven (order, alts, every variant bound to a v2 shot, still DRAFT). Media ids:
+`artifacts/onmodel-v2/applied.json`. Still DRAFT; going ACTIVE waits on Evan. Then Phase 2 below.
+
+What was built: The four fixes from Evan's v1 review are done
 in `artifacts/onmodel-v2/` (read `review/` first):
 
 - **Placement** from chest width, measured on Tapstitch's own flats
