@@ -963,12 +963,48 @@
     "Lindon": {
       "built": "2026-10-08T19:14:00+00:00",
       "copied": "2026-10-08T19:13:58+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56522665820532": "gid://shopify/MediaImage/56542109466996",
+        "gid://shopify/MediaImage/56522665853300": "gid://shopify/MediaImage/56542109565300",
+        "gid://shopify/MediaImage/56522666049908": "gid://shopify/MediaImage/56542111990132",
+        "gid://shopify/MediaImage/56522666082676": "gid://shopify/MediaImage/56542112088436",
+        "gid://shopify/MediaImage/56522666115444": "gid://shopify/MediaImage/56542112186740",
+        "gid://shopify/MediaImage/56522679943540": "gid://shopify/MediaImage/56542109630836",
+        "gid://shopify/MediaImage/56522680369524": "gid://shopify/MediaImage/56542109729140",
+        "gid://shopify/MediaImage/56522680861044": "gid://shopify/MediaImage/56542110941556",
+        "gid://shopify/MediaImage/56522693738868": "gid://shopify/MediaImage/56542107107700",
+        "gid://shopify/MediaImage/56522704028020": "gid://shopify/MediaImage/56542111039860",
+        "gid://shopify/MediaImage/56522712744308": "gid://shopify/MediaImage/56542109401460"
+      },
+      "cutover": "2026-10-08T19:16:18+00:00",
       "distribute_started_at": "2026-10-08T19:14:00+00:00",
       "distributed": "2026-10-08T19:14:18+00:00",
       "finished": "2026-10-08T19:15:07+00:00",
+      "gallery": "2026-10-08T19:16:14+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542107107700",
+        "gid://shopify/MediaImage/56542109401460",
+        "gid://shopify/MediaImage/56542109466996",
+        "gid://shopify/MediaImage/56542109565300",
+        "gid://shopify/MediaImage/56542109630836",
+        "gid://shopify/MediaImage/56542109729140",
+        "gid://shopify/MediaImage/56542110941556",
+        "gid://shopify/MediaImage/56542111039860",
+        "gid://shopify/MediaImage/56542117593460",
+        "gid://shopify/MediaImage/56542117822836",
+        "gid://shopify/MediaImage/56542118019444",
+        "gid://shopify/MediaImage/56542111990132",
+        "gid://shopify/MediaImage/56542112088436",
+        "gid://shopify/MediaImage/56542112186740"
+      ],
       "handle": "essential-heavyweight-temple-tee-lindon",
       "hidden": "2026-10-08T19:14:51+00:00",
       "new_id": "gid://shopify/Product/15350343729524",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542118019444",
+        "light-blue": "gid://shopify/MediaImage/56542117822836",
+        "pink": "gid://shopify/MediaImage/56542117593460"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -981,8 +1017,85 @@
       "source_template_id": "1550095271223050240",
       "store_product_id": "1557954255376293888",
       "template_id": "1557954209993871360",
-      "title": "Essential Heavyweight Temple Tee (Lindon)"
+      "title": "Essential Heavyweight Temple Tee (Lindon)",
+      "verified": "2026-10-08T19:16:20+00:00"
+    },
+    "Logan": {
+      "built": "2026-10-08T19:16:31+00:00",
+      "copied": "2026-10-08T19:16:29+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56522673684852": "gid://shopify/MediaImage/56542151246196",
+        "gid://shopify/MediaImage/56522673717620": "gid://shopify/MediaImage/56542151311732",
+        "gid://shopify/MediaImage/56522673914228": "gid://shopify/MediaImage/56542151737716",
+        "gid://shopify/MediaImage/56522673946996": "gid://shopify/MediaImage/56542151836020",
+        "gid://shopify/MediaImage/56522673979764": "gid://shopify/MediaImage/56542151934324",
+        "gid://shopify/MediaImage/56522738794868": "gid://shopify/MediaImage/56542151410036",
+        "gid://shopify/MediaImage/56522739057012": "gid://shopify/MediaImage/56542151508340",
+        "gid://shopify/MediaImage/56522739319156": "gid://shopify/MediaImage/56542151606644",
+        "gid://shopify/MediaImage/56522739548532": "gid://shopify/MediaImage/56542150918516",
+        "gid://shopify/MediaImage/56522739646836": "gid://shopify/MediaImage/56542151672180",
+        "gid://shopify/MediaImage/56522739876212": "gid://shopify/MediaImage/56542151016820"
+      },
+      "cutover": "2026-10-08T19:18:50+00:00",
+      "distribute_started_at": "2026-10-08T19:16:31+00:00",
+      "distributed": "2026-10-08T19:16:49+00:00",
+      "finished": "2026-10-08T19:17:38+00:00",
+      "gallery": "2026-10-08T19:18:45+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542150918516",
+        "gid://shopify/MediaImage/56542151016820",
+        "gid://shopify/MediaImage/56542151246196",
+        "gid://shopify/MediaImage/56542151311732",
+        "gid://shopify/MediaImage/56542151410036",
+        "gid://shopify/MediaImage/56542151508340",
+        "gid://shopify/MediaImage/56542151606644",
+        "gid://shopify/MediaImage/56542151672180",
+        "gid://shopify/MediaImage/56542156980596",
+        "gid://shopify/MediaImage/56542157144436",
+        "gid://shopify/MediaImage/56542157209972",
+        "gid://shopify/MediaImage/56542151737716",
+        "gid://shopify/MediaImage/56542151836020",
+        "gid://shopify/MediaImage/56542151934324"
+      ],
+      "handle": "essential-heavyweight-temple-tee-logan",
+      "hidden": "2026-10-08T19:17:22+00:00",
+      "new_id": "gid://shopify/Product/15350349889908",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542157209972",
+        "light-blue": "gid://shopify/MediaImage/56542157144436",
+        "pink": "gid://shopify/MediaImage/56542156980596"
+      },
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15305796518260",
+      "resolved": "2026-10-08T19:16:21+00:00",
+      "source_template_id": "1550273929824911360",
+      "store_product_id": "1557954889462784000",
+      "template_id": "1557954851382644736",
+      "title": "Essential Heavyweight Temple Tee (Logan)",
+      "verified": "2026-10-08T19:18:52+00:00"
+    },
+    "Manhattan": {
+      "copied": "2026-10-08T19:19:00+00:00",
+      "handle": "essential-heavyweight-temple-tee-manhattan",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15303603356020",
+      "resolved": "2026-10-08T19:18:53+00:00",
+      "source_template_id": "1550095733368242176",
+      "template_id": "1557955489680224256",
+      "title": "Essential Heavyweight Temple Tee (Manhattan)"
     }
   },
-  "updated_at": "2026-10-08T19:15:07+00:00"
+  "updated_at": "2026-10-08T19:19:00+00:00"
 }
