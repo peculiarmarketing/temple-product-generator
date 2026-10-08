@@ -2403,12 +2403,48 @@
     "Syracuse": {
       "built": "2026-10-08T20:09:48+00:00",
       "copied": "2026-10-08T20:09:45+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523593417076": "gid://shopify/MediaImage/56542778655092",
+        "gid://shopify/MediaImage/56523593449844": "gid://shopify/MediaImage/56542778687860",
+        "gid://shopify/MediaImage/56523593646452": "gid://shopify/MediaImage/56542778884468",
+        "gid://shopify/MediaImage/56523593679220": "gid://shopify/MediaImage/56542779179380",
+        "gid://shopify/MediaImage/56523593711988": "gid://shopify/MediaImage/56542779212148",
+        "gid://shopify/MediaImage/56523609670004": "gid://shopify/MediaImage/56542778720628",
+        "gid://shopify/MediaImage/56523609768308": "gid://shopify/MediaImage/56542778753396",
+        "gid://shopify/MediaImage/56523610161524": "gid://shopify/MediaImage/56542778786164",
+        "gid://shopify/MediaImage/56523610259828": "gid://shopify/MediaImage/56542778589556",
+        "gid://shopify/MediaImage/56523610358132": "gid://shopify/MediaImage/56542778818932",
+        "gid://shopify/MediaImage/56523610521972": "gid://shopify/MediaImage/56542778622324"
+      },
+      "cutover": "2026-10-08T20:11:47+00:00",
       "distribute_started_at": "2026-10-08T20:09:48+00:00",
       "distributed": "2026-10-08T20:10:07+00:00",
       "finished": "2026-10-08T20:10:42+00:00",
+      "gallery": "2026-10-08T20:11:43+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542778589556",
+        "gid://shopify/MediaImage/56542778622324",
+        "gid://shopify/MediaImage/56542778655092",
+        "gid://shopify/MediaImage/56542778687860",
+        "gid://shopify/MediaImage/56542778720628",
+        "gid://shopify/MediaImage/56542778753396",
+        "gid://shopify/MediaImage/56542778786164",
+        "gid://shopify/MediaImage/56542778818932",
+        "gid://shopify/MediaImage/56542784782708",
+        "gid://shopify/MediaImage/56542785339764",
+        "gid://shopify/MediaImage/56542785372532",
+        "gid://shopify/MediaImage/56542778884468",
+        "gid://shopify/MediaImage/56542779179380",
+        "gid://shopify/MediaImage/56542779212148"
+      ],
       "handle": "essential-heavyweight-temple-tee-syracuse",
       "hidden": "2026-10-08T20:10:25+00:00",
       "new_id": "gid://shopify/Product/15350460776820",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542785372532",
+        "light-blue": "gid://shopify/MediaImage/56542785339764",
+        "pink": "gid://shopify/MediaImage/56542784782708"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -2421,8 +2457,32 @@
       "source_template_id": "1550104709086527488",
       "store_product_id": "1557968296714903552",
       "template_id": "1557968257112240128",
-      "title": "Essential Heavyweight Temple Tee (Syracuse)"
+      "title": "Essential Heavyweight Temple Tee (Syracuse)",
+      "verified": "2026-10-08T20:11:49+00:00"
+    },
+    "Taylorsville": {
+      "built": "2026-10-08T20:12:02+00:00",
+      "copied": "2026-10-08T20:11:59+00:00",
+      "distribute_started_at": "2026-10-08T20:12:02+00:00",
+      "distributed": "2026-10-08T20:12:20+00:00",
+      "finished": "2026-10-08T20:12:53+00:00",
+      "handle": "essential-heavyweight-temple-tee-taylorsville",
+      "hidden": "2026-10-08T20:12:37+00:00",
+      "new_id": "gid://shopify/Product/15350466085236",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15305812803956",
+      "resolved": "2026-10-08T20:11:51+00:00",
+      "source_template_id": "1550276161769259008",
+      "store_product_id": "1557968860009930752",
+      "template_id": "1557968822537973760",
+      "title": "Essential Heavyweight Temple Tee (Taylorsville)"
     }
   },
-  "updated_at": "2026-10-08T20:10:42+00:00"
+  "updated_at": "2026-10-08T20:12:53+00:00"
 }
