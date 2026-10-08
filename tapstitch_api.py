@@ -25,6 +25,7 @@ live account on 16 Sep 2026 and put two real products on the storefront.
 
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -364,9 +365,15 @@ def designs(s, page=1, page_size=24, q=""):
 
     These are the account's saved designs, published to a store or not, as
     opposed to store_products(), which only holds what was added to a store.
-    Found 8 Oct 2026 in the site's own code: the tab's list calls this endpoint
-    with pageNum and pageSize plus its filters. `q` is passed as the tab's
-    search box; untested until a logged-in run confirms it filters.
+    Found 8 Oct 2026 in the site's own code and confirmed by the first logged-in
+    run the same day (149 designs). `q` is the tab's search box: it filters on
+    the blank's name ("Hoodie"), the blank SKU (`bsSn`, "R00368") or the design
+    id, never on the title of the store product a design is linked to.
+
+    A record has no date and no design title: `name` is the blank's name, the
+    same for every design on that blank. Use id_time(uniqueId) for when it was
+    saved. `linkedStoresProductList.stores[].products[].uniqueId` are the store
+    products made from it; productCount 0 means it never reached a store.
 
     Returns the page: {pageNum, pageSize, totalPage, totalCount, data}.
     Read-only.
@@ -376,6 +383,18 @@ def designs(s, page=1, page_size=24, q=""):
         params["q"] = q
     return _data(s.get(f"{BASE}/api/services/user/products/page",
                        params=params, timeout=60))["page"]
+
+
+# Tapstitch ids are snowflakes: the high bits are milliseconds since
+# 2015-01-01 00:00 China time (UTC+8). Calibrated 8 Oct 2026 against
+# relift-rollout.json, where every saved_at matches its commit id within a second.
+_ID_EPOCH_MS = 1420041600000
+
+
+def id_time(unique_id):
+    """When a Tapstitch id (design, template, commit, store product) was made, UTC."""
+    ms = (int(unique_id) >> 22) + _ID_EPOCH_MS
+    return datetime.fromtimestamp(ms / 1000, timezone.utc)
 
 
 def store_product_for(s, shopify_gid, title):
