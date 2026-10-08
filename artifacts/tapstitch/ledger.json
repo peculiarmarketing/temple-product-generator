@@ -1615,9 +1615,9 @@
       "old_title": "Essential Temple Tee (Provo City Center)",
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee-provo-city-center",
-      "updated_at": "2026-09-16T21:06:38",
-      "tapstitch_template_id": "1550100522084810752",
-      "tapstitch_store_product_id": "1550100557996371968",
+      "updated_at": "2026-10-08T19:47:14",
+      "tapstitch_template_id": "1557962046463700992",
+      "tapstitch_store_product_id": "1557962113056710656",
       "distribute_started_at": "2026-09-16T21:06:12"
     },
     {
@@ -1669,9 +1669,9 @@
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee-provo-rock-canyon",
-      "updated_at": "2026-09-17T08:42:05",
-      "tapstitch_template_id": "1550275471562981376",
-      "tapstitch_store_product_id": "1550275508657344512",
+      "updated_at": "2026-10-08T19:49:24",
+      "tapstitch_template_id": "1557962626607239168",
+      "tapstitch_store_product_id": "1557962666730004480",
       "distribute_started_at": "2026-09-17T08:41:24"
     },
     {
@@ -2442,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-10-08T19:44:55"
+  "updated_at": "2026-10-08T19:49:24"
 }
