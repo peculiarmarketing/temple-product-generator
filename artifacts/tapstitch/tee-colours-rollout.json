@@ -1440,6 +1440,30 @@
       "title": "Essential Heavyweight Temple Tee (Nauvoo)",
       "verified": "2026-10-08T19:33:06+00:00"
     },
+    "Nauvoo map": {
+      "built": "2026-10-08T20:20:49+00:00",
+      "copied": "2026-10-08T20:20:46+00:00",
+      "distribute_started_at": "2026-10-08T20:20:49+00:00",
+      "distributed": "2026-10-08T20:21:07+00:00",
+      "finished": "2026-10-08T20:21:40+00:00",
+      "handle": "essential-heavyweight-map-tee-nauvoo",
+      "hidden": "2026-10-08T20:21:24+00:00",
+      "new_id": "gid://shopify/Product/15350484205940",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15350211641716",
+      "problem": "StepError: old map gallery has 12 alt texts; expected one for the set",
+      "resolved": "2026-10-08T20:20:42+00:00",
+      "source_template_id": "1557934356767600640",
+      "store_product_id": "1557971070399750144",
+      "template_id": "1557971043778453504",
+      "title": "Essential Heavyweight Map Tee (Nauvoo)"
+    },
     "Oakland": {
       "built": "2026-10-08T19:33:19+00:00",
       "copied": "2026-10-08T19:33:16+00:00",
@@ -2039,6 +2063,30 @@
       "template_id": "1557964261618245632",
       "title": "Essential Heavyweight Temple Tee",
       "verified": "2026-10-08T19:55:52+00:00"
+    },
+    "Salt Lake City map": {
+      "built": "2026-10-08T20:21:51+00:00",
+      "copied": "2026-10-08T20:21:50+00:00",
+      "distribute_started_at": "2026-10-08T20:21:52+00:00",
+      "distributed": "2026-10-08T20:22:09+00:00",
+      "finished": "2026-10-08T20:22:43+00:00",
+      "handle": "essential-heavyweight-map-tee-salt-lake-city",
+      "hidden": "2026-10-08T20:22:27+00:00",
+      "new_id": "gid://shopify/Product/15350485746036",
+      "old_colour_order": [
+        "Black",
+        "Maroon",
+        "Navy Blue",
+        "Coffee",
+        "Charcoal"
+      ],
+      "old_id": "gid://shopify/Product/15350265119092",
+      "problem": "StepError: old map gallery has 12 alt texts; expected one for the set",
+      "resolved": "2026-10-08T20:21:45+00:00",
+      "source_template_id": "1557943287829123072",
+      "store_product_id": "1557971333634269184",
+      "template_id": "1557971310209032192",
+      "title": "Essential Heavyweight Map Tee (Salt Lake City)"
     },
     "San Antonio": {
       "built": "2026-10-08T19:55:59+00:00",
@@ -2643,12 +2691,48 @@
     "West Jordan*": {
       "built": "2026-10-08T20:18:38+00:00",
       "copied": "2026-10-08T20:18:36+00:00",
+      "copied_media": {
+        "gid://shopify/MediaImage/56523670225268": "gid://shopify/MediaImage/56542877909364",
+        "gid://shopify/MediaImage/56523670258036": "gid://shopify/MediaImage/56542878040436",
+        "gid://shopify/MediaImage/56523670454644": "gid://shopify/MediaImage/56542878466420",
+        "gid://shopify/MediaImage/56523670487412": "gid://shopify/MediaImage/56542878663028",
+        "gid://shopify/MediaImage/56523670520180": "gid://shopify/MediaImage/56542878794100",
+        "gid://shopify/MediaImage/56523702272372": "gid://shopify/MediaImage/56542878105972",
+        "gid://shopify/MediaImage/56523702632820": "gid://shopify/MediaImage/56542878237044",
+        "gid://shopify/MediaImage/56523702829428": "gid://shopify/MediaImage/56542878302580",
+        "gid://shopify/MediaImage/56523703026036": "gid://shopify/MediaImage/56542877712756",
+        "gid://shopify/MediaImage/56523703288180": "gid://shopify/MediaImage/56542878368116",
+        "gid://shopify/MediaImage/56523703878004": "gid://shopify/MediaImage/56542877811060"
+      },
+      "cutover": "2026-10-08T20:20:39+00:00",
       "distribute_started_at": "2026-10-08T20:18:38+00:00",
       "distributed": "2026-10-08T20:18:56+00:00",
       "finished": "2026-10-08T20:19:29+00:00",
+      "gallery": "2026-10-08T20:20:34+00:00",
+      "gallery_order": [
+        "gid://shopify/MediaImage/56542877712756",
+        "gid://shopify/MediaImage/56542877811060",
+        "gid://shopify/MediaImage/56542877909364",
+        "gid://shopify/MediaImage/56542878040436",
+        "gid://shopify/MediaImage/56542878105972",
+        "gid://shopify/MediaImage/56542878237044",
+        "gid://shopify/MediaImage/56542878302580",
+        "gid://shopify/MediaImage/56542878368116",
+        "gid://shopify/MediaImage/56542882759028",
+        "gid://shopify/MediaImage/56542883185012",
+        "gid://shopify/MediaImage/56542883578228",
+        "gid://shopify/MediaImage/56542878466420",
+        "gid://shopify/MediaImage/56542878663028",
+        "gid://shopify/MediaImage/56542878794100"
+      ],
       "handle": "essential-heavyweight-temple-tee-west-jordan",
       "hidden": "2026-10-08T20:19:13+00:00",
       "new_id": "gid://shopify/Product/15350480830836",
+      "new_onmodel": {
+        "cream": "gid://shopify/MediaImage/56542883578228",
+        "light-blue": "gid://shopify/MediaImage/56542883185012",
+        "pink": "gid://shopify/MediaImage/56542882759028"
+      },
       "old_colour_order": [
         "Black",
         "Maroon",
@@ -2661,8 +2745,9 @@
       "source_template_id": "1550106065461526528",
       "store_product_id": "1557970521977724928",
       "template_id": "1557970498648961024",
-      "title": "Essential Heavyweight Temple Tee (West Jordan)"
+      "title": "Essential Heavyweight Temple Tee (West Jordan)",
+      "verified": "2026-10-08T20:20:40+00:00"
     }
   },
-  "updated_at": "2026-10-08T20:19:29+00:00"
+  "updated_at": "2026-10-08T20:22:47+00:00"
 }
