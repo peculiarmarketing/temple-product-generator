@@ -83,6 +83,8 @@ OUT = ROOT / "artifacts" / "maps"
 COLLECTION = {"title": "Church History Maps", "handle": "church-history-maps",
               "tag": "line:map"}
 SAFE_IN = flatten.DEFAULT_SAFE_MARGIN_IN
+# Unpublished themes that also get the map files and page template.
+NEXT_THEMES = {"Claude Code V3"}
 
 
 def maps_dir():
@@ -331,20 +333,30 @@ def upload_drawing(client, name):
     for ext in ("json", "webp"):
         shutil.copyfile(web / f"pp-map-{name}.{ext}", theme_dir / "assets" / f"pp-map-{name}.{ext}")
     names = [f"assets/pp-map-{name}.json", f"assets/pp-map-{name}.webp",
-             "sections/pp-temple-drawing.liquid"]
+             "sections/pp-temple-drawing.liquid", "templates/product.map.json"]
     files = {n: (theme_dir / n).read_bytes() for n in names}
     md5 = lambda b: hashlib.md5(b).hexdigest()
-    theme = WD.main_theme_id(client)
-    remote = WD.remote_checksums(client, theme, names)
-    todo = {n: b for n, b in files.items() if remote.get(n) != md5(b)}
-    if not todo:
-        return "theme already has the drawing"
-    WD.upsert_theme_files(client, theme, todo)
-    after = WD.remote_checksums(client, theme, list(todo))
-    wrong = [n for n in todo if after.get(n) != md5(todo[n])]
-    if wrong:
-        raise SystemExit(f"theme read-back mismatch on {wrong}")
-    return "uploaded " + ", ".join(sorted(todo))
+    # The published theme, plus any unpublished theme waiting to replace it
+    # (Claude Code V3, 8 Oct 2026): files only on the old theme vanish from
+    # the map pages the day the new one is published.
+    themes = {WD.main_theme_id(client): "published theme"}
+    for t in client.gql("{ themes(first: 50) { nodes { id name } } }")["themes"]["nodes"]:
+        if t["name"].strip() in NEXT_THEMES:
+            themes[t["id"]] = t["name"].strip()
+    notes = []
+    for theme, label in themes.items():
+        remote = WD.remote_checksums(client, theme, names)
+        todo = {n: b for n, b in files.items() if remote.get(n) != md5(b)}
+        if not todo:
+            notes.append(f"{label}: already has the drawing")
+            continue
+        WD.upsert_theme_files(client, theme, todo)
+        after = WD.remote_checksums(client, theme, list(todo))
+        wrong = [n for n in todo if after.get(n) != md5(todo[n])]
+        if wrong:
+            raise SystemExit(f"{label}: theme read-back mismatch on {wrong}")
+        notes.append(f"{label}: uploaded " + ", ".join(sorted(todo)))
+    return "; ".join(notes)
 
 
 # ------------------------------------------------------------- run
