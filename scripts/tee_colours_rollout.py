@@ -21,8 +21,9 @@ differences for the tees:
   backs after the last on-model shot. Those are composited from the design's own
   Tapstitch print file onto the 8 Oct recolours of the same tee model
   (scripts/tee_new_colour_composites.py), with composite_catalog.py's settings.
-  The map tee's gallery is Tapstitch's own flats, so it keeps the new product's
-  Tapstitch images (all eight colours), alt text copied from the old product.
+  The map tees' galleries (map_run.py: each colour's back and front flat and two
+  close-ups) are carried across the same way, plus the new colours' back and
+  front flats from Tapstitch's own images, picked by filename.
 
   COLOUR ORDER. The old product's order with the new three appended, so the
   page opens on the same colour as before.
@@ -362,24 +363,75 @@ def step_gallery_temple(s, sc, entry, alt_temple, tmp, note):
     note(f"gallery: {len(old_ids)} copied + 3 new on-model, {len(stray)} Tapstitch images removed")
 
 
-def step_gallery_map(s, sc, entry, note):
-    """Tapstitch's own flats for all eight colours, each variant on its back,
-    alt text as the old product's (map_run.py sets one alt for the set)."""
-    import tapstitch_variant_images
+def map_alts(old_alts):
+    """(back prefix, front prefix) from a map gallery's alt texts, e.g.
+    'Nauvoo map tee, back print - ' and 'Nauvoo map tee, front logo - '."""
+    def prefix(marker):
+        hits = {a.rsplit(" - ", 1)[0] + " - " for a in old_alts if marker in a}
+        if len(hits) != 1:
+            raise StepError(f"map gallery: {len(hits)} '{marker}' prefixes in {sorted(old_alts)}")
+        return hits.pop()
+    return prefix(", back print - "), prefix(", front logo - ")
+
+
+def map_expected(old_alts):
+    """The old map gallery's alts with the new colours' backs after the last
+    back and their fronts after the last front."""
+    back, front = map_alts(old_alts)
+    out = list(old_alts)
+    for pre in (back, front):
+        last = max(i for i, a in enumerate(out) if a.startswith(pre))
+        out[last + 1:last + 1] = [pre + n for _, n in NEW]
+    return out
+
+
+def step_gallery_map(s, sc, entry, cfg, note):
+    """The map gallery as map_run.py finishes it (each colour's back and front
+    flats, the two close-ups, all labelled), carried across from the old
+    product, plus the new colours' back and front flats from Tapstitch's own
+    images on the new product, picked by filename (each carries its colorId and
+    placement in the prefill). Every colour's variants go on its back."""
     new_id = entry["new_id"]
-    handle = product(sc, new_id)["handle"]
-    msg = tapstitch_variant_images.rebind(sc, s, handle, entry["template_id"])
-    if msg:
-        note(msg)
-    old_alts = {m.get("alt") or "" for m in product(sc, entry["old_id"])["media"]["nodes"]}
-    if len(old_alts) != 1:
-        raise StepError(f"old map gallery has {len(old_alts)} alt texts; expected one for the set")
-    alt = next(iter(old_alts))
-    for m in product(sc, new_id)["media"]["nodes"]:
-        if (m.get("alt") or "") != alt:
-            sc.update_media_alt(new_id, m["id"], alt)
-    entry["gallery_order"] = [m["id"] for m in product(sc, new_id)["media"]["nodes"]]
-    note(f"gallery: {len(entry['gallery_order'])} Tapstitch images, alt {alt!r}")
+    old, new = product(sc, entry["old_id"]), product(sc, new_id)
+    old_alts = [m.get("alt") or "" for m in old["media"]["nodes"]]
+    back_pre, front_pre = map_alts(old_alts)
+    copied = entry.setdefault("copied_media", {})
+    for m in old["media"]["nodes"]:
+        if m["id"] not in copied:
+            copied[m["id"]] = add_by_url(sc, new_id, m["image"]["url"], m.get("alt") or "")
+    prefill = T.store_product_prefill(s, tapstitch_run.STORE_ID, entry["template_id"])
+    where = {}
+    for mk in prefill["mockups"]:
+        pay = mk["media"]["attributes"][0]["payload"]
+        where[mk["media"]["url"].split("/")[-1].split("?")[0]] = (str(pay.get("colorId")), pay.get("placement"))
+    name_of = {str(c["code"]): c["shopify"] for c in cfg["colorways"]}
+    want = {n for _, n in NEW}
+    found = {}
+    for m in new["media"]["nodes"]:
+        fn = m["image"]["url"].split("/")[-1].split("?")[0]
+        code, place = where.get(fn, (None, None))
+        if name_of.get(code) in want:
+            side = "back" if place == "BackEndImage" else "front"
+            found[(name_of[code], side)] = m["id"]
+    missing = [(n, sd) for n in want for sd in ("back", "front") if (n, sd) not in found]
+    if missing:
+        raise StepError(f"no Tapstitch image for {missing}")
+    for (n, side), mid in found.items():
+        sc.update_media_alt(new_id, mid, (back_pre if side == "back" else front_pre) + n)
+    for mid in copied.values():
+        sc.wait_for_media_ready(mid, timeout_s=300)
+    alt_to_id = {m.get("alt") or "": copied[m["id"]] for m in old["media"]["nodes"]}
+    for (n, side), mid in found.items():
+        alt_to_id[(back_pre if side == "back" else front_pre) + n] = mid
+    order = [alt_to_id[a] for a in map_expected(old_alts)]
+    bind(sc, new_id, {c: alt_to_id[back_pre + c] for c in entry["old_colour_order"] + [n for _, n in NEW]})
+    keep = set(order)
+    stray = [m["id"] for m in product(sc, new_id)["media"]["nodes"] if m["id"] not in keep]
+    if stray:
+        sc.delete_media(new_id, stray)
+    reorder_media(sc, new_id, order)
+    entry["gallery_order"] = order
+    note(f"gallery: {len(old_alts)} copied + 6 new flats, {len(stray)} other Tapstitch images removed")
 
 
 def check(sc, entry, kind, alt_temple, cfg, domain=None):
@@ -421,8 +473,16 @@ def check(sc, entry, kind, alt_temple, cfg, domain=None):
                 probs.append(f"{v['title']} bound to {alt_of.get(b)!r}")
                 break
     else:
-        if any(not (v["media"]["nodes"]) for v in new["variants"]["nodes"]):
-            probs.append("a variant has no image")
+        old_alts = [m.get("alt") or "" for m in old["media"]["nodes"]]
+        if [alt_of[m["id"]] for m in media] != map_expected(old_alts):
+            probs.append("gallery alts differ from old + new colours")
+        back_pre, _ = map_alts(old_alts)
+        for v in new["variants"]["nodes"]:
+            col = next(o["value"] for o in v["selectedOptions"] if o["name"] == "Color")
+            b = (v["media"]["nodes"] or [{}])[0].get("id")
+            if alt_of.get(b) != back_pre + col:
+                probs.append(f"{v['title']} bound to {alt_of.get(b)!r}")
+                break
     if domain is None:
         return probs
     if new["status"] != "ACTIVE" or new["handle"] != entry["handle"]:
@@ -517,7 +577,7 @@ def run_one(s, sc, state, entry, item, cfg, blank, domain, tmp, publish, note):
         if kind == "temple":
             step_gallery_temple(s, sc, entry, alt_temple, tmp, note)
         else:
-            step_gallery_map(s, sc, entry, note)
+            step_gallery_map(s, sc, entry, cfg, note)
         done("gallery")
     if not entry.get("cutover"):
         step_cutover(sc, entry, kind, alt_temple, cfg, note); done("cutover")
