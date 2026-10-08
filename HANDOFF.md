@@ -5,7 +5,7 @@
   Every garment product now has rows (148 of 148). `scripts/rebuild_parent_descriptions.py`.
 - Homepage "Shop by garment" is four tabs: Hoodies, Tees, Sweatshirts, All Products
   (`sections/pp-collection-tabs.liquid`, `scripts/home_collection_tabs.py`, revert
-  available). Tees, Sweatshirts and Hoodies are now published; card order by
+  available). Tees, Sweatshirts, Hoodies and Jackets are now published; card order by
   `scripts/collection_order.py`. Verified on the live site, desktop and mobile.
 - Details: `docs/decisions.md`, "8 October 2026, night".
 
