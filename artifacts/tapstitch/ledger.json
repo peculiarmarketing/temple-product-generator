@@ -103,9 +103,9 @@
       "old_title": null,
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee-billings",
-      "updated_at": "2026-09-16T22:19:40",
-      "tapstitch_template_id": "1550118834894225408",
-      "tapstitch_store_product_id": "1550118866896703488",
+      "updated_at": "2026-10-08T18:41:49",
+      "tapstitch_template_id": "1557945595388391424",
+      "tapstitch_store_product_id": "1557945653437603840",
       "distribute_started_at": "2026-09-16T22:18:57"
     },
     {
@@ -157,9 +157,9 @@
       "old_title": "Essential Temple Tee (Boise)",
       "tapstitch_product_url": null,
       "shopify_handle": "essential-heavyweight-temple-tee-boise",
-      "updated_at": "2026-09-16T20:26:19",
-      "tapstitch_template_id": "1550090371265150976",
-      "tapstitch_store_product_id": "1550090408544055296",
+      "updated_at": "2026-10-08T18:43:57",
+      "tapstitch_template_id": "1557946168695222272",
+      "tapstitch_store_product_id": "1557946193269694464",
       "distribute_started_at": "2026-09-16T20:25:53"
     },
     {
@@ -2442,5 +2442,5 @@
       "distribute_started_at": "2026-09-16T21:28:15"
     }
   ],
-  "updated_at": "2026-10-08T18:38:56"
+  "updated_at": "2026-10-08T18:43:57"
 }
