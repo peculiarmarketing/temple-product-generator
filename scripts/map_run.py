@@ -283,9 +283,17 @@ def ensure_collection(client):
     if r["userErrors"]:
         raise SystemExit(f"collectionCreate: {r['userErrors']}")
     cid = r["collection"]["id"]
-    pubs = client.gql("""query { collectionByHandle(handle: "temple-tees") {
-        resourcePublications(first: 20) { nodes { publication { id } } } } }"""
-    )["collectionByHandle"]["resourcePublications"]["nodes"]
+    try:
+        pubs = client.gql("""query { collectionByHandle(handle: "temple-tees") {
+            resourcePublications(first: 20) { nodes { publication { id } } } } }"""
+        )["collectionByHandle"]["resourcePublications"]["nodes"]
+    except Exception as e:
+        # The PP Pipeline token has no read/write_publications (8 Oct 2026), so a
+        # new collection is created unpublished: tick Online Store in the admin.
+        if "publications" not in str(e):
+            raise
+        return cid, ("collection created but NOT published to the Online Store: "
+                     "the app token lacks write_publications; tick it in the admin")
     ids = [{"publicationId": n["publication"]["id"]} for n in pubs]
     if ids:
         e = client.gql("""mutation($id: ID!, $p: [PublicationInput!]!) {
