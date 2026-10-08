@@ -87,3 +87,6 @@ artifacts/photo-mockup-spike/composites-lift/
 artifacts/tapstitch/relift-thumbs/
 artifacts/tapstitch/pilot-monticello-tee/*.png
 artifacts/tapstitch/pilot-monticello-tee/storeproducts_*.json
+
+# Map print files, rebuilt by scripts/map_run.py from designs/city-map-back/out/.
+artifacts/maps/*/*.png

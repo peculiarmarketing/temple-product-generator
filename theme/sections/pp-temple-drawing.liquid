@@ -1,16 +1,25 @@
 {%- comment -%}
   Peculiar People product band: this product's temple, drawn by pen.
-  Finds its drawing from the product's `temple:` tag. No tag (the Temple Art File):
-  renders nothing. A tag whose drawing is not uploaded yet: pp-pen-draw.js removes
-  the band, so a shopper never sees an empty box. Files come from
-  scripts/web_drawings.py.
+  Finds its drawing from the product's `temple:` tag, or for a city map product
+  (8 Oct 2026) its `map:` tag, which reads pp-map-<slug> files instead and draws
+  the streets the same way. No tag (the Temple Art File): renders nothing. A tag
+  whose drawing is not uploaded yet: pp-pen-draw.js removes the band, so a
+  shopper never sees an empty box. Temple files come from scripts/web_drawings.py,
+  map files from designs/city-map-back/web_map_drawing.py via scripts/map_run.py.
 {%- endcomment -%}
 {%- liquid
   assign slug = ''
+  assign prefix = 'pp-temple-'
   for tag in product.tags
     assign head = tag | slice: 0, 7
     if head == 'temple:'
       assign slug = tag | remove_first: 'temple:'
+      break
+    endif
+    assign head = tag | slice: 0, 4
+    if head == 'map:'
+      assign slug = tag | remove_first: 'map:'
+      assign prefix = 'pp-map-'
       break
     endif
   endfor
@@ -20,8 +29,8 @@
   {{ 'pp-pen-draw.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'pp-pen-draw.js' | asset_url }}" defer></script>
   <section class="pp-band" data-pp-pen-band
-    data-json="{{ 'pp-temple-' | append: slug | append: '.json' | asset_url }}"
-    data-img="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}">
+    data-json="{{ prefix | append: slug | append: '.json' | asset_url }}"
+    data-img="{{ prefix | append: slug | append: '.webp' | asset_url }}">
     <div class="pp-band__inner">
       {%- if temple_name != blank -%}
         <h2 class="pp-band__name">{{ temple_name | escape }}</h2>
