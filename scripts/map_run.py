@@ -29,7 +29,10 @@ What differs from a temple, all decided by Evan on 8 Oct 2026:
   - Page template product.map (theme/templates/product.map.json): the product
     template minus the temple Reference / Final drawing slider, with the
     design-suggestion row and section worded for maps.
-  - No art card, Temple Art File option, Easify row or marquee entry: those
+  - Design cards (8 Oct 2026, Evan): the map, and the coordinates logo when
+    the front has them, in black on white like the temple line-art card, at
+    gallery positions 2 and 3.
+  - No temple art card, Temple Art File option, Easify row or marquee entry: those
     are temple-only.
   - On-model gallery: not run. The blank colourway photos it composites onto
     are on the Mac only (artifacts/photo-mockup-spike/colourway-photos is
@@ -320,6 +323,107 @@ def ensure_collection(client):
     return cid, f"collection created and published to {len(ids)} channel(s)"
 
 
+MAP_ALT = "City map art close-up"
+LOGO_ALT = "Coordinates logo close-up"
+
+
+def art_cards(name, p):
+    """[(path, alt)]: the design in black on a clean white square, like the
+    temple products' line-art card (layout.render_art_card: 2048 px, art 86
+    percent of the square, centred on ink). The map always; the front logo only
+    when it carries a temple's coordinates (a plain box logo is on every
+    product already). Built from the print files, so they show exactly what
+    prints."""
+    back, front, _ = art_paths(name, p)
+    city, _ = city_state(p)
+    srcs = [(back, f"{MAP_ALT} - {city}")]
+    if p.get("temple"):
+        srcs.append((front, f"{LOGO_ALT} - {city}"))
+    out = []
+    for src, alt in srcs:
+        with Image.open(src) as im:
+            a = im.convert("RGBA").getchannel("A")
+        a = a.crop(a.getbbox())
+        size, cover = 2048, 0.86
+        s = size * cover / max(a.size)
+        a = a.resize((max(1, round(a.width * s)), max(1, round(a.height * s))), Image.LANCZOS)
+        card = Image.new("RGB", (size, size), (255, 255, 255))
+        card.paste((0, 0, 0), ((size - a.width) // 2, (size - a.height) // 2), a)
+        path = OUT / name / f"{name} {'map' if alt.startswith(MAP_ALT) else 'logo'} card.png"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        card.save(path)
+        out.append((path, alt))
+    return out
+
+
+GARMENT_WORD = {"tee": "tee", "crew": "sweatshirt", "hoodie": "hoodie"}
+
+
+def fix_mockup_alts(client, s, pid, name, p, garment_id, template_id):
+    """Alt text for Tapstitch's mockups: "<City> map tee, back print - Maroon".
+    Colour comes from the variant each back image is bound to; a front image is
+    paired to its back through Tapstitch's own mockup list (filename to
+    filename, tapstitch_api.back_for_front_mockups). Our own cards and photos
+    (any alt not left by Tapstitch) are left alone."""
+    city, _ = city_state(p)
+    word = GARMENT_WORD[garment_id]
+    data = client.gql("""query($id: ID!) { product(id: $id) {
+        media(first: 100) { nodes { id alt ... on MediaImage { image { url } } } }
+        variants(first: 100) { nodes { selectedOptions { name value }
+          media(first: 1) { nodes { id } } } } } }""", {"id": pid})["product"]
+    fname = lambda u: u.split("/")[-1].split("?")[0]
+    colour_of_media = {}
+    for v in data["variants"]["nodes"]:
+        colour = next((o["value"] for o in v["selectedOptions"] if o["name"] == "Color"), None)
+        if v["media"]["nodes"] and colour:
+            colour_of_media[v["media"]["nodes"][0]["id"]] = colour
+    by_name = {fname(m["image"]["url"]): m for m in data["media"]["nodes"] if m.get("image")}
+    colour_of_name = {fname(m["image"]["url"]): colour_of_media[m["id"]]
+                      for m in data["media"]["nodes"] if m["id"] in colour_of_media and m.get("image")}
+    pairs = T.back_for_front_mockups(T.store_product_prefill(s, STORE_ID, template_id))
+
+    def stem(n):   # Shopify appends _<uuid> to a re-hosted file name
+        base, _, ext = n.rpartition(".")
+        return re.sub(r"_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "", base)
+    front_colour = {}
+    for front, back in pairs.items():
+        for n, c in colour_of_name.items():
+            if stem(n) == stem(back):
+                front_colour[stem(front)] = c
+    updates = []
+    for m in data["media"]["nodes"]:
+        alt = m["alt"] or ""
+        if alt.startswith((MAP_ALT, LOGO_ALT)) or (alt and not alt.startswith("map:")):
+            continue
+        if m["id"] in colour_of_media:
+            want = f"{city} map {word}, back print - {colour_of_media[m['id']]}"
+        elif m.get("image") and stem(fname(m["image"]["url"])) in front_colour:
+            want = f"{city} map {word}, front logo - {front_colour[stem(fname(m['image']['url']))]}"
+        else:
+            want = f"{city} map {word}"
+        updates.append({"id": m["id"], "alt": want})
+    for i in range(0, len(updates), 25):
+        e = client.gql("""mutation($f: [FileUpdateInput!]!) { fileUpdate(files: $f) {
+            userErrors { field message } } }""", {"f": updates[i:i + 25]})["fileUpdate"]["userErrors"]
+        if e:
+            raise SystemExit(f"fileUpdate: {e}")
+    return f"alt text set on {len(updates)} mockup(s)"
+
+
+def push_art_cards(client, pid, name, p):
+    """Upload the cards and put them right after the lead photo (gallery
+    positions 2 and 3). Idempotent by alt text."""
+    have = client.gql("""query($id: ID!) { product(id: $id) { media(first: 100) {
+        nodes { id alt } } } }""", {"id": pid})["product"]["media"]["nodes"]
+    done = []
+    for i, (path, alt) in enumerate(art_cards(name, p)):
+        hit = next((m for m in have if (m["alt"] or "") == alt), None)
+        mid = hit["id"] if hit else client.upload_media_image(pid, path, alt)
+        client.move_media_to_position(pid, mid, 1 + i)
+        done.append(("kept " if hit else "added ") + alt)
+    return "; ".join(done)
+
+
 def upload_drawing(client, name):
     """The band's files into the published theme: this map's stroke file and
     art, plus the band section that reads map: tags. Copied into theme/ first so
@@ -382,7 +486,9 @@ def run_garment(s, client, name, p, garment_id, publish, state, note, parent=Fal
             payload = T.store_product_payload(
                 prefill, title, int(round(cfg["price_usd"] * 100)),
                 description_for(name, p, cfg), lead_color_id(cfg))
-            payload["tags"] = tags_for(name, garment_id, parent)
+            # Tags go on through tagsAdd after publish, never here: Tapstitch
+            # copies this field onto every mockup's alt text (8 Oct 2026, the
+            # first six map products went live with alts like "map:nauvoo,line:map").
             st["store_product_id"] = T.create_store_product(s, STORE_ID, payload)
             save_state(name, state)
             note(f"store product {st['store_product_id']} ({title!r})")
@@ -415,6 +521,8 @@ def run_garment(s, client, name, p, garment_id, publish, state, note, parent=Fal
     pid = client.find_product_by_handle(handle)["id"]
     note(add_tags(client, pid, tags_for(name, garment_id, parent)))
     note(set_place_line(client, pid, p))
+    note(push_art_cards(client, pid, name, p))
+    note(fix_mockup_alts(client, s, pid, name, p, garment_id, st["template_id"]))
     # templates/product.map.json (8 Oct 2026, Evan): the product template without
     # the temple Reference / Final drawing slider, with the design-suggestion
     # copy worded for maps ("Don't see your city?").
