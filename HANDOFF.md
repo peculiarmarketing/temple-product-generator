@@ -9,13 +9,26 @@ Seven hand-saved Tapstitch designs, driven by `scripts/publish_saved_design.py`
   gave the go, 8 Oct): product type, tags, SEO, handle (Shopify drops the ñ, so the
   Español handles are set to `-espanol`), colour renames, lead colour, alt text.
   The bomber's variants are bound to their back images so the page opens on the seal.
-- They stay DRAFT until their on-model photos are in (Evan, 8 Oct).
+- On-model photos are in (8 Oct): every colour on a real stock model (Shopify
+  Burst), one model per garment, slight pose change per colour, prints
+  composited by `artifacts/photo-mockup-spike/composite_front.py`. Gallery: the
+  on-model shots first (slot 1 = the lead colour), then Tapstitch's flats; each
+  colour's variants bound to its on-model shot. Sources: `artifacts/onmodel-front/`
+  (blanks are the only copies; finals are what Shopify fetched from GitHub raw).
+- Still DRAFT. Going ACTIVE waits on Evan's word, and should follow publishing the
+  "Claude Code V3" theme, which holds the swatches for Pink, Light Blue, Cream,
+  Forest Green and Purple (the live V2 does not).
 - All seven go ACTIVE together on Evan's word.
 - The five new swatches are only in the unpublished "Claude Code V3" theme.
 - Manual for Evan: the bomber's Kiwi size chart (`reference/garment-copy/bomber/size-chart.md`).
 - Phase 2, not started: Pink, Light Blue and Cream on all 45 live tees (an Eden
-  Green style swap) and in `garments/tee.json` for future sweeps. Needs the Admin
-  token or the Mac.
+  Green style swap) and in `garments/tee.json` for future sweeps. Evan added the
+  Shopify Admin token as a cloud secret on 8 Oct; it reaches a NEW session, not
+  the one that was running. The three back-view blanks on the existing tee model
+  are ready: `artifacts/onmodel-front/blanks/back_tee_{pink,light-blue,cream}.jpg`
+  (copy to `photo-mockup-spike/colourway-photos/` as `tee_<slug>.png` for
+  composite_catalog.py). Temple print files: the Mac's Temples/ folder, or each
+  tee template's back piece on Tapstitch.
 
 # The sweep: built 7 October 2026, not yet run on a real new temple
 
