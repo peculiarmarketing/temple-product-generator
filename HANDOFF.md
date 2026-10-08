@@ -5,12 +5,11 @@ Seven hand-saved Tapstitch designs, driven by `scripts/publish_saved_design.py`
 `artifacts/tapstitch/saved-designs.json`.
 
 - All seven are built as Tapstitch store products (not public).
-- #2, `Ultra-soft "Be Peculiar" Sweatshirt`, is distributed and finished on Shopify
-  as DRAFT, waiting on Evan's review.
-- #1 and #3 to #7 wait for Evan's go. Each one then: `--apply --publish --only N`,
-  then at once through the Shopify connector: DRAFT, product type, tags, SEO,
-  colour renames, lead colour first, alt text, read back. The bomber also needs its
-  variants bound to back images so the page opens on the seal.
+- All seven are distributed and finished on Shopify as DRAFT (Evan approved #2 and
+  gave the go, 8 Oct): product type, tags, SEO, handle (Shopify drops the ñ, so the
+  Español handles are set to `-espanol`), colour renames, lead colour, alt text.
+  The bomber's variants are bound to their back images so the page opens on the seal.
+- They stay DRAFT until their on-model photos are in (Evan, 8 Oct).
 - All seven go ACTIVE together on Evan's word.
 - The five new swatches are only in the unpublished "Claude Code V3" theme.
 - Manual for Evan: the bomber's Kiwi size chart (`reference/garment-copy/bomber/size-chart.md`).
