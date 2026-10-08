@@ -50,6 +50,8 @@ State is kept per place in artifacts/maps/<place>/state.json and every id is
 written the moment Tapstitch returns it, so a stopped run resumes without a
 second template or a second distribute (the same rules as tapstitch_run.py).
 
+  python scripts/map_run.py kirtland --review          # design package, status review
+  python scripts/map_run.py kirtland --confirm         # Evan approved: status ready
   python scripts/map_run.py nauvoo                     # build print files, plan
   python scripts/map_run.py nauvoo --apply             # Tapstitch products, not public
   python scripts/map_run.py nauvoo --apply --publish   # LIVE
@@ -105,6 +107,48 @@ def place_cfg(name):
     if name not in places:
         raise SystemExit(f"{name!r} is not in places.json")
     return places[name]
+
+
+STAGES = ("designed", "review", "ready", "live")
+
+
+def set_status(name, status):
+    """Write a map's product stage to places.json (see its _status note)."""
+    if status not in STAGES:
+        raise SystemExit(f"status must be one of {STAGES}")
+    path = maps_dir() / "places.json"
+    places = json.loads(path.read_text())
+    places[name]["status"] = status
+    path.write_text(json.dumps(places, indent=2) + "\n")
+
+
+def review_sheet(name, p, garments):
+    """One image of everything a buyer sees from the art: each garment's back
+    and front print files on navy, then the gallery cards. For Evan's review
+    before a map is marked ready."""
+    tiles = []
+    for g in garments:
+        for side in ("back", "front"):
+            f = OUT / name / f"{name} {g} white {side} print (map).png"
+            with Image.open(f) as im:
+                im = im.convert("RGBA")
+                s = 520 / im.height
+                im = im.resize((round(im.width * s), 520), Image.LANCZOS)
+            bg = Image.new("RGBA", im.size, (0, 26, 88, 255))
+            bg.alpha_composite(im)
+            tiles.append(bg.convert("RGB"))
+    for path, _ in art_cards(name, p):
+        with Image.open(path) as im:
+            tiles.append(im.convert("RGB").resize((520, 520), Image.LANCZOS))
+    W = sum(t.width for t in tiles) + 12 * (len(tiles) + 1)
+    sheet = Image.new("RGB", (W, 544), (200, 200, 200))
+    x = 12
+    for t in tiles:
+        sheet.paste(t, (x, 12))
+        x += t.width + 12
+    out = OUT / name / f"{name} review.png"
+    sheet.save(out)
+    return out
 
 
 def art_paths(name, p):
@@ -545,11 +589,27 @@ def main():
     ap.add_argument("--publish", action="store_true", help="distribute: LIVE, no undo")
     ap.add_argument("--parent", action="store_true",
                     help="this map is the map line's card in the garment collections")
+    ap.add_argument("--review", action="store_true",
+                    help="build the design package and mark the map as waiting on Evan")
+    ap.add_argument("--confirm", action="store_true",
+                    help="Evan confirmed the designs: mark the map ready for products")
     a = ap.parse_args()
+    if a.confirm:
+        if place_cfg(a.place).get("status") not in ("review", "ready"):
+            raise SystemExit(f"{a.place} has not been through review yet (run --review first)")
+        if place_cfg(a.place).get("history") and not history_section(a.place):
+            raise SystemExit(f"{a.place} is a Church history site with no history/{a.place}.html")
+        set_status(a.place, "ready")
+        print(f"{a.place}: status ready")
+        return
     if a.publish and not a.apply:
         raise SystemExit("--publish needs --apply")
     name, p = a.place, place_cfg(a.place)
     garments = a.garment or list(GARMENTS)
+    status = p.get("status", "designed")
+    if a.apply and status not in ("ready", "live"):
+        raise SystemExit(f"{name} is at stage {status!r}; only a map Evan has confirmed "
+                         f"(status ready in places.json) goes on products")
     state = load_state(name)
 
     for g in garments:
@@ -565,6 +625,10 @@ def main():
             print(f"  NOT READY: {e}")
     save_state(name, state)
     if not a.apply:
+        print(f"review sheet: {review_sheet(name, p, garments)}")
+        if a.review:
+            set_status(name, "review")
+            print(f"{name}: status review (waits on Evan; mark ready with --confirm)")
         print("plan only: --apply builds the Tapstitch products, --publish puts them live")
         return
 
@@ -577,6 +641,9 @@ def main():
         print(f"  {upload_drawing(client, name)}")
         cid, msg = ensure_collection(client)
         print(f"  {msg}")
+        if all(state.get(g, {}).get("state") == "live" for g in GARMENTS):
+            set_status(name, "live")
+            print(f"  {name}: status live")
 
 
 if __name__ == "__main__":
