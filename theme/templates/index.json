@@ -1325,7 +1325,7 @@
           "settings": {
             "image_asset": "pp-loupe-hoodie-navy.jpg",
             "mask_asset": "pp-loupe-hoodie-navy-mask.png",
-            "alt": "Navy hoodie with the Salt Lake Temple printed on the back",
+            "alt": "Navy hoodie with the Salt Lake Temple printed on the back, hem rolled up to show the brushed fleece inside",
             "tag": "Hoodie · 350 GSM fleece",
             "colour": "#273746",
             "fabric": "fleece",
@@ -1333,7 +1333,12 @@
             "ink_label": "White ink, direct to garment",
             "print_x": 37.2,
             "print_y": 41.1,
-            "print_w": 24.9
+            "print_w": 24.9,
+            "rib_mask_asset": "pp-loupe-hoodie-navy-rib.png",
+            "rib_label": "Ribbed cuffs and hem",
+            "brushed_mask_asset": "pp-loupe-hoodie-navy-brushed.png",
+            "brushed_colour": "#364556",
+            "brushed_label": "Brushed fleece inside"
           }
         },
         "crew": {
@@ -1349,7 +1354,9 @@
             "ink_label": "White ink, direct to garment",
             "print_x": 36.8,
             "print_y": 33.2,
-            "print_w": 26.0
+            "print_w": 26.0,
+            "rib_mask_asset": "pp-loupe-crew-gray-rib.png",
+            "rib_label": "Ribbed collar, cuffs and hem"
           }
         },
         "tee": {
@@ -1365,7 +1372,9 @@
             "ink_label": "White ink, direct to garment",
             "print_x": 33.9,
             "print_y": 29.9,
-            "print_w": 30.6
+            "print_w": 30.6,
+            "rib_mask_asset": "pp-loupe-tee-maroon-rib.png",
+            "rib_label": "Ribbed collar"
           }
         }
       },
@@ -1378,7 +1387,7 @@
         "eyebrow": "Look closer",
         "heading": "Heavyweight, printed into the cotton",
         "text": "Move over the shirts to see the ink and the fabric up close.",
-        "magnification": 7,
+        "magnification": 24,
         "lens_size": 260,
         "print_asset": "pp-loupe-print-salt-lake.webp",
         "background": "#f2f1ee"

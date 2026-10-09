@@ -234,3 +234,25 @@ Far West, Adam-ondi-Ahman, Carthage, Winter Quarters) alternating with the hero
 temples. `pp-pen-draw.js` now downloads the next drawing only after the current one
 has drawn (it used to fetch both on arrival), and the showcase keeps only the
 current and next drawings in memory (`forgetExcept`).
+
+## Loupe (9 October 2026, V4 only)
+
+`sections/pp-loupe.liquid`, `assets/pp-loupe.js` and `.css` replace "Look closer"
+(hidden). The store's flat mockups (navy hoodie, heather gray crew, maroon tee, Salt
+Lake back print) sit side by side; a lens follows the mouse, or a tap on phones
+(drawn above the finger), and labels what it is over. The lens draws its own macro
+layer, not an enlarged photo: garment colour plus a seamless weave at true scale
+(the print is 12 in wide, which gives px per cm), rib on hems, cuffs and collars,
+the brushed lining where the hoodie's hem is rolled back, then the full-size print
+with the weave over the ink. 24x by default.
+
+- Textures `pp-loupe-tex-{jersey,fleece,rib,brushed}.jpg`: generated (GPT Image
+  2.5), high-passed to neutral grey and made seamless (knits trimmed to whole stitch
+  columns and blended top to bottom only).
+- `pp-loupe-hoodie-navy.jpg`: the mockup with the hem rolled up by GPT Image 2.5;
+  the original print pixels were put back (the print sat at the same place and
+  scale, offset 0,0).
+- Zone masks `pp-loupe-<garment>-rib.png` / `-brushed.png`, outline masks `-mask.png`.
+- Two traps: the theme hides empty divs (`div:empty`), and a lens world scaled by
+  transform is painted small and stretched, so the world is laid out at the zoom
+  (`calc(... * var(--z))`) and only translated.

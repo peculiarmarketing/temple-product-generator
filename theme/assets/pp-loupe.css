@@ -33,13 +33,19 @@
 }
 .pp-loupe__lens::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 40px rgba(0, 0, 0, .35); }
 .pp-loupe.is-lens .pp-loupe__lens { opacity: 1; scale: 1; }
-.pp-loupe__world { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
-.pp-loupe__w { position: absolute; left: 0; top: 0; width: 1400px; height: 1400px; display: none; }
+/* Laid out at the lens zoom (pp-loupe.js sets --z) and only translated. */
+.pp-loupe__world { --z: 1; position: absolute; left: 0; top: 0; }
+.pp-loupe__w { position: absolute; left: 0; top: 0; width: calc(1400px * var(--z)); height: calc(1400px * var(--z)); display: none; }
 .pp-loupe__wphoto { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pp-loupe__cloth { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 .pp-loupe__fill, .pp-loupe__weave { position: absolute; inset: 0; }
-.pp-loupe__weave { background-repeat: repeat; background-size: 120px 120px; mix-blend-mode: overlay; }
-.pp-loupe__weave--over { mix-blend-mode: multiply; opacity: .55; }
+/* The weave twice: overlay for the knit's shading, screen for the light catching
+   the yarn, which overlay alone barely shows on dark colours. */
+.pp-loupe__weave { background-repeat: repeat; mix-blend-mode: overlay; }
+.pp-loupe__weave--hi { mix-blend-mode: screen; opacity: var(--pp-loupe-hi, .16); }
+.pp-loupe__zone { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+/* Over the print only: the weave darkens the ink in the valleys of the knit. */
+.pp-loupe__over { position: absolute; background-repeat: repeat; mix-blend-mode: multiply; opacity: .42; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 .pp-loupe__ink { position: absolute; display: block; }
 
 .pp-loupe__label {
@@ -60,3 +66,10 @@
 @media (prefers-reduced-motion: reduce) {
   .pp-loupe__lens, .pp-loupe__label { transition: none; }
 }
+
+/* The theme's base.css hides every empty div (div:empty { display: none }); the
+   lens layers are all empty divs, so they need an explicit display. */
+.pp-loupe .pp-loupe__fill,
+.pp-loupe .pp-loupe__weave,
+.pp-loupe .pp-loupe__over,
+.pp-loupe .pp-loupe__world { display: block; }
