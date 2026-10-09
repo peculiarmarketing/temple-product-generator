@@ -18,7 +18,8 @@ placed, and it makes the print look on the body the way it looks on the flat.
 Sized by collar-to-hem length instead (true inches, the first build), the 13.4in
 map covered most of the visible back: a garment wraps the body, so its visible
 width shrinks while its length does not. Evan, 9 Oct 2026: "the print space is
-too big"; he chose the flat lay's look.
+too big"; he chose the flat lay's look, then found it too small, so SIZE = 1.25
+sits between the two.
 
 COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
 neck rib at centre; hoodie front, the V where the hood's two sides cross; hoodie
@@ -62,6 +63,10 @@ OUT_PX = 5000
 REF_SPAN = 1170.0
 FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
 LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
+# Art direction on top of the flat-lay share of the chest. 1.0 looked too small on
+# a person, true inches (about 1.5) too big; Evan, 9 Oct 2026, picked between.
+# Scales width and drop below the collar together, so the print grows downward.
+SIZE = 1.25
 
 # Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
 # the chest: left and right x where the sleeve meets the body, at chest_y.
@@ -154,7 +159,7 @@ def target_box(name, L, place):
     g, v, _ = parse(name)
     F = FLAT_LM[(g, v)]
     ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_{v}"]
-    s = (L["chest"][1] - L["chest"][0]) / (F["chest"][1] - F["chest"][0])
+    s = (L["chest"][1] - L["chest"][0]) / (F["chest"][1] - F["chest"][0]) * SIZE
     w = (ink[2] - ink[0]) * s
     top = L["collar"][1] + (ink[1] - F["collar"][1]) * s
     cx = L["collar"][0] + ((ink[0] + ink[2]) / 2 - F["collar"][0]) * s
