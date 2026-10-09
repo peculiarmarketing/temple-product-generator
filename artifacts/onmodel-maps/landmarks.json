@@ -10,7 +10,8 @@
    1925
   ],
   "chest_y": 1500,
-  "how": "hand"
+  "how": "hand",
+  "centre_x": 1414
  },
  "crew_back_heather-gray": {
   "collar": [
@@ -23,7 +24,8 @@
    775,
    1800
   ],
-  "chest_y": 1500
+  "chest_y": 1500,
+  "centre_x": 1270
  },
  "crew_front_black": {
   "collar": [
@@ -36,7 +38,8 @@
    1912
   ],
   "chest_y": 1500,
-  "how": "hand"
+  "how": "hand",
+  "centre_x": 1404
  },
  "crew_front_heather-gray": {
   "collar": [
@@ -50,7 +53,8 @@
   ],
   "chest_y": 1500,
   "how": "registered",
-  "scale": 0.9961
+  "scale": 0.9961,
+  "centre_x": 1261
  },
  "hoodie_back_black": {
   "collar": [
@@ -65,7 +69,22 @@
   "chest_y": 1702,
   "how": "registered",
   "scale": 1.0164,
-  "hood_point": 1097
+  "hood_point": 1097,
+  "hood": {
+   "left": [
+    961,
+    788
+   ],
+   "point": [
+    1354,
+    1097
+   ],
+   "right": [
+    1735,
+    792
+   ]
+  },
+  "centre_x": 1335
  },
  "hoodie_back_coffee": {
   "collar": [
@@ -80,7 +99,22 @@
   "chest_y": 1697,
   "how": "registered",
   "scale": 0.9337,
-  "hood_point": 1134
+  "hood_point": 1134,
+  "hood": {
+   "left": [
+    1076,
+    847
+   ],
+   "point": [
+    1439,
+    1134
+   ],
+   "right": [
+    1787,
+    848
+   ]
+  },
+  "centre_x": 1418
  },
  "hoodie_back_eden-green": {
   "collar": [
@@ -95,7 +129,22 @@
   "chest_y": 1720,
   "how": "registered",
   "scale": 1.0058,
-  "hood_point": 1116
+  "hood_point": 1116,
+  "hood": {
+   "left": [
+    1045,
+    809
+   ],
+   "point": [
+    1436,
+    1116
+   ],
+   "right": [
+    1812,
+    810
+   ]
+  },
+  "centre_x": 1415
  },
  "hoodie_back_gray": {
   "collar": [
@@ -110,7 +159,22 @@
   "chest_y": 1729,
   "how": "registered",
   "scale": 1.0397,
-  "hood_point": 1111
+  "hood_point": 1111,
+  "hood": {
+   "left": [
+    1125,
+    794
+   ],
+   "point": [
+    1528,
+    1111
+   ],
+   "right": [
+    1917,
+    801
+   ]
+  },
+  "centre_x": 1500
  },
  "hoodie_back_mauve": {
   "collar": [
@@ -125,7 +189,22 @@
   "chest_y": 1704,
   "how": "registered",
   "scale": 1.0071,
-  "hood_point": 1101
+  "hood_point": 1101,
+  "hood": {
+   "left": [
+    1074,
+    793
+   ],
+   "point": [
+    1464,
+    1101
+   ],
+   "right": [
+    1841,
+    797
+   ]
+  },
+  "centre_x": 1428
  },
  "hoodie_back_navy-blue": {
   "collar": [
@@ -139,7 +218,22 @@
   ],
   "chest_y": 1700,
   "hood_point": 1095,
-  "how": "hand"
+  "how": "hand",
+  "hood": {
+   "left": [
+    1050,
+    788
+   ],
+   "point": [
+    1437,
+    1095
+   ],
+   "right": [
+    1812,
+    788
+   ]
+  },
+  "centre_x": 1413
  },
  "hoodie_back_royal-blue": {
   "collar": [
@@ -154,7 +248,22 @@
   "chest_y": 1721,
   "how": "registered",
   "scale": 0.929,
-  "hood_point": 1133
+  "hood_point": 1133,
+  "hood": {
+   "left": [
+    1047,
+    828
+   ],
+   "point": [
+    1404,
+    1133
+   ],
+   "right": [
+    1755,
+    841
+   ]
+  },
+  "centre_x": 1311
  },
  "hoodie_front_black": {
   "collar": [
@@ -167,7 +276,8 @@
    812,
    1712
   ],
-  "chest_y": 1700
+  "chest_y": 1700,
+  "centre_x": 1239
  },
  "hoodie_front_coffee": {
   "collar": [
@@ -181,7 +291,8 @@
   ],
   "chest_y": 1694,
   "how": "registered",
-  "scale": 0.9556
+  "scale": 0.9556,
+  "centre_x": 1425
  },
  "hoodie_front_eden-green": {
   "collar": [
@@ -195,7 +306,8 @@
   ],
   "chest_y": 1747,
   "how": "registered",
-  "scale": 0.9985
+  "scale": 0.9985,
+  "centre_x": 1427
  },
  "hoodie_front_gray": {
   "collar": [
@@ -209,7 +321,8 @@
   ],
   "chest_y": 1718,
   "how": "registered",
-  "scale": 1.0184
+  "scale": 1.0184,
+  "centre_x": 1512
  },
  "hoodie_front_mauve": {
   "collar": [
@@ -223,7 +336,8 @@
   ],
   "chest_y": 1702,
   "how": "registered",
-  "scale": 1.0095
+  "scale": 1.0095,
+  "centre_x": 1479
  },
  "hoodie_front_navy-blue": {
   "collar": [
@@ -236,7 +350,8 @@
    1875
   ],
   "chest_y": 1700,
-  "how": "hand"
+  "how": "hand",
+  "centre_x": 1424
  },
  "hoodie_front_royal-blue": {
   "collar": [
@@ -250,7 +365,8 @@
   ],
   "chest_y": 1712,
   "how": "registered",
-  "scale": 1.0183
+  "scale": 1.0183,
+  "centre_x": 1319
  },
  "tee_back_black": {
   "collar": [
@@ -264,7 +380,8 @@
   ],
   "chest_y": 1738,
   "how": "registered",
-  "scale": 1.0024
+  "scale": 1.0024,
+  "centre_x": 1314
  },
  "tee_back_charcoal": {
   "collar": [
@@ -278,7 +395,8 @@
   ],
   "chest_y": 1750,
   "how": "registered",
-  "scale": 1.0346
+  "scale": 1.0346,
+  "centre_x": 1538
  },
  "tee_back_coffee": {
   "collar": [
@@ -292,7 +410,8 @@
   ],
   "chest_y": 1695,
   "how": "registered",
-  "scale": 0.9569
+  "scale": 0.9569,
+  "centre_x": 1428
  },
  "tee_back_cream": {
   "collar": [
@@ -306,7 +425,8 @@
   ],
   "chest_y": 1738,
   "how": "registered",
-  "scale": 0.9905
+  "scale": 0.9905,
+  "centre_x": 1423
  },
  "tee_back_light-blue": {
   "collar": [
@@ -320,7 +440,8 @@
   ],
   "chest_y": 1740,
   "how": "registered",
-  "scale": 1.005
+  "scale": 1.005,
+  "centre_x": 1424
  },
  "tee_back_maroon": {
   "collar": [
@@ -333,7 +454,8 @@
    1930
   ],
   "chest_y": 1740,
-  "how": "hand"
+  "how": "hand",
+  "centre_x": 1423
  },
  "tee_back_navy-blue": {
   "collar": [
@@ -347,7 +469,8 @@
   ],
   "chest_y": 1742,
   "how": "registered",
-  "scale": 1.0131
+  "scale": 1.0131,
+  "centre_x": 1445
  },
  "tee_back_pink": {
   "collar": [
@@ -361,7 +484,8 @@
   ],
   "chest_y": 1737,
   "how": "registered",
-  "scale": 0.9139
+  "scale": 0.9139,
+  "centre_x": 1314
  },
  "tee_front_black": {
   "collar": [
@@ -375,7 +499,8 @@
   ],
   "chest_y": 1775,
   "how": "registered",
-  "scale": 0.9995
+  "scale": 0.9995,
+  "centre_x": 1305
  },
  "tee_front_charcoal": {
   "collar": [
@@ -389,7 +514,8 @@
   ],
   "chest_y": 1779,
   "how": "registered",
-  "scale": 1.0246
+  "scale": 1.0246,
+  "centre_x": 1548
  },
  "tee_front_coffee": {
   "collar": [
@@ -403,7 +529,8 @@
   ],
   "chest_y": 1709,
   "how": "registered",
-  "scale": 0.931
+  "scale": 0.931,
+  "centre_x": 1428
  },
  "tee_front_cream": {
   "collar": [
@@ -417,7 +544,8 @@
   ],
   "chest_y": 1730,
   "how": "registered",
-  "scale": 0.9795
+  "scale": 0.9795,
+  "centre_x": 1419
  },
  "tee_front_light-blue": {
   "collar": [
@@ -431,7 +559,8 @@
   ],
   "chest_y": 1781,
   "how": "registered",
-  "scale": 0.9989
+  "scale": 0.9989,
+  "centre_x": 1418
  },
  "tee_front_maroon": {
   "collar": [
@@ -444,7 +573,8 @@
    1925
   ],
   "chest_y": 1775,
-  "how": "hand"
+  "how": "hand",
+  "centre_x": 1416
  },
  "tee_front_navy-blue": {
   "collar": [
@@ -458,7 +588,8 @@
   ],
   "chest_y": 1773,
   "how": "registered",
-  "scale": 0.9991
+  "scale": 0.9991,
+  "centre_x": 1490
  },
  "tee_front_pink": {
   "collar": [
@@ -472,6 +603,7 @@
   ],
   "chest_y": 1772,
   "how": "registered",
-  "scale": 1.0085
+  "scale": 1.0085,
+  "centre_x": 1368
  }
 }

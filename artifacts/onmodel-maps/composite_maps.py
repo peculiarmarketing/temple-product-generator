@@ -225,6 +225,8 @@ def hood_mask(L, shape):
     H, W = shape
     r = W / 2880
     (lx, ly), (px, py), (rx, ry) = (L["hood"][k] for k in ("left", "point", "right"))
+    dx = L.get("centre_x", px) - px          # the hood sits on the measured centre line
+    lx, px, rx = lx + dx, px + dx, rx + dx
     xs = np.linspace(lx, rx, 200)
     # a parabola through the three marks: the hood's two sides meeting at its point
     A = np.array([[lx * lx, lx, 1], [px * px, px, 1], [rx * rx, rx, 1]], float)
@@ -262,7 +264,8 @@ def sheet(lm):
         d.rectangle([left, top, left + w, top + h], outline=(255, 220, 0), width=8)
         d.line([(L.get("centre_x", cx), cy - 400), (L.get("centre_x", cx), L["hem"])], fill=(255, 0, 255), width=6)
         if "hood" in L:
-            d.line([tuple(L["hood"]["left"]), tuple(L["hood"]["point"]), tuple(L["hood"]["right"])],
+            dx = L.get("centre_x", L["hood"]["point"][0]) - L["hood"]["point"][0]
+            d.line([(x + dx, y) for x, y in (L["hood"]["left"], L["hood"]["point"], L["hood"]["right"])],
                    fill=(255, 0, 0), width=8)
         im = im.resize((480, 480))
         ImageDraw.Draw(im).text((6, 6), f"{name} {L['how']}", fill=(255, 255, 0))
