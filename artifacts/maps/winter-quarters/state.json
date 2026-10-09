@@ -18,12 +18,18 @@
     "template_id": "1558315743240679424",
     "store_product_id": "1558315776891625472",
     "distribute_started_at": "2026-10-09T19:10:33",
-    "shopify_handle": "ultra-soft-map-sweatshirt-winter-quarters"
+    "shopify_handle": "ultra-soft-map-sweatshirt-winter-quarters",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558316031041228800",
+    "store_product_id": "1558316070950084608",
+    "distribute_started_at": "2026-10-09T19:11:44",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-winter-quarters",
+    "state": "live"
   }
 }
