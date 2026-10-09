@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558310874672951296",
+    "store_product_id": "1558310913734549504",
+    "distribute_started_at": "2026-10-09T18:51:14",
+    "shopify_handle": "essential-heavyweight-map-tee-quincy",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311172665659392",
+    "store_product_id": "1558311206400499712",
+    "distribute_started_at": "2026-10-09T18:52:24",
+    "shopify_handle": "ultra-soft-map-sweatshirt-quincy",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/quincy/quincy hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311429600342016",
+    "store_product_id": "1558311469341417472",
+    "distribute_started_at": "2026-10-09T18:53:27",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-quincy",
+    "state": "live"
   }
 }

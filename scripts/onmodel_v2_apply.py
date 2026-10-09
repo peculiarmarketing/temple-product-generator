@@ -149,7 +149,7 @@ def apply(c, pid, state, do):
     STATE.write_text(json.dumps(state, indent=1))
 
 
-def verify(c, pid, state):
+def verify(c, pid, state, live=False):
     gid = f"gid://shopify/Product/{pid}"
     p = c.gql(Q, {"id": gid})["product"]
     st = state.get(str(pid), {})
@@ -157,7 +157,7 @@ def verify(c, pid, state):
     have = [m["id"] for m in p["media"]["nodes"]]
     v2 = set(st.get("uploaded", {}).values())
     problems = []
-    if p["status"] != "DRAFT":
+    if p["status"] != "DRAFT" and not live:
         problems.append(f"status {p['status']}")
     if have != want:
         problems.append(f"order differs ({len(have)} vs {len(want)})")
@@ -188,9 +188,20 @@ def main():
                     help="replace the tee/crew/hoodie on-model shots in place (option F, 8 Oct)")
     ap.add_argument("--swap-cards", action="store_true",
                     help="replace the close-up cards and the unzipped bomber in place")
+    ap.add_argument("--swap-crew-refit", action="store_true",
+                    help="replace the sweatshirt shots in place with the loose-fit refit; "
+                         "these two products are live (Evan approved, 9 Oct 2026)")
     a = ap.parse_args()
     c = ShopifyClient()
     state = json.loads(STATE.read_text()) if STATE.exists() else {}
+    if a.swap_crew_refit:
+        crews = [pid for pid, spec in PRODUCTS.items() if spec[0] == "crew"]
+        for pid in crews:
+            print(pid)
+            swap(c, pid, [k for k in ("crew_black_" + PRODUCTS[pid][1],
+                                      "crew_heather-gray_" + PRODUCTS[pid][1])], live=True)
+        state = json.loads(STATE.read_text())
+        sys.exit(0 if all([verify(c, pid, state, live=True) for pid in crews]) else 1)
     if a.swap_wordmarks:
         for pid, spec in PRODUCTS.items():
             if spec[0] == "bomber":
@@ -222,7 +233,7 @@ def main():
 
 
 
-def swap(c, pid, keys, drop=()):
+def swap(c, pid, keys, drop=(), live=False):
     """Replace single v2 images in place (same alt, same gallery slot) and drop
     others. For changes after the first apply: the black-on-white cards and the
     re-angled unzipped bomber, then the option F wordmark shots (Evan, 8 Oct
@@ -231,7 +242,7 @@ def swap(c, pid, keys, drop=()):
     state = json.loads(STATE.read_text())
     st = state[str(pid)]
     p = c.gql(Q, {"id": gid})["product"]
-    assert p["status"] == "DRAFT"
+    assert live or p["status"] == "DRAFT", f"{p['title']} is {p['status']}, refusing"
     bound = {m["id"] for v in p["variants"]["nodes"] for m in v["media"]["nodes"]}
     ids = [m["id"] for m in p["media"]["nodes"]]
     alt = {m["id"]: m["alt"] for m in p["media"]["nodes"]}

@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558304760044605440",
+    "store_product_id": "1558304808258183168",
+    "distribute_started_at": "2026-10-09T18:26:58",
+    "shopify_handle": "essential-heavyweight-map-tee-fayette",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305072264400896",
+    "store_product_id": "1558305103780454400",
+    "distribute_started_at": "2026-10-09T18:28:09",
+    "shopify_handle": "ultra-soft-map-sweatshirt-fayette",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/fayette/fayette hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305327399727104",
+    "store_product_id": "1558305377337155584",
+    "distribute_started_at": "2026-10-09T18:29:14",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-fayette",
+    "state": "live"
   }
 }

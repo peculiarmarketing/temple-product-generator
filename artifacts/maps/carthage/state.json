@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313298376683520",
+    "store_product_id": "1558313339048886272",
+    "distribute_started_at": "2026-10-09T19:00:52",
+    "shopify_handle": "essential-heavyweight-map-tee-carthage",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313596340039680",
+    "store_product_id": "1558313625243033600",
+    "distribute_started_at": "2026-10-09T19:02:00",
+    "shopify_handle": "ultra-soft-map-sweatshirt-carthage",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/carthage/carthage hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313913534271488",
+    "store_product_id": "1558313950951710720",
+    "distribute_started_at": "2026-10-09T19:03:18",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-carthage",
+    "state": "live"
   }
 }

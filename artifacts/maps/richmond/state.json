@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308973277499392",
+    "store_product_id": "1558309025693769728",
+    "distribute_started_at": "2026-10-09T18:43:44",
+    "shopify_handle": "essential-heavyweight-map-tee-richmond",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309290496913408",
+    "store_product_id": "1558309316858159104",
+    "distribute_started_at": "2026-10-09T18:44:53",
+    "shopify_handle": "ultra-soft-map-sweatshirt-richmond",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/richmond/richmond hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309540003467264",
+    "store_product_id": "1558309584219873280",
+    "distribute_started_at": "2026-10-09T18:45:57",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-richmond",
+    "state": "live"
   }
 }

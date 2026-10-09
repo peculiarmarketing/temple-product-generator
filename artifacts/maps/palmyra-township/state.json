@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558303614219481088",
+    "store_product_id": "1558303656686854144",
+    "distribute_started_at": "2026-10-09T18:22:24",
+    "shopify_handle": "essential-heavyweight-map-tee-palmyra",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558303945414307840",
+    "store_product_id": "1558303978054426624",
+    "distribute_started_at": "2026-10-09T18:23:40",
+    "shopify_handle": "ultra-soft-map-sweatshirt-palmyra",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558304217721098240",
+    "store_product_id": "1558304257990656000",
+    "distribute_started_at": "2026-10-09T18:24:47",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-palmyra",
+    "state": "live"
   }
 }

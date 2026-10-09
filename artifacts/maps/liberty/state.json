@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309641434329088",
+    "store_product_id": "1558309690054746112",
+    "distribute_started_at": "2026-10-09T18:46:23",
+    "shopify_handle": "essential-heavyweight-map-tee-liberty",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309952467132416",
+    "store_product_id": "1558309988756299776",
+    "distribute_started_at": "2026-10-09T18:47:33",
+    "shopify_handle": "ultra-soft-map-sweatshirt-liberty",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/liberty/liberty hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558310274400940032",
+    "store_product_id": "1558310801343979520",
+    "distribute_started_at": "2026-10-09T18:50:47",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-liberty",
+    "state": "live"
   }
 }

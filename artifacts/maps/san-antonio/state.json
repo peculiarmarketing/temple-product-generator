@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558302364551770112",
+    "store_product_id": "1558302421007147008",
+    "distribute_started_at": "2026-10-09T18:17:29",
+    "shopify_handle": "essential-heavyweight-map-tee-san-antonio",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558302713475911680",
+    "store_product_id": "1558302747617599488",
+    "distribute_started_at": "2026-10-09T18:18:47",
+    "shopify_handle": "ultra-soft-map-sweatshirt-san-antonio",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/san-antonio/san-antonio hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558303081379295232",
+    "store_product_id": "1558303140699381760",
+    "distribute_started_at": "2026-10-09T18:20:22",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-san-antonio",
+    "state": "live"
   }
 }

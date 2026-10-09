@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313841039921152",
+    "store_product_id": "1558313880915222528",
+    "distribute_started_at": "2026-10-09T19:03:02",
+    "shopify_handle": "essential-heavyweight-map-tee-martin-s-cove",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558314199527092224",
+    "store_product_id": "1558314236869025792",
+    "distribute_started_at": "2026-10-09T19:04:26",
+    "shopify_handle": "ultra-soft-map-sweatshirt-martin-s-cove",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558314462988103680",
+    "store_product_id": "1558314500883685376",
+    "distribute_started_at": "2026-10-09T19:05:29",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-martin-s-cove",
+    "state": "live"
   }
 }

@@ -151,7 +151,11 @@ def review_sheet(name, p, garments):
     return out
 
 
-def art_paths(name, p):
+def art_paths(name, p, check=True):
+    """The map's 300 dpi back and front art and its web drawing folder, in the
+    workspace's designs/city-map-back/out/<place>/ (gitignored). Live maps keep
+    a copy in Shopify Files: scripts/map_art_backup.py --fetch <place> restores
+    them (index: artifacts/maps/ART_INDEX.md)."""
     out = maps_dir() / "out" / name
     swing = p.get("swing", 0.10 if p.get("busy") else 0.40)
     tag = f"{name}-{p['width_km']:g}km-{p['line_mm']:g}mm-hand{round(swing * 100)}"
@@ -160,13 +164,26 @@ def art_paths(name, p):
                    else f"{name}-front-plain-6in-300dpi.png")
     web = out / "web"
     for f in (back, front):
-        if not f.exists():
-            raise SystemExit(f"missing {f}; run build_map_back.py {name} first")
+        if check and not f.exists():
+            raise SystemExit(f"missing {f}; run scripts/map_art_backup.py --fetch {name} "
+                             f"(live maps) or build_map_back.py {name}")
     return back, front, web
 
 
+# str.title() capitalises after an apostrophe ("Haun'S Mill"), so words are cased
+# by hand: first letter of each space- or hyphen-separated part. The Church
+# spells Adam-ondi-Ahman with a lowercase middle.
+NAME_CASE = {"Adam-Ondi-Ahman": "Adam-ondi-Ahman"}
+
+
+def _name_case(s):
+    s = " ".join("-".join(w[:1].upper() + w[1:].lower() for w in word.split("-"))
+                 for word in s.strip().split())
+    return NAME_CASE.get(s, s)
+
+
 def city_state(p):
-    city, region = (s.strip().title() for s in p["label"].rsplit(",", 1))
+    city, region = (_name_case(s) for s in p["label"].rsplit(",", 1))
     return city, region
 
 
@@ -243,6 +260,17 @@ def title_for(name, p, garment_cfg):
     return f"{line} ({city})"
 
 
+# The On the Map list is numbered to match the markers on the map (Evan,
+# 9 Oct 2026). Themes often strip list markers, so the numbers are forced on.
+MAP_LIST_STYLE = ('<style class="site-history__map-style">'
+                  'section.site-history ol.site-history__map{list-style:decimal outside;'
+                  'padding-left:1.6em;margin:0}'
+                  'section.site-history ol.site-history__map>li{display:list-item;'
+                  'list-style:inherit;margin:0 0 .5em}'
+                  'section.site-history ol.site-history__map>li::marker{font-weight:600}'
+                  '</style>')
+
+
 def history_section(name):
     """The Church history fragment, collapsed into rows like the temple facts:
     one row for the place name with its spec rows, one per h4 block."""
@@ -264,7 +292,7 @@ def history_section(name):
         if not h:
             raise SystemExit(f"{path}: a block does not open with an h3 or h4")
         blocks.append(_details_block(h.group(1), chunk[h.end():].strip(), "site-history"))
-    return "\n".join([open_tag, _row_style("site-history")] + blocks
+    return "\n".join([open_tag, _row_style("site-history"), MAP_LIST_STYLE] + blocks
                      + ([tail] if tail else []) + [close_tag])
 
 
