@@ -40,24 +40,30 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214459_73695d08-6fbb-4985-8c5a-02b46cdf5c81.png"
  },
  "tee_front_maroon": {
-  "job_id": "46df0e24-783c-4c56-873c-0c46c17c6aa2"
+  "job_id": "46df0e24-783c-4c56-873c-0c46c17c6aa2",
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_213820_46df0e24-783c-4c56-873c-0c46c17c6aa2.png"
  },
  "crew_front_black": {
   "job_id": "33b183f1-2d3f-4366-a94d-423275781a2e",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150444_33b183f1-2d3f-4366-a94d-423275781a2e.png"
  },
  "hoodie_front_navy-blue": {
-  "job_id": "ec7d8594-d440-4e82-926e-dadb7147bfd4"
+  "job_id": "ec7d8594-d440-4e82-926e-dadb7147bfd4",
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_213820_ec7d8594-d440-4e82-926e-dadb7147bfd4.png"
  },
  "tee_back_maroon": {
-  "job_id": "7406b6c0-03d1-4796-adcd-957a6f52cd48"
+  "job_id": "7406b6c0-03d1-4796-adcd-957a6f52cd48",
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214023_7406b6c0-03d1-4796-adcd-957a6f52cd48.png"
  },
  "crew_back_black": {
   "job_id": "b358a464-6297-4760-a499-614e5af93e6a",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150649_b358a464-6297-4760-a499-614e5af93e6a.png"
  },
  "hoodie_back_navy-blue": {
-  "job_id": "3896aac2-7b60-450d-b5ca-e4dc8d9ad9da"
+  "job_id": "3896aac2-7b60-450d-b5ca-e4dc8d9ad9da",
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214022_3896aac2-7b60-450d-b5ca-e4dc8d9ad9da.png"
  },
  "tee_front_black": {
   "index": 0,
@@ -91,11 +97,13 @@
  },
  "crew_front_heather-gray": {
   "job_id": "b888c34b-2113-4105-abfa-271a09f7e92e",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150833_b888c34b-2113-4105-abfa-271a09f7e92e.png"
  },
  "crew_back_heather-gray": {
   "job_id": "1673d835-34f6-476c-91be-c82844fb934a",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150833_1673d835-34f6-476c-91be-c82844fb934a.png"
  },
  "hoodie_front_black": {
   "index": 16,
@@ -159,10 +167,12 @@
  },
  "bp_crew_black": {
   "job_id": "c5ecc8e0-0af7-493a-bc42-08ab4753420b",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150650_c5ecc8e0-0af7-493a-bc42-08ab4753420b.png"
  },
  "bp_crew_heather-gray": {
   "job_id": "4f1e31bd-58ef-4786-ab6e-5dab398dab60",
-  "refit": true
+  "refit": true,
+  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261009_150833_4f1e31bd-58ef-4786-ab6e-5dab398dab60.png"
  }
 }

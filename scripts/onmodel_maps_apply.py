@@ -16,6 +16,10 @@ Nothing is deleted: map products had no on-model images before.
   python scripts/onmodel_maps_apply.py            # plan only
   python scripts/onmodel_maps_apply.py --apply    # do it (live listings, Evan's go)
   python scripts/onmodel_maps_apply.py --verify   # read back only
+  python scripts/onmodel_maps_apply.py --place provo --apply   # one city only
+
+Every city with prints in artifacts/onmodel-maps/prints/ is covered; a new city's
+listings follow the same handle pattern as the first two.
 """
 import argparse
 import json
@@ -30,16 +34,12 @@ from shopify_client import ShopifyClient, ShopifyError  # noqa: E402
 MAPS = ROOT / "artifacts" / "onmodel-maps"
 STATE = MAPS / "applied.json"
 MODELS = json.loads((MAPS / "models.json").read_text())
-CITY = {"nauvoo": "Nauvoo", "salt-lake-city": "Salt Lake City"}
 WORD = {"tee": "tee", "crew": "sweatshirt", "hoodie": "hoodie"}
-HANDLES = {
-    ("nauvoo", "tee"): "essential-heavyweight-map-tee-nauvoo",
-    ("nauvoo", "crew"): "ultra-soft-map-sweatshirt-nauvoo",
-    ("nauvoo", "hoodie"): "ultra-soft-oversized-map-hoodie-nauvoo",
-    ("salt-lake-city", "tee"): "essential-heavyweight-map-tee-salt-lake-city",
-    ("salt-lake-city", "crew"): "ultra-soft-map-sweatshirt-salt-lake-city",
-    ("salt-lake-city", "hoodie"): "ultra-soft-oversized-map-hoodie-salt-lake-city",
-}
+HANDLE_FMT = {"tee": "essential-heavyweight-map-tee-{}", "crew": "ultra-soft-map-sweatshirt-{}",
+              "hoodie": "ultra-soft-oversized-map-hoodie-{}"}
+PLACES = sorted({p.stem.rsplit("_", 2)[0] for p in (MAPS / "prints").glob("*_*_*.png")})
+CITY = {p: p.replace("-", " ").title() for p in PLACES}     # salt-lake-city -> Salt Lake City
+HANDLES = {(p, g): HANDLE_FMT[g].format(p) for p in PLACES for g in HANDLE_FMT}
 CARD_PREFIXES = ("City map art close-up", "Coordinates logo close-up")
 
 Q = """query($h: String!) { productByHandle(handle: $h) { id title status
@@ -165,7 +165,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--verify", action="store_true")
+    ap.add_argument("--place", help="one city only, e.g. nauvoo")
     a = ap.parse_args()
+    if a.place:
+        for k in [k for k in HANDLES if k[0] != a.place]:
+            del HANDLES[k]
+        if not HANDLES:
+            raise SystemExit(f"no prints for {a.place} in {MAPS / 'prints'}")
     c = ShopifyClient()
     state = json.loads(STATE.read_text()) if STATE.exists() else {}
     if a.verify:

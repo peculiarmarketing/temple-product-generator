@@ -1,8 +1,21 @@
 """On-model photos for the map products: place each product's real print on the
 Higgsfield model photos and fold it into the fabric.
 
-  python composite_maps.py detect            # landmarks for every base photo + check sheet
-  python composite_maps.py build [prefix]    # finals for both places, or names starting prefix
+  python composite_maps.py fetch             # fresh checkout: base photos + prints, hash-checked
+  python composite_maps.py build [prefix]    # finals for every place in prints/, from the lock
+  python composite_maps.py check <place>     # a new city's prints fit the lock, before building
+  python composite_maps.py detect            # re-measure landmarks (only to change the lock)
+  python composite_maps.py lock [--force]    # freeze placement from landmarks + rules below
+
+LOCKED, 9 Oct 2026 (Evan approved every tee, sweatshirt and hoodie, front and
+back, and asked for the placement to be anchored for all future map products).
+placement_lock.json holds, per base photo, the exact print canvas quad on the
+photo, the hood edge and fold scale, and per garment and view the print canvas
+size and Tapstitch placement the quads were measured for. build reads only the
+lock: the rules and landmarks below are how it was made, not what build uses.
+A new city whose Tapstitch template places its print the same way (check
+confirms it) gets its canvas laid on the same quads, so its map lands exactly
+where Nauvoo's and Salt Lake City's do. See LOCK.md.
 
 PLACEMENT comes from Tapstitch's own flat lays of the live map products
 (flats/, 1400px). On a flat the print's ink box sits a known distance below the
@@ -59,7 +72,20 @@ def _cv_gauss(a, sigma):
 
 composite.gauss = _cv_gauss
 
-PLACES = ["nauvoo", "salt-lake-city"]
+LOCK = HERE / "placement_lock.json"
+VIEWS = [(g, v) for g in ("tee", "crew", "hoodie") for v in ("front", "back")]
+# What a print's Tapstitch placement must equal for the lock to hold (prints.json).
+PLACEMENT_KEYS = ("piece", "scaleX", "scaleY", "top", "left", "width", "height", "angle")
+
+
+def places():
+    """Every city with a full set of six print files in prints/."""
+    names = {p.stem.rsplit("_", 2)[0] for p in (HERE / "prints").glob("*_*_*.png")}
+    return sorted(n for n in names
+                  if all((HERE / "prints" / f"{n}_{g}_{v}.png").exists() for g, v in VIEWS))
+
+
+PLACES = places()
 OUT_PX = 5000
 REF_SPAN = 1170.0
 FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
@@ -321,28 +347,133 @@ def sheet(lm):
     out.save(HERE / "review" / "landmarks.jpg", quality=85)
 
 
-def build(only=None):
+def sha(path):
+    import hashlib
+    return hashlib.sha1(Path(path).read_bytes()).hexdigest()[:16]
+
+
+def lock(force=False):
+    """Freeze today's placement: every base photo's canvas quad (2880px), worked
+    out from the reference city's prints by the rules above, plus what each
+    garment and view's print canvas and Tapstitch placement were."""
+    if LOCK.exists() and not force:
+        raise SystemExit("placement_lock.json exists; the placement is locked. "
+                         "Pass --force only for a change Evan approved.")
+    ref = "salt-lake-city"
     lm = json.loads((HERE / "landmarks.json").read_text())
+    pb = json.loads((HERE / "prints" / "ink_boxes.json").read_text())
+    tp = json.loads((HERE / "prints" / "prints.json").read_text())
+    out = {"_what": "Locked map print placement, 9 Oct 2026 (Evan approved). See LOCK.md.",
+           "reference": ref, "views": {}, "photos": {}}
+    for g, v in VIEWS:
+        key = f"{ref}_{g}_{v}"
+        others = [p for p in PLACES if pb[f"{p}_{g}_{v}"] != pb[key]]
+        assert not others, f"{g} {v}: {others} differ from {ref}; cannot lock one placement"
+        out["views"][f"{g}_{v}"] = {
+            "canvas": pb[key]["size"], "ink": pb[key]["ink"],
+            "tapstitch": {k: tp[f"{key}.png"][k] for k in PLACEMENT_KEYS},
+            "rules": {"scale": SCALE.get((g, v), 1.0), "raise_in": RAISE_IN.get((g, v), 0.0)}}
+    for name, L in sorted(lm.items()):
+        g, v, _ = parse(name)
+        left, top, w, note = target_box(name, L, ref)
+        quad = canvas_quad(ref, g, v, left, top, w)
+        src = photo_path(name)
+        out["photos"][name] = {
+            "canvas_quad": [[round(x, 2), round(y, 2)] for x, y in quad],
+            "ink_box": [round(left, 2), round(top, 2), round(w, 2)],
+            "span": L["hem"] - L["collar"][1],
+            "hood_edge": L.get("hood_edge"), "note": note,
+            "photo": src.relative_to(HERE).as_posix(), "photo_sha1": sha(src)}
+    out["rules"] = {"fold": FOLD, "hood_cover": HOOD_COVER, "hood_flat_band": HOOD_FLAT_BAND,
+                    "out_px": OUT_PX, "ref_span": REF_SPAN}
+    LOCK.write_text(json.dumps(out, indent=1))
+    print(f"locked {len(out['photos'])} photos x {len(VIEWS)} views")
+
+
+def check(place):
+    """A new city fits the lock: all six prints present, each canvas the locked
+    size, and (where prints.json has it) Tapstitch's placement unchanged. A
+    different canvas or placement would print somewhere else on the garment, so
+    the lock would put the on-model map in the wrong place; refuse instead."""
+    lk = json.loads(LOCK.read_text())
+    tp = json.loads((HERE / "prints" / "prints.json").read_text())
+    bad = []
+    for g, v in VIEWS:
+        V = lk["views"][f"{g}_{v}"]
+        p = HERE / "prints" / f"{place}_{g}_{v}.png"
+        if not p.exists():
+            bad.append(f"missing prints/{p.name}")
+            continue
+        size = list(Image.open(p).size)
+        if size != V["canvas"]:
+            bad.append(f"{p.name}: canvas {size}, locked {V['canvas']}")
+        t = tp.get(p.name)
+        if t is None:
+            bad.append(f"{p.name}: no Tapstitch placement in prints/prints.json")
+        else:
+            diff = {k: (t.get(k), V["tapstitch"][k]) for k in PLACEMENT_KEYS
+                    if t.get(k) != V["tapstitch"][k]}
+            if diff:
+                bad.append(f"{p.name}: placement differs {diff}")
+    for name, P in lk["photos"].items():
+        if sha(HERE / P["photo"]) != P["photo_sha1"]:
+            bad.append(f"base photo {P['photo']} changed since the lock")
+    print(f"{place}: " + ("fits the lock" if not bad else "DOES NOT fit the lock"))
+    for b in bad:
+        print("   ", b)
+    return not bad
+
+
+def fetch():
+    """Download whatever is missing: every locked base photo (gen/jobs.json, the
+    Higgsfield results; gitignored for size) and every city's print files
+    (prints/prints.json, Tapstitch). Base photos must hash to the lock."""
+    import urllib.request
+    lk = json.loads(LOCK.read_text())
+    jobs = json.loads((HERE / "gen" / "jobs.json").read_text())
+    want = [(HERE / P["photo"], jobs[n]["url"], P["photo_sha1"]) for n, P in lk["photos"].items()]
+    want += [(HERE / "prints" / f, t["src"], None)
+             for f, t in json.loads((HERE / "prints" / "prints.json").read_text()).items()]
+    for path, url, h in want:
+        if not path.exists():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            urllib.request.urlretrieve(url, path)
+            print("fetched", path.relative_to(HERE))
+        if h and sha(path) != h:
+            raise SystemExit(f"{path.name} does not match the lock")
+    print(f"all {len(want)} files present, base photos match the lock")
+
+
+def photo_path(name):
+    src = HERE / "blanks" / f"{name}.jpg"
+    return src if src.exists() else HERE / "gen" / "base" / f"{name}.png"
+
+
+def build(only=None):
+    lk = json.loads(LOCK.read_text())
     out_dir = HERE / "final"
     out_dir.mkdir(exist_ok=True)
     log = {}
-    for name, L in sorted(lm.items()):
+    for name, L in sorted(lk["photos"].items()):
         g, v, c = parse(name)
         if only and not any(f"{p}_{name}".startswith(only) for p in PLACES):
             continue
-        src = HERE / "blanks" / f"{name}.jpg"
-        if not src.exists():
-            src = HERE / "gen" / "base" / f"{name}.png"
+        src = HERE / L["photo"]
+        assert sha(src) == L["photo_sha1"], f"{src.name} changed since the lock"
         im = Image.open(src).convert("RGB")
-        r = OUT_PX / 2880                       # landmarks are in 2880px coordinates
+        r = OUT_PX / 2880                       # the lock is in 2880px coordinates
         photo = np.asarray(im.resize((OUT_PX, OUT_PX), Image.LANCZOS), dtype=np.float64)
-        k = (L["hem"] - L["collar"][1]) * r / REF_SPAN
+        k = L["span"] * r / REF_SPAN
         for place in PLACES:
             fn = f"{place}_{name}"
             if only and not fn.startswith(only):
                 continue
-            left, top, w, note = target_box(name, L, place)
-            quad = [(x * r, y * r) for x, y in canvas_quad(place, g, v, left, top, w)]
+            V = lk["views"][f"{g}_{v}"]
+            size = list(Image.open(HERE / "prints" / f"{place}_{g}_{v}.png").size)
+            assert size == V["canvas"], f"{place} {g} {v}: canvas {size}, locked {V['canvas']}; run check"
+            left, top, w = L["ink_box"]
+            note = L["note"]
+            quad = [(x * r, y * r) for x, y in L["canvas_quad"]]
             art_path = HERE / "prints" / f"{place}_{g}_{v}.png"
             art = load_art(str(art_path), quad)
             # Work on the print's neighbourhood only; the margin keeps every blur's
@@ -358,7 +489,7 @@ def build(only=None):
                                  fold_strength=FOLD["strength"] * k * k, fold_band=FOLD["band"])
             fpart, _ = fold_build(sub, art, q2, 0, 1.0, 0.0, 1.0, scale=k, flat=True)
             img = photo.astype(np.uint8).copy()
-            if "hood_edge" in L:
+            if L.get("hood_edge"):
                 # Held flat just below the hood (same shading, no displacement),
                 # then the hood itself laid over the map's top.
                 still, _ = fold_build(sub, art, q2, 0.0, FOLD["shade_gain"], FOLD["texture"],
@@ -372,7 +503,7 @@ def build(only=None):
             flat[cy0:cy1, cx0:cx1] = fpart
             Image.fromarray(img).save(out_dir / f"{fn}.jpg", quality=95, subsampling=0)
             x0, y0 = int(left * r), int(top * r)
-            ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_{v}"]
+            ink = V["ink"]
             h = int(w * r * (ink[3] - ink[1]) / (ink[2] - ink[0]))
             a = img[y0:y0 + h, x0:x0 + int(w * r)].mean(2).ravel()
             b = flat[y0:y0 + h, x0:x0 + int(w * r)].mean(2).ravel()
@@ -388,4 +519,7 @@ def build(only=None):
 
 if __name__ == "__main__":
     {"detect": detect,
+     "fetch": fetch,
+     "lock": lambda: lock("--force" in sys.argv),
+     "check": lambda: sys.exit(0 if check(sys.argv[2]) else 1),
      "build": lambda: build(sys.argv[2] if len(sys.argv) > 2 else None)}[sys.argv[1]]()

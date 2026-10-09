@@ -1,3 +1,10 @@
+# (9 Oct 2026) Map on-model photos: live and locked
+
+- Evan approved everything. All 68 shots are live on the six map listings and verified. The Be Peculiar EN and ES sweatshirts have the loose, long refit live too.
+- Placement is locked for every future map product: `artifacts/onmodel-maps/LOCK.md`. To add a new city, run `fetch`, then `check <city>`, then `build <city>`, show Evan the review sheets, and finish with `scripts/onmodel_maps_apply.py --place <city> --apply`.
+- Still open: white ink is nearly invisible on the Cream tee and faint on Pink and Light Blue. This is a product question for Evan, not a compositing fault.
+- Risk: the base photos (gitignored, 324 MB) only exist as Higgsfield CDN files. If those links ever stop working, the lock cannot be rebuilt. A copy in Drive would remove that risk.
+
 # (8 Oct 2026, late night) Map on-model photos: built, waiting on Evan's review
 
 The six map products (Nauvoo and Salt Lake City on tee, sweatshirt, hoodie) had
