@@ -59,8 +59,10 @@ def download_pix(url):
         return pix(io.BytesIO(r.read()))
 
 
-def upload(c, path):
-    name = PREFIX + path.relative_to(MAPS).as_posix().replace("/", "-")
+def upload(c, path, name=None):
+    """Staged upload to Shopify Files; returns (file id, permanent CDN url).
+    Also used by map_art_backup.py, which passes its own file name."""
+    name = name or PREFIX + path.relative_to(MAPS).as_posix().replace("/", "-")
     staged = c.gql("""
       mutation($input: [StagedUploadInput!]!) { stagedUploadsCreate(input: $input) {
         stagedTargets { url resourceUrl parameters { name value } } userErrors { message } } }""",

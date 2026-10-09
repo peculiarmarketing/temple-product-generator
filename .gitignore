@@ -98,7 +98,9 @@ artifacts/onmodel-v2/final/
 artifacts/onmodel-v2/flats/
 artifacts/onmodel-v2/gen/**/*.png
 
-# Map print files, rebuilt by scripts/map_run.py from designs/city-map-back/out/.
+# Map print files, rebuilt by scripts/map_run.py from designs/city-map-back/out/. Every
+# live map's copy is in Shopify Files: index artifacts/maps/ART_INDEX.md, restore with
+# scripts/map_art_backup.py --fetch <place>.
 artifacts/maps/*/*.png
 
 # Raw Higgsfield output for the homepage quality sections (about 5 MB per PNG).

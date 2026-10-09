@@ -151,7 +151,11 @@ def review_sheet(name, p, garments):
     return out
 
 
-def art_paths(name, p):
+def art_paths(name, p, check=True):
+    """The map's 300 dpi back and front art and its web drawing folder, in the
+    workspace's designs/city-map-back/out/<place>/ (gitignored). Live maps keep
+    a copy in Shopify Files: scripts/map_art_backup.py --fetch <place> restores
+    them (index: artifacts/maps/ART_INDEX.md)."""
     out = maps_dir() / "out" / name
     swing = p.get("swing", 0.10 if p.get("busy") else 0.40)
     tag = f"{name}-{p['width_km']:g}km-{p['line_mm']:g}mm-hand{round(swing * 100)}"
@@ -160,8 +164,9 @@ def art_paths(name, p):
                    else f"{name}-front-plain-6in-300dpi.png")
     web = out / "web"
     for f in (back, front):
-        if not f.exists():
-            raise SystemExit(f"missing {f}; run build_map_back.py {name} first")
+        if check and not f.exists():
+            raise SystemExit(f"missing {f}; run scripts/map_art_backup.py --fetch {name} "
+                             f"(live maps) or build_map_back.py {name}")
     return back, front, web
 
 
