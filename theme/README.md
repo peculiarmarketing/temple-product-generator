@@ -136,3 +136,31 @@ sections are on a duplicate, unpublished "Claude Code V3 zoom preview"
 then the old scroll zoom set `"disabled": true`. `templates/index.json` here is that
 preview's template. Preview:
 https://peculiarpeopleco.com/?preview_theme_id=194273870196
+
+## Conversation and Look closer (9 October 2026, "Claude Code V4" only)
+
+The dive pinned the homepage for about nine screens and felt rubbery. Its picture
+eased about 330 ms behind the scrollbar, and it repainted a full-screen canvas on
+every scroll anywhere on the page. It is replaced by two short sections on the
+unpublished "Claude Code V4" theme (`gid://shopify/OnlineStoreTheme/194532671860`),
+pushed through the Shopify connector.
+
+- `sections/pp-conversation.liquid`: the why chain told over photos. The band pins
+  (about 2.2 screens); each stretch of scroll brings in the next moment, its photo
+  fading in over the last and its line joining the chain. Scroll only picks the
+  moment; the transitions run on CSS timing, so nothing trails the scrollbar.
+  Each moment is a block: photo, line, focus point (with a separate one across on phones).
+- `sections/pp-look-closer.liquid`: the dive's zoom from the tee to the knit
+  (about 2.5 screens), placed after Shop by garment. Same block fields as the dive's
+  zoom steps (square of the next photo, focus), so the existing values carried over.
+  Stacked photos scaled by CSS transforms about the zoom's fixed point; no canvas.
+- `assets/pp-story.js`, `assets/pp-story.css`: behaviour and styles for both. The
+  scroll listener is attached only while a section is near the viewport; a frame is
+  drawn only when the position moved. Reduced motion or no script: a plain sequence.
+- `templates/index.json` (copy of V4's): adds both sections. `pp_zoom_dive` and
+  `pp_why_chain` are set `"disabled": true`, not deleted; turn them back on in the
+  theme editor to roll back. Every other section is unchanged.
+- Preview: https://peculiarpeopleco.com/?preview_theme_id=194532671860
+
+Not yet copied here from V4: `sections/pp-collection-tabs.liquid`,
+`snippets/pp-temple-facts.liquid`, and V4's newer `assets/pp-home.css` and `pp-home.js`.

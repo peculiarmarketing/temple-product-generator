@@ -1,0 +1,144 @@
+{%- comment -%}
+  Peculiar People homepage: look closer. A short, pinned zoom from the whole tee
+  down to the knit. Each close-up is a photo of a square inside the close-up before
+  it (the block names where that square sits); pp-story.js scales each photo about
+  the point that carries that square onto the screen, and fades the next photo in
+  over it as it arrives, so the hand-off has no cut. Transforms only, no canvas.
+  Without the script, or with reduced motion on, the photos and words are shown as a
+  plain grid.
+{%- endcomment -%}
+{{ 'pp-story.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-story.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.scroll_length
+    when 'short'
+      assign per_vh = 50
+    when 'long'
+      assign per_vh = 90
+    else
+      assign per_vh = 70
+  endcase
+  assign steps = section.blocks.size | minus: 1
+  assign track_vh = steps | times: per_vh | plus: 140
+-%}
+<section
+  class="pp-closer"
+  data-pp-closer
+  style="--pp-bg: {{ s.background }}; --pp-fg: {{ s.text_color }}; --pp-track: {{ track_vh }}vh;"
+>
+  <div class="pp-story__track">
+    <div class="pp-story__sticky">
+      {%- if s.heading != blank -%}
+        <h2 class="pp-closer__heading">{{ s.heading }}</h2>
+      {%- endif -%}
+      <ol class="pp-closer__steps">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign b = block.settings
+            assign next = ''
+            unless forloop.last
+              assign next = b.next_x | append: ',' | append: b.next_y | append: ',' | append: b.next_size
+            endunless
+          -%}
+          <li
+            class="pp-closer__step"
+            data-pp-layer
+            data-next="{{ next }}"
+            data-focus-x="{{ b.focus_x }}"
+            data-focus-y="{{ b.focus_y }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if b.image != blank -%}
+              <figure class="pp-closer__photo">
+                {{
+                  b.image
+                  | image_url: width: 2048
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '750, 1100, 1600, 2048',
+                    sizes: '(orientation: portrait) 100vh, 100vw',
+                    alt: b.image.alt
+                }}
+              </figure>
+            {%- endif -%}
+            <div class="pp-closer__caption">
+              {%- if b.eyebrow != blank -%}
+                <p class="pp-closer__eyebrow">{{ b.eyebrow | escape }}</p>
+              {%- endif -%}
+              {%- if b.text != blank -%}
+                <p class="pp-closer__line">{{ b.text }}</p>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP look closer",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "info": "Optional. Sits top left while the zoom plays." },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll per close-up",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "closeup",
+      "name": "Close-up",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "Square, 2048 px. Every photo after the first must be a close-up of the square named on the one before it."
+        },
+        { "type": "text", "id": "eyebrow", "label": "Small caps label" },
+        { "type": "inline_richtext", "id": "text", "label": "Words" },
+        {
+          "type": "header",
+          "content": "Where the next photo sits",
+          "info": "The square inside this photo that the next close-up shows, in percent of this photo. Ignored on the last one."
+        },
+        { "type": "number", "id": "next_x", "label": "Left edge (%)", "default": 37.5 },
+        { "type": "number", "id": "next_y", "label": "Top edge (%)", "default": 37.5 },
+        { "type": "number", "id": "next_size", "label": "Size (%)", "default": 25 },
+        {
+          "type": "header",
+          "content": "Focus on wide and tall screens",
+          "info": "The screen shows part of the square photo. This is the point it keeps in view, in percent of this photo."
+        },
+        { "type": "range", "id": "focus_x", "label": "Across (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "focus_y", "label": "Down (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP look closer",
+      "blocks": [
+        { "type": "closeup", "settings": { "eyebrow": "The blank", "text": "We put the samples side by side and passed on anything that felt light or stiff." } },
+        { "type": "closeup", "settings": { "eyebrow": "Ribbed collar", "text": "Ribbed knit, stitched down." } },
+        { "type": "closeup", "settings": { "eyebrow": "Printed into the cotton", "text": "Direct to garment from a full-size 300 DPI file." } },
+        { "type": "closeup", "settings": { "eyebrow": "260 GSM, 100% cotton", "text": "You'll feel it the first time you pull it on." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

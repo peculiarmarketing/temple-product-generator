@@ -1,0 +1,119 @@
+{%- comment -%}
+  Peculiar People homepage: the conversation. The why chain (BRAND.md section 5)
+  told over photos: the band pins, and each stretch of scroll brings in the next
+  moment, its photo settling in over the last and its line joining the chain below
+  the lines before it. Scroll only picks which moment is showing; the fades run on
+  their own timing, so the motion never trails the scrollbar. pp-story.js arms it.
+  Without the script, or with reduced motion on, each photo is shown with its line,
+  one after another.
+{%- endcomment -%}
+{{ 'pp-story.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-story.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  case s.scroll_length
+    when 'short'
+      assign per_vh = 40
+    when 'long'
+      assign per_vh = 75
+    else
+      assign per_vh = 55
+  endcase
+  assign track_vh = section.blocks.size | times: per_vh | plus: 100
+  assign shade = s.overlay | divided_by: 100.0
+-%}
+<section
+  class="pp-convo"
+  data-pp-convo
+  style="--pp-bg: {{ s.background }}; --pp-fg: {{ s.text_color }}; --pp-shade: {{ shade }}; --pp-track: {{ track_vh }}vh;"
+>
+  <div class="pp-story__track">
+    <div class="pp-story__sticky">
+      {%- if s.eyebrow != blank -%}
+        <p class="pp-convo__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      <ol class="pp-convo__moments">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <li
+            class="pp-convo__moment"
+            data-pp-moment
+            style="--fx: {{ b.focus_x }}%; --fy: {{ b.focus_y }}%; --fx-m: {{ b.focus_x_mobile }}%;"
+            {{ block.shopify_attributes }}
+          >
+            {%- if b.image != blank -%}
+              <figure class="pp-convo__photo">
+                {{
+                  b.image
+                  | image_url: width: 2400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '750, 1100, 1600, 2000, 2400',
+                    sizes: '100vw',
+                    alt: b.image.alt
+                }}
+              </figure>
+            {%- endif -%}
+            {%- if b.text != blank -%}
+              <p class="pp-convo__line"><span>{{ b.text }}</span></p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP conversation",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small caps label", "default": "Why we make it" },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll per moment",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    },
+    { "type": "range", "id": "overlay", "label": "Shade behind the words", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 55 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Moment",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Fills the screen. Landscape, at least 2400 px wide." },
+        { "type": "inline_richtext", "id": "text", "label": "Line", "info": "One line of the chain. Bold for the line it lands on." },
+        {
+          "type": "header",
+          "content": "Focus",
+          "info": "The point of the photo that stays in view when the screen crops it, in percent of the photo."
+        },
+        { "type": "range", "id": "focus_x", "label": "Across (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "focus_y", "label": "Down (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "focus_x_mobile", "label": "Across on phones (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PP conversation",
+      "blocks": [
+        { "type": "moment", "settings": { "text": "Comfortable from the first wear." } },
+        { "type": "moment", "settings": { "text": "So it's the one you grab." } },
+        { "type": "moment", "settings": { "text": "So people see it." } },
+        { "type": "moment", "settings": { "text": "<b>So someone asks what's on your shirt.</b>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
