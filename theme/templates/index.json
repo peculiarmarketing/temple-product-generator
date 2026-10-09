@@ -1297,7 +1297,8 @@
         "scroll_length": "medium",
         "background": "#0d0e11",
         "text_color": "#ffffff"
-      }
+      },
+      "disabled": true
     },
     "pp_hero_draw": {
       "type": "pp-hero-draw",
@@ -1315,6 +1316,73 @@
         "scroll_length": "medium"
       },
       "disabled": true
+    },
+    "pp_loupe": {
+      "type": "pp-loupe",
+      "blocks": {
+        "hoodie": {
+          "type": "garment",
+          "settings": {
+            "image_asset": "pp-loupe-hoodie-navy.jpg",
+            "mask_asset": "pp-loupe-hoodie-navy-mask.png",
+            "alt": "Navy hoodie with the Salt Lake Temple printed on the back",
+            "tag": "Hoodie · 350 GSM fleece",
+            "colour": "#273746",
+            "fabric": "fleece",
+            "fabric_label": "Fleece, 350 GSM",
+            "ink_label": "White ink, direct to garment",
+            "print_x": 37.2,
+            "print_y": 41.1,
+            "print_w": 24.9
+          }
+        },
+        "crew": {
+          "type": "garment",
+          "settings": {
+            "image_asset": "pp-loupe-crew-gray.jpg",
+            "mask_asset": "pp-loupe-crew-gray-mask.png",
+            "alt": "Heather gray crewneck with the Salt Lake Temple printed on the back",
+            "tag": "Crewneck · 350 GSM fleece",
+            "colour": "#b6b5b7",
+            "fabric": "fleece",
+            "fabric_label": "Fleece, 350 GSM",
+            "ink_label": "White ink, direct to garment",
+            "print_x": 36.8,
+            "print_y": 33.2,
+            "print_w": 26.0
+          }
+        },
+        "tee": {
+          "type": "garment",
+          "settings": {
+            "image_asset": "pp-loupe-tee-maroon.jpg",
+            "mask_asset": "pp-loupe-tee-maroon-mask.png",
+            "alt": "Maroon tee with the Salt Lake Temple printed on the back",
+            "tag": "Tee · 260 GSM cotton",
+            "colour": "#6e1e25",
+            "fabric": "jersey",
+            "fabric_label": "Cotton jersey, 260 GSM",
+            "ink_label": "White ink, direct to garment",
+            "print_x": 33.9,
+            "print_y": 29.9,
+            "print_w": 30.6
+          }
+        }
+      },
+      "block_order": [
+        "hoodie",
+        "crew",
+        "tee"
+      ],
+      "settings": {
+        "eyebrow": "Look closer",
+        "heading": "Heavyweight, printed into the cotton",
+        "text": "Move over the shirts to see the ink and the fabric up close.",
+        "magnification": 7,
+        "lens_size": 260,
+        "print_asset": "pp-loupe-print-salt-lake.webp",
+        "background": "#f2f1ee"
+      }
     }
   },
   "order": [
@@ -1324,6 +1392,7 @@
     "pp_zoom_film",
     "pp_scroll_zoom",
     "browse",
+    "pp_loupe",
     "pp_look_closer",
     "anatomy",
     "pp_spec_overlay",
