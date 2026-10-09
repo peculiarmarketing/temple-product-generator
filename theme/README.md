@@ -164,3 +164,26 @@ pushed through the Shopify connector.
 
 Not yet copied here from V4: `sections/pp-collection-tabs.liquid`,
 `snippets/pp-temple-facts.liquid`, and V4's newer `assets/pp-home.css` and `pp-home.js`.
+
+## Line-first drawing order (9 October 2026, "Claude Code V4" only)
+
+Evan's rule for every temple animation: the full outline first, then the major lines,
+then windows and doors, then fine details, each line drawn whole, one at a time.
+The skeleton tracer in `scripts/pen_strokes.py` could not tell that a corner edge
+and its overshoot tail are one ruled line, so lines appeared in fragments and
+window details floated early. `scripts/pen_strokes_lines.py` replaces it as the
+builder (it reuses helpers from `pen_strokes.py`):
+
+- Ruled lines are found first, merged across crossings into full-length lines, and
+  drawn as one straight stroke each; a corner and its tail are one stroke.
+- Outline: one walk from the foot of the left side, up over the roof and spires,
+  down the right side, then the ground lines. Major lines next, then features
+  (windows, doors, quoin ladders beside a structural upright) row by row down each
+  facade, then fine details and specks.
+- Same JSON format and keys, so `pp-pen-draw.js` is unchanged.
+
+All 45 `assets/pp-temple-<slug>.json` files here were rebuilt with it and pushed
+to Claude Code V4 only (checksums verified against these files); the art `.webp`
+files were already identical on V4. V4's homepage showcase is set to Salt Lake
+only. Coverage is 99.90% or higher on every temple. Still being fixed: early stray
+pieces on Vernal, Provo, Mexico City, Washington D.C. and Nauvoo.

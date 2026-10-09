@@ -25,7 +25,35 @@ Rules inside that order:
     are joined back into the single line they came from, so a crossing line is
     drawn whole, later, over the first.
   - An overshoot tail is drawn as part of the line it extends.
-  - Inside a tier the pen moves to the nearest next line (or feature).
+
+Evan's rule of 9 October 2026, for every temple: the drawing goes in the order
+a person would draw it (the full outline, then the major lines, then the larger
+windows and doors, then the fine details), one whole line at a time, never in
+fragments. So:
+  - Whole lines (heal, continuation, split_corners). Loose pieces are joined
+    when their ends point at each other, with each end's direction fitted over
+    up to 8 art pixels and read from behind the junction, where a crossing pulls the
+    skeleton sideways. What lies across the gap decides: ink all the way is one
+    line the skeleton broke at a junction; one short stretch of paper is a pen
+    lift inside the line (bridged when nearly straight); paper, ink, paper is a
+    different line crossing between two features (stacked windows), which stay
+    apart. A corner must turn sharply both close in and further out, so a kink
+    at a crossing does not cut a straight line in two.
+  - Tiny pieces (absorb_tiny). A piece under 1.5% of the drawing is dropped if
+    longer lines already cover its ink, hangs on the end of its parent line if
+    it continues from that end, and otherwise is drawn with the small marks.
+  - Outline (tier 1, outline_walk). One walk clockwise round the building's
+    outer contour from its topmost point; each outline line is drawn where it
+    falls along the walk, in the walking direction, so each stroke starts near
+    where the last one ended. A short line lying wholly on the silhouette
+    belongs to the outline too.
+  - Later tiers (facade_zones, sweep). The drawing is split into facades at its
+    tall vertical edges. Facade by facade, left to right, the pen works from the
+    top down, always to the nearest line or feature among those near the top of
+    what is left (rows follow the wall's perspective slope). A feature is
+    finished before the next.
+  - Every stroke's width covers its line's ink at the 95th percentile of the
+    measured width, so a joined line still uncovers the heavier stretches.
 
 The drawing's weight classes come from prompts/temple-sketch-prompt.md: heavy
 silhouette and structure, medium overshoot tails, light interior detail.
@@ -54,6 +82,14 @@ UP = 3              # supersampling before skeletonizing, for smoother geometry
 ALPHA_INK = 110     # alpha above which a pixel is ink
 CORNER_DEG = 38     # turn sharper than this lifts the pen
 MERGE_DEG = 28      # fragments meeting at a junction this close to straight are one line
+JOIN_DEG = 24       # loose pieces whose ends point at each other this closely are one line
+JOIN_REACH = 24 * UP  # how far back from an end its direction is read
+TINY = 0.015       # pieces shorter than this share of the drawing are not lines on their own
+ROW_BAND = 0.04     # depth of the band at the top of a facade the later tiers pick their next line from
+ZONE_MIN = 0.05     # narrowest facade (share of the drawing) the later tiers sweep on its own
+ABSORB_DEG = 75     # a tiny piece hangs on a parent line's end if it turns no more than this
+GAP_MAX = 14 * UP   # widest pen-lift gap (open paper) bridged inside one nearly straight line
+INK_GAP_MAX = 30 * UP  # widest inked stretch bridged where the skeleton broke a line up
 TIER_NAMES = {1: 'outer heavy', 2: 'inner heavy', 3: 'openings', 4: 'small marks'}
 
 N8 = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
@@ -115,45 +151,105 @@ def resample(pts, step):
 
 
 
-def end_dir(pts, at_start, reach):
-    """Unit tangent pointing OUT of the polyline at one end."""
-    return direction_from(pts if at_start else pts[::-1], reach) * -1
+def end_tangent(pts, at_start, th):
+    """Unit tangent pointing OUT of the polyline at one end, fitted (least squares)
+    over a stretch that skips the end itself: the last few pixels at a junction or
+    crossing are pulled sideways by the other line's ink, so a tangent read right at
+    the end points the wrong way."""
+    d = resample(pts if at_start else pts[::-1], UP)
+    n = len(d)
+    if n < 3:
+        v = d[0] - d[-1]
+        nv = math.hypot(*v)
+        return v / nv if nv else np.array([0.0, 0.0])
+    length = (n - 1) * UP
+    i0 = int(min(0.6 * th, 0.25 * length) / UP)
+    i1 = int(min(max(0.45 * length, 6 * UP), JOIN_REACH) / UP)
+    i1 = min(max(i1, i0 + 2), n - 1)
+    seg = d[i0:i1 + 1]
+    c = seg - seg.mean(axis=0)
+    _, _, vt = np.linalg.svd(c, full_matrices=False)
+    u = vt[0]
+    if np.dot(u, d[i0] - d[i1]) < 0:
+        u = -u
+    return u / max(math.hypot(*u), 1e-9)
 
 
-def heal(lines, thick_at, shape):
-    """Skeleton junctions still leave lines in pieces: two Y-junctions a few pixels
-    apart, a wobble where a crossing line pulled the skeleton sideways. Join pieces
-    whose ends nearly meet and point the same way, then drop slivers that only
+def continuation(pa, ta, tha, pb, tb, thb, ink=None):
+    """Score for joining end a to end b as one line (lower is better), or None.
+    Ends join when they point at each other (one smooth line through the gap) and
+    the gap is small for its straightness: a hair at any angle under JOIN_DEG, a
+    pen-lift gap in the sketch when nearly collinear."""
+    th = max(tha, thb)
+    gap = math.hypot(*(pb - pa))
+    dev = angle_between(ta, -tb)
+    if dev > JOIN_DEG:
+        return None
+    near = max(1.2 * th, 3 * UP)
+    if gap <= near:
+        return gap / UP + 0.6 * dev
+    if gap > max(4.0 * th, INK_GAP_MAX):
+        return None
+    v = (pb - pa) / gap
+    if np.dot(v, ta) <= 0.2 or np.dot(-v, tb) <= 0.2:
+        return None
+    lat = max(abs(ta[0] * (pb - pa)[1] - ta[1] * (pb - pa)[0]),
+              abs(tb[0] * (pa - pb)[1] - tb[1] * (pa - pb)[0]))
+    if lat > max(0.75 * th, 2 * UP) + 0.12 * gap:
+        return None
+    # What lies across the gap decides it. Ink all the way: the line runs on
+    # through a junction the skeleton broke up. One stretch of paper: a pen lift
+    # inside the line, bridged when short (and, if longer than a hair, nearly
+    # straight). Paper, then ink, then paper again: another line crosses open
+    # paper between the pieces (a sill or ledge between two stacked windows), so
+    # they are different features and stay apart.
+    if ink is not None:
+        n = max(5, int(gap / UP))
+        k = (np.arange(n) + 0.5) / n
+        q = pa[None, :] + k[:, None] * (pb - pa)[None, :]
+        xi = np.clip(q[:, 0].round().astype(int), 0, ink.shape[1] - 1)
+        yi = np.clip(q[:, 1].round().astype(int), 0, ink.shape[0] - 1)
+        paper = ~ink[yi, xi]
+        runs = int(paper[0]) + int(np.count_nonzero(paper[1:] & ~paper[:-1]))
+        if runs > 1:
+            return None
+        if runs == 1:
+            plen_paper = paper.sum() * gap / n
+            if plen_paper > max(1.5 * th, GAP_MAX):
+                return None
+            if plen_paper > near and dev > 12:
+                return None
+    return gap / UP + 0.6 * dev + lat / UP
+
+
+def heal(lines, thick_at, shape, ink=None):
+    """Skeleton junctions and the sketch itself leave lines in pieces: two
+    Y-junctions a few pixels apart, a wobble where a crossing line pulled the
+    skeleton sideways, a pen lift mid-line. Join pieces whose ends point at each
+    other into the one line they came from (see continuation()), repeatedly, so a
+    line broken at several crossings comes back whole. Then drop slivers that only
     retrace a longer line's ink."""
     from scipy.spatial import cKDTree
-    reach = 8 * UP
     segs = [s for s in lines if plen(s) >= 1.5 * UP]
-    for _ in range(6):
+    for _ in range(8):
         th = [float(np.median(thick_at(resample(s, UP)))) for s in segs]
         ends_xy = []
         ends_id = []
+        tans = []
         for i, s in enumerate(segs):
             ends_xy += [s[0], s[-1]]
             ends_id += [(i, True), (i, False)]
+            tans += [end_tangent(s, True, th[i]), end_tangent(s, False, th[i])]
         tree = cKDTree(np.array(ends_xy))
-        lim = max(2.2 * max(th), 6 * UP)
+        lim = max(4.0 * max(th), GAP_MAX)
         cand = []
         for x, y in tree.query_pairs(lim):
             (i, ea), (j, eb) = ends_id[x], ends_id[y]
             if i == j:
                 continue
-            pa, pb = ends_xy[x], ends_xy[y]
-            gap = math.hypot(*(pb - pa))
-            if gap > max(2.2 * max(th[i], th[j]), 6 * UP):
-                continue
-            da = end_dir(segs[i], ea, reach)
-            db = end_dir(segs[j], eb, reach)
-            dev = angle_between(da, -db)
-            if dev > 16:
-                continue
-            if gap > 1.5 * UP and angle_between((pb - pa) / gap, da) > 30:
-                continue
-            cand.append((gap + 0.5 * dev, x, y))
+            sc = continuation(ends_xy[x], tans[x], th[i], ends_xy[y], tans[y], th[j], ink)
+            if sc is not None:
+                cand.append((sc, x, y))
         cand.sort()
         used = set()
         pairs = []
@@ -211,6 +307,237 @@ def heal(lines, thick_at, shape):
         cv2.polylines(owner, [s.round().astype(np.int32)], False, 1,
                       thickness=max(1, int(t + 3 * UP)))
     return kept
+
+
+def split_corners(chains):
+    """Split chains where the pen would lift: at sharp corners. A corner is a turn
+    sharper than CORNER_DEG read both close in (6 px) and further out (16 px), so
+    a short kink where a crossing line pulls the skeleton sideways does not cut a
+    straight line in two; a real corner turns at both scales."""
+    lines = []
+    for pts in chains:
+        if plen(pts) < 2 * UP:
+            continue
+        simp = rdp(pts, 1.6 * UP)
+        cut = [0]
+        for k in range(1, len(simp) - 1):
+            turn = 180 - angle_between(direction_from(simp[k::-1], 6 * UP),
+                                       direction_from(simp[k:], 6 * UP))
+            if turn <= CORNER_DEG:
+                continue
+            wide = 180 - angle_between(direction_from(simp[k::-1], 16 * UP),
+                                       direction_from(simp[k:], 16 * UP))
+            if wide > 0.75 * CORNER_DEG:
+                cut.append(k)
+        cut.append(len(simp) - 1)
+        for s, t in zip(cut[:-1], cut[1:]):
+            seg = simp[s:t + 1]
+            if plen(seg) >= 2 * UP:
+                lines.append(seg)
+    return lines
+
+
+def absorb_tiny(lines, thick_at, ink, size):
+    """A tiny piece (under TINY of the drawing) is not a line a person draws on
+    its own. If the longer lines already cover its ink it is dropped. If it hangs
+    off the end of a longer line (a hook, the last bit of a corner, a stub left
+    where the skeleton forked) it is drawn as the end of that line. Otherwise it
+    stays and is drawn later with the small marks."""
+    from scipy.spatial import cKDTree
+    tiny_len = TINY * size
+    lens = [plen(s) for s in lines]
+    big = [s.copy() for s, l in zip(lines, lens) if l >= tiny_len]
+    tiny = sorted((s for s, l in zip(lines, lens) if l < tiny_len), key=plen, reverse=True)
+    owner = np.zeros(ink.shape, np.uint8)
+
+    def width(s):
+        return max(1, int(math.ceil(float(np.percentile(thick_at(resample(s, UP)), 90)) * 1.15 + 2 * UP)))
+
+    for s in big:
+        cv2.polylines(owner, [s.round().astype(np.int32)], False, 1, thickness=width(s))
+    kept = []
+    dropped = absorbed = 0
+    for t in tiny:
+        w = width(t)
+        x0 = max(0, int(t[:, 0].min()) - w); x1 = min(ink.shape[1], int(t[:, 0].max()) + w + 1)
+        y0 = max(0, int(t[:, 1].min()) - w); y1 = min(ink.shape[0], int(t[:, 1].max()) + w + 1)
+        m = np.zeros((y1 - y0, x1 - x0), np.uint8)
+        cv2.polylines(m, [(t - [x0, y0]).round().astype(np.int32)], False, 1, thickness=w)
+        mine = (m > 0) & ink[y0:y1, x0:x1]
+        unique = int((mine & (owner[y0:y1, x0:x1] == 0)).sum())
+        if unique < (1.5 * UP) ** 2:
+            dropped += 1
+            continue
+        th = float(np.median(thick_at(resample(t, UP))))
+        touch = max(1.5 * th, 4 * UP)
+        best = None
+        if big:
+            ends_xy = np.array([p for s in big for p in (s[0], s[-1])])
+            tree = cKDTree(ends_xy)
+            for t_start in (True, False):
+                q = t[0] if t_start else t[-1]
+                for k in tree.query_ball_point(q, touch):
+                    bi, b_start = divmod(k, 2)[0], k % 2 == 0
+                    out = end_tangent(big[bi], b_start, th)
+                    tt = resample(t if t_start else t[::-1], UP)
+                    v = tt[-1] - tt[0]
+                    nv = math.hypot(*v)
+                    if nv == 0 or angle_between(out, v / nv) > ABSORB_DEG:
+                        continue
+                    d = math.hypot(*(ends_xy[k] - q))
+                    if best is None or d < best[0]:
+                        best = (d, bi, b_start, t_start)
+        if best is not None:
+            _, bi, b_start, t_start = best
+            tail = t if t_start else t[::-1]
+            big[bi] = np.vstack([tail[::-1], big[bi]]) if b_start else np.vstack([big[bi], tail])
+            absorbed += 1
+        else:
+            kept.append(t)
+        cv2.polylines(owner, [t.round().astype(np.int32)], False, 1, thickness=w)
+    return big + kept, dropped, absorbed
+
+
+def outline_walk(items, L, region):
+    """Order outline lines as one walk round the building. The building's outer
+    contour is traced clockwise from its topmost point (a spire tip); each line is
+    placed at where it lies along that contour and drawn in the walking direction,
+    so every stroke starts near where the last one ended."""
+    from scipy.spatial import cKDTree
+    if not items:
+        return []
+    cs, _ = cv2.findContours(region.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    ring = max(cs, key=cv2.contourArea)[:, 0, :].astype(float)
+    x, y = ring[:, 0], ring[:, 1]
+    if (x * np.roll(y, -1) - np.roll(x, -1) * y).sum() < 0:   # clockwise on screen
+        ring = ring[::-1]
+    ring = np.roll(ring, -int(np.argmin(ring[:, 1])), axis=0)
+    s = np.concatenate([[0], np.cumsum(np.hypot(*np.diff(ring, axis=0).T))])
+    P = s[-1] + math.hypot(*(ring[0] - ring[-1]))
+    tree = cKDTree(ring)
+    keyed = []
+    for i in items:
+        d = L[i]['dense']
+        sv = s[tree.query(d)[1]]
+        ref = sv[len(sv) // 2]
+        u = ref + (sv - ref + P / 2) % P - P / 2
+        forward = u[-1] >= u[0]
+        keyed.append((float(u.min()) % P, float(u.max()), i, not forward))
+    keyed.sort()
+    return [(i, rev) for _, _, i, rev in keyed]
+
+
+def facade_zones(L, region, size):
+    """Split the drawing into facades at its tall vertical edges (tower corners,
+    the corner where two walls meet). Returns the zone bounds in x and each zone's
+    perspective slope (how far its horizontal lines fall per unit across), so rows
+    of windows that slope with the wall are still read as one row."""
+    ys, xs = np.nonzero(region)
+    bh = ys.max() - ys.min()
+    cand = []
+    for ln in L:
+        if ln.get('blob') or ln['tier'] not in (1, 2):
+            continue
+        d = ln['dense']
+        if abs(ln['dir'][1]) > 0.93 and np.ptp(d[:, 1]) >= 0.3 * bh:
+            cand.append(float(ln['mid'][0]))
+    cand.sort()
+    clusters = []
+    for x in cand:
+        if clusters and x - clusters[-1][-1] <= 0.03 * size:
+            clusters[-1].append(x)
+        else:
+            clusters.append([x])
+    bounds = []
+    last = xs.min()
+    for c in clusters:
+        x = float(np.mean(c))
+        if x - last >= ZONE_MIN * size and xs.max() - x >= ZONE_MIN * size:
+            bounds.append(x)
+            last = x
+    bounds = np.array(bounds)
+    slopes = []
+    for z in range(len(bounds) + 1):
+        sl, wt = [], []
+        for ln in L:
+            if ln.get('blob') or ln['len'] < 0.03 * size or abs(ln['dir'][0]) < 0.8:
+                continue
+            if int(np.searchsorted(bounds, ln['mid'][0])) != z:
+                continue
+            sl.append(ln['dir'][1] / ln['dir'][0])
+            wt.append(ln['len'])
+        if sl:
+            o = np.argsort(sl)
+            cw = np.cumsum(np.array(wt)[o])
+            slopes.append(float(np.clip(np.array(sl)[o][np.searchsorted(cw, cw[-1] / 2)], -0.6, 0.6)))
+        else:
+            slopes.append(0.0)
+    return bounds, slopes
+
+
+def sweep(groups, L, zones, size, tier, pen):
+    """Calm sweep over groups of lines (a feature, or one line): facades left to
+    right; inside a facade, from the top down. The pen moves to the nearest group
+    among those near the top of what is left (a band ROW_BAND of the drawing
+    deep, measured along the wall's perspective slope), so it works down the
+    facade without long jumps and never goes back up to something it passed. A
+    vertical line is placed by its top end, anything else by its centre. Yields
+    groups in order; pen() gives the current pen position."""
+    bounds, slopes = zones
+    info = []
+    for g in groups:
+        pts = np.vstack([L[i]['dense'] for i in g])
+        if len(g) == 1 and not L[g[0]].get('blob') and abs(L[g[0]]['dir'][1]) > 0.7:
+            d = L[g[0]]['dense']
+            anchor = d[0] if d[0][1] < d[-1][1] else d[-1]
+        else:
+            anchor = (pts.min(axis=0) + pts.max(axis=0)) / 2
+        tips = np.array([p for i in g for p in (L[i]['pts'][0], L[i]['pts'][-1])])
+        info.append((g, anchor, tips))
+    band = ROW_BAND * size
+    byzone = defaultdict(list)
+    for item in info:
+        byzone[int(np.searchsorted(bounds, item[1][0]))].append(item)
+    for z in sorted(byzone):
+        sl = slopes[z]
+        mem = byzone[z]
+        x0 = min(a[0] for _, a, _ in mem)
+        rest = [(a[1] - sl * (a[0] - x0), g, tips) for g, a, tips in mem]
+        rest.sort(key=lambda t: t[0])
+        while rest:
+            top = rest[0][0]
+            p = pen()
+            best = None
+            for k, (yk, g, tips) in enumerate(rest):
+                if yk > top + band:
+                    break
+                d = float(np.min(np.hypot(*(tips - p).T)))
+                if best is None or d < best[0]:
+                    best = (d, k)
+            _, k = best
+            yield rest.pop(k)[1]
+
+
+def nearest_path(items, start_pt, endpoints):
+    """Greedy pen path: always the nearest unvisited item; each may be drawn from
+    either end. endpoints(item) -> (p_start, p_end). Returns [(item, reversed)]."""
+    out = []
+    rest = list(items)
+    pos = start_pt
+    while rest:
+        best = None
+        for it in rest:
+            a, b = endpoints(it)
+            for rev, p in ((False, a), (True, b)):
+                d = math.hypot(*(p - pos))
+                if best is None or d < best[0]:
+                    best = (d, it, rev)
+        _, it, rev = best
+        rest.remove(it)
+        out.append((it, rev))
+        a, b = endpoints(it)
+        pos = a if rev else b
+    return out
 
 
 # ---------------------------------------------------------------- skeleton graph
@@ -391,7 +718,7 @@ def build(art_path, old_json_path, debug_path=None):
         inc[e['a']].append((i, 'a'))
         inc[e['b']].append((i, 'b'))
     link = {}  # (edge, end) -> (edge, end)
-    reach = 9 * UP
+    reach = 14 * UP
     for nd, ends in inc.items():
         if len(ends) < 2:
             continue
@@ -445,27 +772,10 @@ def build(art_path, old_json_path, debug_path=None):
             guard += 1
         chains.append(np.vstack(pts_all))
 
-    # split chains at sharp corners
-    lines = []
-    for pts in chains:
-        if plen(pts) < 2 * UP:
-            continue
-        simp = rdp(pts, 1.6 * UP)
-        cut = [0]
-        for k in range(1, len(simp) - 1):
-            back = direction_from(simp[k::-1], 6 * UP)
-            fwd = direction_from(simp[k:], 6 * UP)
-            turn = 180 - angle_between(back, fwd)
-            if turn > CORNER_DEG:
-                cut.append(k)
-        cut.append(len(simp) - 1)
-        for s, t in zip(cut[:-1], cut[1:]):
-            seg = simp[s:t + 1]
-            if plen(seg) >= 2 * UP:
-                lines.append(seg)
+    lines = split_corners(chains)
 
     # ------------------------------------------------ heal: join collinear pieces, drop duplicates
-    lines = heal(lines, thick_at, ink.shape)
+    lines = heal(lines, thick_at, ink.shape, ink)
 
     # ------------------------------------------------ building region: ink closed and filled
     r = max(3, int(0.012 * max(W, H) * UP))
@@ -534,6 +844,9 @@ def build(art_path, old_json_path, debug_path=None):
                 split.append(rdp(piece, 1.6 * UP))
     lines = split
 
+    # ------------------------------------------------ tiny pieces: drop or hang on their parent line
+    lines, n_drop, n_absorb = absorb_tiny(lines, thick_at, ink, size)
+
     # ------------------------------------------------ measure each line
     allth = []
     L = []
@@ -551,7 +864,7 @@ def build(art_path, old_json_path, debug_path=None):
         core = core if len(core) >= 3 else th
         ln['weight'] = float(np.median(core))
         ln['heavy_frac'] = float((core >= t_med_heavy).mean())
-        ln['w'] = float(np.percentile(th, 90))
+        ln['w'] = float(np.percentile(th, 95))
         d = ln['dense']
         st = side_status(d, th)
         known = st[st >= 0]
@@ -573,6 +886,10 @@ def build(art_path, old_json_path, debug_path=None):
     for ln in L:
         structural = ln['weight'] >= t_light_med or ln['len'] >= 0.06 * size
         if ln['sil'] >= 0.5 and structural and ln['len'] >= 0.02 * size:
+            ln['tier'] = 1
+        elif ln['sil'] >= 0.75 and ln['len'] >= TINY * size:
+            # a short piece lying wholly on the silhouette: the outline is drawn
+            # complete before anything inside it (Evan, 9 October 2026)
             ln['tier'] = 1
         elif ln['heavy_frac'] >= 0.5 and ln['len'] >= 0.02 * size:
             ln['tier'] = 2
@@ -769,60 +1086,36 @@ def build(art_path, old_json_path, debug_path=None):
                       'tier': 4, 'mid': p.mean(axis=0), 'blob': True, 'why': 'blob'})
 
     # ------------------------------------------------ order
-    def nearest_path(items, start_pt, endpoints):
-        """Greedy pen path: always the nearest unvisited item; each may be drawn from
-        either end. endpoints(item) -> (p_start, p_end). Returns [(item, reversed)]."""
-        out = []
-        rest = list(items)
-        pos = start_pt
-        while rest:
-            best = None
-            for it in rest:
-                a, b = endpoints(it)
-                for rev, p in ((False, a), (True, b)):
-                    d = math.hypot(*(p - pos))
-                    if best is None or d < best[0]:
-                        best = (d, it, rev)
-            _, it, rev = best
-            rest.remove(it)
-            out.append((it, rev))
-            a, b = endpoints(it)
-            pos = a if rev else b
-        return out
-
     def ends(i):
         return L[i]['pts'][0], L[i]['pts'][-1]
 
     ordered = []
-    # start where a hand starts an outline: the topmost point of the drawing
-    top = min((ln for ln in L if ln['tier'] == 1), key=lambda ln: ln['pts'][:, 1].min(), default=None)
-    pos = top['pts'][np.argmin(top['pts'][:, 1])] if top is not None else np.array([0.0, 0.0])
-    for tier in (1, 2):
-        items = [i for i, ln in enumerate(L) if ln['tier'] == tier]
-        for i, rev in nearest_path(items, pos, ends):
+    pos = np.array([0.0, 0.0])
+
+    def emit(seq):
+        nonlocal pos
+        for i, rev in seq:
             ordered.append((i, rev))
             pos = ends(i)[0] if rev else ends(i)[1]
-    # openings: features in nearest order, each finished before the next
-    fmem = defaultdict(list)
-    for i, ln in enumerate(L):
-        if ln['tier'] == 3:
-            fmem[ln.get('feat', ('solo', i))].append(i)
-    fkeys = list(fmem)
 
-    def fends(k):
-        pts = np.vstack([L[i]['pts'] for i in fmem[k]])
-        c = pts.mean(axis=0)
-        return c, c
-
-    for k, _ in nearest_path(fkeys, pos, fends):
-        for i, rev in nearest_path(fmem[k], pos, ends):
-            ordered.append((i, rev))
-            pos = ends(i)[0] if rev else ends(i)[1]
-    items = [i for i, ln in enumerate(L) if ln['tier'] == 4]
-    for i, rev in nearest_path(items, pos, ends):
-        ordered.append((i, rev))
-        pos = ends(i)[0] if rev else ends(i)[1]
-
+    # tier 1: once round the building, clockwise from the top
+    emit(outline_walk([i for i, ln in enumerate(L) if ln['tier'] == 1], L, region))
+    # tiers 2-4: facade by facade, left to right; inside a facade, row by row from
+    # the top, each row swept from the side the pen is on
+    zones = facade_zones(L, region, size)
+    for tier in (2, 3, 4):
+        if tier == 3:
+            fmem = defaultdict(list)
+            for i, ln in enumerate(L):
+                if ln['tier'] == 3:
+                    fmem[ln.get('feat', ('solo', i))].append(i)
+            groups = list(fmem.values())
+        else:
+            groups = [[i] for i, ln in enumerate(L) if ln['tier'] == tier]
+        for grp in sweep(groups, L, zones, size, tier, lambda: pos):
+            # one feature is finished before the next; inside it the pen goes to
+            # the nearest line
+            emit(nearest_path(grp, pos, ends))
     # ------------------------------------------------ write
     bx, by, bw, bh = old['box']
     sx = bw / (W * UP)
