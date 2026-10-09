@@ -73,7 +73,8 @@ LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 # Then, after the hood fix: every front logo another 5% smaller and 1.5in higher.
 SCALE = {("tee", "back"): 0.90, ("crew", "back"): 0.90, ("hoodie", "back"): 0.90,
          ("tee", "front"): 0.95, ("crew", "front"): 0.95, ("hoodie", "front"): 0.90 * 0.95}
-RAISE_IN = {"front": 2.5}
+# Evan, then: the hoodie's chest logo a little lower (0.75in down from 2.5).
+RAISE_IN = {("tee", "front"): 2.5, ("crew", "front"): 2.5, ("hoodie", "front"): 1.75}
 LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each flat
 # The map's top sits this share of its height above the hood's tip, so the hood
 # hides a small notch of it (Evan, 9 Oct 2026: keep it small).
@@ -219,10 +220,10 @@ def target_box(name, L, place):
     s = (L["hem"] - L["collar"][1]) / (F["hem"] - F["collar"][1])
     w = (ink[2] - ink[0]) * s * SCALE.get((g, v), 1.0)
     top = L["collar"][1] + (ink[1] - F["collar"][1]) * s
-    if v in RAISE_IN:
+    if (g, v) in RAISE_IN:
         front = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_front"]
         px_per_in = (front[2] - front[0]) / LOGO_IN * s
-        top -= RAISE_IN[v] * px_per_in
+        top -= RAISE_IN[(g, v)] * px_per_in
     cx = L.get("centre_x", L["collar"][0])
     note = ""
     if "hood_tip" in L:

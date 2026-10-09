@@ -222,141 +222,141 @@
  "nauvoo_hoodie_front_black": {
   "ink_px": [
    1843,
-   1717,
+   1807,
    615
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9789,
+  "fold_vs_flat_r": 0.9763,
   "note": ""
  },
  "salt-lake-city_hoodie_front_black": {
   "ink_px": [
    1843,
-   1717,
+   1807,
    615
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9791,
+  "fold_vs_flat_r": 0.9759,
   "note": ""
  },
  "nauvoo_hoodie_front_coffee": {
   "ink_px": [
    2176,
-   1747,
+   1834,
    595
   ],
   "k": 2.333,
-  "fold_vs_flat_r": 0.9868,
+  "fold_vs_flat_r": 0.9826,
   "note": ""
  },
  "salt-lake-city_hoodie_front_coffee": {
   "ink_px": [
    2176,
-   1747,
+   1834,
    595
   ],
   "k": 2.333,
-  "fold_vs_flat_r": 0.9871,
+  "fold_vs_flat_r": 0.9824,
   "note": ""
  },
  "nauvoo_hoodie_front_eden-green": {
   "ink_px": [
    2169,
-   1793,
+   1883,
    618
   ],
   "k": 2.422,
-  "fold_vs_flat_r": 0.9831,
+  "fold_vs_flat_r": 0.9762,
   "note": ""
  },
  "salt-lake-city_hoodie_front_eden-green": {
   "ink_px": [
    2169,
-   1793,
+   1883,
    618
   ],
   "k": 2.422,
-  "fold_vs_flat_r": 0.9832,
+  "fold_vs_flat_r": 0.9763,
   "note": ""
  },
  "nauvoo_hoodie_front_gray": {
   "ink_px": [
    2312,
-   1729,
+   1820,
    625
   ],
   "k": 2.451,
-  "fold_vs_flat_r": 0.9928,
+  "fold_vs_flat_r": 0.994,
   "note": ""
  },
  "salt-lake-city_hoodie_front_gray": {
   "ink_px": [
    2312,
-   1729,
+   1820,
    625
   ],
   "k": 2.451,
-  "fold_vs_flat_r": 0.9925,
+  "fold_vs_flat_r": 0.9942,
   "note": ""
  },
  "nauvoo_hoodie_front_mauve": {
   "ink_px": [
    2259,
-   1716,
+   1807,
    617
   ],
   "k": 2.42,
-  "fold_vs_flat_r": 0.9966,
+  "fold_vs_flat_r": 0.9979,
   "note": ""
  },
  "salt-lake-city_hoodie_front_mauve": {
   "ink_px": [
    2259,
-   1716,
+   1807,
    617
   ],
   "k": 2.42,
-  "fold_vs_flat_r": 0.9966,
+  "fold_vs_flat_r": 0.9979,
   "note": ""
  },
  "nauvoo_hoodie_front_navy-blue": {
   "ink_px": [
    2165,
-   1717,
+   1807,
    615
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9829,
+  "fold_vs_flat_r": 0.9801,
   "note": ""
  },
  "salt-lake-city_hoodie_front_navy-blue": {
   "ink_px": [
    2165,
-   1717,
+   1807,
    615
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.983,
+  "fold_vs_flat_r": 0.9803,
   "note": ""
  },
  "nauvoo_hoodie_front_royal-blue": {
   "ink_px": [
    1979,
-   1728,
+   1818,
    621
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9925,
+  "fold_vs_flat_r": 0.9949,
   "note": ""
  },
  "salt-lake-city_hoodie_front_royal-blue": {
   "ink_px": [
    1979,
-   1728,
+   1818,
    621
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9927,
+  "fold_vs_flat_r": 0.9947,
   "note": ""
  },
  "nauvoo_tee_back_black": {
