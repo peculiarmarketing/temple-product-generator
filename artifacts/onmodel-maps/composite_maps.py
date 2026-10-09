@@ -68,23 +68,25 @@ LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 # Evan, 9 Oct 2026, after the true-size build: every back print 10% smaller (top
 # edge held, so it shrinks from the bottom), every front logo 1 inch higher, the
 # hoodie's logo also 10% smaller, and the hoodie map higher, with the hood lying
-# over its very top (HOOD_LM below). Prints centre on the photo's own measured
+# over its very top (hood_edge below). Prints centre on the photo's own measured
 # centre line (centre_x), which on the hoodie is the middle of the hood.
 SCALE = {("tee", "back"): 0.90, ("crew", "back"): 0.90, ("hoodie", "back"): 0.90,
          ("hoodie", "front"): 0.90}
 RAISE_IN = {"front": 1.0}
 LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each flat
-# The hood's lower outline on the hoodie-back lead photo (2880px): where its left
-# edge meets the shoulder, its point at centre back, where its right edge meets
-# the shoulder. Carried to each colour by the registration.
+# The map's top sits this share of its height above the hood's tip, so the hood
+# hides a small notch of it (Evan, 9 Oct 2026: keep it small).
 HOOD_COVER = 0.03
+# Below the hood's edge the print is held flat for this many px (2880 scale),
+# blending into the gentle fold: the hood's cast shadow is the hood lying on the
+# print, not a crease in it, and folding to it bent the frame line at the tip.
+HOOD_FLAT_BAND = 80
 # Measured by hand on each hoodie-back photo (2880px), the hood's tip at centre
 # back: registration carried it within ~40px, too loose for a 3% overlap.
 HOOD_TIP = {"black": 15, "coffee": 15, "eden-green": 15, "gray": 30, "mauve": 25,
             "navy-blue": 15, "royal-blue": 5}          # x right of centre_x
 HOOD_TIP_Y = {"black": 1095, "coffee": 1125, "eden-green": 1110, "gray": 1105,
               "mauve": 1095, "navy-blue": 1092, "royal-blue": 1095}
-HOOD_LM = {"left": [1050, 788], "point": [1437, 1095], "right": [1812, 788]}
 
 # Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
 # the chest: left and right x where the sleeve meets the body, at chest_y.
@@ -166,15 +168,14 @@ def detect():
              "scale": round(float(np.hypot(w[0, 0], w[1, 0])), 4)}
         if "hood_point" in B:
             L["hood_point"] = round(tx(cx, B["hood_point"])[1])
-            L["hood"] = {k: [round(c) for c in tx(*p)] for k, p in HOOD_LM.items()}
         lm[name] = L
     for name, L in lm.items():
-        if name.startswith("hoodie_back") and "hood" not in L:
-            L["hood"] = HOOD_LM
+        L.pop("hood", None)
         L["centre_x"] = centre_x(base_dir / f"{name}.png", L)
         if name.startswith("hoodie_back"):
             c = name.split("_", 2)[2]
             L["hood_tip"] = [L["centre_x"] + HOOD_TIP[c], HOOD_TIP_Y[c]]
+            L["hood_edge"] = hood_edge(base_dir / f"{name}.png", L["hood_tip"])
     lm_p.write_text(json.dumps(lm, indent=1))
     sheet(lm)
     return lm
@@ -234,26 +235,49 @@ def target_box(name, L, place):
     return cx - w / 2, top, w, note
 
 
-def hood_mask(L, shape):
-    """1 inside the hood (above its lower outline, between its two edges), 0
-    elsewhere, feathered 3px: the hood lies over the top of the map."""
+def hood_edge(path, tip):
+    """The hood's lower edge traced on this photo (2880px): for every 4th column
+    within 300px of the tip, the row of the strongest bright-to-dark step going
+    down (the hood's edge, its cast shadow below), between 220px above the tip
+    and 30px below it. Median-filtered, then forced to rise away from the tip on
+    each side (a hood edge never dips back), with the tip pinned to the hand
+    measurement. Marks carried from the lead photo did not follow each colour's
+    own hood, so the edge is traced per photo."""
+    import cv2
+    tx, ty = tip
+    g = cv2.GaussianBlur(np.asarray(Image.open(path).convert("L"), np.float32), (0, 0), 2)
+    dy = np.zeros_like(g)
+    dy[1:-1] = g[2:] - g[:-2]
+    xs = np.arange(tx - 300, tx + 301, 4)
+    ys = np.array([ty - 220 + int(np.argmin(dy[ty - 220:ty + 30, x - 1:x + 2].mean(1)))
+                   for x in xs], float)
+    ys = np.array([np.median(ys[max(0, i - 2):i + 3]) for i in range(len(ys))])
+    i0 = int(np.argmin(np.abs(xs - tx)))
+    ys[i0] = ty
+    for i in range(i0 + 1, len(ys)):
+        ys[i] = min(ys[i], ys[i - 1])
+    for i in range(i0 - 1, -1, -1):
+        ys[i] = min(ys[i], ys[i + 1])
+    return [[int(x), int(y)] for x, y in zip(xs, ys)]
+
+
+def hood_mask(L, shape, band=0):
+    """1 above the traced hood edge (the hood), 0 below, feathered 2px: the hood
+    lies over the top of the map. With band > 0, the region from the edge down to
+    band px below it instead, fading from 1 at the edge to 0 (the flat zone)."""
     import cv2
     H, W = shape
     r = W / 2880
-    (lx, ly), (px, py), (rx, ry) = (L["hood"][k] for k in ("left", "point", "right"))
-    # the outline's shape comes from the registered marks, its tip from the hand
-    # measurement, so the mask matches the real hood on every colour
-    dx, dy = L["hood_tip"][0] - px, L["hood_tip"][1] - py
-    lx, px, rx = lx + dx, px + dx, rx + dx
-    ly, py, ry = ly + dy, py + dy, ry + dy
-    # The hood's lower outline is a V: two nearly straight sides meeting at its
-    # point. (A parabola through the same three marks bellied out far wider than
-    # the real hood and cut a 220px gap in the map's top edge.)
-    poly = [(lx * r, ly * r), (px * r, py * r), (rx * r, ry * r), (rx * r, 0), (lx * r, 0)]
-    m = np.zeros((H, W), np.uint8)
-    cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
-    m = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), 3 * r)
-    return m
+    edge = [(x * r, y * r) for x, y in L["hood_edge"]]
+    if not band:
+        poly = edge + [(edge[-1][0], 0), (edge[0][0], 0)]
+        m = np.zeros((H, W), np.uint8)
+        cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
+        return cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), 2 * r)
+    xs = np.array([p[0] for p in edge])
+    ey = np.interp(np.arange(W), xs, [p[1] for p in edge], left=-1e9, right=-1e9)
+    below = np.arange(H)[:, None] - ey[None, :]
+    return np.clip(1 - below / (band * r), 0, 1) * (below >= -2 * r)
 
 
 def canvas_quad(place, g, v, left, top, w):
@@ -280,11 +304,8 @@ def sheet(lm):
         h = w * (ink[3] - ink[1]) / (ink[2] - ink[0])
         d.rectangle([left, top, left + w, top + h], outline=(255, 220, 0), width=8)
         d.line([(L.get("centre_x", cx), cy - 400), (L.get("centre_x", cx), L["hem"])], fill=(255, 0, 255), width=6)
-        if "hood" in L:
-            dx = L["hood_tip"][0] - L["hood"]["point"][0]
-            dy = L["hood_tip"][1] - L["hood"]["point"][1]
-            d.line([(x + dx, y + dy) for x, y in (L["hood"]["left"], L["hood"]["point"], L["hood"]["right"])],
-                   fill=(255, 0, 0), width=8)
+        if "hood_edge" in L:
+            d.line([tuple(p) for p in L["hood_edge"]], fill=(255, 0, 0), width=8)
         im = im.resize((480, 480))
         ImageDraw.Draw(im).text((6, 6), f"{name} {L['how']}", fill=(255, 255, 0))
         tiles.append(im)
@@ -333,7 +354,13 @@ def build(only=None):
                                  fold_strength=FOLD["strength"] * k * k, fold_band=FOLD["band"])
             fpart, _ = fold_build(sub, art, q2, 0, 1.0, 0.0, 1.0, scale=k, flat=True)
             img = photo.astype(np.uint8).copy()
-            if "hood" in L:                      # the hood lies over the map's top
+            if "hood_edge" in L:
+                # Held flat just below the hood (same shading, no displacement),
+                # then the hood itself laid over the map's top.
+                still, _ = fold_build(sub, art, q2, 0.0, FOLD["shade_gain"], FOLD["texture"],
+                                      FOLD["opacity"], scale=k, fold_strength=0.0, fold_band=FOLD["band"])
+                fb = hood_mask(L, photo.shape[:2], band=HOOD_FLAT_BAND)[cy0:cy1, cx0:cx1, None]
+                part = part * (1 - fb) + still * fb
                 hm = hood_mask(L, photo.shape[:2])[cy0:cy1, cx0:cx1, None]
                 part = (part * (1 - hm) + photo[cy0:cy1, cx0:cx1] * hm).astype(np.uint8)
             img[cy0:cy1, cx0:cx1] = part
