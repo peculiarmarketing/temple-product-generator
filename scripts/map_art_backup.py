@@ -32,6 +32,8 @@ import sys
 import urllib.request
 from pathlib import Path
 
+from PIL import Image
+
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -134,7 +136,7 @@ def write_readme(idx, c=None):
         for key in sorted(k for k in idx if k.split("/")[1] == name):
             e = idx[key]
             lines.append(f"- [{key.split('/', 2)[2]}]({e['url']}): {e['what']}, "
-                         f"{e['bytes'] / 1e6:.1f} MB. Local: `{key_local(key)}`")
+                         f"{size(e['bytes'])}. Local: `{key_local(key)}`")
         if c:
             for g, h, title, photos in listings(c, name):
                 lines.append(f"- Listing: [{title}](https://peculiarpeopleco.com/products/{h}), "
@@ -144,6 +146,27 @@ def write_readme(idx, c=None):
         lines.append("")
     README.write_text("\n".join(lines))
     print("wrote", README.relative_to(ROOT))
+
+
+def size(n):
+    return f"{n / 1e6:.1f} MB" if n >= 1e5 else f"{round(n / 1e3)} KB"
+
+
+def dpi_of(path):
+    with Image.open(path) as im:
+        d = im.info.get("dpi")
+    return [round(float(x), 4) for x in d] if d else None
+
+
+def restore_dpi(path, want):
+    """Shopify rewrites a PNG's resolution tag (a print file with none comes back
+    tagged 72 dpi); put back the one the original had. Pixels are untouched."""
+    if dpi_of(path) == want:
+        return
+    with Image.open(path) as im:
+        im.load()
+        im.info.pop("dpi", None)
+        im.save(path, **({"dpi": tuple(want)} if want else {}))
 
 
 def key_local(key):
@@ -173,6 +196,7 @@ def main():
                 raise SystemExit(f"{k}: the Shopify copy does not match its hash")
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
+            restore_dpi(path, e.get("dpi"))
             print("fetched", key_local(k))
         print(f"{len(keys)} files present and matching")
         return
@@ -210,7 +234,8 @@ def main():
         fid, url = upload(c, path, shopify_name(key))
         if pix(io.BytesIO(download(url))) != h:
             raise ShopifyError(f"{key}: Shopify copy does not match")
-        idx[key] = {"id": fid, "url": url, "pixels": h, "bytes": path.stat().st_size, "what": what}
+        idx[key] = {"id": fid, "url": url, "pixels": h, "bytes": path.stat().st_size, "what": what,
+                    "dpi": dpi_of(path)}
         save(idx)
         print(f"[{i}/{len(todo)}] backed up {key}")
     for k in stale:
