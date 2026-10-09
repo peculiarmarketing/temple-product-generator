@@ -65,6 +65,20 @@ REF_SPAN = 1170.0
 FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
 LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 
+# Evan, 9 Oct 2026, after the true-size build: every back print 10% smaller (top
+# edge held, so it shrinks from the bottom), every front logo 1 inch higher, the
+# hoodie's logo also 10% smaller, and the hoodie map higher, with the hood lying
+# over its very top (HOOD_LM below). Prints centre on the photo's own measured
+# centre line (centre_x), which on the hoodie is the middle of the hood.
+SCALE = {("tee", "back"): 0.90, ("crew", "back"): 0.90, ("hoodie", "back"): 0.90,
+         ("hoodie", "front"): 0.90}
+RAISE_IN = {"front": 1.0}
+LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each flat
+# The hood's lower outline on the hoodie-back lead photo (2880px): where its left
+# edge meets the shoulder, its point at centre back, where its right edge meets
+# the shoulder. Carried to each colour by the registration.
+HOOD_LM = {"left": [1050, 788], "point": [1437, 1095], "right": [1812, 788]}
+
 # Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
 # the chest: left and right x where the sleeve meets the body, at chest_y.
 BASE_LM = {
@@ -145,10 +159,42 @@ def detect():
              "scale": round(float(np.hypot(w[0, 0], w[1, 0])), 4)}
         if "hood_point" in B:
             L["hood_point"] = round(tx(cx, B["hood_point"])[1])
+            L["hood"] = {k: [round(c) for c in tx(*p)] for k, p in HOOD_LM.items()}
         lm[name] = L
+    for name, L in lm.items():
+        if name.startswith("hoodie_back") and "hood" not in L:
+            L["hood"] = HOOD_LM
+        L["centre_x"] = centre_x(base_dir / f"{name}.png", L)
     lm_p.write_text(json.dumps(lm, indent=1))
     sheet(lm)
     return lm
+
+
+def centre_x(path, L):
+    """The photo's own centre line: the median midpoint of the head and neck
+    silhouette, 0.08 to 0.35 chest widths above the collar (on a hoodie, the
+    middle of the hood). Registration carries the hand-marked collar to each
+    colour well in height but drifts sideways when the pose shifts (up to 9.6% of
+    the chest on the royal blue hoodie), so the centre is measured, not carried."""
+    from scipy.ndimage import binary_opening, label
+    a = np.asarray(Image.open(path).convert("RGB").resize((1440, 1440)), dtype=float)
+    bg = np.median(np.concatenate([a[:60, :60].reshape(-1, 3), a[:60, -60:].reshape(-1, 3)]), 0)
+    dist = np.sqrt(((a - bg) ** 2).sum(2))
+    s = 0.5
+    cy, cx = L["collar"][1] * s, L["collar"][0] * s
+    chest = (L["chest"][1] - L["chest"][0]) * s
+    for th in (28, 16, 10):                      # the heather gray is near the backdrop
+        fg = binary_opening(dist > th, iterations=2)
+        mids = []
+        for r in range(int(cy - 0.35 * chest), int(cy - 0.08 * chest), 3):
+            lab, k = label(fg[r])
+            for i in range(1, k + 1):
+                xx = np.nonzero(lab == i)[0]
+                if xx.min() <= cx <= xx.max() and xx.size < 0.95 * fg.shape[1]:
+                    mids.append((xx.min() + xx.max()) / 2)
+        if mids:
+            return round(float(np.median(mids)) / s)
+    return L["collar"][0]
 
 
 def target_box(name, L, place):
@@ -159,16 +205,36 @@ def target_box(name, L, place):
     # True inches: the print scales with the garment's collar-to-hem length, the
     # same fabric on the flat and on the body (see the module docstring).
     s = (L["hem"] - L["collar"][1]) / (F["hem"] - F["collar"][1])
-    w = (ink[2] - ink[0]) * s
+    w = (ink[2] - ink[0]) * s * SCALE.get((g, v), 1.0)
     top = L["collar"][1] + (ink[1] - F["collar"][1]) * s
-    cx = L["collar"][0] + ((ink[0] + ink[2]) / 2 - F["collar"][0]) * s
+    if v in RAISE_IN:
+        front = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_front"]
+        px_per_in = (front[2] - front[0]) / LOGO_IN * s
+        top -= RAISE_IN[v] * px_per_in
+    cx = L.get("centre_x", L["collar"][0])
     note = ""
-    if "hood_point" in L:
-        clear = L["hood_point"] + 0.012 * 2880
-        if top < clear:
-            note = f"lowered {round(clear - top)}px to clear the hood"
-            top = clear
+    if "hood" in L:
+        note = f"hood covers the top {max(0, round(L['hood']['point'][1] - top))}px"
     return cx - w / 2, top, w, note
+
+
+def hood_mask(L, shape):
+    """1 inside the hood (above its lower outline, between its two edges), 0
+    elsewhere, feathered 3px: the hood lies over the top of the map."""
+    import cv2
+    H, W = shape
+    r = W / 2880
+    (lx, ly), (px, py), (rx, ry) = (L["hood"][k] for k in ("left", "point", "right"))
+    xs = np.linspace(lx, rx, 200)
+    # a parabola through the three marks: the hood's two sides meeting at its point
+    A = np.array([[lx * lx, lx, 1], [px * px, px, 1], [rx * rx, rx, 1]], float)
+    a, b, c = np.linalg.solve(A, [ly, py, ry])
+    ys = a * xs * xs + b * xs + c
+    poly = [(x * r, y * r) for x, y in zip(xs, ys)] + [(rx * r, 0), (lx * r, 0)]
+    m = np.zeros((H, W), np.uint8)
+    cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
+    m = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), 3 * r)
+    return m
 
 
 def canvas_quad(place, g, v, left, top, w):
@@ -194,8 +260,10 @@ def sheet(lm):
         ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"salt-lake-city_{g}_{v}"]
         h = w * (ink[3] - ink[1]) / (ink[2] - ink[0])
         d.rectangle([left, top, left + w, top + h], outline=(255, 220, 0), width=8)
-        if "hood_point" in L:
-            d.line([(cx - 200, L["hood_point"]), (cx + 200, L["hood_point"])], fill=(255, 0, 0), width=6)
+        d.line([(L.get("centre_x", cx), cy - 400), (L.get("centre_x", cx), L["hem"])], fill=(255, 0, 255), width=6)
+        if "hood" in L:
+            d.line([tuple(L["hood"]["left"]), tuple(L["hood"]["point"]), tuple(L["hood"]["right"])],
+                   fill=(255, 0, 0), width=8)
         im = im.resize((480, 480))
         ImageDraw.Draw(im).text((6, 6), f"{name} {L['how']}", fill=(255, 255, 0))
         tiles.append(im)
@@ -244,6 +312,9 @@ def build(only=None):
                                  fold_strength=FOLD["strength"] * k * k, fold_band=FOLD["band"])
             fpart, _ = fold_build(sub, art, q2, 0, 1.0, 0.0, 1.0, scale=k, flat=True)
             img = photo.astype(np.uint8).copy()
+            if "hood" in L:                      # the hood lies over the map's top
+                hm = hood_mask(L, photo.shape[:2])[cy0:cy1, cx0:cx1, None]
+                part = (part * (1 - hm) + photo[cy0:cy1, cx0:cx1] * hm).astype(np.uint8)
             img[cy0:cy1, cx0:cx1] = part
             flat = img.copy()
             flat[cy0:cy1, cx0:cx1] = fpart
