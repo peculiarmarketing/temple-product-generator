@@ -5,18 +5,20 @@ Higgsfield model photos and fold it into the fabric.
   python composite_maps.py build [prefix]    # finals for both places, or names starting prefix
 
 PLACEMENT comes from Tapstitch's own flat lays of the live map products
-(flats/, 1400px). On a flat the print's ink box sits a known distance below the
-collar and a known distance off the centre line, and it is a known width. Every
-one of those is carried to a photo in proportion to the garment's collar-to-hem
-length, which is the same fabric on the flat and on the body. Chest width is not
-used: an oversized garment wraps the body, so its visible width shrinks while its
-length does not (the temple pipeline sizes by length for the same reason,
-photo-mockup-spike/print_geometry.json).
+(flats/, 1400px): the print's width, its drop below the collar and its offset
+from the centre line, each as a share of the chest width (armpit to armpit),
+carried to each photo's own chest width. That is how the onmodel-v2 shots were
+placed, and it makes the print look on the body the way it looks on the flat.
 
-  s       = (photo hem - photo collar) / (flat hem - flat collar)
-  ink w   = flat ink w * s
-  ink top = photo collar y + (flat ink top - flat collar y) * s
-  ink cx  = photo collar x + (flat ink cx - flat collar x) * s
+  c       = photo chest / flat chest
+  ink w   = flat ink w * c
+  ink top = photo collar y + (flat ink top - flat collar y) * c
+  ink cx  = photo collar x + (flat ink cx - flat collar x) * c
+
+Sized by collar-to-hem length instead (true inches, the first build), the 13.4in
+map covered most of the visible back: a garment wraps the body, so its visible
+width shrinks while its length does not. Evan, 9 Oct 2026: "the print space is
+too big"; he chose the flat lay's look.
 
 COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
 neck rib at centre; hoodie front, the V where the hood's two sides cross; hoodie
@@ -25,9 +27,11 @@ hood stands up, on a person it lies down, so the hood itself cannot be the mark)
 On the hoodie back the print is kept clear of the hood's point, which a real
 person's hood would cover.
 
-FOLD at the temple line's settings (Evan, 8 Oct 2026: full fold for the maps):
-displace 3, fold strength 220, band 4-20, shade gain 1.8, texture 0.35, opacity
-0.93. Those were tuned on 2048px photos whose garment ran about 1170px collar to
+FOLD is a quarter of the temple line's: displace 0.75, fold strength 55, band
+4-20, shade gain 1.8, texture 0.35, opacity 0.93. The full temple fold (displace
+3, strength 220) visibly bent the map frame and streets; Evan, 9 Oct 2026: "too
+wavy", chose a gentle bend with the light and shade kept. The temple values were
+tuned on 2048px photos whose garment ran about 1170px collar to
 hem, so every pixel quantity scales by k = this garment's collar-to-hem / 1170
 (fold strength by k squared: the fold gradient is per pixel).
 """
@@ -56,26 +60,28 @@ composite.gauss = _cv_gauss
 PLACES = ["nauvoo", "salt-lake-city"]
 OUT_PX = 5000
 REF_SPAN = 1170.0
-FOLD = dict(displace=3.0, shade_gain=1.8, texture=0.35, opacity=0.93, strength=220.0, band=(4, 20))
+FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
 LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 
-# Hand marks on each lead base photo (2880px): collar point, hem y at centre.
+# Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
+# the chest: left and right x where the sleeve meets the body, at chest_y.
 BASE_LM = {
-    ("tee", "front"): {"collar": [1437, 900], "hem": 2625},
-    ("tee", "back"): {"collar": [1437, 730], "hem": 2620},
-    ("crew", "front"): {"collar": [1412, 825], "hem": 2375},
-    ("crew", "back"): {"collar": [1412, 700], "hem": 2380},
-    ("hoodie", "front"): {"collar": [1437, 895], "hem": 2520},
-    ("hoodie", "back"): {"collar": [1437, 800], "hem": 2520, "hood_point": 1095},
+    ("tee", "front"): {"collar": [1437, 900], "hem": 2625, "chest": [907, 1925], "chest_y": 1775},
+    ("tee", "back"): {"collar": [1437, 730], "hem": 2620, "chest": [917, 1930], "chest_y": 1740},
+    ("crew", "front"): {"collar": [1412, 825], "hem": 2375, "chest": [900, 1912], "chest_y": 1500},
+    ("crew", "back"): {"collar": [1412, 700], "hem": 2380, "chest": [912, 1925], "chest_y": 1500},
+    ("hoodie", "front"): {"collar": [1437, 895], "hem": 2520, "chest": [975, 1875], "chest_y": 1700},
+    ("hoodie", "back"): {"collar": [1437, 800], "hem": 2520, "chest": [962, 1900], "chest_y": 1700,
+                         "hood_point": 1095},
 }
 # The same marks on Tapstitch's flats (1400px). Front collars are onmodel-v2's.
 FLAT_LM = {
-    ("tee", "front"): {"collar": [693, 226], "hem": 1213},
-    ("tee", "back"): {"collar": [690, 224], "hem": 1212},
-    ("crew", "front"): {"collar": [699, 288], "hem": 1081},
-    ("crew", "back"): {"collar": [700, 307], "hem": 1105},
-    ("hoodie", "front"): {"collar": [700, 525], "hem": 1219},
-    ("hoodie", "back"): {"collar": [700, 440], "hem": 1219},
+    ("tee", "front"): {"collar": [693, 226], "hem": 1213, "chest": [290, 1082]},
+    ("tee", "back"): {"collar": [690, 224], "hem": 1212, "chest": [290, 1082]},
+    ("crew", "front"): {"collar": [699, 288], "hem": 1081, "chest": [382, 1018]},
+    ("crew", "back"): {"collar": [700, 307], "hem": 1105, "chest": [382, 1018]},
+    ("hoodie", "front"): {"collar": [700, 525], "hem": 1219, "chest": [355, 1045]},
+    ("hoodie", "back"): {"collar": [700, 440], "hem": 1219, "chest": [355, 1045]},
 }
 
 
@@ -117,7 +123,7 @@ def detect():
         if c == LEAD[g]:
             lm[name] = dict(B, how="hand")
             continue
-        if old.get(name, {}).get("how") == "hand":
+        if old.get(name, {}).get("how") == "hand" and "chest" in old[name]:
             lm[name] = old[name]
             continue
         w = register(base_dir / f"{g}_{v}_{LEAD[g]}.png", p)
@@ -129,7 +135,11 @@ def detect():
         cx, cy = B["collar"]
         c2 = tx(cx, cy)
         h2 = tx(cx, B["hem"])
-        L = {"collar": [round(c2[0]), round(c2[1])], "hem": round(h2[1]), "how": "registered",
+        l2 = tx(B["chest"][0], B["chest_y"])
+        r2 = tx(B["chest"][1], B["chest_y"])
+        L = {"collar": [round(c2[0]), round(c2[1])], "hem": round(h2[1]),
+             "chest": [round(l2[0]), round(r2[0])], "chest_y": round((l2[1] + r2[1]) / 2),
+             "how": "registered",
              "scale": round(float(np.hypot(w[0, 0], w[1, 0])), 4)}
         if "hood_point" in B:
             L["hood_point"] = round(tx(cx, B["hood_point"])[1])
@@ -144,7 +154,7 @@ def target_box(name, L, place):
     g, v, _ = parse(name)
     F = FLAT_LM[(g, v)]
     ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_{v}"]
-    s = (L["hem"] - L["collar"][1]) / (F["hem"] - F["collar"][1])
+    s = (L["chest"][1] - L["chest"][0]) / (F["chest"][1] - F["chest"][0])
     w = (ink[2] - ink[0]) * s
     top = L["collar"][1] + (ink[1] - F["collar"][1]) * s
     cx = L["collar"][0] + ((ink[0] + ink[2]) / 2 - F["collar"][0]) * s
@@ -174,6 +184,7 @@ def sheet(lm):
         cx, cy = L["collar"]
         d.ellipse([cx - 25, cy - 25, cx + 25, cy + 25], outline=(0, 255, 0), width=8)
         d.line([(cx - 300, L["hem"]), (cx + 300, L["hem"])], fill=(0, 255, 0), width=8)
+        d.line([(L["chest"][0], L["chest_y"]), (L["chest"][1], L["chest_y"])], fill=(0, 220, 255), width=8)
         left, top, w, _ = target_box(name, L, "salt-lake-city")
         g, v, _ = parse(name)
         ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"salt-lake-city_{g}_{v}"]
