@@ -56,7 +56,6 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import generate                                  # noqa: E402
 import map_run as M                              # noqa: E402
 import tapstitch_api as T                        # noqa: E402
-import tapstitch_variant_images                  # noqa: E402
 from shopify_client import ShopifyClient         # noqa: E402
 
 RESYNC_TIMEOUT_S = 20 * 60
@@ -117,11 +116,15 @@ def refresh(s, sc, name, p, garment, st, note):
             if not (m.get("image") or {}).get("url"):
                 raise SystemExit(f"{handle}: media {m['id']} has no image; not starting")
             media.append({"id": m["id"], "alt": m["alt"] or "", "thumb": thumb(m["image"]["url"]).tolist()})
+        alt_of = {m["id"]: m["alt"] for m in media}
+        vb = sc.gql("""query($id: ID!) { product(id: $id) { variants(first: 100) { nodes { id
+            media(first: 1) { nodes { id } } } } } }""", {"id": prod["id"]})["product"]["variants"]["nodes"]
+        bindings = {v["id"]: alt_of.get(v["media"]["nodes"][0]["id"]) for v in vb if v["media"]["nodes"]}
         sp = T.store_product_for(s, prod["id"], prod["title"])
         tids = {pi["templateId"] for v in sp["variants"] for pi in v.get("productionItems", [])}
         if len(tids) != 1:
             raise SystemExit(f"{handle}: store product prints from {sorted(tids)}, expected one template")
-        rec.update(product_id=prod["id"], title=prod["title"], media=media,
+        rec.update(product_id=prod["id"], title=prod["title"], media=media, bindings=bindings,
                    template_id=tids.pop(), store_product_id=sp["uniqueId"], snapshot_at=now())
         save()
         note(f"snapshot: {len(media)} images, template {rec['template_id']}")
@@ -155,39 +158,50 @@ def refresh(s, sc, name, p, garment, st, note):
         note("Tapstitch re-sent the images")
 
     if "gallery_at" not in rec:
+        # Every returned image gets its own old alt back by pixel match: the
+        # Tapstitch flats, the on-model photos (onmodel_maps_apply.py, 9 Oct)
+        # and anything else. The old design cards are deleted (they show the
+        # old art) and the new ones pushed. FAILED images (a file Shopify no
+        # longer has, see relift_rollout.py) are deleted and reported.
         prod = fetch(sc, handle)
-        olds = [(m, np.array(m["thumb"], dtype=np.float32)) for m in rec["media"]
-                if not is_mockup_alt(m["alt"], city)]
-        deletes, restores = [], []
+        snap = [(m["alt"], np.array(m["thumb"], dtype=np.float32)) for m in rec["media"]]
+        failed = [m["id"] for m in prod["media"]["nodes"] if m.get("status") == "FAILED"]
+        plan, deletes, used = [], list(failed), set()
         for m in prod["media"]["nodes"]:
-            if m.get("alt"):
+            if m["id"] in failed:
                 continue
+            if m.get("alt"):
+                raise SystemExit(f"{handle}: returned image {m['id']} already has alt {m['alt']!r}; stopping")
             t = thumb(m["image"]["url"])
-            best = max(olds, key=lambda o: corr(t, o[1]), default=None)
-            if best is None or corr(t, best[1]) < 0.97:
-                continue                       # a Tapstitch mockup: fix_mockup_alts names it
-            if is_card(best[0]["alt"]):
-                deletes.append(m["id"])
-            else:
-                restores.append({"id": m["id"], "alt": best[0]["alt"]})
+            c, i = max((corr(t, x), i) for i, (_, x) in enumerate(snap))
+            if c < 0.97 or i in used:
+                raise SystemExit(f"{handle}: cannot match returned image {m['id']} (best {c:.3f} to "
+                                 f"{snap[i][0]!r}); stopping before writing anything")
+            used.add(i)
+            (deletes.append(m["id"]) if is_card(snap[i][0]) else plan.append({"id": m["id"], "alt": snap[i][0]}))
+        lost = [snap[i][0] for i in range(len(snap)) if i not in used and not is_card(snap[i][0])]
+        for k in range(0, len(plan), 25):
+            e = sc.gql("""mutation($f: [FileUpdateInput!]!) { fileUpdate(files: $f) {
+                userErrors { message } } }""", {"f": plan[k:k + 25]})["fileUpdate"]["userErrors"]
+            if e:
+                raise SystemExit(f"{handle}: restoring alts: {e}")
         if deletes:
             e = sc.gql("""mutation($p: ID!, $m: [ID!]!) { productDeleteMedia(productId: $p, mediaIds: $m) {
                 mediaUserErrors { message } } }""", {"p": rec["product_id"], "m": deletes}
                 )["productDeleteMedia"]["mediaUserErrors"]
             if e:
-                raise SystemExit(f"{handle}: deleting old cards: {e}")
-        if restores:
-            e = sc.gql("""mutation($f: [FileUpdateInput!]!) { fileUpdate(files: $f) {
-                userErrors { message } } }""", {"f": restores})["fileUpdate"]["userErrors"]
-            if e:
-                raise SystemExit(f"{handle}: restoring alts: {e}")
-        note(f"old cards deleted: {len(deletes)}; other alts restored: {len(restores)}")
-        note(M.fix_mockup_alts(sc, s, rec["product_id"], name, p, garment, rec["template_id"]))
+                raise SystemExit(f"{handle}: deleting: {e}")
+        note(f"alts restored on {len(plan)}; deleted {len(deletes)} (old cards, failed copies)"
+             + (f"; LOST in the re-send: {lost}" if lost else ""))
+        rec["lost"] = lost
         note(M.push_art_cards(sc, rec["product_id"], name, p))
-        rebound = tapstitch_variant_images.rebind(sc, s, handle, rec["template_id"])
-        if rebound is not None and "rebound" not in rebound:
-            raise SystemExit(f"{handle}: variant image repair did not run: {rebound}")
-        note(rebound or "variant images already on the back")
+        vb = sc.gql("""query($id: ID!) { product(id: $id) { variants(first: 100) { nodes { id
+            media(first: 1) { nodes { alt } } } } } }""", {"id": rec["product_id"]})["product"]["variants"]["nodes"]
+        moved = [v["id"] for v in vb if rec.get("bindings", {}).get(v["id"]) and
+                 (v["media"]["nodes"][0]["alt"] if v["media"]["nodes"] else None) != rec["bindings"][v["id"]]]
+        if moved:
+            raise SystemExit(f"{handle}: {len(moved)} variant(s) no longer point at their old image; check before going on")
+        note("every variant still points at its image")
         rec["gallery_at"] = now(); save()
 
     if "text_at" not in rec:

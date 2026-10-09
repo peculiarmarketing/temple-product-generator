@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558302318611550208",
+    "store_product_id": "1558302367542353920",
+    "distribute_started_at": "2026-10-09T18:17:17",
+    "shopify_handle": "essential-heavyweight-map-tee-kirtland",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558302732362870784",
+    "store_product_id": "1558302763421736960",
+    "distribute_started_at": "2026-10-09T18:18:51",
+    "shopify_handle": "ultra-soft-map-sweatshirt-kirtland",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/kirtland/kirtland hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558303093165289472",
+    "store_product_id": "1558303147548680192",
+    "distribute_started_at": "2026-10-09T18:20:22",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-kirtland",
+    "state": "live"
   }
 }

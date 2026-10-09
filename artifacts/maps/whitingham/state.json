@@ -7,18 +7,29 @@
     "template_id": "1558301088518664192",
     "store_product_id": "1558301138741305344",
     "distribute_started_at": "2026-10-09T18:12:24",
-    "shopify_handle": "essential-heavyweight-map-tee-whitingham"
+    "shopify_handle": "essential-heavyweight-map-tee-whitingham",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/whitingham/whitingham crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/whitingham/whitingham crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558301406442704896",
+    "store_product_id": "1558301445898575872",
+    "distribute_started_at": "2026-10-09T18:13:37",
+    "shopify_handle": "ultra-soft-map-sweatshirt-whitingham",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/whitingham/whitingham hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/whitingham/whitingham hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558301672529354752",
+    "store_product_id": "1558301721988636672",
+    "distribute_started_at": "2026-10-09T18:14:43",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-whitingham",
+    "state": "live"
   }
 }
