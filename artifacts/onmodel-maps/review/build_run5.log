@@ -1,0 +1,68 @@
+nauvoo_crew_back_black {'ink_px': [1794, 1628, 1322], 'k': 2.493, 'fold_vs_flat_r': 0.9808, 'note': ''}
+salt-lake-city_crew_back_black {'ink_px': [1794, 1628, 1322], 'k': 2.493, 'fold_vs_flat_r': 0.9356, 'note': ''}
+nauvoo_crew_back_heather-gray {'ink_px': [1543, 1629, 1324], 'k': 2.496, 'fold_vs_flat_r': 0.986, 'note': ''}
+salt-lake-city_crew_back_heather-gray {'ink_px': [1543, 1629, 1324], 'k': 2.496, 'fold_vs_flat_r': 0.9591, 'note': ''}
+nauvoo_crew_front_black {'ink_px': [2119, 2062, 638], 'k': 2.3, 'fold_vs_flat_r': 0.9794, 'note': ''}
+salt-lake-city_crew_front_black {'ink_px': [2119, 2062, 638], 'k': 2.3, 'fold_vs_flat_r': 0.9792, 'note': ''}
+nauvoo_crew_front_heather-gray {'ink_px': [1869, 2060, 641], 'k': 2.31, 'fold_vs_flat_r': 0.9881, 'note': ''}
+salt-lake-city_crew_front_heather-gray {'ink_px': [1869, 2060, 641], 'k': 2.31, 'fold_vs_flat_r': 0.9881, 'note': ''}
+nauvoo_hoodie_back_black {'ink_px': [1655, 1849, 1325], 'k': 2.552, 'fold_vs_flat_r': 0.9627, 'note': 'hood covers the top 32px'}
+salt-lake-city_hoodie_back_black {'ink_px': [1655, 1849, 1325], 'k': 2.552, 'fold_vs_flat_r': 0.9379, 'note': 'hood covers the top 32px'}
+nauvoo_hoodie_back_coffee {'ink_px': [1845, 1916, 1234], 'k': 2.377, 'fold_vs_flat_r': 0.9668, 'note': 'hood covers the top 30px'}
+salt-lake-city_hoodie_back_coffee {'ink_px': [1845, 1916, 1234], 'k': 2.377, 'fold_vs_flat_r': 0.9512, 'note': 'hood covers the top 30px'}
+nauvoo_hoodie_back_eden-green {'ink_px': [1795, 1881, 1323], 'k': 2.549, 'fold_vs_flat_r': 0.9624, 'note': 'hood covers the top 33px'}
+salt-lake-city_hoodie_back_eden-green {'ink_px': [1795, 1881, 1323], 'k': 2.549, 'fold_vs_flat_r': 0.9485, 'note': 'hood covers the top 33px'}
+nauvoo_hoodie_back_gray {'ink_px': [1928, 1872, 1353], 'k': 2.606, 'fold_vs_flat_r': 0.965, 'note': 'hood covers the top 33px'}
+salt-lake-city_hoodie_back_gray {'ink_px': [1928, 1872, 1353], 'k': 2.606, 'fold_vs_flat_r': 0.9659, 'note': 'hood covers the top 33px'}
+nauvoo_hoodie_back_mauve {'ink_px': [1819, 1856, 1321], 'k': 2.545, 'fold_vs_flat_r': 0.963, 'note': 'hood covers the top 32px'}
+salt-lake-city_hoodie_back_mauve {'ink_px': [1819, 1856, 1321], 'k': 2.545, 'fold_vs_flat_r': 0.9702, 'note': 'hood covers the top 32px'}
+nauvoo_hoodie_back_navy-blue {'ink_px': [1791, 1845, 1325], 'k': 2.552, 'fold_vs_flat_r': 0.9657, 'note': 'hood covers the top 32px'}
+salt-lake-city_hoodie_back_navy-blue {'ink_px': [1791, 1845, 1325], 'k': 2.552, 'fold_vs_flat_r': 0.9479, 'note': 'hood covers the top 32px'}
+nauvoo_hoodie_back_royal-blue {'ink_px': [1633, 1913, 1286], 'k': 2.478, 'fold_vs_flat_r': 0.9707, 'note': 'hood covers the top 31px'}
+salt-lake-city_hoodie_back_royal-blue {'ink_px': [1633, 1913, 1286], 'k': 2.478, 'fold_vs_flat_r': 0.9719, 'note': 'hood covers the top 31px'}
+nauvoo_hoodie_front_black {'ink_px': [1827, 1897, 648], 'k': 2.411, 'fold_vs_flat_r': 0.9754, 'note': ''}
+salt-lake-city_hoodie_front_black {'ink_px': [1827, 1897, 648], 'k': 2.411, 'fold_vs_flat_r': 0.9753, 'note': ''}
+nauvoo_hoodie_front_coffee {'ink_px': [2161, 1921, 626], 'k': 2.333, 'fold_vs_flat_r': 0.9913, 'note': ''}
+salt-lake-city_hoodie_front_coffee {'ink_px': [2161, 1921, 626], 'k': 2.333, 'fold_vs_flat_r': 0.9914, 'note': ''}
+nauvoo_hoodie_front_eden-green {'ink_px': [2152, 1973, 650], 'k': 2.422, 'fold_vs_flat_r': 0.9788, 'note': ''}
+salt-lake-city_hoodie_front_eden-green {'ink_px': [2152, 1973, 650], 'k': 2.422, 'fold_vs_flat_r': 0.9787, 'note': ''}
+nauvoo_hoodie_front_gray {'ink_px': [2296, 1912, 658], 'k': 2.451, 'fold_vs_flat_r': 0.995, 'note': ''}
+salt-lake-city_hoodie_front_gray {'ink_px': [2296, 1912, 658], 'k': 2.451, 'fold_vs_flat_r': 0.995, 'note': ''}
+nauvoo_hoodie_front_mauve {'ink_px': [2243, 1897, 650], 'k': 2.42, 'fold_vs_flat_r': 0.9974, 'note': ''}
+salt-lake-city_hoodie_front_mauve {'ink_px': [2243, 1897, 650], 'k': 2.42, 'fold_vs_flat_r': 0.9974, 'note': ''}
+nauvoo_hoodie_front_navy-blue {'ink_px': [2148, 1897, 648], 'k': 2.411, 'fold_vs_flat_r': 0.9788, 'note': ''}
+salt-lake-city_hoodie_front_navy-blue {'ink_px': [2148, 1897, 648], 'k': 2.411, 'fold_vs_flat_r': 0.9785, 'note': ''}
+nauvoo_hoodie_front_royal-blue {'ink_px': [1963, 1909, 654], 'k': 2.434, 'fold_vs_flat_r': 0.9948, 'note': ''}
+salt-lake-city_hoodie_front_royal-blue {'ink_px': [1963, 1909, 654], 'k': 2.434, 'fold_vs_flat_r': 0.9949, 'note': ''}
+nauvoo_tee_back_black {'ink_px': [1572, 1838, 1419], 'k': 2.809, 'fold_vs_flat_r': 0.9778, 'note': ''}
+salt-lake-city_tee_back_black {'ink_px': [1572, 1838, 1419], 'k': 2.809, 'fold_vs_flat_r': 0.927, 'note': ''}
+nauvoo_tee_back_charcoal {'ink_px': [1954, 1847, 1433], 'k': 2.836, 'fold_vs_flat_r': 0.9896, 'note': ''}
+salt-lake-city_tee_back_charcoal {'ink_px': [1954, 1847, 1433], 'k': 2.836, 'fold_vs_flat_r': 0.9715, 'note': ''}
+nauvoo_tee_back_coffee {'ink_px': [1795, 1803, 1368], 'k': 2.708, 'fold_vs_flat_r': 0.9858, 'note': ''}
+salt-lake-city_tee_back_coffee {'ink_px': [1795, 1803, 1368], 'k': 2.708, 'fold_vs_flat_r': 0.952, 'note': ''}
+nauvoo_tee_back_cream {'ink_px': [1766, 1846, 1409], 'k': 2.788, 'fold_vs_flat_r': 0.9936, 'note': ''}
+salt-lake-city_tee_back_cream {'ink_px': [1766, 1846, 1409], 'k': 2.788, 'fold_vs_flat_r': 0.9833, 'note': ''}
+nauvoo_tee_back_light-blue {'ink_px': [1759, 1834, 1427], 'k': 2.825, 'fold_vs_flat_r': 0.9963, 'note': ''}
+salt-lake-city_tee_back_light-blue {'ink_px': [1759, 1834, 1427], 'k': 2.825, 'fold_vs_flat_r': 0.9894, 'note': ''}
+nauvoo_tee_back_maroon {'ink_px': [1762, 1842, 1417], 'k': 2.804, 'fold_vs_flat_r': 0.9856, 'note': ''}
+salt-lake-city_tee_back_maroon {'ink_px': [1762, 1842, 1417], 'k': 2.804, 'fold_vs_flat_r': 0.9551, 'note': ''}
+nauvoo_tee_back_navy-blue {'ink_px': [1797, 1840, 1424], 'k': 2.819, 'fold_vs_flat_r': 0.9796, 'note': ''}
+salt-lake-city_tee_back_navy-blue {'ink_px': [1797, 1840, 1424], 'k': 2.819, 'fold_vs_flat_r': 0.9241, 'note': ''}
+nauvoo_tee_back_pink {'ink_px': [1572, 1836, 1418], 'k': 2.807, 'fold_vs_flat_r': 0.9931, 'note': ''}
+salt-lake-city_tee_back_pink {'ink_px': [1572, 1836, 1418], 'k': 2.807, 'fold_vs_flat_r': 0.9795, 'note': ''}
+nauvoo_tee_front_black {'ink_px': [1943, 2267, 646], 'k': 2.57, 'fold_vs_flat_r': 0.9822, 'note': ''}
+salt-lake-city_tee_front_black {'ink_px': [1943, 2267, 646], 'k': 2.57, 'fold_vs_flat_r': 0.9824, 'note': ''}
+nauvoo_tee_front_charcoal {'ink_px': [2364, 2273, 647], 'k': 2.576, 'fold_vs_flat_r': 0.9937, 'note': ''}
+salt-lake-city_tee_front_charcoal {'ink_px': [2364, 2273, 647], 'k': 2.576, 'fold_vs_flat_r': 0.9938, 'note': ''}
+nauvoo_tee_front_coffee {'ink_px': [2182, 2217, 595], 'k': 2.368, 'fold_vs_flat_r': 0.9915, 'note': ''}
+salt-lake-city_tee_front_coffee {'ink_px': [2182, 2217, 595], 'k': 2.368, 'fold_vs_flat_r': 0.9915, 'note': ''}
+nauvoo_tee_front_cream {'ink_px': [2147, 2207, 633], 'k': 2.52, 'fold_vs_flat_r': 0.998, 'note': ''}
+salt-lake-city_tee_front_cream {'ink_px': [2147, 2207, 633], 'k': 2.52, 'fold_vs_flat_r': 0.998, 'note': ''}
+nauvoo_tee_front_light-blue {'ink_px': [2139, 2279, 645], 'k': 2.567, 'fold_vs_flat_r': 0.9979, 'note': ''}
+salt-lake-city_tee_front_light-blue {'ink_px': [2139, 2279, 645], 'k': 2.567, 'fold_vs_flat_r': 0.9979, 'note': ''}
+nauvoo_tee_front_maroon {'ink_px': [2137, 2271, 643], 'k': 2.56, 'fold_vs_flat_r': 0.9928, 'note': ''}
+salt-lake-city_tee_front_maroon {'ink_px': [2137, 2271, 643], 'k': 2.56, 'fold_vs_flat_r': 0.9928, 'note': ''}
+nauvoo_tee_front_navy-blue {'ink_px': [2265, 2267, 644], 'k': 2.563, 'fold_vs_flat_r': 0.9849, 'note': ''}
+salt-lake-city_tee_front_navy-blue {'ink_px': [2265, 2267, 644], 'k': 2.563, 'fold_vs_flat_r': 0.9845, 'note': ''}
+nauvoo_tee_front_pink {'ink_px': [2052, 2262, 646], 'k': 2.57, 'fold_vs_flat_r': 0.998, 'note': ''}
+salt-lake-city_tee_front_pink {'ink_px': [2052, 2262, 646], 'k': 2.57, 'fold_vs_flat_r': 0.998, 'note': ''}

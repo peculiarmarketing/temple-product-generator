@@ -84,7 +84,11 @@
     792
    ]
   },
-  "centre_x": 1335
+  "centre_x": 1335,
+  "hood_tip": [
+   1350,
+   1095
+  ]
  },
  "hoodie_back_coffee": {
   "collar": [
@@ -114,7 +118,11 @@
     848
    ]
   },
-  "centre_x": 1418
+  "centre_x": 1418,
+  "hood_tip": [
+   1433,
+   1125
+  ]
  },
  "hoodie_back_eden-green": {
   "collar": [
@@ -144,7 +152,11 @@
     810
    ]
   },
-  "centre_x": 1415
+  "centre_x": 1415,
+  "hood_tip": [
+   1430,
+   1110
+  ]
  },
  "hoodie_back_gray": {
   "collar": [
@@ -174,7 +186,11 @@
     801
    ]
   },
-  "centre_x": 1500
+  "centre_x": 1500,
+  "hood_tip": [
+   1530,
+   1105
+  ]
  },
  "hoodie_back_mauve": {
   "collar": [
@@ -204,7 +220,11 @@
     797
    ]
   },
-  "centre_x": 1428
+  "centre_x": 1428,
+  "hood_tip": [
+   1453,
+   1095
+  ]
  },
  "hoodie_back_navy-blue": {
   "collar": [
@@ -233,7 +253,11 @@
     788
    ]
   },
-  "centre_x": 1413
+  "centre_x": 1413,
+  "hood_tip": [
+   1428,
+   1092
+  ]
  },
  "hoodie_back_royal-blue": {
   "collar": [
@@ -263,7 +287,11 @@
     841
    ]
   },
-  "centre_x": 1311
+  "centre_x": 1311,
+  "hood_tip": [
+   1316,
+   1095
+  ]
  },
  "hoodie_front_black": {
   "collar": [

@@ -1,299 +1,299 @@
 {
  "nauvoo_crew_back_black": {
   "ink_px": [
-   1702,
+   1794,
    1628,
-   1469
+   1322
   ],
   "k": 2.493,
-  "fold_vs_flat_r": 0.977,
+  "fold_vs_flat_r": 0.9808,
   "note": ""
  },
  "salt-lake-city_crew_back_black": {
   "ink_px": [
-   1702,
+   1794,
    1628,
-   1469
+   1322
   ],
   "k": 2.493,
-  "fold_vs_flat_r": 0.9213,
+  "fold_vs_flat_r": 0.9356,
   "note": ""
  },
  "nauvoo_crew_back_heather-gray": {
   "ink_px": [
-   1411,
+   1543,
    1629,
-   1471
+   1324
   ],
   "k": 2.496,
-  "fold_vs_flat_r": 0.9479,
+  "fold_vs_flat_r": 0.986,
   "note": ""
  },
  "salt-lake-city_crew_back_heather-gray": {
   "ink_px": [
-   1411,
+   1543,
    1629,
-   1471
+   1324
   ],
   "k": 2.496,
-  "fold_vs_flat_r": 0.9159,
+  "fold_vs_flat_r": 0.9591,
   "note": ""
  },
  "nauvoo_crew_front_black": {
   "ink_px": [
-   2126,
-   2169,
+   2119,
+   2062,
    638
   ],
   "k": 2.3,
-  "fold_vs_flat_r": 0.978,
+  "fold_vs_flat_r": 0.9794,
   "note": ""
  },
  "salt-lake-city_crew_front_black": {
   "ink_px": [
-   2126,
-   2169,
+   2119,
+   2062,
    638
   ],
   "k": 2.3,
-  "fold_vs_flat_r": 0.9786,
+  "fold_vs_flat_r": 0.9792,
   "note": ""
  },
  "nauvoo_crew_front_heather-gray": {
   "ink_px": [
-   1871,
-   2167,
+   1869,
+   2060,
    641
   ],
   "k": 2.31,
-  "fold_vs_flat_r": 0.9855,
+  "fold_vs_flat_r": 0.9881,
   "note": ""
  },
  "salt-lake-city_crew_front_heather-gray": {
   "ink_px": [
-   1871,
-   2167,
+   1869,
+   2060,
    641
   ],
   "k": 2.31,
-  "fold_vs_flat_r": 0.9856,
+  "fold_vs_flat_r": 0.9881,
   "note": ""
  },
  "nauvoo_hoodie_back_black": {
   "ink_px": [
-   1592,
-   1965,
-   1472
+   1681,
+   1848,
+   1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9794,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9705,
+  "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_black": {
   "ink_px": [
-   1592,
-   1965,
-   1472
+   1681,
+   1848,
+   1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.94,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9418,
+  "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_coffee": {
   "ink_px": [
-   1788,
-   2029,
-   1371
+   1871,
+   1904,
+   1234
   ],
   "k": 2.377,
-  "fold_vs_flat_r": 0.9817,
-  "note": "lowered 65px to clear the hood"
+  "fold_vs_flat_r": 0.9742,
+  "note": "hood covers the top 28px"
  },
  "salt-lake-city_hoodie_back_coffee": {
   "ink_px": [
-   1788,
-   2029,
-   1371
+   1871,
+   1904,
+   1234
   ],
   "k": 2.377,
-  "fold_vs_flat_r": 0.9569,
-  "note": "lowered 65px to clear the hood"
+  "fold_vs_flat_r": 0.9553,
+  "note": "hood covers the top 28px"
  },
  "nauvoo_hoodie_back_eden-green": {
   "ink_px": [
-   1733,
-   1998,
-   1470
+   1821,
+   1874,
+   1323
   ],
   "k": 2.549,
-  "fold_vs_flat_r": 0.9838,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9725,
+  "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_eden-green": {
   "ink_px": [
-   1733,
-   1998,
-   1470
+   1821,
+   1874,
+   1323
   ],
   "k": 2.549,
-  "fold_vs_flat_r": 0.9548,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9543,
+  "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_gray": {
   "ink_px": [
-   1876,
-   1989,
-   1503
+   1980,
+   1864,
+   1353
   ],
   "k": 2.606,
-  "fold_vs_flat_r": 0.9888,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9766,
+  "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_gray": {
   "ink_px": [
-   1876,
-   1989,
-   1503
+   1980,
+   1864,
+   1353
   ],
   "k": 2.606,
-  "fold_vs_flat_r": 0.9742,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9741,
+  "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_mauve": {
   "ink_px": [
-   1785,
-   1971,
-   1468
+   1862,
+   1848,
+   1321
   ],
   "k": 2.545,
-  "fold_vs_flat_r": 0.9903,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.978,
+  "note": "hood covers the top 30px"
  },
  "salt-lake-city_hoodie_back_mauve": {
   "ink_px": [
-   1785,
-   1971,
-   1468
+   1862,
+   1848,
+   1321
   ],
   "k": 2.545,
-  "fold_vs_flat_r": 0.9834,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9803,
+  "note": "hood covers the top 30px"
  },
  "nauvoo_hoodie_back_navy-blue": {
   "ink_px": [
-   1736,
-   1961,
-   1472
+   1817,
+   1843,
+   1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9816,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9751,
+  "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_navy-blue": {
   "ink_px": [
-   1736,
-   1961,
-   1472
+   1817,
+   1843,
+   1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.954,
-  "note": "lowered 67px to clear the hood"
+  "fold_vs_flat_r": 0.9523,
+  "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_royal-blue": {
   "ink_px": [
-   1706,
-   2027,
-   1429
+   1642,
+   1849,
+   1286
   ],
   "k": 2.478,
-  "fold_vs_flat_r": 0.9777,
-  "note": "lowered 65px to clear the hood"
+  "fold_vs_flat_r": 0.9798,
+  "note": "hood covers the top 30px"
  },
  "salt-lake-city_hoodie_back_royal-blue": {
   "ink_px": [
-   1706,
-   2027,
-   1429
+   1642,
+   1849,
+   1286
   ],
   "k": 2.478,
-  "fold_vs_flat_r": 0.9788,
-  "note": "lowered 65px to clear the hood"
+  "fold_vs_flat_r": 0.976,
+  "note": "hood covers the top 30px"
  },
  "nauvoo_hoodie_front_black": {
   "ink_px": [
-   1837,
-   2017,
-   720
+   1827,
+   1897,
+   648
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9762,
+  "fold_vs_flat_r": 0.9754,
   "note": ""
  },
  "salt-lake-city_hoodie_front_black": {
   "ink_px": [
-   1837,
-   2017,
-   720
+   1827,
+   1897,
+   648
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9765,
+  "fold_vs_flat_r": 0.9753,
   "note": ""
  },
  "nauvoo_hoodie_front_coffee": {
   "ink_px": [
-   2171,
-   2037,
-   696
+   2161,
+   1921,
+   626
   ],
   "k": 2.333,
-  "fold_vs_flat_r": 0.988,
+  "fold_vs_flat_r": 0.9913,
   "note": ""
  },
  "salt-lake-city_hoodie_front_coffee": {
   "ink_px": [
-   2171,
-   2037,
-   696
+   2161,
+   1921,
+   626
   ],
   "k": 2.333,
-  "fold_vs_flat_r": 0.9882,
+  "fold_vs_flat_r": 0.9914,
   "note": ""
  },
  "nauvoo_hoodie_front_eden-green": {
   "ink_px": [
-   2162,
-   2094,
-   723
+   2152,
+   1973,
+   650
   ],
   "k": 2.422,
-  "fold_vs_flat_r": 0.9841,
+  "fold_vs_flat_r": 0.9788,
   "note": ""
  },
  "salt-lake-city_hoodie_front_eden-green": {
   "ink_px": [
-   2162,
-   2094,
-   723
+   2152,
+   1973,
+   650
   ],
   "k": 2.422,
-  "fold_vs_flat_r": 0.9842,
+  "fold_vs_flat_r": 0.9787,
   "note": ""
  },
  "nauvoo_hoodie_front_gray": {
   "ink_px": [
-   2314,
-   2034,
-   731
+   2296,
+   1912,
+   658
   ],
   "k": 2.451,
-  "fold_vs_flat_r": 0.9948,
+  "fold_vs_flat_r": 0.995,
   "note": ""
  },
  "salt-lake-city_hoodie_front_gray": {
   "ink_px": [
-   2314,
-   2034,
-   731
+   2296,
+   1912,
+   658
   ],
   "k": 2.451,
   "fold_vs_flat_r": 0.995,
@@ -301,382 +301,382 @@
  },
  "nauvoo_hoodie_front_mauve": {
   "ink_px": [
-   2280,
-   2017,
-   722
+   2243,
+   1897,
+   650
   ],
   "k": 2.42,
-  "fold_vs_flat_r": 0.9976,
+  "fold_vs_flat_r": 0.9974,
   "note": ""
  },
  "salt-lake-city_hoodie_front_mauve": {
   "ink_px": [
-   2280,
-   2017,
-   722
+   2243,
+   1897,
+   650
   ],
   "k": 2.42,
-  "fold_vs_flat_r": 0.9976,
+  "fold_vs_flat_r": 0.9974,
   "note": ""
  },
  "nauvoo_hoodie_front_navy-blue": {
   "ink_px": [
-   2161,
-   2017,
-   720
+   2148,
+   1897,
+   648
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9864,
+  "fold_vs_flat_r": 0.9788,
   "note": ""
  },
  "salt-lake-city_hoodie_front_navy-blue": {
   "ink_px": [
-   2161,
-   2017,
-   720
+   2148,
+   1897,
+   648
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9863,
+  "fold_vs_flat_r": 0.9785,
   "note": ""
  },
  "nauvoo_hoodie_front_royal-blue": {
   "ink_px": [
-   1980,
-   2030,
-   726
+   1963,
+   1909,
+   654
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9946,
+  "fold_vs_flat_r": 0.9948,
   "note": ""
  },
  "salt-lake-city_hoodie_front_royal-blue": {
   "ink_px": [
-   1980,
-   2030,
-   726
+   1963,
+   1909,
+   654
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9946,
+  "fold_vs_flat_r": 0.9949,
   "note": ""
  },
  "nauvoo_tee_back_black": {
   "ink_px": [
-   1509,
+   1572,
    1838,
-   1577
+   1419
   ],
   "k": 2.809,
-  "fold_vs_flat_r": 0.977,
+  "fold_vs_flat_r": 0.9778,
   "note": ""
  },
  "salt-lake-city_tee_back_black": {
   "ink_px": [
-   1509,
+   1572,
    1838,
-   1577
+   1419
   ],
   "k": 2.809,
-  "fold_vs_flat_r": 0.9343,
+  "fold_vs_flat_r": 0.927,
   "note": ""
  },
  "nauvoo_tee_back_charcoal": {
   "ink_px": [
-   1927,
+   1954,
    1847,
-   1592
+   1433
   ],
   "k": 2.836,
-  "fold_vs_flat_r": 0.9874,
+  "fold_vs_flat_r": 0.9896,
   "note": ""
  },
  "salt-lake-city_tee_back_charcoal": {
   "ink_px": [
-   1927,
+   1954,
    1847,
-   1592
+   1433
   ],
   "k": 2.836,
-  "fold_vs_flat_r": 0.9738,
+  "fold_vs_flat_r": 0.9715,
   "note": ""
  },
  "nauvoo_tee_back_coffee": {
   "ink_px": [
-   1735,
+   1795,
    1803,
-   1520
+   1368
   ],
   "k": 2.708,
-  "fold_vs_flat_r": 0.9836,
+  "fold_vs_flat_r": 0.9858,
   "note": ""
  },
  "salt-lake-city_tee_back_coffee": {
   "ink_px": [
-   1735,
+   1795,
    1803,
-   1520
+   1368
   ],
   "k": 2.708,
-  "fold_vs_flat_r": 0.9558,
+  "fold_vs_flat_r": 0.952,
   "note": ""
  },
  "nauvoo_tee_back_cream": {
   "ink_px": [
-   1709,
+   1766,
    1846,
-   1565
+   1409
   ],
   "k": 2.788,
-  "fold_vs_flat_r": 0.9916,
+  "fold_vs_flat_r": 0.9936,
   "note": ""
  },
  "salt-lake-city_tee_back_cream": {
   "ink_px": [
-   1709,
+   1766,
    1846,
-   1565
+   1409
   ],
   "k": 2.788,
-  "fold_vs_flat_r": 0.984,
+  "fold_vs_flat_r": 0.9833,
   "note": ""
  },
  "nauvoo_tee_back_light-blue": {
   "ink_px": [
-   1707,
+   1759,
    1834,
-   1586
+   1427
   ],
   "k": 2.825,
-  "fold_vs_flat_r": 0.9943,
+  "fold_vs_flat_r": 0.9963,
   "note": ""
  },
  "salt-lake-city_tee_back_light-blue": {
   "ink_px": [
-   1707,
+   1759,
    1834,
-   1586
+   1427
   ],
   "k": 2.825,
-  "fold_vs_flat_r": 0.9887,
+  "fold_vs_flat_r": 0.9894,
   "note": ""
  },
  "nauvoo_tee_back_maroon": {
   "ink_px": [
-   1701,
+   1762,
    1842,
-   1574
+   1417
   ],
   "k": 2.804,
-  "fold_vs_flat_r": 0.9826,
+  "fold_vs_flat_r": 0.9856,
   "note": ""
  },
  "salt-lake-city_tee_back_maroon": {
   "ink_px": [
-   1701,
+   1762,
    1842,
-   1574
+   1417
   ],
   "k": 2.804,
-  "fold_vs_flat_r": 0.9555,
+  "fold_vs_flat_r": 0.9551,
   "note": ""
  },
  "nauvoo_tee_back_navy-blue": {
   "ink_px": [
-   1773,
+   1797,
    1840,
-   1583
+   1424
   ],
   "k": 2.819,
-  "fold_vs_flat_r": 0.9784,
+  "fold_vs_flat_r": 0.9796,
   "note": ""
  },
  "salt-lake-city_tee_back_navy-blue": {
   "ink_px": [
-   1773,
+   1797,
    1840,
-   1583
+   1424
   ],
   "k": 2.819,
-  "fold_vs_flat_r": 0.9348,
+  "fold_vs_flat_r": 0.9241,
   "note": ""
  },
  "nauvoo_tee_back_pink": {
   "ink_px": [
-   1619,
+   1572,
    1836,
-   1576
+   1418
   ],
   "k": 2.807,
-  "fold_vs_flat_r": 0.9174,
+  "fold_vs_flat_r": 0.9931,
   "note": ""
  },
  "salt-lake-city_tee_back_pink": {
   "ink_px": [
-   1619,
+   1572,
    1836,
-   1576
+   1418
   ],
   "k": 2.807,
-  "fold_vs_flat_r": 0.9513,
+  "fold_vs_flat_r": 0.9795,
   "note": ""
  },
  "nauvoo_tee_front_black": {
   "ink_px": [
-   1973,
-   2375,
+   1943,
+   2267,
    646
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9827,
+  "fold_vs_flat_r": 0.9822,
   "note": ""
  },
  "salt-lake-city_tee_front_black": {
   "ink_px": [
-   1973,
-   2375,
+   1943,
+   2267,
    646
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9823,
+  "fold_vs_flat_r": 0.9824,
   "note": ""
  },
  "nauvoo_tee_front_charcoal": {
   "ink_px": [
-   2387,
-   2380,
+   2364,
+   2273,
    647
   ],
   "k": 2.576,
-  "fold_vs_flat_r": 0.9912,
+  "fold_vs_flat_r": 0.9937,
   "note": ""
  },
  "salt-lake-city_tee_front_charcoal": {
   "ink_px": [
-   2387,
-   2380,
+   2364,
+   2273,
    647
   ],
   "k": 2.576,
-  "fold_vs_flat_r": 0.9914,
+  "fold_vs_flat_r": 0.9938,
   "note": ""
  },
  "nauvoo_tee_front_coffee": {
   "ink_px": [
-   2195,
-   2316,
+   2182,
+   2217,
    595
   ],
   "k": 2.368,
-  "fold_vs_flat_r": 0.9908,
+  "fold_vs_flat_r": 0.9915,
   "note": ""
  },
  "salt-lake-city_tee_front_coffee": {
   "ink_px": [
-   2195,
-   2316,
+   2182,
+   2217,
    595
   ],
   "k": 2.368,
-  "fold_vs_flat_r": 0.9904,
+  "fold_vs_flat_r": 0.9915,
   "note": ""
  },
  "nauvoo_tee_front_cream": {
   "ink_px": [
-   2172,
-   2312,
+   2147,
+   2207,
    633
   ],
   "k": 2.52,
-  "fold_vs_flat_r": 0.9982,
+  "fold_vs_flat_r": 0.998,
   "note": ""
  },
  "salt-lake-city_tee_front_cream": {
   "ink_px": [
-   2172,
-   2312,
+   2147,
+   2207,
    633
   ],
   "k": 2.52,
-  "fold_vs_flat_r": 0.9982,
+  "fold_vs_flat_r": 0.998,
   "note": ""
  },
  "nauvoo_tee_front_light-blue": {
   "ink_px": [
-   2164,
-   2386,
+   2139,
+   2279,
    645
   ],
   "k": 2.567,
-  "fold_vs_flat_r": 0.9982,
+  "fold_vs_flat_r": 0.9979,
   "note": ""
  },
  "salt-lake-city_tee_front_light-blue": {
   "ink_px": [
-   2164,
-   2386,
+   2139,
+   2279,
    645
   ],
   "k": 2.567,
-  "fold_vs_flat_r": 0.9982,
+  "fold_vs_flat_r": 0.9979,
   "note": ""
  },
  "nauvoo_tee_front_maroon": {
   "ink_px": [
-   2158,
-   2379,
+   2137,
+   2271,
    643
   ],
   "k": 2.56,
-  "fold_vs_flat_r": 0.988,
+  "fold_vs_flat_r": 0.9928,
   "note": ""
  },
  "salt-lake-city_tee_front_maroon": {
   "ink_px": [
-   2158,
-   2379,
+   2137,
+   2271,
    643
   ],
   "k": 2.56,
-  "fold_vs_flat_r": 0.9879,
+  "fold_vs_flat_r": 0.9928,
   "note": ""
  },
  "nauvoo_tee_front_navy-blue": {
   "ink_px": [
-   2274,
-   2374,
+   2265,
+   2267,
    644
   ],
   "k": 2.563,
-  "fold_vs_flat_r": 0.9882,
+  "fold_vs_flat_r": 0.9849,
   "note": ""
  },
  "salt-lake-city_tee_front_navy-blue": {
   "ink_px": [
-   2274,
-   2374,
+   2265,
+   2267,
    644
   ],
   "k": 2.563,
-  "fold_vs_flat_r": 0.9882,
+  "fold_vs_flat_r": 0.9845,
   "note": ""
  },
  "nauvoo_tee_front_pink": {
   "ink_px": [
-   2108,
-   2370,
+   2052,
+   2262,
    646
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9974,
+  "fold_vs_flat_r": 0.998,
   "note": ""
  },
  "salt-lake-city_tee_front_pink": {
   "ink_px": [
-   2108,
-   2370,
+   2052,
+   2262,
    646
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9975,
+  "fold_vs_flat_r": 0.998,
   "note": ""
  }
 }

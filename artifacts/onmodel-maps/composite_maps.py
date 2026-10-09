@@ -77,6 +77,13 @@ LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each fla
 # The hood's lower outline on the hoodie-back lead photo (2880px): where its left
 # edge meets the shoulder, its point at centre back, where its right edge meets
 # the shoulder. Carried to each colour by the registration.
+HOOD_COVER = 0.03
+# Measured by hand on each hoodie-back photo (2880px), the hood's tip at centre
+# back: registration carried it within ~40px, too loose for a 3% overlap.
+HOOD_TIP = {"black": 15, "coffee": 15, "eden-green": 15, "gray": 30, "mauve": 25,
+            "navy-blue": 15, "royal-blue": 5}          # x right of centre_x
+HOOD_TIP_Y = {"black": 1095, "coffee": 1125, "eden-green": 1110, "gray": 1105,
+              "mauve": 1095, "navy-blue": 1092, "royal-blue": 1095}
 HOOD_LM = {"left": [1050, 788], "point": [1437, 1095], "right": [1812, 788]}
 
 # Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
@@ -165,6 +172,9 @@ def detect():
         if name.startswith("hoodie_back") and "hood" not in L:
             L["hood"] = HOOD_LM
         L["centre_x"] = centre_x(base_dir / f"{name}.png", L)
+        if name.startswith("hoodie_back"):
+            c = name.split("_", 2)[2]
+            L["hood_tip"] = [L["centre_x"] + HOOD_TIP[c], HOOD_TIP_Y[c]]
     lm_p.write_text(json.dumps(lm, indent=1))
     sheet(lm)
     return lm
@@ -213,8 +223,14 @@ def target_box(name, L, place):
         top -= RAISE_IN[v] * px_per_in
     cx = L.get("centre_x", L["collar"][0])
     note = ""
-    if "hood" in L:
-        note = f"hood covers the top {max(0, round(L['hood']['point'][1] - top))}px"
+    if "hood_tip" in L:
+        # Hoodie back: centred on the hood's own seam, and the map's top tucked a
+        # fixed 3% of its height under the hood's tip, so every colour shows the
+        # hood lying over the very top of the design (Evan, 9 Oct 2026).
+        cx = L["hood_tip"][0]
+        h = w * (ink[3] - ink[1]) / (ink[2] - ink[0])
+        top = L["hood_tip"][1] - HOOD_COVER * h
+        note = f"hood covers the top {round(HOOD_COVER * h)}px"
     return cx - w / 2, top, w, note
 
 
@@ -225,14 +241,15 @@ def hood_mask(L, shape):
     H, W = shape
     r = W / 2880
     (lx, ly), (px, py), (rx, ry) = (L["hood"][k] for k in ("left", "point", "right"))
-    dx = L.get("centre_x", px) - px          # the hood sits on the measured centre line
+    # the outline's shape comes from the registered marks, its tip from the hand
+    # measurement, so the mask matches the real hood on every colour
+    dx, dy = L["hood_tip"][0] - px, L["hood_tip"][1] - py
     lx, px, rx = lx + dx, px + dx, rx + dx
-    xs = np.linspace(lx, rx, 200)
-    # a parabola through the three marks: the hood's two sides meeting at its point
-    A = np.array([[lx * lx, lx, 1], [px * px, px, 1], [rx * rx, rx, 1]], float)
-    a, b, c = np.linalg.solve(A, [ly, py, ry])
-    ys = a * xs * xs + b * xs + c
-    poly = [(x * r, y * r) for x, y in zip(xs, ys)] + [(rx * r, 0), (lx * r, 0)]
+    ly, py, ry = ly + dy, py + dy, ry + dy
+    # The hood's lower outline is a V: two nearly straight sides meeting at its
+    # point. (A parabola through the same three marks bellied out far wider than
+    # the real hood and cut a 220px gap in the map's top edge.)
+    poly = [(lx * r, ly * r), (px * r, py * r), (rx * r, ry * r), (rx * r, 0), (lx * r, 0)]
     m = np.zeros((H, W), np.uint8)
     cv2.fillPoly(m, [np.array(poly, np.int32)], 255)
     m = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), 3 * r)
@@ -264,8 +281,9 @@ def sheet(lm):
         d.rectangle([left, top, left + w, top + h], outline=(255, 220, 0), width=8)
         d.line([(L.get("centre_x", cx), cy - 400), (L.get("centre_x", cx), L["hem"])], fill=(255, 0, 255), width=6)
         if "hood" in L:
-            dx = L.get("centre_x", L["hood"]["point"][0]) - L["hood"]["point"][0]
-            d.line([(x + dx, y) for x, y in (L["hood"]["left"], L["hood"]["point"], L["hood"]["right"])],
+            dx = L["hood_tip"][0] - L["hood"]["point"][0]
+            dy = L["hood_tip"][1] - L["hood"]["point"][1]
+            d.line([(x + dx, y + dy) for x, y in (L["hood"]["left"], L["hood"]["point"], L["hood"]["right"])],
                    fill=(255, 0, 0), width=8)
         im = im.resize((480, 480))
         ImageDraw.Draw(im).text((6, 6), f"{name} {L['how']}", fill=(255, 255, 0))
