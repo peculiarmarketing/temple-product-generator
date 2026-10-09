@@ -164,29 +164,29 @@
  },
  "crew_black": {
   "collar": [
-   2050,
-   1278
+   2044,
+   1280
   ],
   "chest": [
-   1290,
-   2862
+   1368,
+   2880
   ],
   "how": "hand"
  },
  "crew_heather-gray": {
   "collar": [
-   2049,
-   1270
+   2046,
+   1274
   ],
   "chest": [
-   1291,
-   2868
+   1372,
+   2886
   ],
   "how": "registered",
-  "scale": 1.0035,
+  "scale": 1.0013,
   "shift": [
-   -17,
-   -40
+   -6,
+   -36
   ]
  },
  "hoodie_black": {

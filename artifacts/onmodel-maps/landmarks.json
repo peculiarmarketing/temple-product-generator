@@ -2,59 +2,60 @@
  "crew_back_black": {
   "collar": [
    1412,
-   700
+   675
   ],
-  "hem": 2380,
+  "hem": 2537,
   "chest": [
    912,
    1925
   ],
   "chest_y": 1500,
   "how": "hand",
-  "centre_x": 1414
+  "centre_x": 1424
  },
  "crew_back_heather-gray": {
   "collar": [
-   1245,
-   700
+   1366,
+   682
   ],
-  "hem": 2382,
-  "how": "hand",
+  "hem": 2538,
   "chest": [
-   775,
-   1800
+   868,
+   1878
   ],
-  "chest_y": 1500,
-  "centre_x": 1270
+  "chest_y": 1504,
+  "how": "registered",
+  "scale": 0.9975,
+  "centre_x": 1370
  },
  "crew_front_black": {
   "collar": [
    1412,
-   825
+   800
   ],
-  "hem": 2375,
+  "hem": 2532,
   "chest": [
    900,
-   1912
+   1925
   ],
   "chest_y": 1500,
   "how": "hand",
-  "centre_x": 1404
+  "centre_x": 1409
  },
  "crew_front_heather-gray": {
   "collar": [
-   1266,
-   822
+   1354,
+   803
   ],
-  "hem": 2379,
+  "hem": 2532,
   "chest": [
-   763,
-   1771
+   853,
+   1871
   ],
-  "chest_y": 1500,
+  "chest_y": 1502,
   "how": "registered",
-  "scale": 0.9961,
-  "centre_x": 1261
+  "scale": 0.9932,
+  "centre_x": 1351
  },
  "hoodie_back_black": {
   "collar": [
