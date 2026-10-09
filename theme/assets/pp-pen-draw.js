@@ -58,6 +58,13 @@
     return cache.get(item.json);
   }
 
+  // Drop every cached drawing except these items (the showcase keeps only the one on
+  // screen and the next, so a long visit does not keep all of them in memory).
+  function forgetExcept(keep) {
+    const urls = new Set(keep.filter(Boolean).map((k) => k.json));
+    [...cache.keys()].forEach((url) => { if (!urls.has(url)) cache.delete(url); });
+  }
+
   // The drawing is painted on a canvas (9 October 2026; it was an SVG mask, which
   // re-rendered every stroke on every frame and dropped to ~30 fps on the 11,800-line
   // Salt Lake City map). Each frame paints only the new length of pen line onto an
@@ -313,8 +320,13 @@
           if (!live()) break;
           setCount();
           stage.classList.remove('is-faded');
-          if (items.length > 1) load(items[(idx + 1) % items.length]).catch(() => {});
+          // Only the drawing on screen and the one after it are kept in memory.
+          const next = items.length > 1 ? items[(idx + 1) % items.length] : null;
+          forgetExcept([item, next]);
           await draw(stage, data, item.img, live, drawMs);
+          // The next drawing downloads once this one is drawn, not alongside it, so
+          // the first one has the connection to itself on a slow phone.
+          if (next && live()) load(next).catch(() => {});
           if (!live()) break;
           await wait(HOLD_MS);
           if (!live() || items.length < 2) break;  // a single temple just stays drawn

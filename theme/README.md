@@ -227,3 +227,10 @@ The showcase opens with the four temples that have a matching map, each followed
 its map (Salt Lake, Kirtland, Nauvoo, San Antonio), then the other 23 maps in Church
 history order, Sharon to Martin's Cove, alternating with the six hero temples.
 54 drawings, about 11 s each.
+
+Lighter rotation (9 October 2026, V4): 26 drawings, the four matched pairs then
+nine Church history maps (Sharon, Palmyra township, Harmony, Fayette, Independence,
+Far West, Adam-ondi-Ahman, Carthage, Winter Quarters) alternating with the hero
+temples. `pp-pen-draw.js` now downloads the next drawing only after the current one
+has drawn (it used to fetch both on arrival), and the showcase keeps only the
+current and next drawings in memory (`forgetExcept`).

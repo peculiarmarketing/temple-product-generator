@@ -16,7 +16,7 @@
         "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
         "button_label": "Find your temple",
         "link": "shopify://collections/temple-design-products",
-        "temples": "salt-lake, map:salt-lake-city, kirtland, map:kirtland, nauvoo, map:nauvoo, san-antonio, map:san-antonio, logan, map:sharon, mexico-city, map:whitingham, rome, map:palmyra-township, salt-lake, map:manchester, kirtland, map:fayette, nauvoo, map:mendon, logan, map:colesville, mexico-city, map:afton, rome, map:harmony, salt-lake, map:hiram, kirtland, map:independence, nauvoo, map:liberty, logan, map:richmond, mexico-city, map:far-west, rome, map:adam-ondi-ahman, salt-lake, map:hauns-mill, kirtland, map:quincy, nauvoo, map:carthage, logan, map:garden-grove, mexico-city, map:mount-pisgah, rome, map:council-bluffs, salt-lake, map:winter-quarters, kirtland, map:martins-cove",
+        "temples": "salt-lake, map:salt-lake-city, kirtland, map:kirtland, nauvoo, map:nauvoo, san-antonio, map:san-antonio, logan, map:sharon, mexico-city, map:palmyra-township, rome, map:harmony, salt-lake, map:fayette, kirtland, map:independence, nauvoo, map:far-west, logan, map:adam-ondi-ahman, mexico-city, map:carthage, rome, map:winter-quarters",
         "drawing_label": "Line drawings of temples and city maps, drawn one after another",
         "draw_seconds": 6,
         "colours": "light"
