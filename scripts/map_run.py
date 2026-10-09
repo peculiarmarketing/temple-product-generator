@@ -243,6 +243,17 @@ def title_for(name, p, garment_cfg):
     return f"{line} ({city})"
 
 
+# The On the Map list is numbered to match the markers on the map (Evan,
+# 9 Oct 2026). Themes often strip list markers, so the numbers are forced on.
+MAP_LIST_STYLE = ('<style class="site-history__map-style">'
+                  'section.site-history ol.site-history__map{list-style:decimal outside;'
+                  'padding-left:1.6em;margin:0}'
+                  'section.site-history ol.site-history__map>li{display:list-item;'
+                  'list-style:inherit;margin:0 0 .5em}'
+                  'section.site-history ol.site-history__map>li::marker{font-weight:600}'
+                  '</style>')
+
+
 def history_section(name):
     """The Church history fragment, collapsed into rows like the temple facts:
     one row for the place name with its spec rows, one per h4 block."""
@@ -264,7 +275,7 @@ def history_section(name):
         if not h:
             raise SystemExit(f"{path}: a block does not open with an h3 or h4")
         blocks.append(_details_block(h.group(1), chunk[h.end():].strip(), "site-history"))
-    return "\n".join([open_tag, _row_style("site-history")] + blocks
+    return "\n".join([open_tag, _row_style("site-history"), MAP_LIST_STYLE] + blocks
                      + ([tail] if tail else []) + [close_tag])
 
 
