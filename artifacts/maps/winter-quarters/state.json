@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/winter-quarters/winter-quarters hoodie white front print (map).png"
+    ]
+  }
+}

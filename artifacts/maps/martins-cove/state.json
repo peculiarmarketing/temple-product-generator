@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/martins-cove/martins-cove hoodie white front print (map).png"
+    ]
+  }
+}

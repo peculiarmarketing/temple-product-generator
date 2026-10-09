@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/quincy/quincy hoodie white front print (map).png"
+    ]
+  }
+}
