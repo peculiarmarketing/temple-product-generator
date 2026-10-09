@@ -220,3 +220,10 @@ new length of pen line to an offscreen mask canvas and shows the art through it 
 one composite (under 1 ms of script per frame on that map). The finished art still
 fades in over it at the end, and a resize repaints what is drawn so far. Same data
 files, same behaviour for the product band and the homepage showcase.
+
+All 27 city maps in the hero (9 October 2026, V4): the 25 map drawings uploaded to
+the live theme after V4 was duplicated were copied into V4 (checksums match live).
+The showcase opens with the four temples that have a matching map, each followed by
+its map (Salt Lake, Kirtland, Nauvoo, San Antonio), then the other 23 maps in Church
+history order, Sharon to Martin's Cove, alternating with the six hero temples.
+54 drawings, about 11 s each.
