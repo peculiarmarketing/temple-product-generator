@@ -40,6 +40,7 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -60,6 +61,7 @@ from shopify_client import ShopifyClient         # noqa: E402
 
 RESYNC_TIMEOUT_S = 20 * 60
 POLL_S = 15
+TAG_ALT = re.compile(r"[a-z]+:[^\s,]+(,[a-z]+:[^\s,]+)*")   # a tag list, not an alt
 PRODUCT_Q = """query($h: String!) { productByHandle(handle: $h) {
   id title status productType tags descriptionHtml
   media(first: 100) { nodes { id alt status ... on MediaImage { image { url } } } } } }"""
@@ -170,7 +172,10 @@ def refresh(s, sc, name, p, garment, st, note):
         for m in prod["media"]["nodes"]:
             if m["id"] in failed:
                 continue
-            if m.get("alt"):
+            # Products created on 8 Oct carry their tags on the Tapstitch store
+            # product, and Tapstitch copies that field onto every image it
+            # re-sends ("map:nauvoo,line:map"); that is no alt, so it is replaced.
+            if m.get("alt") and not TAG_ALT.fullmatch(m["alt"]):
                 raise SystemExit(f"{handle}: returned image {m['id']} already has alt {m['alt']!r}; stopping")
             t = thumb(m["image"]["url"])
             c, i = max((corr(t, x), i) for i, (_, x) in enumerate(snap))
@@ -226,7 +231,7 @@ def verify(s, sc, name, p, garment, rec):
     commits = {pi["commitId"] for v in sp["variants"] for pi in v.get("productionItems", [])}
     if commits != {rec.get("commit_after")}:
         problems.append(f"store product prints {sorted(commits)}, expected {rec.get('commit_after')}")
-    blank = [m["id"] for m in prod["media"]["nodes"] if not m.get("alt")]
+    blank = [m["id"] for m in prod["media"]["nodes"] if not m.get("alt") or TAG_ALT.fullmatch(m["alt"])]
     if blank:
         problems.append(f"{len(blank)} image(s) without alt text")
     if hashlib.sha256(prod["descriptionHtml"].encode()).hexdigest() != rec.get("description_sha"):
