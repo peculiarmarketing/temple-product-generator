@@ -7,18 +7,29 @@
     "template_id": "1558303553427238912",
     "store_product_id": "1558303605235326976",
     "distribute_started_at": "2026-10-09T18:22:12",
-    "shopify_handle": "essential-heavyweight-map-tee-sharon"
+    "shopify_handle": "essential-heavyweight-map-tee-sharon",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/sharon/sharon crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/sharon/sharon crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558303860576120832",
+    "store_product_id": "1558303889420394496",
+    "distribute_started_at": "2026-10-09T18:23:19",
+    "shopify_handle": "ultra-soft-map-sweatshirt-sharon",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/sharon/sharon hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/sharon/sharon hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558304102461624320",
+    "store_product_id": "1558304143725240320",
+    "distribute_started_at": "2026-10-09T18:24:20",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-sharon",
+    "state": "live"
   }
 }
