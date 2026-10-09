@@ -250,5 +250,21 @@
    "gid://shopify/MediaImage/56541563584884",
    "gid://shopify/MediaImage/56541563617652"
   ]
+ },
+ "essential-heavyweight-map-tee-san-antonio": {
+  "uploaded": {
+   "tee_back_maroon": "gid://shopify/MediaImage/56555707990388",
+   "tee_front_maroon": "gid://shopify/MediaImage/56555708907892",
+   "tee_back_black": "gid://shopify/MediaImage/56555709235572",
+   "tee_back_charcoal": "gid://shopify/MediaImage/56555710480756",
+   "tee_back_coffee": "gid://shopify/MediaImage/56555710742900",
+   "tee_back_navy-blue": "gid://shopify/MediaImage/56555711725940",
+   "tee_back_pink": "gid://shopify/MediaImage/56555712872820",
+   "tee_back_light-blue": "gid://shopify/MediaImage/56555713397108",
+   "tee_back_cream": "gid://shopify/MediaImage/56555713921396",
+   "tee_front_black": "gid://shopify/MediaImage/56555714478452",
+   "tee_front_charcoal": "gid://shopify/MediaImage/56555714740596",
+   "tee_front_coffee": "gid://shopify/MediaImage/56555715428724"
+  }
  }
 }
