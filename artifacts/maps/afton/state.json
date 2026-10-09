@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/afton/afton tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/afton/afton tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558307586514776064",
+    "store_product_id": "1558307635642703872",
+    "distribute_started_at": "2026-10-09T18:38:13",
+    "shopify_handle": "essential-heavyweight-map-tee-afton",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/afton/afton crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/afton/afton crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558307897690189824",
+    "store_product_id": "1558307924579917824",
+    "distribute_started_at": "2026-10-09T18:39:21",
+    "shopify_handle": "ultra-soft-map-sweatshirt-afton",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/afton/afton hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/afton/afton hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308147167383552",
+    "store_product_id": "1558308191434121216",
+    "distribute_started_at": "2026-10-09T18:40:25",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-afton",
+    "state": "live"
   }
 }

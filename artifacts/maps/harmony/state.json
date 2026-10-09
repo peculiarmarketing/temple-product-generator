@@ -18,12 +18,18 @@
     "template_id": "1558307164848812032",
     "store_product_id": "1558307196301942784",
     "distribute_started_at": "2026-10-09T18:36:28",
-    "shopify_handle": "ultra-soft-map-sweatshirt-harmony"
+    "shopify_handle": "ultra-soft-map-sweatshirt-harmony",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558307421523431424",
+    "store_product_id": "1558307462044647424",
+    "distribute_started_at": "2026-10-09T18:37:31",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-harmony",
+    "state": "live"
   }
 }

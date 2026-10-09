@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308545466888192",
+    "store_product_id": "1558308594456403968",
+    "distribute_started_at": "2026-10-09T18:42:01",
+    "shopify_handle": "essential-heavyweight-map-tee-hiram",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308919179366400",
+    "store_product_id": "1558308952385724416",
+    "distribute_started_at": "2026-10-09T18:43:26",
+    "shopify_handle": "ultra-soft-map-sweatshirt-hiram",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hiram/hiram hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309174763474944",
+    "store_product_id": "1558309214500364288",
+    "distribute_started_at": "2026-10-09T18:44:29",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-hiram",
+    "state": "live"
   }
 }

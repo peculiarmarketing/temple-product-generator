@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312847338008576",
+    "store_product_id": "1558312894305869824",
+    "distribute_started_at": "2026-10-09T18:59:06",
+    "shopify_handle": "essential-heavyweight-map-tee-council-bluffs",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313151727030272",
+    "store_product_id": "1558313175433289728",
+    "distribute_started_at": "2026-10-09T19:00:13",
+    "shopify_handle": "ultra-soft-map-sweatshirt-council-bluffs",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/council-bluffs/council-bluffs hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558313398238867456",
+    "store_product_id": "1558313438634254336",
+    "distribute_started_at": "2026-10-09T19:01:16",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-council-bluffs",
+    "state": "live"
   }
 }

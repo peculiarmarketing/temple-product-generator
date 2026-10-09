@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311207096700928",
+    "store_product_id": "1558311253137629184",
+    "distribute_started_at": "2026-10-09T18:52:35",
+    "shopify_handle": "essential-heavyweight-map-tee-far-west",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311578628157440",
+    "store_product_id": "1558311608298708992",
+    "distribute_started_at": "2026-10-09T18:54:00",
+    "shopify_handle": "ultra-soft-map-sweatshirt-far-west",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/far-west/far-west hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311892143984640",
+    "store_product_id": "1558311938663063552",
+    "distribute_started_at": "2026-10-09T18:55:18",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-far-west",
+    "state": "live"
   }
 }

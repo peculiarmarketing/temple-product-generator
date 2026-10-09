@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/independence/independence tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/independence/independence tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558307941126393856",
+    "store_product_id": "1558307981848944640",
+    "distribute_started_at": "2026-10-09T18:39:35",
+    "shopify_handle": "essential-heavyweight-map-tee-independence",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/independence/independence crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/independence/independence crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308256106049536",
+    "store_product_id": "1558308285499768832",
+    "distribute_started_at": "2026-10-09T18:40:47",
+    "shopify_handle": "ultra-soft-map-sweatshirt-independence",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/independence/independence hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/independence/independence hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558308510142459904",
+    "store_product_id": "1558308547715080192",
+    "distribute_started_at": "2026-10-09T18:41:50",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-independence",
+    "state": "live"
   }
 }

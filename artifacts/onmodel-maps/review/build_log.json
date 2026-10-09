@@ -6,7 +6,7 @@
    1466
   ],
   "k": 2.763,
-  "fold_vs_flat_r": 0.9782,
+  "fold_vs_flat_r": 0.9783,
   "note": ""
  },
  "salt-lake-city_crew_back_black": {
@@ -16,7 +16,7 @@
    1466
   ],
   "k": 2.763,
-  "fold_vs_flat_r": 0.9162,
+  "fold_vs_flat_r": 0.918,
   "note": ""
  },
  "nauvoo_crew_back_heather-gray": {
@@ -36,7 +36,7 @@
    1461
   ],
   "k": 2.754,
-  "fold_vs_flat_r": 0.9547,
+  "fold_vs_flat_r": 0.9533,
   "note": ""
  },
  "nauvoo_crew_front_black": {
@@ -46,7 +46,7 @@
    677
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9754,
+  "fold_vs_flat_r": 0.9752,
   "note": ""
  },
  "salt-lake-city_crew_front_black": {
@@ -56,7 +56,7 @@
    677
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9758,
+  "fold_vs_flat_r": 0.9756,
   "note": ""
  },
  "nauvoo_crew_front_heather-gray": {
@@ -86,7 +86,7 @@
    1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9688,
+  "fold_vs_flat_r": 0.9685,
   "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_black": {
@@ -96,7 +96,7 @@
    1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9407,
+  "fold_vs_flat_r": 0.9384,
   "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_coffee": {
@@ -106,7 +106,7 @@
    1234
   ],
   "k": 2.377,
-  "fold_vs_flat_r": 0.9708,
+  "fold_vs_flat_r": 0.9711,
   "note": "hood covers the top 28px"
  },
  "salt-lake-city_hoodie_back_coffee": {
@@ -116,7 +116,7 @@
    1234
   ],
   "k": 2.377,
-  "fold_vs_flat_r": 0.9537,
+  "fold_vs_flat_r": 0.9522,
   "note": "hood covers the top 28px"
  },
  "nauvoo_hoodie_back_eden-green": {
@@ -126,7 +126,7 @@
    1323
   ],
   "k": 2.549,
-  "fold_vs_flat_r": 0.9696,
+  "fold_vs_flat_r": 0.9692,
   "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_eden-green": {
@@ -136,27 +136,27 @@
    1323
   ],
   "k": 2.549,
-  "fold_vs_flat_r": 0.9527,
+  "fold_vs_flat_r": 0.9489,
   "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_gray": {
   "ink_px": [
    1980,
    1864,
-   1353
+   1352
   ],
   "k": 2.606,
-  "fold_vs_flat_r": 0.9732,
+  "fold_vs_flat_r": 0.9734,
   "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_gray": {
   "ink_px": [
    1980,
    1864,
-   1353
+   1352
   ],
   "k": 2.606,
-  "fold_vs_flat_r": 0.9723,
+  "fold_vs_flat_r": 0.9663,
   "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_mauve": {
@@ -166,7 +166,7 @@
    1321
   ],
   "k": 2.545,
-  "fold_vs_flat_r": 0.974,
+  "fold_vs_flat_r": 0.9737,
   "note": "hood covers the top 30px"
  },
  "salt-lake-city_hoodie_back_mauve": {
@@ -176,7 +176,7 @@
    1321
   ],
   "k": 2.545,
-  "fold_vs_flat_r": 0.9781,
+  "fold_vs_flat_r": 0.9705,
   "note": "hood covers the top 30px"
  },
  "nauvoo_hoodie_back_navy-blue": {
@@ -186,7 +186,7 @@
    1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9716,
+  "fold_vs_flat_r": 0.9713,
   "note": "hood covers the top 31px"
  },
  "salt-lake-city_hoodie_back_navy-blue": {
@@ -196,7 +196,7 @@
    1325
   ],
   "k": 2.552,
-  "fold_vs_flat_r": 0.9506,
+  "fold_vs_flat_r": 0.9496,
   "note": "hood covers the top 31px"
  },
  "nauvoo_hoodie_back_royal-blue": {
@@ -206,7 +206,7 @@
    1286
   ],
   "k": 2.478,
-  "fold_vs_flat_r": 0.9752,
+  "fold_vs_flat_r": 0.975,
   "note": "hood covers the top 30px"
  },
  "salt-lake-city_hoodie_back_royal-blue": {
@@ -216,7 +216,7 @@
    1286
   ],
   "k": 2.478,
-  "fold_vs_flat_r": 0.9737,
+  "fold_vs_flat_r": 0.9694,
   "note": "hood covers the top 30px"
  },
  "nauvoo_hoodie_front_black": {
@@ -226,7 +226,7 @@
    615
   ],
   "k": 2.411,
-  "fold_vs_flat_r": 0.9785,
+  "fold_vs_flat_r": 0.9783,
   "note": ""
  },
  "salt-lake-city_hoodie_front_black": {
@@ -256,7 +256,7 @@
    595
   ],
   "k": 2.333,
-  "fold_vs_flat_r": 0.987,
+  "fold_vs_flat_r": 0.9869,
   "note": ""
  },
  "nauvoo_hoodie_front_eden-green": {
@@ -276,7 +276,7 @@
    618
   ],
   "k": 2.422,
-  "fold_vs_flat_r": 0.9763,
+  "fold_vs_flat_r": 0.9762,
   "note": ""
  },
  "nauvoo_hoodie_front_gray": {
@@ -346,7 +346,7 @@
    621
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9959,
+  "fold_vs_flat_r": 0.9958,
   "note": ""
  },
  "salt-lake-city_hoodie_front_royal-blue": {
@@ -356,7 +356,7 @@
    621
   ],
   "k": 2.434,
-  "fold_vs_flat_r": 0.9957,
+  "fold_vs_flat_r": 0.9956,
   "note": ""
  },
  "nauvoo_tee_back_black": {
@@ -376,7 +376,7 @@
    1419
   ],
   "k": 2.809,
-  "fold_vs_flat_r": 0.927,
+  "fold_vs_flat_r": 0.9278,
   "note": ""
  },
  "nauvoo_tee_back_charcoal": {
@@ -386,7 +386,7 @@
    1433
   ],
   "k": 2.836,
-  "fold_vs_flat_r": 0.9896,
+  "fold_vs_flat_r": 0.9899,
   "note": ""
  },
  "salt-lake-city_tee_back_charcoal": {
@@ -396,7 +396,7 @@
    1433
   ],
   "k": 2.836,
-  "fold_vs_flat_r": 0.9715,
+  "fold_vs_flat_r": 0.9699,
   "note": ""
  },
  "nauvoo_tee_back_coffee": {
@@ -406,7 +406,7 @@
    1368
   ],
   "k": 2.708,
-  "fold_vs_flat_r": 0.9858,
+  "fold_vs_flat_r": 0.9854,
   "note": ""
  },
  "salt-lake-city_tee_back_coffee": {
@@ -416,7 +416,7 @@
    1368
   ],
   "k": 2.708,
-  "fold_vs_flat_r": 0.952,
+  "fold_vs_flat_r": 0.9503,
   "note": ""
  },
  "nauvoo_tee_back_cream": {
@@ -436,7 +436,7 @@
    1409
   ],
   "k": 2.788,
-  "fold_vs_flat_r": 0.9833,
+  "fold_vs_flat_r": 0.9821,
   "note": ""
  },
  "nauvoo_tee_back_light-blue": {
@@ -446,7 +446,7 @@
    1427
   ],
   "k": 2.825,
-  "fold_vs_flat_r": 0.9963,
+  "fold_vs_flat_r": 0.9962,
   "note": ""
  },
  "salt-lake-city_tee_back_light-blue": {
@@ -456,7 +456,7 @@
    1427
   ],
   "k": 2.825,
-  "fold_vs_flat_r": 0.9894,
+  "fold_vs_flat_r": 0.9887,
   "note": ""
  },
  "nauvoo_tee_back_maroon": {
@@ -466,7 +466,7 @@
    1417
   ],
   "k": 2.804,
-  "fold_vs_flat_r": 0.9856,
+  "fold_vs_flat_r": 0.9851,
   "note": ""
  },
  "salt-lake-city_tee_back_maroon": {
@@ -476,7 +476,7 @@
    1417
   ],
   "k": 2.804,
-  "fold_vs_flat_r": 0.9551,
+  "fold_vs_flat_r": 0.9535,
   "note": ""
  },
  "nauvoo_tee_back_navy-blue": {
@@ -486,7 +486,7 @@
    1424
   ],
   "k": 2.819,
-  "fold_vs_flat_r": 0.9796,
+  "fold_vs_flat_r": 0.9787,
   "note": ""
  },
  "salt-lake-city_tee_back_navy-blue": {
@@ -496,7 +496,7 @@
    1424
   ],
   "k": 2.819,
-  "fold_vs_flat_r": 0.9241,
+  "fold_vs_flat_r": 0.9254,
   "note": ""
  },
  "nauvoo_tee_back_pink": {
@@ -516,7 +516,7 @@
    1418
   ],
   "k": 2.807,
-  "fold_vs_flat_r": 0.9795,
+  "fold_vs_flat_r": 0.978,
   "note": ""
  },
  "nauvoo_tee_front_black": {
@@ -526,7 +526,7 @@
    614
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9703,
+  "fold_vs_flat_r": 0.9702,
   "note": ""
  },
  "salt-lake-city_tee_front_black": {
@@ -536,7 +536,7 @@
    614
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9701,
+  "fold_vs_flat_r": 0.97,
   "note": ""
  },
  "nauvoo_tee_front_charcoal": {
@@ -636,7 +636,7 @@
    611
   ],
   "k": 2.56,
-  "fold_vs_flat_r": 0.9907,
+  "fold_vs_flat_r": 0.9906,
   "note": ""
  },
  "nauvoo_tee_front_navy-blue": {
@@ -646,7 +646,7 @@
    612
   ],
   "k": 2.563,
-  "fold_vs_flat_r": 0.9851,
+  "fold_vs_flat_r": 0.9852,
   "note": ""
  },
  "salt-lake-city_tee_front_navy-blue": {
@@ -656,7 +656,7 @@
    612
   ],
   "k": 2.563,
-  "fold_vs_flat_r": 0.9851,
+  "fold_vs_flat_r": 0.9853,
   "note": ""
  },
  "nauvoo_tee_front_pink": {
@@ -666,10 +666,1030 @@
    614
   ],
   "k": 2.57,
-  "fold_vs_flat_r": 0.9985,
+  "fold_vs_flat_r": 0.9984,
   "note": ""
  },
  "salt-lake-city_tee_front_pink": {
+  "ink_px": [
+   2068,
+   2101,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9985,
+  "note": ""
+ },
+ "whitingham_crew_back_black": {
+  "ink_px": [
+   1739,
+   1630,
+   1466
+  ],
+  "k": 2.763,
+  "fold_vs_flat_r": 0.9735,
+  "note": ""
+ },
+ "whitingham_crew_back_heather-gray": {
+  "ink_px": [
+   1648,
+   1640,
+   1461
+  ],
+  "k": 2.754,
+  "fold_vs_flat_r": 0.9853,
+  "note": ""
+ },
+ "whitingham_crew_front_black": {
+  "ink_px": [
+   2108,
+   1915,
+   677
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.98,
+  "note": ""
+ },
+ "whitingham_crew_front_heather-gray": {
+  "ink_px": [
+   2007,
+   1919,
+   676
+  ],
+  "k": 2.566,
+  "fold_vs_flat_r": 0.992,
+  "note": ""
+ },
+ "whitingham_hoodie_back_black": {
+  "ink_px": [
+   1681,
+   1848,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9653,
+  "note": "hood covers the top 31px"
+ },
+ "whitingham_hoodie_back_coffee": {
+  "ink_px": [
+   1871,
+   1904,
+   1234
+  ],
+  "k": 2.377,
+  "fold_vs_flat_r": 0.9694,
+  "note": "hood covers the top 28px"
+ },
+ "whitingham_hoodie_back_eden-green": {
+  "ink_px": [
+   1821,
+   1874,
+   1323
+  ],
+  "k": 2.549,
+  "fold_vs_flat_r": 0.967,
+  "note": "hood covers the top 31px"
+ },
+ "whitingham_hoodie_back_gray": {
+  "ink_px": [
+   1980,
+   1864,
+   1352
+  ],
+  "k": 2.606,
+  "fold_vs_flat_r": 0.9708,
+  "note": "hood covers the top 31px"
+ },
+ "whitingham_hoodie_back_mauve": {
+  "ink_px": [
+   1862,
+   1848,
+   1321
+  ],
+  "k": 2.545,
+  "fold_vs_flat_r": 0.9708,
+  "note": "hood covers the top 30px"
+ },
+ "whitingham_hoodie_back_navy-blue": {
+  "ink_px": [
+   1817,
+   1843,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9696,
+  "note": "hood covers the top 31px"
+ },
+ "whitingham_hoodie_back_royal-blue": {
+  "ink_px": [
+   1642,
+   1849,
+   1286
+  ],
+  "k": 2.478,
+  "fold_vs_flat_r": 0.9725,
+  "note": "hood covers the top 30px"
+ },
+ "whitingham_hoodie_front_black": {
+  "ink_px": [
+   1843,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9798,
+  "note": ""
+ },
+ "whitingham_hoodie_front_coffee": {
+  "ink_px": [
+   2176,
+   1921,
+   595
+  ],
+  "k": 2.333,
+  "fold_vs_flat_r": 0.9866,
+  "note": ""
+ },
+ "whitingham_hoodie_front_eden-green": {
+  "ink_px": [
+   2169,
+   1973,
+   618
+  ],
+  "k": 2.422,
+  "fold_vs_flat_r": 0.9783,
+  "note": ""
+ },
+ "whitingham_hoodie_front_gray": {
+  "ink_px": [
+   2312,
+   1912,
+   625
+  ],
+  "k": 2.451,
+  "fold_vs_flat_r": 0.9947,
+  "note": ""
+ },
+ "whitingham_hoodie_front_mauve": {
+  "ink_px": [
+   2259,
+   1897,
+   617
+  ],
+  "k": 2.42,
+  "fold_vs_flat_r": 0.9976,
+  "note": ""
+ },
+ "whitingham_hoodie_front_navy-blue": {
+  "ink_px": [
+   2165,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9826,
+  "note": ""
+ },
+ "whitingham_hoodie_front_royal-blue": {
+  "ink_px": [
+   1979,
+   1909,
+   621
+  ],
+  "k": 2.434,
+  "fold_vs_flat_r": 0.9952,
+  "note": ""
+ },
+ "whitingham_tee_back_black": {
+  "ink_px": [
+   1572,
+   1838,
+   1419
+  ],
+  "k": 2.809,
+  "fold_vs_flat_r": 0.9753,
+  "note": ""
+ },
+ "whitingham_tee_back_charcoal": {
+  "ink_px": [
+   1954,
+   1847,
+   1433
+  ],
+  "k": 2.836,
+  "fold_vs_flat_r": 0.987,
+  "note": ""
+ },
+ "whitingham_tee_back_coffee": {
+  "ink_px": [
+   1795,
+   1803,
+   1368
+  ],
+  "k": 2.708,
+  "fold_vs_flat_r": 0.9824,
+  "note": ""
+ },
+ "whitingham_tee_back_cream": {
+  "ink_px": [
+   1766,
+   1846,
+   1409
+  ],
+  "k": 2.788,
+  "fold_vs_flat_r": 0.9912,
+  "note": ""
+ },
+ "whitingham_tee_back_light-blue": {
+  "ink_px": [
+   1759,
+   1834,
+   1427
+  ],
+  "k": 2.825,
+  "fold_vs_flat_r": 0.9952,
+  "note": ""
+ },
+ "whitingham_tee_back_maroon": {
+  "ink_px": [
+   1762,
+   1842,
+   1417
+  ],
+  "k": 2.804,
+  "fold_vs_flat_r": 0.9837,
+  "note": ""
+ },
+ "whitingham_tee_back_navy-blue": {
+  "ink_px": [
+   1797,
+   1840,
+   1424
+  ],
+  "k": 2.819,
+  "fold_vs_flat_r": 0.978,
+  "note": ""
+ },
+ "whitingham_tee_back_pink": {
+  "ink_px": [
+   1572,
+   1836,
+   1418
+  ],
+  "k": 2.807,
+  "fold_vs_flat_r": 0.9911,
+  "note": ""
+ },
+ "whitingham_tee_front_black": {
+  "ink_px": [
+   1959,
+   2106,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9753,
+  "note": ""
+ },
+ "whitingham_tee_front_charcoal": {
+  "ink_px": [
+   2380,
+   2111,
+   615
+  ],
+  "k": 2.576,
+  "fold_vs_flat_r": 0.9965,
+  "note": ""
+ },
+ "whitingham_tee_front_coffee": {
+  "ink_px": [
+   2196,
+   2068,
+   565
+  ],
+  "k": 2.368,
+  "fold_vs_flat_r": 0.9938,
+  "note": ""
+ },
+ "whitingham_tee_front_cream": {
+  "ink_px": [
+   2163,
+   2048,
+   602
+  ],
+  "k": 2.52,
+  "fold_vs_flat_r": 0.9992,
+  "note": ""
+ },
+ "whitingham_tee_front_light-blue": {
+  "ink_px": [
+   2155,
+   2117,
+   613
+  ],
+  "k": 2.567,
+  "fold_vs_flat_r": 0.9993,
+  "note": ""
+ },
+ "whitingham_tee_front_maroon": {
+  "ink_px": [
+   2153,
+   2111,
+   611
+  ],
+  "k": 2.56,
+  "fold_vs_flat_r": 0.9921,
+  "note": ""
+ },
+ "whitingham_tee_front_navy-blue": {
+  "ink_px": [
+   2281,
+   2106,
+   612
+  ],
+  "k": 2.563,
+  "fold_vs_flat_r": 0.9888,
+  "note": ""
+ },
+ "whitingham_tee_front_pink": {
+  "ink_px": [
+   2068,
+   2101,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9986,
+  "note": ""
+ },
+ "san-antonio_crew_back_black": {
+  "ink_px": [
+   1739,
+   1630,
+   1466
+  ],
+  "k": 2.763,
+  "fold_vs_flat_r": 0.9153,
+  "note": ""
+ },
+ "san-antonio_crew_back_heather-gray": {
+  "ink_px": [
+   1648,
+   1640,
+   1461
+  ],
+  "k": 2.754,
+  "fold_vs_flat_r": 0.9538,
+  "note": ""
+ },
+ "san-antonio_crew_front_black": {
+  "ink_px": [
+   2108,
+   1915,
+   677
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9757,
+  "note": ""
+ },
+ "san-antonio_crew_front_heather-gray": {
+  "ink_px": [
+   2007,
+   1919,
+   676
+  ],
+  "k": 2.566,
+  "fold_vs_flat_r": 0.9917,
+  "note": ""
+ },
+ "san-antonio_hoodie_back_black": {
+  "ink_px": [
+   1681,
+   1848,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9312,
+  "note": "hood covers the top 31px"
+ },
+ "san-antonio_hoodie_back_coffee": {
+  "ink_px": [
+   1871,
+   1904,
+   1234
+  ],
+  "k": 2.377,
+  "fold_vs_flat_r": 0.9488,
+  "note": "hood covers the top 28px"
+ },
+ "san-antonio_hoodie_back_eden-green": {
+  "ink_px": [
+   1821,
+   1874,
+   1323
+  ],
+  "k": 2.549,
+  "fold_vs_flat_r": 0.9451,
+  "note": "hood covers the top 31px"
+ },
+ "san-antonio_hoodie_back_gray": {
+  "ink_px": [
+   1980,
+   1864,
+   1352
+  ],
+  "k": 2.606,
+  "fold_vs_flat_r": 0.9631,
+  "note": "hood covers the top 31px"
+ },
+ "san-antonio_hoodie_back_mauve": {
+  "ink_px": [
+   1862,
+   1848,
+   1321
+  ],
+  "k": 2.545,
+  "fold_vs_flat_r": 0.9696,
+  "note": "hood covers the top 30px"
+ },
+ "san-antonio_hoodie_back_navy-blue": {
+  "ink_px": [
+   1817,
+   1843,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9451,
+  "note": "hood covers the top 31px"
+ },
+ "san-antonio_hoodie_back_royal-blue": {
+  "ink_px": [
+   1642,
+   1849,
+   1286
+  ],
+  "k": 2.478,
+  "fold_vs_flat_r": 0.9651,
+  "note": "hood covers the top 30px"
+ },
+ "san-antonio_hoodie_front_black": {
+  "ink_px": [
+   1843,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9788,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_coffee": {
+  "ink_px": [
+   2176,
+   1921,
+   595
+  ],
+  "k": 2.333,
+  "fold_vs_flat_r": 0.9861,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_eden-green": {
+  "ink_px": [
+   2169,
+   1973,
+   618
+  ],
+  "k": 2.422,
+  "fold_vs_flat_r": 0.9763,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_gray": {
+  "ink_px": [
+   2312,
+   1912,
+   625
+  ],
+  "k": 2.451,
+  "fold_vs_flat_r": 0.9921,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_mauve": {
+  "ink_px": [
+   2259,
+   1897,
+   617
+  ],
+  "k": 2.42,
+  "fold_vs_flat_r": 0.9979,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_navy-blue": {
+  "ink_px": [
+   2165,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9797,
+  "note": ""
+ },
+ "san-antonio_hoodie_front_royal-blue": {
+  "ink_px": [
+   1979,
+   1909,
+   621
+  ],
+  "k": 2.434,
+  "fold_vs_flat_r": 0.9957,
+  "note": ""
+ },
+ "san-antonio_tee_back_black": {
+  "ink_px": [
+   1572,
+   1838,
+   1419
+  ],
+  "k": 2.809,
+  "fold_vs_flat_r": 0.9169,
+  "note": ""
+ },
+ "san-antonio_tee_back_charcoal": {
+  "ink_px": [
+   1954,
+   1847,
+   1433
+  ],
+  "k": 2.836,
+  "fold_vs_flat_r": 0.9622,
+  "note": ""
+ },
+ "san-antonio_tee_back_coffee": {
+  "ink_px": [
+   1795,
+   1803,
+   1368
+  ],
+  "k": 2.708,
+  "fold_vs_flat_r": 0.9422,
+  "note": ""
+ },
+ "san-antonio_tee_back_cream": {
+  "ink_px": [
+   1766,
+   1846,
+   1409
+  ],
+  "k": 2.788,
+  "fold_vs_flat_r": 0.9791,
+  "note": ""
+ },
+ "san-antonio_tee_back_light-blue": {
+  "ink_px": [
+   1759,
+   1834,
+   1427
+  ],
+  "k": 2.825,
+  "fold_vs_flat_r": 0.9868,
+  "note": ""
+ },
+ "san-antonio_tee_back_maroon": {
+  "ink_px": [
+   1762,
+   1842,
+   1417
+  ],
+  "k": 2.804,
+  "fold_vs_flat_r": 0.9455,
+  "note": ""
+ },
+ "san-antonio_tee_back_navy-blue": {
+  "ink_px": [
+   1797,
+   1840,
+   1424
+  ],
+  "k": 2.819,
+  "fold_vs_flat_r": 0.925,
+  "note": ""
+ },
+ "san-antonio_tee_back_pink": {
+  "ink_px": [
+   1572,
+   1836,
+   1418
+  ],
+  "k": 2.807,
+  "fold_vs_flat_r": 0.9744,
+  "note": ""
+ },
+ "san-antonio_tee_front_black": {
+  "ink_px": [
+   1959,
+   2106,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9699,
+  "note": ""
+ },
+ "san-antonio_tee_front_charcoal": {
+  "ink_px": [
+   2380,
+   2111,
+   615
+  ],
+  "k": 2.576,
+  "fold_vs_flat_r": 0.9947,
+  "note": ""
+ },
+ "san-antonio_tee_front_coffee": {
+  "ink_px": [
+   2196,
+   2068,
+   565
+  ],
+  "k": 2.368,
+  "fold_vs_flat_r": 0.9935,
+  "note": ""
+ },
+ "san-antonio_tee_front_cream": {
+  "ink_px": [
+   2163,
+   2048,
+   602
+  ],
+  "k": 2.52,
+  "fold_vs_flat_r": 0.9992,
+  "note": ""
+ },
+ "san-antonio_tee_front_light-blue": {
+  "ink_px": [
+   2155,
+   2117,
+   613
+  ],
+  "k": 2.567,
+  "fold_vs_flat_r": 0.9993,
+  "note": ""
+ },
+ "san-antonio_tee_front_maroon": {
+  "ink_px": [
+   2153,
+   2111,
+   611
+  ],
+  "k": 2.56,
+  "fold_vs_flat_r": 0.9904,
+  "note": ""
+ },
+ "san-antonio_tee_front_navy-blue": {
+  "ink_px": [
+   2281,
+   2106,
+   612
+  ],
+  "k": 2.563,
+  "fold_vs_flat_r": 0.9852,
+  "note": ""
+ },
+ "san-antonio_tee_front_pink": {
+  "ink_px": [
+   2068,
+   2101,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9984,
+  "note": ""
+ },
+ "kirtland_crew_back_black": {
+  "ink_px": [
+   1739,
+   1630,
+   1466
+  ],
+  "k": 2.763,
+  "fold_vs_flat_r": 0.9724,
+  "note": ""
+ },
+ "kirtland_crew_back_heather-gray": {
+  "ink_px": [
+   1648,
+   1640,
+   1461
+  ],
+  "k": 2.754,
+  "fold_vs_flat_r": 0.9842,
+  "note": ""
+ },
+ "kirtland_crew_front_black": {
+  "ink_px": [
+   2108,
+   1915,
+   677
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9753,
+  "note": ""
+ },
+ "kirtland_crew_front_heather-gray": {
+  "ink_px": [
+   2007,
+   1919,
+   676
+  ],
+  "k": 2.566,
+  "fold_vs_flat_r": 0.9917,
+  "note": ""
+ },
+ "kirtland_hoodie_back_black": {
+  "ink_px": [
+   1681,
+   1848,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9647,
+  "note": "hood covers the top 31px"
+ },
+ "kirtland_hoodie_back_coffee": {
+  "ink_px": [
+   1871,
+   1904,
+   1234
+  ],
+  "k": 2.377,
+  "fold_vs_flat_r": 0.9681,
+  "note": "hood covers the top 28px"
+ },
+ "kirtland_hoodie_back_eden-green": {
+  "ink_px": [
+   1821,
+   1874,
+   1323
+  ],
+  "k": 2.549,
+  "fold_vs_flat_r": 0.966,
+  "note": "hood covers the top 31px"
+ },
+ "kirtland_hoodie_back_gray": {
+  "ink_px": [
+   1980,
+   1864,
+   1352
+  ],
+  "k": 2.606,
+  "fold_vs_flat_r": 0.9694,
+  "note": "hood covers the top 31px"
+ },
+ "kirtland_hoodie_back_mauve": {
+  "ink_px": [
+   1862,
+   1848,
+   1321
+  ],
+  "k": 2.545,
+  "fold_vs_flat_r": 0.9688,
+  "note": "hood covers the top 30px"
+ },
+ "kirtland_hoodie_back_navy-blue": {
+  "ink_px": [
+   1817,
+   1843,
+   1325
+  ],
+  "k": 2.552,
+  "fold_vs_flat_r": 0.9678,
+  "note": "hood covers the top 31px"
+ },
+ "kirtland_hoodie_back_royal-blue": {
+  "ink_px": [
+   1642,
+   1849,
+   1286
+  ],
+  "k": 2.478,
+  "fold_vs_flat_r": 0.9712,
+  "note": "hood covers the top 30px"
+ },
+ "kirtland_hoodie_front_black": {
+  "ink_px": [
+   1843,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9792,
+  "note": ""
+ },
+ "kirtland_hoodie_front_coffee": {
+  "ink_px": [
+   2176,
+   1921,
+   595
+  ],
+  "k": 2.333,
+  "fold_vs_flat_r": 0.986,
+  "note": ""
+ },
+ "kirtland_hoodie_front_eden-green": {
+  "ink_px": [
+   2169,
+   1973,
+   618
+  ],
+  "k": 2.422,
+  "fold_vs_flat_r": 0.9763,
+  "note": ""
+ },
+ "kirtland_hoodie_front_gray": {
+  "ink_px": [
+   2312,
+   1912,
+   625
+  ],
+  "k": 2.451,
+  "fold_vs_flat_r": 0.992,
+  "note": ""
+ },
+ "kirtland_hoodie_front_mauve": {
+  "ink_px": [
+   2259,
+   1897,
+   617
+  ],
+  "k": 2.42,
+  "fold_vs_flat_r": 0.9979,
+  "note": ""
+ },
+ "kirtland_hoodie_front_navy-blue": {
+  "ink_px": [
+   2165,
+   1897,
+   615
+  ],
+  "k": 2.411,
+  "fold_vs_flat_r": 0.9801,
+  "note": ""
+ },
+ "kirtland_hoodie_front_royal-blue": {
+  "ink_px": [
+   1979,
+   1909,
+   621
+  ],
+  "k": 2.434,
+  "fold_vs_flat_r": 0.9957,
+  "note": ""
+ },
+ "kirtland_tee_back_black": {
+  "ink_px": [
+   1572,
+   1838,
+   1419
+  ],
+  "k": 2.809,
+  "fold_vs_flat_r": 0.9672,
+  "note": ""
+ },
+ "kirtland_tee_back_charcoal": {
+  "ink_px": [
+   1954,
+   1847,
+   1433
+  ],
+  "k": 2.836,
+  "fold_vs_flat_r": 0.9862,
+  "note": ""
+ },
+ "kirtland_tee_back_coffee": {
+  "ink_px": [
+   1795,
+   1803,
+   1368
+  ],
+  "k": 2.708,
+  "fold_vs_flat_r": 0.9795,
+  "note": ""
+ },
+ "kirtland_tee_back_cream": {
+  "ink_px": [
+   1766,
+   1846,
+   1409
+  ],
+  "k": 2.788,
+  "fold_vs_flat_r": 0.9908,
+  "note": ""
+ },
+ "kirtland_tee_back_light-blue": {
+  "ink_px": [
+   1759,
+   1834,
+   1427
+  ],
+  "k": 2.825,
+  "fold_vs_flat_r": 0.9935,
+  "note": ""
+ },
+ "kirtland_tee_back_maroon": {
+  "ink_px": [
+   1762,
+   1842,
+   1417
+  ],
+  "k": 2.804,
+  "fold_vs_flat_r": 0.9801,
+  "note": ""
+ },
+ "kirtland_tee_back_navy-blue": {
+  "ink_px": [
+   1797,
+   1840,
+   1424
+  ],
+  "k": 2.819,
+  "fold_vs_flat_r": 0.9715,
+  "note": ""
+ },
+ "kirtland_tee_back_pink": {
+  "ink_px": [
+   1572,
+   1836,
+   1418
+  ],
+  "k": 2.807,
+  "fold_vs_flat_r": 0.9897,
+  "note": ""
+ },
+ "kirtland_tee_front_black": {
+  "ink_px": [
+   1959,
+   2106,
+   614
+  ],
+  "k": 2.57,
+  "fold_vs_flat_r": 0.9697,
+  "note": ""
+ },
+ "kirtland_tee_front_charcoal": {
+  "ink_px": [
+   2380,
+   2111,
+   615
+  ],
+  "k": 2.576,
+  "fold_vs_flat_r": 0.9949,
+  "note": ""
+ },
+ "kirtland_tee_front_coffee": {
+  "ink_px": [
+   2196,
+   2068,
+   565
+  ],
+  "k": 2.368,
+  "fold_vs_flat_r": 0.9937,
+  "note": ""
+ },
+ "kirtland_tee_front_cream": {
+  "ink_px": [
+   2163,
+   2048,
+   602
+  ],
+  "k": 2.52,
+  "fold_vs_flat_r": 0.9992,
+  "note": ""
+ },
+ "kirtland_tee_front_light-blue": {
+  "ink_px": [
+   2155,
+   2117,
+   613
+  ],
+  "k": 2.567,
+  "fold_vs_flat_r": 0.9994,
+  "note": ""
+ },
+ "kirtland_tee_front_maroon": {
+  "ink_px": [
+   2153,
+   2111,
+   611
+  ],
+  "k": 2.56,
+  "fold_vs_flat_r": 0.9905,
+  "note": ""
+ },
+ "kirtland_tee_front_navy-blue": {
+  "ink_px": [
+   2281,
+   2106,
+   612
+  ],
+  "k": 2.563,
+  "fold_vs_flat_r": 0.9853,
+  "note": ""
+ },
+ "kirtland_tee_front_pink": {
   "ink_px": [
    2068,
    2101,

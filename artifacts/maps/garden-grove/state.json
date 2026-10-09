@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558311813647593472",
+    "store_product_id": "1558311852319121410",
+    "distribute_started_at": "2026-10-09T18:54:58",
+    "shopify_handle": "essential-heavyweight-map-tee-garden-grove",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312119693373440",
+    "store_product_id": "1558312171132362752",
+    "distribute_started_at": "2026-10-09T18:56:14",
+    "shopify_handle": "ultra-soft-map-sweatshirt-garden-grove",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/garden-grove/garden-grove hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312389198376960",
+    "store_product_id": "1558312429270802432",
+    "distribute_started_at": "2026-10-09T18:57:15",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-garden-grove",
+    "state": "live"
   }
 }

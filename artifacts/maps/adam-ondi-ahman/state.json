@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558309920825307136",
+    "store_product_id": "1558309966908170240",
+    "distribute_started_at": "2026-10-09T18:47:28",
+    "shopify_handle": "essential-heavyweight-map-tee-adam-ondi-ahman",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558310223641473024",
+    "store_product_id": "1558310258332606464",
+    "distribute_started_at": "2026-10-09T18:48:38",
+    "shopify_handle": "ultra-soft-map-sweatshirt-adam-ondi-ahman",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/adam-ondi-ahman/adam-ondi-ahman hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558310483054981120",
+    "store_product_id": "1558310520195588096",
+    "distribute_started_at": "2026-10-09T18:49:40",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-adam-ondi-ahman",
+    "state": "live"
   }
 }

@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312343665012736",
+    "store_product_id": "1558312387000606720",
+    "distribute_started_at": "2026-10-09T18:57:05",
+    "shopify_handle": "essential-heavyweight-map-tee-haun-s-mill",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312645180944384",
+    "store_product_id": "1558312669067542528",
+    "distribute_started_at": "2026-10-09T18:58:12",
+    "shopify_handle": "ultra-soft-map-sweatshirt-haun-s-mill",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558312890803580928",
+    "store_product_id": "1558312947426729984",
+    "distribute_started_at": "2026-10-09T18:59:19",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-haun-s-mill",
+    "state": "live"
   }
 }

@@ -1,7 +1,8 @@
 """Review sheets for Evan: one contact sheet per product, a placement check per
 garment and view against Tapstitch's flat, and 100% crops of the finest art.
 
-  python review_sheets.py
+  python review_sheets.py                    # Nauvoo and Salt Lake City
+  python review_sheets.py whitingham sharon  # named cities
 """
 
 import json
@@ -63,10 +64,12 @@ def crops():
 
 
 if __name__ == "__main__":
-    for place in ["nauvoo", "salt-lake-city"]:
+    import sys
+    for place in sys.argv[1:] or ["nauvoo", "salt-lake-city"]:
         for g in ["tee", "crew", "hoodie"]:
             contact(place, g)
             for v in ["back", "front"]:
-                placement(place, g, v)
+                if (HERE / "flats" / f"{place}_{g}_{v}.png").exists():
+                    placement(place, g, v)
     crops()
     print(sorted(p.name for p in OUT.glob("*.jpg")))
