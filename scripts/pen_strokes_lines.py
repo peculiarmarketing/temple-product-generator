@@ -74,6 +74,17 @@ How it works:
      mostly over paper is dropped first. No stroke is wider than MAX_WIDTH times
      the median pen: a heavier line becomes one stroke drawn along it and back
      in side-by-side passes.
+  6. Nothing floats (connect_order). Last of all, from the major lines on, a
+     stroke whose ink does not touch ink already drawn (within TOUCH pen
+     widths, so a sketch's small pen-lift gaps count as touching) waits until
+     something it touches is drawn, and a line touching drawn ink only at its
+     far end is drawn from that end. The outline walk keeps its own order round
+     the silhouette, pen lifts and all, with ground lines and base tails last.
+     Tier order holds: before a later tier starts, a stroke still waiting is
+     drawn across a line still to come that joins it to the drawing (that line
+     first), else right after the stroke whose ink is nearest it, else from its
+     end nearest the drawing. A mark standing apart in the art (an island of
+     ink, like a free-standing window) may be started by its first stroke.
 
 Usage:
   python scripts/pen_strokes_lines.py ART.webp OLD.json OUT.json [--debug DEBUG.png]
@@ -111,6 +122,7 @@ SPAN_LEN = 0.06      # share: a line this long running between structure is majo
 OUTLINE_NEAR = 3.0   # art px: a line this close to the building's outer contour lies on it
 SLIVER = 1.5         # art px: leftover ink this thin along a drawn line is that line's edge
 SLIVER_AREA = 10.0   # art px²: and no bigger than this
+TOUCH = 2.75          # pen widths: ink this close to drawn ink touches it (a sketch's small pen-lift gaps)
 PAPER_ALPHA = 90      # alpha from which a pixel (grey shading included) is ink for the paper test
 WALK_WINDOW = 0.03    # share of the perimeter within which outline lines are taken nearest first
 SPLIT_MIN = 6.0     # art px: shortest stretch a line is cut into at the outline
@@ -996,6 +1008,207 @@ def nearest_order(polys, pos, fixed=True):
     return out, pos
 
 
+def connect_order(strokes, ink, pen):
+    """Nothing appears unless it touches ink already drawn (the first stroke
+    excepted). Strokes keep their order, but one whose ink does not touch the
+    ink revealed so far (within TOUCH pen widths) waits, and is drawn as soon as
+    something it touches has been drawn. A line touching drawn ink only at its
+    far end is drawn from that end, so it grows out of the drawing. The first
+    stroke on an island of ink that stands apart in the art may start it. A
+    stroke whose only link to the drawing is ink no stroke reveals (a hairline
+    gap) is drawn at the end, where it stands as its own mark."""
+    H, W = ink.shape
+    reach = np.zeros((H, W), bool)
+    r = max(1, int(round(TOUCH * pen)))
+    kern = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
+    info = []
+    for st in strokes:
+        p, w = st[0], st[1]
+        pad = int(w) + r + 2
+        x0 = max(0, int(p[:, 0].min()) - pad); x1 = min(W, int(p[:, 0].max()) + pad + 1)
+        y0 = max(0, int(p[:, 1].min()) - pad); y1 = min(H, int(p[:, 1].max()) + pad + 1)
+        m = draw_mask((y1 - y0, x1 - x0), [p - [x0, y0]], [w]) > 0
+        own = m & ink[y0:y1, x0:x1]
+        info.append((x0, y0, x1, y1, own))
+
+    # islands: the art's ink hanging together within one pen width (each side
+    # reaching half of it). The first stroke
+    # on an island that stands apart in the art (a window drawn free of the
+    # wall) may start it; everything else must touch drawn ink.
+    rh = max(1, r // 2)
+    isl, _ = ndi.label(cv2.dilate(ink.astype(np.uint8), cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (2 * rh + 1, 2 * rh + 1))) > 0)
+    started = set()
+
+    def islands_of(i):
+        x0, y0, x1, y1, own = info[i]
+        v = np.unique(isl[y0:y1, x0:x1][own])
+        return set(int(a) for a in v if a)
+
+    def touches(i):
+        x0, y0, x1, y1, own = info[i]
+        if not own.any() or bool((own & reach[y0:y1, x0:x1]).any()):
+            return True
+        return not (islands_of(i) & started)
+
+    def reveal(i):
+        x0, y0, x1, y1, own = info[i]
+        if not own.any():
+            return
+        started.update(islands_of(i))
+        a0 = max(0, x0 - r); b0 = max(0, y0 - r); a1 = min(W, x1 + r); b1 = min(H, y1 + r)
+        crop = np.zeros((b1 - b0, a1 - a0), np.uint8)
+        crop[y0 - b0:y1 - b0, x0 - a0:x1 - a0] = own
+        reach[b0:b1, a0:a1] |= cv2.dilate(crop, kern) > 0
+
+    def oriented(i):
+        st = strokes[i]
+        p = st[0]
+        if len(p) < 2:
+            return st
+        def near(q):
+            xi = int(np.clip(round(q[0]), 0, W - 1)); yi = int(np.clip(round(q[1]), 0, H - 1))
+            return reach[max(0, yi - r):yi + r + 1, max(0, xi - r):xi + r + 1].any()
+        if not near(p[0]) and near(p[-1]):
+            return (p[::-1],) + tuple(st[1:])
+        return st
+
+    out, waiting = [], []
+    first = True
+
+    done = set()
+
+    def emit(i):
+        done.add(i)
+        out.append(oriented(i))
+        reveal(i)
+
+    # The drawing starts with the first stroke that the next one grows from (a
+    # base tail standing a little apart from its wall would otherwise make the
+    # whole walk wait for the ground line).
+    def joined(i, j):
+        a0, b0, a1, b1, oa = info[i]
+        c0, d0, c1, d1, ob = info[j]
+        X0, Y0 = max(a0, c0) - r, max(b0, d0) - r
+        X1, Y1 = min(a1, c1) + r, min(b1, d1) + r
+        if X0 >= X1 or Y0 >= Y1 or not oa.any() or not ob.any():
+            return False
+        ma = np.zeros((b1 - b0 + 2 * r, a1 - a0 + 2 * r), np.uint8)
+        ma[r:r + b1 - b0, r:r + a1 - a0] = oa
+        ma = cv2.dilate(ma, kern) > 0
+        ys, xs = np.nonzero(ob)
+        ys = ys + d0 - (b0 - r); xs = xs + c0 - (a0 - r)
+        ok = (ys >= 0) & (xs >= 0) & (ys < ma.shape[0]) & (xs < ma.shape[1])
+        return bool(ma[ys[ok], xs[ok]].any())
+
+    # nearest other stroke to each stroke (by revealed ink), for floaters
+    lab = np.zeros((H, W), np.int32)
+    for i, (x0, y0, x1, y1, own) in enumerate(info):
+        sub = lab[y0:y1, x0:x1]
+        sub[own & (sub == 0)] = i + 1
+    nidx = ndi.distance_transform_edt(lab == 0, return_distances=False, return_indices=True)
+
+    def nearest_other(i):
+        x0, y0, x1, y1, own = info[i]
+        if not own.any():
+            return None
+        ys, xs = np.nonzero(own)
+        ys = ys + y0; xs = xs + x0
+        # look just outside the stroke's own ink
+        ring = cv2.dilate(own.astype(np.uint8), kern) > 0
+        ry, rx = np.nonzero(ring & ~own)
+        ry = ry + y0; rx = rx + x0
+        ok = (ry < H) & (rx < W)
+        ry, rx = ry[ok], rx[ok]
+        if len(ry) == 0:
+            return None
+        js = lab[nidx[0][ry, rx], nidx[1][ry, rx]] - 1
+        d = np.hypot(nidx[0][ry, rx] - ry, nidx[1][ry, rx] - rx)
+        m = js != i
+        if not m.any():
+            return None
+        k = int(np.argmin(np.where(m, d, np.inf)))
+        return int(js[k])
+
+    after = defaultdict(list)
+
+    def emit_with_followers(i):
+        emit(i)
+        for f in after.pop(i, []):
+            if f not in done:
+                emit_with_followers(f)
+
+    def drain():
+        changed = True
+        while changed and waiting:
+            changed = False
+            for j in list(waiting):
+                if touches(j):
+                    waiting.remove(j)
+                    emit_with_followers(j)
+                    changed = True
+
+    def flush(below):
+        # Before a later tier starts, a stroke of an earlier tier still waiting
+        # is drawn: across a line still to come that joins it to the drawing
+        # (that line first, as the bridge); else right after the stroke whose
+        # ink is nearest it, if that one is still to come; else now, from its
+        # end nearest the drawing.
+        while True:
+            pend = [j for j in waiting if strokes[j][2] < below]
+            if not pend:
+                return
+            j = pend[0]
+            bridge = None
+            for k in seq:
+                if k in done or k in waiting:
+                    continue
+                if touches(k) and joined(k, j):
+                    bridge = k
+                    break
+            waiting.remove(j)
+            if bridge is not None:
+                emit_with_followers(bridge)
+                if touches(j):
+                    emit_with_followers(j)
+                else:
+                    waiting.append(j)
+                    continue
+            else:
+                nb = nearest_other(j)
+                if nb is not None and nb not in done and nb not in waiting:
+                    after[nb].append(j)
+                else:
+                    emit_with_followers(j)
+            drain()
+
+    seq = list(range(len(strokes)))
+    for i in seq:
+        if i in done or any(i in v for v in after.values()):
+            continue
+        if strokes[i][2] == 1 or first:
+            # the outline walk keeps its own order: the pen lifts and goes on
+            # along the silhouette, ground lines and base tails last
+            emit_with_followers(i)
+            first = False
+            drain()
+            continue
+        flush(strokes[i][2])
+        if i in done:
+            continue
+        if touches(i):
+            emit_with_followers(i)
+            drain()
+        else:
+            waiting.append(i)
+    flush(99)
+    for k in list(after):
+        for f in after.pop(k):
+            if f not in done:
+                emit_with_followers(f)
+    return out
+
+
 # ---------------------------------------------------------------- build
 
 def build(art_path, old_json_path, debug_path=None):
@@ -1325,6 +1538,9 @@ def build(art_path, old_json_path, debug_path=None):
             path = [p]
         out.append((np.vstack(path), cap) + tuple(st[2:]))
     strokes = out
+
+    # ------------------------------------------------ nothing floats
+    strokes = connect_order(strokes, art_ink, float(np.median([st[1] for st in strokes])))
 
     # ------------------------------------------------ write
     bx, by, bw, bh = old['box']
