@@ -25,7 +25,9 @@
     const printSrc = section.dataset.print;
     const worlds = new Map();
     let building = null;
-    let ready = false, active = null, want = null, pos = null, raf = 0, last = 0, tour = null, toured = false;
+    // `lift`: on touch the lens is drawn above the finger, while it still shows
+    // what is under the finger.
+    let ready = false, active = null, want = null, pos = null, raf = 0, last = 0, tour = null, toured = false, lift = 0;
 
     async function build() {
       const print = await decode(printSrc);
@@ -69,7 +71,7 @@
       pos.x = lerp(pos.x, want.x, a);
       pos.y = lerp(pos.y, want.y, a);
       const sr = section.getBoundingClientRect();
-      lens.style.transform = `translate3d(${pos.x - sr.left}px, ${pos.y - sr.top}px, 0)`;
+      lens.style.transform = `translate3d(${pos.x - sr.left}px, ${pos.y - lift - sr.top}px, 0)`;
       const hit = cards.find((c) => { const r = c.getBoundingClientRect(); return pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom; });
       if (hit) {
         show(hit);
@@ -81,13 +83,15 @@
         world.style.transform = `translate3d(${d / 2 - u * z}px, ${d / 2 - v * z}px, 0) scale(${z})`;
         const w = worlds.get(hit), [bx, by, bw, bh] = w.box;
         label.textContent = u > bx && u < bx + bw && v > by && v < by + bh ? w.ink : w.fabric;
-        label.style.transform = `translate3d(${pos.x - sr.left + d / 2 - 12}px, ${pos.y - sr.top + d / 2 - 26}px, 0)`;
+        // Bottom right of the lens, kept inside the section on narrow screens.
+        const lx = Math.min(pos.x - sr.left + d / 2 - 12, sr.width - label.offsetWidth - 8);
+        label.style.transform = `translate3d(${Math.max(8, lx)}px, ${pos.y - lift - sr.top + d / 2 - 26}px, 0)`;
       }
       section.classList.toggle('is-lens', !!hit);
       if (Math.abs(pos.x - want.x) > .3 || Math.abs(pos.y - want.y) > .3) raf = requestAnimationFrame(place);
       else last = 0;
     }
-    const go = (x, y) => { want = { x, y }; if (!raf) raf = requestAnimationFrame(place); };
+    const go = (x, y, up = 0) => { lift = up; want = { x, y }; if (!raf) raf = requestAnimationFrame(place); };
     const hide = () => { want = null; section.classList.remove('is-lens'); };
 
     // Any use of the lens by the shopper ends the tour, and stops it ever starting.
@@ -111,14 +115,17 @@
       go(e.clientX, e.clientY);
     });
     section.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !tour) hide(); });
+    // A tap (touch or pen) places the lens; a mouse click does nothing extra.
+    let lastPointer = '';
+    section.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; });
     section.addEventListener('click', (e) => {
-      if (matchMedia('(hover: hover)').matches) return;
+      if (lastPointer === 'mouse') return;
       stopTour();
-      if (e.target.closest('[data-pp-loupe-g]')) go(e.clientX, e.clientY - lens.offsetWidth * .6);
+      if (e.target.closest('[data-pp-loupe-g]')) go(e.clientX, e.clientY, lens.offsetWidth * .6);
       else hide();
     });
     // The lens is placed in page terms; keep it on its spot while the page scrolls.
-    const onScroll = () => { if (want) { pos = null; go(want.x, want.y); } };
+    const onScroll = () => { if (want) { pos = null; go(want.x, want.y, lift); } };
 
     const io = new IntersectionObserver(async ([e]) => {
       if (e.isIntersecting) {
