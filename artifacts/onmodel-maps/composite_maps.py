@@ -70,9 +70,10 @@ LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 # hoodie's logo also 10% smaller, and the hoodie map higher, with the hood lying
 # over its very top (hood_edge below). Prints centre on the photo's own measured
 # centre line (centre_x), which on the hoodie is the middle of the hood.
+# Then, after the hood fix: every front logo another 5% smaller and 1.5in higher.
 SCALE = {("tee", "back"): 0.90, ("crew", "back"): 0.90, ("hoodie", "back"): 0.90,
-         ("hoodie", "front"): 0.90}
-RAISE_IN = {"front": 1.0}
+         ("tee", "front"): 0.95, ("crew", "front"): 0.95, ("hoodie", "front"): 0.90 * 0.95}
+RAISE_IN = {"front": 2.5}
 LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each flat
 # The map's top sits this share of its height above the hood's tip, so the hood
 # hides a small notch of it (Evan, 9 Oct 2026: keep it small).
