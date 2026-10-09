@@ -1,6 +1,9 @@
-# City map line: in flight (9 Oct 2026)
+# City map line: all 27 maps live (9 Oct 2026, evening)
 
 The city map products (`scripts/map_run.py`, map Easify sets, garment collections) have their own handoff in the workspace: `designs/city-map-back/HANDOFF.md`. Read that before touching any map product.
+
+- 81 map listings live with the final art and on-model photos in every colour. Nauvoo and Salt Lake City moved onto the new art in place (`scripts/map_refresh.py`) and their photos were swapped (`scripts/onmodel_maps_apply.py --replace`).
+- Waiting on Evan: import `artifacts/easify/option-sets.csv` (Map dropdowns go from 2 maps to 27), then export it back for a reseed.
 
 # (9 Oct 2026) Map on-model photos: live and locked
 
