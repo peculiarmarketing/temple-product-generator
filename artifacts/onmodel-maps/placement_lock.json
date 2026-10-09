@@ -188,7 +188,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/crew_back_black.png",
-   "photo_sha1": "a41182b06fe868cb"
+   "photo_sha1": "a41182b06fe868cb",
+   "photo_pixels": "7429e9314908f760"
   },
   "crew_back_heather-gray": {
    "canvas_quad": [
@@ -218,7 +219,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/crew_back_heather-gray.png",
-   "photo_sha1": "0e4d109d0b396d1c"
+   "photo_sha1": "0e4d109d0b396d1c",
+   "photo_pixels": "b91ba860d9552cce"
   },
   "crew_front_black": {
    "canvas_quad": [
@@ -248,7 +250,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/crew_front_black.png",
-   "photo_sha1": "c0516042d1671279"
+   "photo_sha1": "c0516042d1671279",
+   "photo_pixels": "df37a8f73050150e"
   },
   "crew_front_heather-gray": {
    "canvas_quad": [
@@ -278,7 +281,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/crew_front_heather-gray.png",
-   "photo_sha1": "5fa289e6e0d25c75"
+   "photo_sha1": "5fa289e6e0d25c75",
+   "photo_pixels": "2a693377bd5267f2"
   },
   "hoodie_back_black": {
    "canvas_quad": [
@@ -913,7 +917,8 @@
    ],
    "note": "hood covers the top 31px",
    "photo": "gen/base/hoodie_back_black.png",
-   "photo_sha1": "78fa04cfbc7b5d76"
+   "photo_sha1": "78fa04cfbc7b5d76",
+   "photo_pixels": "580adab3eb90e438"
   },
   "hoodie_back_coffee": {
    "canvas_quad": [
@@ -1548,7 +1553,8 @@
    ],
    "note": "hood covers the top 28px",
    "photo": "gen/base/hoodie_back_coffee.png",
-   "photo_sha1": "6ce7477c8ab39764"
+   "photo_sha1": "6ce7477c8ab39764",
+   "photo_pixels": "dd15113134ed1a3e"
   },
   "hoodie_back_eden-green": {
    "canvas_quad": [
@@ -2183,7 +2189,8 @@
    ],
    "note": "hood covers the top 31px",
    "photo": "gen/base/hoodie_back_eden-green.png",
-   "photo_sha1": "7f0de27bdfab481a"
+   "photo_sha1": "7f0de27bdfab481a",
+   "photo_pixels": "c9db8ceac498e73e"
   },
   "hoodie_back_gray": {
    "canvas_quad": [
@@ -2818,7 +2825,8 @@
    ],
    "note": "hood covers the top 31px",
    "photo": "gen/base/hoodie_back_gray.png",
-   "photo_sha1": "88906cd8159f494b"
+   "photo_sha1": "88906cd8159f494b",
+   "photo_pixels": "0d31f38c226f8ae2"
   },
   "hoodie_back_mauve": {
    "canvas_quad": [
@@ -3453,7 +3461,8 @@
    ],
    "note": "hood covers the top 30px",
    "photo": "gen/base/hoodie_back_mauve.png",
-   "photo_sha1": "0a7549c98ffcf518"
+   "photo_sha1": "0a7549c98ffcf518",
+   "photo_pixels": "49d31dfa3a156398"
   },
   "hoodie_back_navy-blue": {
    "canvas_quad": [
@@ -4088,7 +4097,8 @@
    ],
    "note": "hood covers the top 31px",
    "photo": "gen/base/hoodie_back_navy-blue.png",
-   "photo_sha1": "48ae9cf93cc83589"
+   "photo_sha1": "48ae9cf93cc83589",
+   "photo_pixels": "9270b02db8d24d0d"
   },
   "hoodie_back_royal-blue": {
    "canvas_quad": [
@@ -4723,7 +4733,8 @@
    ],
    "note": "hood covers the top 30px",
    "photo": "gen/base/hoodie_back_royal-blue.png",
-   "photo_sha1": "365de78b92e8b568"
+   "photo_sha1": "365de78b92e8b568",
+   "photo_pixels": "cc989d8362fce027"
   },
   "hoodie_front_black": {
    "canvas_quad": [
@@ -4753,7 +4764,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_black.png",
-   "photo_sha1": "b8d963bf4008f60b"
+   "photo_sha1": "b8d963bf4008f60b",
+   "photo_pixels": "83f22d75f6ebceb8"
   },
   "hoodie_front_coffee": {
    "canvas_quad": [
@@ -4783,7 +4795,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_coffee.png",
-   "photo_sha1": "718141c105fae228"
+   "photo_sha1": "718141c105fae228",
+   "photo_pixels": "2d281c7203b229ab"
   },
   "hoodie_front_eden-green": {
    "canvas_quad": [
@@ -4813,7 +4826,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_eden-green.png",
-   "photo_sha1": "b5dade1d067be4c0"
+   "photo_sha1": "b5dade1d067be4c0",
+   "photo_pixels": "e7e19386c2395560"
   },
   "hoodie_front_gray": {
    "canvas_quad": [
@@ -4843,7 +4857,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_gray.png",
-   "photo_sha1": "ad1b1a8826e894da"
+   "photo_sha1": "ad1b1a8826e894da",
+   "photo_pixels": "bd59163587a97491"
   },
   "hoodie_front_mauve": {
    "canvas_quad": [
@@ -4873,7 +4888,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_mauve.png",
-   "photo_sha1": "2dfd56b502961161"
+   "photo_sha1": "2dfd56b502961161",
+   "photo_pixels": "00dec158a69ef61e"
   },
   "hoodie_front_navy-blue": {
    "canvas_quad": [
@@ -4903,7 +4919,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_navy-blue.png",
-   "photo_sha1": "96f64cc187f5d494"
+   "photo_sha1": "96f64cc187f5d494",
+   "photo_pixels": "096db6b4b176fe30"
   },
   "hoodie_front_royal-blue": {
    "canvas_quad": [
@@ -4933,7 +4950,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/hoodie_front_royal-blue.png",
-   "photo_sha1": "04808ae2488dbb52"
+   "photo_sha1": "04808ae2488dbb52",
+   "photo_pixels": "9c0301339141c243"
   },
   "tee_back_black": {
    "canvas_quad": [
@@ -4963,7 +4981,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_black.png",
-   "photo_sha1": "05b7bb4d405306bc"
+   "photo_sha1": "05b7bb4d405306bc",
+   "photo_pixels": "a36bbdd567d8ee9a"
   },
   "tee_back_charcoal": {
    "canvas_quad": [
@@ -4993,7 +5012,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_charcoal.png",
-   "photo_sha1": "e8a048295802bcaa"
+   "photo_sha1": "e8a048295802bcaa",
+   "photo_pixels": "2079dcfd8c709e4e"
   },
   "tee_back_coffee": {
    "canvas_quad": [
@@ -5023,7 +5043,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_coffee.png",
-   "photo_sha1": "4eda968b4ba2ada8"
+   "photo_sha1": "4eda968b4ba2ada8",
+   "photo_pixels": "40caa89aef6ad4bc"
   },
   "tee_back_cream": {
    "canvas_quad": [
@@ -5053,7 +5074,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_cream.png",
-   "photo_sha1": "5ceae69558422aa4"
+   "photo_sha1": "5ceae69558422aa4",
+   "photo_pixels": "1ce91d9bbe7d9da2"
   },
   "tee_back_light-blue": {
    "canvas_quad": [
@@ -5083,7 +5105,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_light-blue.png",
-   "photo_sha1": "4c6dc498f33dba36"
+   "photo_sha1": "4c6dc498f33dba36",
+   "photo_pixels": "07659913fa34fc29"
   },
   "tee_back_maroon": {
    "canvas_quad": [
@@ -5113,7 +5136,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_maroon.png",
-   "photo_sha1": "fc04ae01cb99fa1c"
+   "photo_sha1": "fc04ae01cb99fa1c",
+   "photo_pixels": "50bd1cdaabc84031"
   },
   "tee_back_navy-blue": {
    "canvas_quad": [
@@ -5143,7 +5167,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_navy-blue.png",
-   "photo_sha1": "5271a137fc237257"
+   "photo_sha1": "5271a137fc237257",
+   "photo_pixels": "7bddfd219777a667"
   },
   "tee_back_pink": {
    "canvas_quad": [
@@ -5173,7 +5198,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_back_pink.png",
-   "photo_sha1": "f1e0ec7f720c208d"
+   "photo_sha1": "f1e0ec7f720c208d",
+   "photo_pixels": "cda47bc20f546f3a"
   },
   "tee_front_black": {
    "canvas_quad": [
@@ -5203,7 +5229,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_black.png",
-   "photo_sha1": "a4fead1bced6c73f"
+   "photo_sha1": "a4fead1bced6c73f",
+   "photo_pixels": "3666b6d849b9acb9"
   },
   "tee_front_charcoal": {
    "canvas_quad": [
@@ -5233,7 +5260,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_charcoal.png",
-   "photo_sha1": "44d40b9e05b7ea48"
+   "photo_sha1": "44d40b9e05b7ea48",
+   "photo_pixels": "5743f6e8ddba5bfa"
   },
   "tee_front_coffee": {
    "canvas_quad": [
@@ -5263,7 +5291,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_coffee.png",
-   "photo_sha1": "ce2102335ebf60f9"
+   "photo_sha1": "ce2102335ebf60f9",
+   "photo_pixels": "5fc533fc3a17bcf0"
   },
   "tee_front_cream": {
    "canvas_quad": [
@@ -5293,7 +5322,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_cream.png",
-   "photo_sha1": "f02cf2a08b06052e"
+   "photo_sha1": "f02cf2a08b06052e",
+   "photo_pixels": "b4caa36b82800064"
   },
   "tee_front_light-blue": {
    "canvas_quad": [
@@ -5323,7 +5353,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_light-blue.png",
-   "photo_sha1": "2e5809768f543789"
+   "photo_sha1": "2e5809768f543789",
+   "photo_pixels": "c2ca0f4e2658202e"
   },
   "tee_front_maroon": {
    "canvas_quad": [
@@ -5353,7 +5384,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_maroon.png",
-   "photo_sha1": "ad1dae42b53bc070"
+   "photo_sha1": "ad1dae42b53bc070",
+   "photo_pixels": "2cda7ce8a07ac2f2"
   },
   "tee_front_navy-blue": {
    "canvas_quad": [
@@ -5383,7 +5415,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_navy-blue.png",
-   "photo_sha1": "75f19ab29cff4827"
+   "photo_sha1": "75f19ab29cff4827",
+   "photo_pixels": "c5629a6ccedd9370"
   },
   "tee_front_pink": {
    "canvas_quad": [
@@ -5413,7 +5446,8 @@
    "hood_edge": null,
    "note": "",
    "photo": "gen/base/tee_front_pink.png",
-   "photo_sha1": "f6ed5564abd0158f"
+   "photo_sha1": "f6ed5564abd0158f",
+   "photo_pixels": "f4a72d36b36d4be2"
   }
  },
  "rules": {

@@ -11,7 +11,7 @@ Locked 9 Oct 2026. Evan approved every map tee, sweatshirt and hoodie, front and
   - the map or logo ink box;
   - the hood edge (hoodie backs);
   - the fold scale;
-  - a hash of the photo. If a base photo changes, build and check both refuse to run.
+  - a hash of the photo's pixels. If a base photo changes, build and check both refuse to run.
 - **Per garment and view (6):**
   - the print canvas size and ink box the quads were measured for;
   - Tapstitch's placement of that print on the template (scale, top, left, width, height, angle);
@@ -32,7 +32,7 @@ These rules produced the lock. They are recorded in `docs/decisions.md`, 9 Oct 2
 
 ## Adding a new city
 
-0. **Fresh checkout.** Run `python composite_maps.py fetch`. The base photos (324 MB) are gitignored; it downloads them from `gen/jobs.json` and checks each one byte for byte against the lock.
+0. **Fresh checkout.** Run `python composite_maps.py fetch`. The base photos (324 MB) and prints are gitignored. It downloads them from their Shopify Files backup (`backup.json`, permanent public links, no login) and falls back to Higgsfield and Tapstitch. It checks every photo pixel for pixel against the lock.
 1. **Create the products.** Make the city's three map products on Tapstitch from the same templates. Tapstitch must place the print the same way: same scale, top, left, width and height as Nauvoo and Salt Lake City.
 2. **Add the print files.** Put the six print files in `prints/` as `<city>_<tee|crew|hoodie>_<front|back>.png`, and add their Tapstitch placement entries to `prints/prints.json`.
 3. **Check the fit.** Run `python composite_maps.py check <city>`. It confirms that all six prints exist, that each canvas is the locked size, that each Tapstitch placement matches, and that no base photo has changed. If anything differs, it stops. A different placement would print somewhere else on the real garment, so the on-model photos would be wrong.

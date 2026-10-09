@@ -352,6 +352,16 @@ def sha(path):
     return hashlib.sha1(Path(path).read_bytes()).hexdigest()[:16]
 
 
+def pix(path):
+    """Hash of the decoded pixels (mode, size, bytes). What build uses; it holds
+    when a copy is re-compressed losslessly, as Shopify Files does to PNGs."""
+    import hashlib
+    im = Image.open(path)
+    h = hashlib.sha1(f"{im.mode}{im.size}".encode())
+    h.update(im.tobytes())
+    return h.hexdigest()[:16]
+
+
 def lock(force=False):
     """Freeze today's placement: every base photo's canvas quad (2880px), worked
     out from the reference city's prints by the rules above, plus what each
@@ -383,7 +393,7 @@ def lock(force=False):
             "ink_box": [round(left, 2), round(top, 2), round(w, 2)],
             "span": L["hem"] - L["collar"][1],
             "hood_edge": L.get("hood_edge"), "note": note,
-            "photo": src.relative_to(HERE).as_posix(), "photo_sha1": sha(src)}
+            "photo": src.relative_to(HERE).as_posix(), "photo_sha1": sha(src), "photo_pixels": pix(src)}
     out["rules"] = {"fold": FOLD, "hood_cover": HOOD_COVER, "hood_flat_band": HOOD_FLAT_BAND,
                     "out_px": OUT_PX, "ref_span": REF_SPAN}
     LOCK.write_text(json.dumps(out, indent=1))
@@ -416,7 +426,7 @@ def check(place):
             if diff:
                 bad.append(f"{p.name}: placement differs {diff}")
     for name, P in lk["photos"].items():
-        if sha(HERE / P["photo"]) != P["photo_sha1"]:
+        if pix(HERE / P["photo"]) != P["photo_pixels"]:
             bad.append(f"base photo {P['photo']} changed since the lock")
     print(f"{place}: " + ("fits the lock" if not bad else "DOES NOT fit the lock"))
     for b in bad:
@@ -424,23 +434,32 @@ def check(place):
     return not bad
 
 
-def fetch():
-    """Download whatever is missing: every locked base photo (gen/jobs.json, the
-    Higgsfield results; gitignored for size) and every city's print files
-    (prints/prints.json, Tapstitch). Base photos must hash to the lock."""
+def fetch(backup_only=False):
+    """Download whatever is missing: every locked base photo and every city's
+    print files (both gitignored for size). Each comes from its Shopify Files
+    backup first (backup.json, scripts/onmodel_maps_backup.py: permanent, no
+    login), then from where it was made (Higgsfield, gen/jobs.json; Tapstitch,
+    prints/prints.json). A copy whose pixels do not match is discarded."""
     import urllib.request
     lk = json.loads(LOCK.read_text())
     jobs = json.loads((HERE / "gen" / "jobs.json").read_text())
-    want = [(HERE / P["photo"], jobs[n]["url"], P["photo_sha1"]) for n, P in lk["photos"].items()]
-    want += [(HERE / "prints" / f, t["src"], None)
+    bk = json.loads((HERE / "backup.json").read_text()) if (HERE / "backup.json").exists() else {}
+    want = [(P["photo"], jobs[n]["url"], P["photo_pixels"]) for n, P in lk["photos"].items()]
+    want += [(f"prints/{f}", t["src"], bk.get(f"prints/{f}", {}).get("pixels"))
              for f, t in json.loads((HERE / "prints" / "prints.json").read_text()).items()]
-    for path, url, h in want:
-        if not path.exists():
+    for rel, origin, h in want:
+        path = HERE / rel
+        sources = [bk[rel]["url"]] if rel in bk else []
+        sources += [] if backup_only else [origin]
+        for url in sources:
+            if path.exists() and (not h or pix(path) == h):
+                break
             path.parent.mkdir(parents=True, exist_ok=True)
             urllib.request.urlretrieve(url, path)
-            print("fetched", path.relative_to(HERE))
-        if h and sha(path) != h:
-            raise SystemExit(f"{path.name} does not match the lock")
+            print("fetched", rel, "from", "Shopify backup" if url != origin else "origin")
+        if not path.exists() or (h and pix(path) != h):
+            path.unlink(missing_ok=True)
+            raise SystemExit(f"{rel}: no source gave a copy that matches the lock")
     print(f"all {len(want)} files present, base photos match the lock")
 
 
@@ -459,7 +478,7 @@ def build(only=None):
         if only and not any(f"{p}_{name}".startswith(only) for p in PLACES):
             continue
         src = HERE / L["photo"]
-        assert sha(src) == L["photo_sha1"], f"{src.name} changed since the lock"
+        assert pix(src) == L["photo_pixels"], f"{src.name} changed since the lock"
         im = Image.open(src).convert("RGB")
         r = OUT_PX / 2880                       # the lock is in 2880px coordinates
         photo = np.asarray(im.resize((OUT_PX, OUT_PX), Image.LANCZOS), dtype=np.float64)
@@ -519,7 +538,7 @@ def build(only=None):
 
 if __name__ == "__main__":
     {"detect": detect,
-     "fetch": fetch,
+     "fetch": lambda: fetch("--backup-only" in sys.argv),
      "lock": lambda: lock("--force" in sys.argv),
      "check": lambda: sys.exit(0 if check(sys.argv[2]) else 1),
      "build": lambda: build(sys.argv[2] if len(sys.argv) > 2 else None)}[sys.argv[1]]()
