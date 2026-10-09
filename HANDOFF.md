@@ -2,6 +2,42 @@
 
 The city map products (`scripts/map_run.py`, map Easify sets, garment collections) have their own handoff in the workspace: `designs/city-map-back/HANDOFF.md`. Read that before touching any map product.
 
+# (9 Oct 2026) Map on-model photos: live and locked
+
+- Evan approved everything. All 68 shots are live on the six map listings and verified. The Be Peculiar EN and ES sweatshirts have the loose, long refit live too.
+- Placement is locked for every future map product: `artifacts/onmodel-maps/LOCK.md`. To add a new city, run `fetch`, then `check <city>`, then `build <city>`, show Evan the review sheets, and finish with `scripts/onmodel_maps_apply.py --place <city> --apply`.
+- The pale map tee colours stay (Evan): Cream, Pink and Light Blue.
+- The base photos and prints are backed up in Shopify Files (`artifacts/onmodel-maps/backup.json`); `fetch` restores them in any run, checked pixel for pixel.
+
+# (8 Oct 2026, late night) Map on-model photos: built, waiting on Evan's review
+
+The six map products (Nauvoo and Salt Lake City on tee, sweatshirt, hoodie) had
+only flat lays. 68 on-model shots are built (front and back, every colour) in
+`artifacts/onmodel-maps/` and sent to Evan; nothing is on the store yet.
+- New stock models per garment (Burst, `models.json`), front and back bases and
+  every colour made on Higgsfield gpt_image_2_5 sunburst at 4k (2880px), pose and
+  framing varied per colour (`gen/recolour_spec.json`). 34 bases, 144.5 credits.
+- Placement from Tapstitch's own flats of the map products, carried by
+  collar-to-hem length (`composite_maps.py` docstring, `flat_geometry.json`).
+- Full fold at the temple settings (Evan's choice). Output 5000px.
+- White ink nearly vanishes on the Cream tee, faint on Pink and Light Blue: a
+  product question flagged to Evan, true to the print, not a compositing fault.
+- Next, on approval: `scripts/onmodel_maps_apply.py` (to write) uploads, binds
+  variants to the back shots, orders galleries, verifies. Finals are gitignored;
+  rebuild with `python composite_maps.py build` (bases re-download from
+  `gen/jobs.json`).
+
+# (8 Oct 2026, night) Salt Lake parent descriptions fixed; homepage collection tabs live
+
+- The Salt Lake temple hoodie and sweatshirt descriptions were rebuilt with their
+  collapsible rows (an old admin-editor save had stripped them). Words unchanged.
+  Every garment product now has rows (148 of 148). `scripts/rebuild_parent_descriptions.py`.
+- Homepage "Shop by garment" is four tabs: Hoodies, Tees, Sweatshirts, All Products
+  (`sections/pp-collection-tabs.liquid`, `scripts/home_collection_tabs.py`, revert
+  available). Tees, Sweatshirts, Hoodies and Jackets are now published; card order by
+  `scripts/collection_order.py`. Verified on the live site, desktop and mobile.
+- Details: `docs/decisions.md`, "8 October 2026, night".
+
 # (8 Oct 2026, evening) v2 on-model photos: what was built
 
 Evan asked for the full replace so he can preview in Shopify. `scripts/onmodel_v2_apply.py --apply` ran;

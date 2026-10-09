@@ -1,0 +1,74 @@
+{
+ "salt-lake-city_tee_front": [
+  582,
+  495,
+  794,
+  539
+ ],
+ "salt-lake-city_tee_back": [
+  451,
+  397,
+  925,
+  1032
+ ],
+ "salt-lake-city_crew_front": [
+  603,
+  505,
+  791,
+  544
+ ],
+ "salt-lake-city_crew_back": [
+  495,
+  420,
+  897,
+  958
+ ],
+ "salt-lake-city_hoodie_front": [
+  618,
+  639,
+  795,
+  676
+ ],
+ "salt-lake-city_hoodie_back": [
+  502,
+  559,
+  886,
+  1072
+ ],
+ "nauvoo_tee_front": [
+  582,
+  495,
+  794,
+  539
+ ],
+ "nauvoo_tee_back": [
+  451,
+  397,
+  925,
+  1032
+ ],
+ "nauvoo_crew_front": [
+  603,
+  505,
+  791,
+  544
+ ],
+ "nauvoo_crew_back": [
+  495,
+  420,
+  897,
+  958
+ ],
+ "nauvoo_hoodie_front": [
+  618,
+  639,
+  795,
+  676
+ ],
+ "nauvoo_hoodie_back": [
+  502,
+  559,
+  886,
+  1072
+ ]
+}

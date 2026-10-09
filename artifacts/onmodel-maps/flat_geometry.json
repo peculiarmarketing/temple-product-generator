@@ -1,0 +1,119 @@
+{
+ "_what": "Map print placement measured on Tapstitch's own flat lays of the live map products (1400px, same framing as onmodel-v2's flats, IoU 0.99). All ratios are of the chest width (armpit to armpit). Fronts anchor on the collar: d=(ink top-collar y)/chest. Backs anchor on the hem at centre, because the hoodie's hood sits differently on a flat and a person: h=(hem y-ink bottom)/chest. w=ink width/chest, cx=(ink centre x-garment centre x)/chest.",
+ "_marks": {
+  "tee": {
+   "collar": [
+    693,
+    226
+   ],
+   "chest": [
+    290,
+    1082
+   ],
+   "hem_back": [
+    686,
+    1212
+   ],
+   "ink_front": [
+    582,
+    495,
+    794,
+    539
+   ],
+   "ink_back": [
+    451,
+    397,
+    925,
+    1032
+   ]
+  },
+  "crew": {
+   "collar": [
+    699,
+    288
+   ],
+   "chest": [
+    382,
+    1018
+   ],
+   "hem_back": [
+    700,
+    1105
+   ],
+   "ink_front": [
+    603,
+    505,
+    791,
+    544
+   ],
+   "ink_back": [
+    495,
+    420,
+    897,
+    958
+   ]
+  },
+  "hoodie": {
+   "collar": [
+    700,
+    525
+   ],
+   "chest": [
+    355,
+    1045
+   ],
+   "hem_back": [
+    700,
+    1219
+   ],
+   "ink_front": [
+    618,
+    639,
+    795,
+    676
+   ],
+   "ink_back": [
+    502,
+    559,
+    886,
+    1072
+   ]
+  }
+ },
+ "tee_front": {
+  "anchor": "collar",
+  "d": 0.3396,
+  "w": 0.2677,
+  "cx": -0.0063
+ },
+ "tee_back": {
+  "anchor": "hem",
+  "h": 0.2273,
+  "w": 0.5985,
+  "cx": 0.0025
+ },
+ "crew_front": {
+  "anchor": "collar",
+  "d": 0.3412,
+  "w": 0.2956,
+  "cx": -0.0031
+ },
+ "crew_back": {
+  "anchor": "hem",
+  "h": 0.2311,
+  "w": 0.6321,
+  "cx": -0.0063
+ },
+ "hoodie_front": {
+  "anchor": "collar",
+  "d": 0.1652,
+  "w": 0.2565,
+  "cx": 0.0094
+ },
+ "hoodie_back": {
+  "anchor": "hem",
+  "h": 0.213,
+  "w": 0.5565,
+  "cx": -0.0087
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "poses": [
+  [
+   "his weight rests a little more on his LEFT leg and his arms hang a fraction further forward",
+   "he stands about 4% of the frame width LEFT of centre"
+  ],
+  [
+   "his weight rests a little more on his RIGHT leg and his arms hang a fraction further from his sides",
+   "he stands about 4% of the frame width RIGHT of centre and a touch closer to the camera, about 5% larger in the frame"
+  ],
+  [
+   "he stands evenly on both feet, fingers relaxed and slightly curled, shoulders a shade lower",
+   "he stands a touch further from the camera, about 5% smaller in the frame"
+  ],
+  [
+   "his weight rests a little more on his LEFT leg and his head is turned just a few degrees to his left",
+   "he stands about 3% of the frame width RIGHT of centre"
+  ],
+  [
+   "his weight rests a little more on his RIGHT leg and one shoulder sits marginally lower",
+   "he stands about 3% of the frame width LEFT of centre and about 4% larger in the frame"
+  ],
+  [
+   "he stands evenly on both feet with his arms hanging a fraction further back",
+   "he sits about 3% lower in the frame"
+  ],
+  [
+   "his weight shifts slightly to his RIGHT leg and his left hand rests a little closer to his thigh",
+   "he sits about 3% higher in the frame and about 4% smaller"
+  ]
+ ],
+ "index": {
+  "0": "tee_front_black",
+  "1": "tee_back_black",
+  "2": "tee_front_charcoal",
+  "3": "tee_back_charcoal",
+  "4": "tee_front_coffee",
+  "5": "tee_back_coffee",
+  "6": "tee_front_navy-blue",
+  "7": "tee_back_navy-blue",
+  "8": "tee_front_pink",
+  "9": "tee_back_pink",
+  "10": "tee_front_light-blue",
+  "11": "tee_back_light-blue",
+  "12": "tee_front_cream",
+  "13": "tee_back_cream",
+  "14": "crew_front_heather-gray",
+  "15": "crew_back_heather-gray",
+  "16": "hoodie_front_black",
+  "17": "hoodie_back_black",
+  "18": "hoodie_front_gray",
+  "19": "hoodie_back_gray",
+  "20": "hoodie_front_coffee",
+  "21": "hoodie_back_coffee",
+  "22": "hoodie_front_mauve",
+  "23": "hoodie_back_mauve",
+  "24": "hoodie_front_royal-blue",
+  "25": "hoodie_back_royal-blue",
+  "26": "hoodie_front_eden-green",
+  "27": "hoodie_back_eden-green"
+ }
+}
