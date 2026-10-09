@@ -121,7 +121,8 @@ def composite(photo, art_path, left, top, w, angle=0.0):
 # chest = the garment's left and right body edges where the sleeves meet it.
 BASE_LM = {
     "tee": ("tee_black", {"collar": [2045, 1294], "chest": [1470, 2600]}),
-    "crew": ("crew_black", {"collar": [2050, 1278], "chest": [1290, 2862]}),
+    # refitted 9 Oct 2026 to Tapstitch's loose, long fit; old blanks in blanks_boxy/
+    "crew": ("crew_black", {"collar": [2044, 1280], "chest": [1368, 2880]}),
     "hoodie": ("hoodie_gray", {"collar": [2037, 1180], "chest": [1479, 2586]}),
     "bomber_front": ("bomber_navy-blue_front", {"collar": [2008, 1428], "chest": [1300, 2720]}),
     "bomber_back": ("bomber_navy-blue_back", {"collar": [2010, 1144], "chest": [1312, 2714]}),

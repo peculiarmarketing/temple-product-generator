@@ -43,7 +43,8 @@
   "job_id": "46df0e24-783c-4c56-873c-0c46c17c6aa2"
  },
  "crew_front_black": {
-  "job_id": "b55d900b-216a-4d87-9645-8a70d11dcaec"
+  "job_id": "33b183f1-2d3f-4366-a94d-423275781a2e",
+  "refit": true
  },
  "hoodie_front_navy-blue": {
   "job_id": "ec7d8594-d440-4e82-926e-dadb7147bfd4"
@@ -52,7 +53,8 @@
   "job_id": "7406b6c0-03d1-4796-adcd-957a6f52cd48"
  },
  "crew_back_black": {
-  "job_id": "306f185f-5e46-4ef9-a15a-95709a25d7ac"
+  "job_id": "b358a464-6297-4760-a499-614e5af93e6a",
+  "refit": true
  },
  "hoodie_back_navy-blue": {
   "job_id": "3896aac2-7b60-450d-b5ca-e4dc8d9ad9da"
@@ -88,14 +90,12 @@
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214834_c910ec32-b8fd-4d5c-9a26-be73f92d9bdf.png"
  },
  "crew_front_heather-gray": {
-  "index": 14,
-  "job_id": "c27882c9-0d5d-4840-a87f-8109c7c47897",
-  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214833_c27882c9-0d5d-4840-a87f-8109c7c47897.png"
+  "job_id": "b888c34b-2113-4105-abfa-271a09f7e92e",
+  "refit": true
  },
  "crew_back_heather-gray": {
-  "index": 15,
-  "job_id": "137d601f-dfd6-4047-9371-9c04576ae202",
-  "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_214836_137d601f-dfd6-4047-9371-9c04576ae202.png"
+  "job_id": "1673d835-34f6-476c-91be-c82844fb934a",
+  "refit": true
  },
  "hoodie_front_black": {
   "index": 16,
@@ -156,5 +156,13 @@
   "index": 27,
   "job_id": "207866bc-6648-4653-b47f-b204e5a905c2",
   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3B5TkezxpmVdHyrxuPfJm8d9U8w/hf_20261008_220815_207866bc-6648-4653-b47f-b204e5a905c2.png"
+ },
+ "bp_crew_black": {
+  "job_id": "c5ecc8e0-0af7-493a-bc42-08ab4753420b",
+  "refit": true
+ },
+ "bp_crew_heather-gray": {
+  "job_id": "4f1e31bd-58ef-4786-ab6e-5dab398dab60",
+  "refit": true
  }
 }

@@ -95,8 +95,10 @@ HOOD_TIP_Y = {"black": 1095, "coffee": 1125, "eden-green": 1110, "gray": 1105,
 BASE_LM = {
     ("tee", "front"): {"collar": [1437, 900], "hem": 2625, "chest": [907, 1925], "chest_y": 1775},
     ("tee", "back"): {"collar": [1437, 730], "hem": 2620, "chest": [917, 1930], "chest_y": 1740},
-    ("crew", "front"): {"collar": [1412, 825], "hem": 2375, "chest": [900, 1912], "chest_y": 1500},
-    ("crew", "back"): {"collar": [1412, 700], "hem": 2380, "chest": [912, 1925], "chest_y": 1500},
+    # Sweatshirt refitted 9 Oct 2026 to Tapstitch's own loose, long fit (Evan's
+    # reference photo, refs/crew_fit_tapstitch.jpg); the boxy first bases are in gen/boxy/.
+    ("crew", "front"): {"collar": [1412, 800], "hem": 2532, "chest": [900, 1925], "chest_y": 1500},
+    ("crew", "back"): {"collar": [1412, 675], "hem": 2537, "chest": [912, 1925], "chest_y": 1500},
     ("hoodie", "front"): {"collar": [1437, 895], "hem": 2520, "chest": [975, 1875], "chest_y": 1700},
     ("hoodie", "back"): {"collar": [1437, 800], "hem": 2520, "chest": [962, 1900], "chest_y": 1700,
                          "hood_point": 1095},
