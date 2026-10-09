@@ -5,20 +5,67 @@ Higgsfield model photos and fold it into the fabric.
   python composite_maps.py build [prefix]    # finals for both places, or names starting prefix
 
 PLACEMENT comes from Tapstitch's own flat lays of the live map products
-(flats/, 1400px): the print's width, its drop below the collar and its offset
-from the centre line, each as a share of the chest width (armpit to armpit),
-carried to each photo's own chest width. That is how the onmodel-v2 shots were
-placed, and it makes the print look on the body the way it looks on the flat.
+(flats/, 1400px). On a flat the print's ink box sits a known distance below the
+collar and a known distance off the centre line, and it is a known width. Every
+one of those is carried to a photo in proportion to the garment's collar-to-hem
+length, the same fabric on the flat and on the body, so the print shows at its
+true printed size (the temple pipeline sizes by length for the same reason,
+photo-mockup-spike/print_geometry.json).
 
-  c       = photo chest / flat chest
-  ink w   = flat ink w * c
-  ink top = photo collar y + (flat ink top - flat collar y) * c
-  ink cx  = photo collar x + (flat ink cx - flat collar x) * c
+  s       = (photo hem - photo collar) / (flat hem - flat collar)
+  ink w   = flat ink w * s
+  ink top = photo collar y + (flat ink top - flat collar y) * s
+  ink cx  = photo collar x + (flat ink cx - flat collar x) * s
 
-Sized by collar-to-hem length instead (true inches, the first build), the 13.4in
-map covered most of the visible back: a garment wraps the body, so its visible
-width shrinks while its length does not. Evan, 9 Oct 2026: "the print space is
-too big"; he chose the flat lay's look, then found it too small, so SIZE = 1.25
+A garment wraps the body, so at true size the map covers more of the visible
+back than on a flat lay. Evan tried the flat lay's share of the chest width
+(onmodel-v2's method, the chest landmarks below) and a step up from it on
+9 Oct 2026, and went back to true size: what had looked too big was the heavy
+fold, not the size.
+
+COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
+neck rib at centre; hoodie front, the V where the hood's two sides cross; hoodie
+back, the neckline where the hood's outer edges meet the shoulders (on a flat the
+hood stands up, on a person it lies down, so the hood itself cannot be the mark).
+On the hoodie back the print is kept clear of the hood's point, which a real
+person's hood would cover.
+
+FOLD is a quarter of the temple line's: displace 0.75, fold strength 55, band
+4-20, shade gain 1.8, texture 0.35, opacity 0.93. The full temple fold (displace
+3, strength 220) visibly bent the map frame and streets; Evan, 9 Oct 2026: "too
+wavy", chose a gentle bend with the light and shade kept. The temple values were
+tuned on 2048px photos whose garment ran about 1170px collar to
+hem, so every pixel quantity scales by k = this garment's collar-to-hem / 1170
+(fold strength by k squared: the fold gradient is per pixel).
+"""
+
+import json
+import sys
+from pathlib import Path
+
+import numpy as np
+from PIL import Image, ImageDraw
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "photo-mockup-spike"))
+import composite  # noqa: E402
+from composite import build as fold_build, load_art  # noqa: E402
+
+
+def _cv_gauss(a, sigma):
+    """composite.gauss, by OpenCV: the same separable gaussian, fast enough at 5000px."""
+    import cv2
+    return cv2.GaussianBlur(np.asarray(a, np.float32), (0, 0), float(sigma)).astype(np.float64)
+
+
+composite.gauss = _cv_gauss
+
+PLACES = ["nauvoo", "salt-lake-city"]
+OUT_PX = 5000
+REF_SPAN = 1170.0
+FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
+LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
+
 sits between the two.
 
 COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
@@ -159,7 +206,9 @@ def target_box(name, L, place):
     g, v, _ = parse(name)
     F = FLAT_LM[(g, v)]
     ink = json.loads((HERE / "flats" / "ink_boxes.json").read_text())[f"{place}_{g}_{v}"]
-    s = (L["chest"][1] - L["chest"][0]) / (F["chest"][1] - F["chest"][0]) * SIZE
+    # True inches: the print scales with the garment's collar-to-hem length, the
+    # same fabric on the flat and on the body (see the module docstring).
+    s = (L["hem"] - L["collar"][1]) / (F["hem"] - F["collar"][1])
     w = (ink[2] - ink[0]) * s
     top = L["collar"][1] + (ink[1] - F["collar"][1]) * s
     cx = L["collar"][0] + ((ink[0] + ink[2]) / 2 - F["collar"][0]) * s
