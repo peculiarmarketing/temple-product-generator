@@ -1230,64 +1230,6 @@
         "padding_bottom": 36
       }
     },
-    "pp_conversation": {
-      "type": "pp-conversation",
-      "blocks": {
-        "moment_1": {
-          "type": "moment",
-          "settings": {
-            "image": "shopify://shop_images/pp-fleece-black-fold.jpg",
-            "text": "Comfortable from the first wear.",
-            "focus_x": 50,
-            "focus_y": 50,
-            "focus_x_mobile": 50
-          }
-        },
-        "moment_2": {
-          "type": "moment",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-3-every-day.jpg",
-            "text": "So it's the one you grab.",
-            "focus_x": 36,
-            "focus_y": 42,
-            "focus_x_mobile": 40
-          }
-        },
-        "moment_3": {
-          "type": "moment",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-1-why.jpg",
-            "text": "So people see it.",
-            "focus_x": 66,
-            "focus_y": 42,
-            "focus_x_mobile": 66
-          }
-        },
-        "moment_4": {
-          "type": "moment",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-2-opening.jpg",
-            "text": "<b>So someone asks what's on your shirt.</b>",
-            "focus_x": 55,
-            "focus_y": 40,
-            "focus_x_mobile": 55
-          }
-        }
-      },
-      "block_order": [
-        "moment_1",
-        "moment_2",
-        "moment_3",
-        "moment_4"
-      ],
-      "settings": {
-        "eyebrow": "Why we make it",
-        "scroll_length": "medium",
-        "overlay": 55,
-        "background": "#0d0e11",
-        "text_color": "#ffffff"
-      }
-    },
     "pp_look_closer": {
       "type": "pp-look-closer",
       "blocks": {
@@ -1378,7 +1320,6 @@
   "order": [
     "pp_hero_draw",
     "pp_temple_showcase",
-    "pp_conversation",
     "pp_zoom_dive",
     "pp_zoom_film",
     "pp_scroll_zoom",
