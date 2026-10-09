@@ -73,8 +73,8 @@ LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
 # Then, after the hood fix: every front logo another 5% smaller and 1.5in higher.
 SCALE = {("tee", "back"): 0.90, ("crew", "back"): 0.90, ("hoodie", "back"): 0.90,
          ("tee", "front"): 0.95, ("crew", "front"): 0.95, ("hoodie", "front"): 0.90 * 0.95}
-# Evan, then: the hoodie's chest logo a little lower (0.75in down from 2.5).
-RAISE_IN = {("tee", "front"): 2.5, ("crew", "front"): 2.5, ("hoodie", "front"): 1.75}
+# Evan, then: the hoodie's chest logo a little lower, twice (0.75in each, from 2.5).
+RAISE_IN = {("tee", "front"): 2.5, ("crew", "front"): 2.5, ("hoodie", "front"): 1.0}
 LOGO_IN = 6.0          # front logo's true ink width, the inch ruler on each flat
 # The map's top sits this share of its height above the hood's tip, so the hood
 # hides a small notch of it (Evan, 9 Oct 2026: keep it small).
