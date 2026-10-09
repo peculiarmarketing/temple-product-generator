@@ -199,3 +199,14 @@ About 2.4 screens of scroll. "Where the print sits" (percent of the photo) place
 the drawing on the photo. Until the Temple Square photo exists, it uses
 `assets/pp-hero-tee-salt-lake.jpg`, the Tapstitch flat lay of the black Salt Lake
 tee. Reduced motion or no script: the photo with the headline over it.
+
+## Hero back to the self-drawing showcase, black on white (9 October 2026, V4 only)
+
+Evan preferred the timed showcase to the scroll hero, so `pp_hero_draw` is set
+`"disabled": true` and `pp_temple_showcase` is back on top, with three new settings:
+"Drawings" accepts city maps as `map:<slug>` (pp-map-<slug> files) beside temple
+names; "Seconds to draw each one" (6 on V4; product pages keep 13 s); "Colours"
+light, which shows the white-ink art inverted, black on white. V4 rotates temple,
+map, temple, map: Salt Lake, SLC map, Kirtland, Nauvoo map, Nauvoo, SLC map, Logan,
+Nauvoo map, Mexico City, SLC map, Rome, Nauvoo map. Each turn is 6 s drawing, the
+city line, a 3 s hold and the fade, about 11.3 s.

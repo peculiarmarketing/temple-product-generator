@@ -14,6 +14,7 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const DRAW_MS = 13000;  // pen down to pen up, one temple, at one steady speed
+                          // (the homepage showcase sets its own: data-draw-ms)
   const HOLD_MS = 3000;   // finished drawing stays up once the city line is complete
   const FADE_MS = 700;    // showcase cross-fade between temples
   const EXACT_MS = 600;   // unmasked art fades in at the end
@@ -106,7 +107,7 @@
     return wait(letters.length * LETTER_MS + 250);
   }
 
-  async function draw(stage, data, imgUrl, live) {
+  async function draw(stage, data, imgUrl, live, drawMs = DRAW_MS) {
     const cityEl = stage.querySelector('.pp-pen__city');
     setKids(cityEl, []);
     const { paths, exact, tip } = mount(stage.querySelector('.pp-pen__art'), data, imgUrl);
@@ -132,7 +133,7 @@
     await new Promise((done) => {
       const frame = (now) => {
         if (!live()) return done();
-        const progress = Math.min(1, (now - t0) / DRAW_MS);
+        const progress = Math.min(1, (now - t0) / drawMs);
         const target = progress * total;  // steady pen: no speeding up or slowing down
         while (i < paths.length && cum[i + 1] <= target) {
           paths[i].style.visibility = 'visible';
@@ -211,8 +212,10 @@
     whenVisible(section, (v) => { visible = v; if (v) start(); else run++; });
   }
 
-  // Homepage showcase: each temple in turn. Entries whose files are missing are dropped.
+  // Homepage showcase: each drawing in turn (temples and city maps). Entries whose
+  // files are missing are dropped.
   function initShowcase(section) {
+    const drawMs = (+section.dataset.drawSeconds || DRAW_MS / 1000) * 1000;
     const stage = section.querySelector('.pp-pen');
     const items = [...section.querySelectorAll('[data-pp-pen-item]')]
       .map((n) => ({ json: n.dataset.json, img: n.dataset.img }));
@@ -249,7 +252,7 @@
           setCount();
           stage.classList.remove('is-faded');
           if (items.length > 1) load(items[(idx + 1) % items.length]).catch(() => {});
-          await draw(stage, data, item.img, live);
+          await draw(stage, data, item.img, live, drawMs);
           if (!live()) break;
           await wait(HOLD_MS);
           if (!live() || items.length < 2) break;  // a single temple just stays drawn

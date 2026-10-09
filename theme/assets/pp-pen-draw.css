@@ -94,3 +94,14 @@
   .pp-band__inner { padding: 32px 20px; }
   .pp-pen__city { font-size: 12.5px; letter-spacing: .14em; }
 }
+
+/* Homepage showcase, light (Evan, 9 October 2026): black drawing on white. The art
+   files are white ink on transparent, so the drawing is shown inverted; that turns
+   the lines and the pen tip black and leaves the transparent ground alone. */
+.pp-showcase--light { background: #fff; color: #121212; }
+.pp-showcase--light .pp-pen__art svg { filter: invert(1); }
+.pp-showcase--light .pp-pen__city { color: #121212; }
+.pp-showcase--light .pp-showcase__heading { color: #121212; }
+.pp-showcase--light .pp-showcase__text { color: rgba(18, 18, 18, .72); }
+.pp-showcase--light .pp-showcase__btn { border-color: var(--pp-navy); }
+.pp-showcase--light .pp-showcase__btn:focus-visible { outline-color: var(--pp-navy); }
