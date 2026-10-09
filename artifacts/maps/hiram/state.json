@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hiram/hiram hoodie white front print (map).png"
+    ]
+  }
+}

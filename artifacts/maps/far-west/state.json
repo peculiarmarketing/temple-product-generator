@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/far-west/far-west hoodie white front print (map).png"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/harmony/harmony hoodie white front print (map).png"
+    ]
+  }
+}

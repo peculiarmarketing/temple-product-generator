@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/colesville/colesville hoodie white front print (map).png"
+    ]
+  }
+}

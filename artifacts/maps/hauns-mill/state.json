@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/hauns-mill/hauns-mill hoodie white front print (map).png"
+    ]
+  }
+}

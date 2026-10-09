@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/independence/independence hoodie white front print (map).png"
+    ]
+  }
+}

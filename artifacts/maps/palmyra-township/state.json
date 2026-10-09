@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/palmyra-township/palmyra-township hoodie white front print (map).png"
+    ]
+  }
+}

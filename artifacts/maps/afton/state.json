@@ -1,0 +1,20 @@
+{
+  "tee": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton tee white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton tee white front print (map).png"
+    ]
+  },
+  "crew": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton crew white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton crew white front print (map).png"
+    ]
+  },
+  "hoodie": {
+    "print_files": [
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton hoodie white back print (map).png",
+      "/home/user/temple-product-generator/artifacts/maps/afton/afton hoodie white front print (map).png"
+    ]
+  }
+}
