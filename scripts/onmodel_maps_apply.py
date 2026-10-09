@@ -11,12 +11,20 @@ Order per product, chosen so a variant never points at a missing image:
      fronts, then the map and logo close-ups, then the Tapstitch flats as they are
   4. read back: order, alts, every variant bound to its colour's back shot
 
-Nothing is deleted: map products had no on-model images before.
+Nothing is deleted on a first apply: map products had no on-model images before.
+
+--replace swaps a listing's existing on-model photos for new finals (9 Oct 2026:
+the map art gained numbered markers after Nauvoo and Salt Lake City got their
+first photos). The old shots are found by alt (" on model - "), not by id, since
+a Tapstitch re-send gives every image a new id. Order: upload the new shots,
+bind the variants to them, delete the old shots, reorder. A variant never points
+at a deleted image, and a rerun after a failure picks up where it stopped.
 
   python scripts/onmodel_maps_apply.py            # plan only
   python scripts/onmodel_maps_apply.py --apply    # do it (live listings, Evan's go)
   python scripts/onmodel_maps_apply.py --verify   # read back only
   python scripts/onmodel_maps_apply.py --place provo --apply   # one city only
+  python scripts/onmodel_maps_apply.py --place nauvoo --replace --apply
 
 Every city with prints in artifacts/onmodel-maps/prints/ is covered; a new city's
 listings follow the same handle pattern as the first two.
@@ -29,6 +37,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
+import map_run as M                                     # noqa: E402
 from shopify_client import ShopifyClient, ShopifyError  # noqa: E402
 
 MAPS = ROOT / "artifacts" / "onmodel-maps"
@@ -38,8 +48,11 @@ WORD = {"tee": "tee", "crew": "sweatshirt", "hoodie": "hoodie"}
 HANDLE_FMT = {"tee": "essential-heavyweight-map-tee-{}", "crew": "ultra-soft-map-sweatshirt-{}",
               "hoodie": "ultra-soft-oversized-map-hoodie-{}"}
 PLACES = sorted({p.stem.rsplit("_", 2)[0] for p in (MAPS / "prints").glob("*_*_*.png")})
-CITY = {p: p.replace("-", " ").title() for p in PLACES}     # salt-lake-city -> Salt Lake City
-HANDLES = {(p, g): HANDLE_FMT[g].format(p) for p in PLACES for g in HANDLE_FMT}
+CITY = {p: M.city_state(M.place_cfg(p))[0] for p in PLACES}  # the name on the product title
+# The handle each listing went live at (Palmyra's folder is palmyra-township, its
+# listings end in -palmyra); the pattern covers a city with no publish record.
+HANDLES = {(p, g): (M.load_state(p).get(g) or {}).get("shopify_handle") or HANDLE_FMT[g].format(p)
+           for p in PLACES for g in HANDLE_FMT}
 CARD_PREFIXES = ("City map art close-up", "Coordinates logo close-up")
 
 Q = """query($h: String!) { productByHandle(handle: $h) { id title status
@@ -78,18 +91,28 @@ def is_onmodel(alt):
     return " on model - " in (alt or "")
 
 
-def apply(c, place, g, state, do):
+def apply(c, place, g, state, do, replace=False):
     handle = HANDLES[(place, g)]
     p = c.gql(Q, {"h": handle})["productByHandle"]
     gid = p["id"]
     items = plan_for(place, g, p)
     st = state.setdefault(handle, {"uploaded": {}})
+    if replace and not st.get("replacing"):
+        old = [m["id"] for m in p["media"]["nodes"] if is_onmodel(m["alt"])]
+        print(f"\n{p['title']}: replacing {len(old)} on-model images")
+        if not do:
+            return
+        st.update(replacing=True, uploaded={}, order=None)
+        STATE.write_text(json.dumps(state, indent=1))
     mine = set(st["uploaded"].values())
-    stray = [m for m in p["media"]["nodes"] if is_onmodel(m["alt"]) and m["id"] not in mine]
+    old = [m["id"] for m in p["media"]["nodes"]
+           if st.get("replacing") and is_onmodel(m["alt"]) and m["id"] not in mine]
+    stray = [m for m in p["media"]["nodes"]
+             if is_onmodel(m["alt"]) and m["id"] not in mine and m["id"] not in old]
     if stray:
         raise SystemExit(f"{p['title']}: on-model images this script did not upload: "
                          f"{[m['alt'] for m in stray][:3]}; refusing")
-    rest = [m for m in p["media"]["nodes"] if m["id"] not in mine]
+    rest = [m for m in p["media"]["nodes"] if m["id"] not in mine and m["id"] not in old]
     cards = [m["id"] for m in rest if (m["alt"] or "").startswith(CARD_PREFIXES)]
     flats = [m["id"] for m in rest if m["id"] not in cards]
     print(f"\n{p['title']} ({p['status']}): {len(items)} on-model to add, "
@@ -122,6 +145,9 @@ def apply(c, place, g, state, do):
     if r["userErrors"]:
         raise ShopifyError(str(r["userErrors"]))
     print("   bound", len(upd), "variants")
+    if old:
+        c.delete_media(gid, old)
+        print("   deleted", len(old), "old on-model images")
     order = [st["uploaded"][i["key"]] for i in items] + cards + flats
     moves = [{"id": m, "newPosition": str(n)} for n, m in enumerate(order)]
     r = c.gql("""mutation($id: ID!, $moves: [MoveInput!]!) {
@@ -131,6 +157,7 @@ def apply(c, place, g, state, do):
         raise ShopifyError(str(r["mediaUserErrors"]))
     c._wait_for_job((r.get("job") or {}).get("id"))
     st["order"] = order
+    st.pop("replacing", None)
     STATE.write_text(json.dumps(state, indent=1))
 
 
@@ -166,6 +193,8 @@ def main():
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--verify", action="store_true")
     ap.add_argument("--place", help="one city only, e.g. nauvoo")
+    ap.add_argument("--replace", action="store_true",
+                    help="swap existing on-model photos for the current finals")
     a = ap.parse_args()
     if a.place:
         for k in [k for k in HANDLES if k[0] != a.place]:
@@ -177,7 +206,7 @@ def main():
     if a.verify:
         sys.exit(0 if all([verify(c, pl, g, state) for pl, g in HANDLES]) else 1)
     for pl, g in HANDLES:
-        apply(c, pl, g, state, a.apply)
+        apply(c, pl, g, state, a.apply, a.replace)
         if a.apply:
             time.sleep(1)
     if a.apply:

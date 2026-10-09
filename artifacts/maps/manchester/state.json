@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558304513767665664",
+    "store_product_id": "1558304922192257024",
+    "distribute_started_at": "2026-10-09T18:27:26",
+    "shopify_handle": "essential-heavyweight-map-tee-manchester",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305211083280384",
+    "store_product_id": "1558305240665751552",
+    "distribute_started_at": "2026-10-09T18:28:41",
+    "shopify_handle": "ultra-soft-map-sweatshirt-manchester",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/manchester/manchester hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305489505374208",
+    "store_product_id": "1558305541288304640",
+    "distribute_started_at": "2026-10-09T18:29:53",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-manchester",
+    "state": "live"
   }
 }

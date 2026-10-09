@@ -3,18 +3,33 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305761355001856",
+    "store_product_id": "1558305809103003648",
+    "distribute_started_at": "2026-10-09T18:30:58",
+    "shopify_handle": "essential-heavyweight-map-tee-colesville",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558306073423802368",
+    "store_product_id": "1558306100737146880",
+    "distribute_started_at": "2026-10-09T18:32:06",
+    "shopify_handle": "ultra-soft-map-sweatshirt-colesville",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/colesville/colesville hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558306321592381440",
+    "store_product_id": "1558306402827706368",
+    "distribute_started_at": "2026-10-09T18:33:19",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-colesville",
+    "state": "live"
   }
 }

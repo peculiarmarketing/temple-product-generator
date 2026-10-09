@@ -3,18 +3,32 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558305947959586816",
+    "store_product_id": "1558305993430081536",
+    "distribute_started_at": "2026-10-09T18:31:41",
+    "shopify_handle": "essential-heavyweight-map-tee-mendon",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558306250566037504",
+    "store_product_id": "1558306280928649216",
+    "distribute_started_at": "2026-10-09T18:32:49",
+    "shopify_handle": "ultra-soft-map-sweatshirt-mendon",
+    "state": "live"
   },
   "hoodie": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon hoodie white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/mendon/mendon hoodie white front print (map).png"
-    ]
+    ],
+    "template_id": "1558306504292069376",
+    "store_product_id": "1558306545903804416",
+    "distribute_started_at": "2026-10-09T18:33:53",
+    "shopify_handle": "ultra-soft-oversized-map-hoodie-mendon"
   }
 }

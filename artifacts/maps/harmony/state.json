@@ -3,13 +3,22 @@
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony tee white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony tee white front print (map).png"
-    ]
+    ],
+    "template_id": "1558306761075748864",
+    "store_product_id": "1558306837395349504",
+    "distribute_started_at": "2026-10-09T18:35:02",
+    "shopify_handle": "essential-heavyweight-map-tee-harmony",
+    "state": "live"
   },
   "crew": {
     "print_files": [
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony crew white back print (map).png",
       "/home/user/temple-product-generator/artifacts/maps/harmony/harmony crew white front print (map).png"
-    ]
+    ],
+    "template_id": "1558307164848812032",
+    "store_product_id": "1558307196301942784",
+    "distribute_started_at": "2026-10-09T18:36:28",
+    "shopify_handle": "ultra-soft-map-sweatshirt-harmony"
   },
   "hoodie": {
     "print_files": [

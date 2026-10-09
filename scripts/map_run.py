@@ -165,8 +165,20 @@ def art_paths(name, p):
     return back, front, web
 
 
+# str.title() capitalises after an apostrophe ("Haun'S Mill"), so words are cased
+# by hand: first letter of each space- or hyphen-separated part. The Church
+# spells Adam-ondi-Ahman with a lowercase middle.
+NAME_CASE = {"Adam-Ondi-Ahman": "Adam-ondi-Ahman"}
+
+
+def _name_case(s):
+    s = " ".join("-".join(w[:1].upper() + w[1:].lower() for w in word.split("-"))
+                 for word in s.strip().split())
+    return NAME_CASE.get(s, s)
+
+
 def city_state(p):
-    city, region = (s.strip().title() for s in p["label"].rsplit(",", 1))
+    city, region = (_name_case(s) for s in p["label"].rsplit(",", 1))
     return city, region
 
 
