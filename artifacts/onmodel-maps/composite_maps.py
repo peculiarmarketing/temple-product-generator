@@ -18,10 +18,9 @@ photo-mockup-spike/print_geometry.json).
   ink cx  = photo collar x + (flat ink cx - flat collar x) * s
 
 A garment wraps the body, so at true size the map covers more of the visible
-back than on a flat lay. Evan tried the flat lay's share of the chest width
-(onmodel-v2's method, the chest landmarks below) and a step up from it on
-9 Oct 2026, and went back to true size: what had looked too big was the heavy
-fold, not the size.
+back than on a flat lay. On 9 Oct 2026 Evan tried the flat lay's share of the
+chest width (onmodel-v2's method; the chest landmarks below) and a step up from
+it, then went back to true size: what had looked too big was the heavy fold.
 
 COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
 neck rib at centre; hoodie front, the V where the hood's two sides cross; hoodie
@@ -65,55 +64,6 @@ OUT_PX = 5000
 REF_SPAN = 1170.0
 FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
 LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
-
-sits between the two.
-
-COLLAR, per view and the same on flat and photo: tee and crew, the top edge of the
-neck rib at centre; hoodie front, the V where the hood's two sides cross; hoodie
-back, the neckline where the hood's outer edges meet the shoulders (on a flat the
-hood stands up, on a person it lies down, so the hood itself cannot be the mark).
-On the hoodie back the print is kept clear of the hood's point, which a real
-person's hood would cover.
-
-FOLD is a quarter of the temple line's: displace 0.75, fold strength 55, band
-4-20, shade gain 1.8, texture 0.35, opacity 0.93. The full temple fold (displace
-3, strength 220) visibly bent the map frame and streets; Evan, 9 Oct 2026: "too
-wavy", chose a gentle bend with the light and shade kept. The temple values were
-tuned on 2048px photos whose garment ran about 1170px collar to
-hem, so every pixel quantity scales by k = this garment's collar-to-hem / 1170
-(fold strength by k squared: the fold gradient is per pixel).
-"""
-
-import json
-import sys
-from pathlib import Path
-
-import numpy as np
-from PIL import Image, ImageDraw
-
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "photo-mockup-spike"))
-import composite  # noqa: E402
-from composite import build as fold_build, load_art  # noqa: E402
-
-
-def _cv_gauss(a, sigma):
-    """composite.gauss, by OpenCV: the same separable gaussian, fast enough at 5000px."""
-    import cv2
-    return cv2.GaussianBlur(np.asarray(a, np.float32), (0, 0), float(sigma)).astype(np.float64)
-
-
-composite.gauss = _cv_gauss
-
-PLACES = ["nauvoo", "salt-lake-city"]
-OUT_PX = 5000
-REF_SPAN = 1170.0
-FOLD = dict(displace=0.75, shade_gain=1.8, texture=0.35, opacity=0.93, strength=55.0, band=(4, 20))
-LEAD = {"tee": "maroon", "crew": "black", "hoodie": "navy-blue"}
-# Art direction on top of the flat-lay share of the chest. 1.0 looked too small on
-# a person, true inches (about 1.5) too big; Evan, 9 Oct 2026, picked between.
-# Scales width and drop below the collar together, so the print grows downward.
-SIZE = 1.25
 
 # Hand marks on each lead base photo (2880px): collar point, hem y at centre, and
 # the chest: left and right x where the sleeve meets the body, at chest_y.
