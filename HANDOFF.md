@@ -1,3 +1,7 @@
+# City map line: in flight (9 Oct 2026)
+
+The city map products (`scripts/map_run.py`, map Easify sets, garment collections) have their own handoff in the workspace: `designs/city-map-back/HANDOFF.md`. Read that before touching any map product.
+
 # (8 Oct 2026, evening) v2 on-model photos: what was built
 
 Evan asked for the full replace so he can preview in Shopify. `scripts/onmodel_v2_apply.py --apply` ran;
