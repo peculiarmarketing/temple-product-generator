@@ -1,0 +1,128 @@
+{%- comment -%}
+  Peculiar People homepage hero: drawn, then printed. The headline loads with the
+  temple's outline drawing itself; scrolling then moves the pen through the rest of
+  the drawing (pen strokes from pp-temple-<slug>.json, the same files the product
+  page band uses). Once it is drawn, the dark ground turns out to be the shirt: the
+  photo fades in under the lines, the crisp lines hand off to the printed ones that
+  sit exactly beneath them, and the camera pulls back to the whole photo.
+
+  "Where the print sits" places the drawing on the photo, in percent of the photo,
+  so a new photo only needs those three numbers. Without the script, or with
+  reduced motion on, the hero is the photo with the headline over it.
+{%- endcomment -%}
+{{ 'pp-hero-draw.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-hero-draw.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  assign slug = s.temple | strip | downcase | default: 'salt-lake'
+  case s.scroll_length
+    when 'short'
+      assign track_vh = 260
+    when 'long'
+      assign track_vh = 420
+    else
+      assign track_vh = 340
+  endcase
+  if s.photo != blank
+    assign photo_w = s.photo.width
+    assign photo_h = s.photo.height
+  else
+    assign photo_w = 1400
+    assign photo_h = 1400
+  endif
+-%}
+<section
+  class="pp-hero"
+  data-pp-hero
+  data-json="{{ 'pp-temple-' | append: slug | append: '.json' | asset_url }}"
+  data-img="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}"
+  data-photo-w="{{ photo_w }}"
+  data-photo-h="{{ photo_h }}"
+  data-art-x="{{ s.art_x }}"
+  data-art-y="{{ s.art_y }}"
+  data-art-w="{{ s.art_w }}"
+  style="--pp-hero-ground: {{ s.ground }}; --pp-hero-track: {{ track_vh }}vh;"
+>
+  <div class="pp-hero__track">
+    <div class="pp-hero__stage">
+      <div class="pp-hero__world">
+        <div class="pp-hero__photo">
+          {%- if s.photo != blank -%}
+            {{
+              s.photo
+              | image_url: width: 3000
+              | image_tag:
+                loading: 'eager',
+                fetchpriority: 'low',
+                widths: '1100, 1600, 2200, 3000',
+                sizes: '100vw',
+                alt: s.photo.alt
+            }}
+          {%- else -%}
+            <img src="{{ 'pp-hero-tee-salt-lake.jpg' | asset_url }}" width="1400" height="1400" alt="" loading="eager" fetchpriority="low">
+          {%- endif -%}
+        </div>
+        <div class="pp-hero__draw" role="img" aria-label="{{ s.drawing_label | escape }}"></div>
+      </div>
+      <div class="pp-hero__copy">
+        {%- if s.heading != blank -%}
+          <h1 class="pp-hero__heading">{{ s.heading }}</h1>
+        {%- endif -%}
+        {%- if s.subheading != blank -%}
+          <p class="pp-hero__text">{{ s.subheading | escape }}</p>
+        {%- endif -%}
+        {%- if s.button_label != blank and s.link != blank -%}
+          <a class="pp-hero__btn" href="{{ s.link }}">{{ s.button_label | escape }}</a>
+        {%- endif -%}
+      </div>
+      <span class="pp-hero__cue" aria-hidden="true">Scroll</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP hero drawing",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Made to start the conversation" },
+    { "type": "text", "id": "subheading", "label": "Text", "default": "Premium apparel for Latter-day Saints, printed to order in the United States." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Find your temple" },
+    { "type": "url", "id": "link", "label": "Button link" },
+    {
+      "type": "text",
+      "id": "temple",
+      "label": "Temple",
+      "info": "Temple tag name (after temple:). Its drawing must be uploaded.",
+      "default": "salt-lake"
+    },
+    { "type": "text", "id": "drawing_label", "label": "Drawing description for screen readers", "default": "Line drawing of the Salt Lake Temple, drawn as you scroll" },
+    {
+      "type": "image_picker",
+      "id": "photo",
+      "label": "Photo",
+      "info": "The shirt with this temple printed on it. Leave empty to use the stand-in flat lay."
+    },
+    {
+      "type": "header",
+      "content": "Where the print sits",
+      "info": "The drawing's box on the photo, in percent of the photo's width (left, width) and height (top). The drawing must land exactly on the print."
+    },
+    { "type": "number", "id": "art_x", "label": "Left (%)", "default": 33.1 },
+    { "type": "number", "id": "art_y", "label": "Top (%)", "default": 31.4 },
+    { "type": "number", "id": "art_w", "label": "Width (%)", "default": 32.1 },
+    { "type": "color", "id": "ground", "label": "Shirt colour behind the drawing", "default": "#1f1f1f" },
+    {
+      "type": "select",
+      "id": "scroll_length",
+      "label": "Scroll length",
+      "options": [
+        { "value": "short", "label": "Short" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "long", "label": "Long" }
+      ],
+      "default": "medium"
+    }
+  ],
+  "presets": [{ "name": "PP hero drawing" }]
+}
+{% endschema %}

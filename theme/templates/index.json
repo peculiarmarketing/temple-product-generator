@@ -18,7 +18,8 @@
         "link": "shopify://collections/temple-design-products",
         "temples": "salt-lake",
         "drawing_label": "Line drawings of temples, drawn one after another"
-      }
+      },
+      "disabled": true
     },
     "pp_zoom_dive": {
       "type": "pp-zoom-dive",
@@ -1354,9 +1355,26 @@
         "background": "#0d0e11",
         "text_color": "#ffffff"
       }
+    },
+    "pp_hero_draw": {
+      "type": "pp-hero-draw",
+      "settings": {
+        "heading": "Made to start the conversation",
+        "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
+        "button_label": "Find your temple",
+        "link": "shopify://collections/temple-design-products",
+        "temple": "salt-lake",
+        "drawing_label": "Line drawing of the Salt Lake Temple, drawn as you scroll",
+        "art_x": 33.14,
+        "art_y": 31.43,
+        "art_w": 32.14,
+        "ground": "#1f1f1f",
+        "scroll_length": "medium"
+      }
     }
   },
   "order": [
+    "pp_hero_draw",
     "pp_temple_showcase",
     "pp_conversation",
     "pp_zoom_dive",

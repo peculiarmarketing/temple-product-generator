@@ -187,3 +187,15 @@ to Claude Code V4 only (checksums verified against these files); the art `.webp`
 files were already identical on V4. V4's homepage showcase is set to Salt Lake
 only. Coverage is 99.90% or higher on every temple. Still being fixed: early stray
 pieces on Vernal, Provo, Mexico City, Washington D.C. and Nauvoo.
+
+## Hero: drawn, then printed (9 October 2026, "Claude Code V4" only)
+
+`sections/pp-hero-draw.liquid` with `assets/pp-hero-draw.js` and `.css` replaces the
+temple showcase at the top of V4's homepage (the showcase is set `"disabled": true`).
+Salt Lake draws as you scroll (same stroke files as the product band; the outline
+draws by itself on arrival), then the dark ground turns out to be the shirt, the
+lines hand off to the print beneath them and the camera pulls back to the photo.
+About 2.4 screens of scroll. "Where the print sits" (percent of the photo) places
+the drawing on the photo. Until the Temple Square photo exists, it uses
+`assets/pp-hero-tee-salt-lake.jpg`, the Tapstitch flat lay of the black Salt Lake
+tee. Reduced motion or no script: the photo with the headline over it.
