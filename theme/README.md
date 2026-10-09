@@ -210,3 +210,13 @@ light, which shows the white-ink art inverted, black on white. V4 rotates temple
 map, temple, map: Salt Lake, SLC map, Kirtland, Nauvoo map, Nauvoo, SLC map, Logan,
 Nauvoo map, Mexico City, SLC map, Rome, Nauvoo map. Each turn is 6 s drawing, the
 city line, a 3 s hold and the fade, about 11.3 s.
+
+## Pen drawing on a canvas (9 October 2026, V4 only)
+
+`assets/pp-pen-draw.js` now paints the pen on a canvas instead of an SVG mask. The
+mask version re-rendered every stroke on every frame, so cost grew with stroke count
+(about 30 fps on the 11,800-line Salt Lake City map). Each frame now adds only the
+new length of pen line to an offscreen mask canvas and shows the art through it in
+one composite (under 1 ms of script per frame on that map). The finished art still
+fades in over it at the end, and a resize repaints what is drawn so far. Same data
+files, same behaviour for the product band and the homepage showcase.
