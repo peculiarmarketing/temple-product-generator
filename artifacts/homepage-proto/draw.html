@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drawing order viewer</title>
+<style>
+  body { margin: 0; background: #141414; color: #ddd; font: 14px/1.4 Montserrat, "Helvetica Neue", Arial, sans-serif; }
+  .ui { display: flex; max-height: 40vh; overflow: auto; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 14px 18px; border-bottom: 1px solid #2a2a2a; position: sticky; top: 0; background: #141414; z-index: 2; }
+  .ui button { background: #222; color: #ddd; border: 1px solid #444; padding: 7px 12px; cursor: pointer; font: inherit; }
+  .ui button.on { background: #F58000; border-color: #F58000; color: #111; }
+  .ui input[type=range] { width: min(420px, 60vw); }
+  .tier { min-width: 150px; color: #F58000; font-weight: 700; letter-spacing: .06em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; padding: 16px; }
+  figure { margin: 0; background: #1b1b1b; padding: 12px; }
+  figcaption { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+  .art { aspect-ratio: 741 / 840; width: 100%; max-height: 74vh; }
+  .art svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="ui">
+  <span>Temple:</span>
+  <span id="temples"></span>
+  <button id="play" class="on">Pause</button>
+  <input id="slide" type="range" min="0" max="1000" value="0">
+  <span id="pct">0%</span>
+  <span class="tier" id="tier"></span>
+  <span>Speed <button id="slow">13 s</button><button id="fast">6 s</button></span>
+</div>
+<div class="grid">
+  <figure><figcaption>On the site now</figcaption><div class="art" id="a-old"></div></figure>
+  <figure><figcaption>New: line first</figcaption><div class="art" id="a-new"></div></figure>
+</div>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const TEMPLES = ['albuquerque', 'billings', 'boise', 'bountiful', 'brigham-city', 'burley', 'cedar-city', 'cody', 'deseret-peak', 'draper', 'ephraim', 'heber-valley', 'jordan-river', 'kirtland', 'layton', 'lehi', 'lindon', 'logan', 'manhattan', 'manti', 'mexico-city', 'monticello', 'mount-timpanogos', 'nauvoo', 'oakland', 'ogden', 'ogden-original', 'orem', 'provo', 'provo-city-center', 'provo-rock-canyon', 'red-cliffs', 'rome', 'salt-lake', 'san-antonio', 'san-diego', 'saratoga-springs', 'smithfield', 'spanish-fork', 'st-george', 'syracuse', 'taylorsville', 'vernal', 'washington-d-c', 'west-jordan'];
+  const VER = new URLSearchParams(location.search).get('v') || 'lines3';
+  const TIER = { 1: 'Outline', 2: 'Major lines', 3: 'Windows and doors', 4: 'Fine details' };
+  let temple = new URLSearchParams(location.search).get('t') || 'salt-lake';
+  let DUR = 13000, t0 = performance.now(), frac = 0, playing = true, views = [];
+
+  const tEl = document.getElementById('temples');
+  TEMPLES.forEach((t) => {
+    const b = document.createElement('button'); b.textContent = t.replace('-', ' '); b.dataset.t = t;
+    b.onclick = () => { temple = t; load(); };
+    tEl.appendChild(b);
+  });
+
+  // Same mask-over-art method as theme/assets/pp-pen-draw.js, with a manual scrubber.
+  function mount(el, data, img) {
+    const [x, y, w, h] = data.box;
+    const id = 'm' + Math.random().toString(36).slice(2);
+    el.innerHTML = `<svg viewBox="${x} ${y} ${w} ${h}" preserveAspectRatio="xMidYMid meet"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}"><g fill="none" stroke="#fff" stroke-width="${data.penWidth}" stroke-linecap="round" stroke-linejoin="round"></g></mask></defs>
+      <image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" mask="url(#${id})"/>
+      <g><circle r="${data.penWidth * 1.6}" fill="#fff" opacity=".2"/><circle r="${data.penWidth * .55}" fill="#fff"/></g></svg>`;
+    const pen = el.querySelector('mask g'), tip = el.querySelector('svg > g');
+    const cum = [0];
+    const paths = data.strokes.map((d, i) => {
+      const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d);
+      if (data.widths && data.widths[i]) p.setAttribute('stroke-width', data.widths[i]);
+      p.style.strokeDasharray = `${data.lens[i]} ${data.lens[i] + 1}`;
+      pen.appendChild(p); cum.push(cum[cum.length - 1] + data.lens[i]); return p;
+    });
+    return { data, paths, cum, tip, total: cum[cum.length - 1] };
+  }
+  function set(v, f) {
+    const target = f * v.total;
+    let cur = -1;
+    v.paths.forEach((p, i) => {
+      const along = target - v.cum[i], L = v.data.lens[i];
+      if (along >= L) { p.style.visibility = 'visible'; p.style.strokeDashoffset = 0; }
+      else if (along > 0) { p.style.visibility = 'visible'; p.style.strokeDashoffset = L - along; cur = i;
+        const pt = p.getPointAtLength(along); v.tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`); }
+      else { p.style.visibility = 'hidden'; p.style.strokeDashoffset = L; }
+    });
+    v.tip.style.opacity = f > 0 && f < 1 ? 1 : 0;
+    return cur;
+  }
+  async function load() {
+    [...tEl.children].forEach((b) => b.classList.toggle('on', b.dataset.t === temple));
+    const [o, n] = await Promise.all(['old', VER].map((k) => fetch(`draw/${temple}-${k}.json`).then((r) => r.json())));
+    const img = `draw/${temple}.webp`;
+    views = [mount(document.getElementById('a-old'), o, img), mount(document.getElementById('a-new'), n, img)];
+    t0 = performance.now(); frac = 0;
+  }
+  function frame(now) {
+    if (playing) { frac = ((now - t0) % (DUR + 2000)) / DUR; if (frac > 1) frac = 1; slide.value = frac * 1000; }
+    if (views.length) {
+      views.forEach((v) => set(v, frac));
+      const nv = views[1], i = nv.cum.findIndex((c) => c > frac * nv.total) - 1;
+      const tr = nv.data.tiers && nv.data.tiers[Math.max(0, Math.min(i, nv.data.tiers.length - 1))];
+      document.getElementById('tier').textContent = frac >= 1 ? 'Done' : 'New: ' + (TIER[tr] || '');
+    }
+    document.getElementById('pct').textContent = Math.round(frac * 100) + '%';
+    requestAnimationFrame(frame);
+  }
+  const slide = document.getElementById('slide');
+  slide.oninput = () => { playing = false; play.textContent = 'Play'; play.classList.remove('on'); frac = slide.value / 1000; };
+  const play = document.getElementById('play');
+  play.onclick = () => { playing = !playing; play.textContent = playing ? 'Pause' : 'Play'; play.classList.toggle('on', playing); t0 = performance.now() - frac * DUR; };
+  document.getElementById('slow').onclick = () => { DUR = 13000; t0 = performance.now() - frac * DUR; };
+  document.getElementById('fast').onclick = () => { DUR = 6000; t0 = performance.now() - frac * DUR; };
+  load(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

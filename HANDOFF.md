@@ -1,3 +1,146 @@
+# Homepage on "Claude Code V4": next up, the four-person spec photo (9 Oct 2026)
+
+**Branch:** `claude/homepage-conversation` (pushed). Check it out; `main` does not have this work yet.
+
+## Where things stand
+
+- **Themes.** All homepage work is on the unpublished theme "Claude Code V4"
+  (`gid://shopify/OnlineStoreTheme/194532671860`).
+  Preview: https://peculiarpeopleco.com/?preview_theme_id=194532671860
+  The live theme is "Claude Code V3" (`194273870196`); never write to it. Apart from
+  this branch's changes, V4 and V3 are identical (every file compared, 9 Oct).
+- **Writing to V4.**
+  - On the Mac: `ShopifyClient` (token in `.env`) with `themeFilesUpsert`, the way
+    `scripts/web_drawings.py` does it. Assert the theme's role is not MAIN first,
+    then read the checksums back (`remote_checksums`).
+  - In a cloud session there is no `.env`. Use the claude.ai Shopify connector's
+    `graphql_mutation` with `themeFilesUpsert`; it is allowed on unpublished themes
+    only. `theme/templates/index.json` here is a copy of V4's.
+- **V4 homepage, top to bottom:**
+  1. The temple showcase, black on white. It rotates 26 temples and city maps:
+     6 s drawing, a 3 s hold.
+  2. Shop by garment (collection tabs).
+  3. The spec photo (`pp-spec-overlay`).
+  4. The comparison slider.
+  5. The founder letter.
+  6. The marquee.
+  7. The FAQ.
+  8. The design suggestion heading and form.
+- **Hidden but still in the template:** `pp_hero_draw`, `pp_zoom_dive`,
+  `pp_zoom_film`, `pp_scroll_zoom`, `pp_look_closer`, `anatomy`, `pp_why_chain`,
+  `what_you_get`.
+- **Removed from the template, files still in the theme:** `pp_conversation`,
+  `pp_loupe`.
+- **Done this session.** `theme/README.md` explains each item.
+  - All 45 temple stroke files were rebuilt line-first by
+    `scripts/pen_strokes_lines.py`.
+  - `pp-pen-draw.js` now paints on a canvas, takes a per-section drawing time, and
+    accepts `map:<slug>` entries.
+  - The next drawing downloads only after the current one has drawn, and only two
+    drawings stay in memory.
+  - All 27 city map drawings were copied into V4.
+  - A phone viewer for the drawing order:
+    https://claude.ai/artifact/8RPKy4z4DPJnejGRvLid4j
+- **Nothing on V4 is published.** Evan publishes it himself when he is ready.
+
+## Rules Evan set this session (keep them)
+
+- **Every temple animation draws the way a person would:**
+  1. the full outline;
+  2. then the major lines;
+  3. then the windows and doors;
+  4. then the fine details.
+
+  Each line is drawn whole, one at a time. Nothing appears floating away from ink
+  already drawn.
+- **No more "quality" visuals.** The dive, the conversation band, look closer, the
+  scroll-drawn hero and the loupe were all built and rejected. The reasons:
+  - Shoppers cannot feel fabric through a screen, so close-ups read as filler.
+  - Composited logos look fake once enlarged.
+- **How quality gets shown instead:**
+  - The spec photo, with the replacement guarantee added.
+  - Later, real reviews and customer photos from the seeding program (BRAND.md).
+- **Composites:** never enlarge one. The image model never draws a print. Real
+  design files go on at full size.
+
+## Next task (Evan, 9 Oct)
+
+### 1. Guarantee line on the spec photo
+
+Use the approved wording, which sits in the hidden `what_you_get` block `wyg_3`:
+"Made right, or we replace it. Damaged, misprinted or the wrong item? Email us a
+photo within 30 days and we'll send a new one at no cost. You don't ship anything
+back."
+
+Add it as a fifth callout, or as a line under the photo. Any new or shortened
+wording gets the humanizer and structural-humanizer passes (workspace CLAUDE.md).
+
+### 2. Replace the spec photo with four people
+
+What Evan wants:
+- A studio setup, relaxed and casual but clearly a studio photo.
+- One person on a stool or chair, the others sitting.
+- Ages about 18 to 30.
+- Each person wears a different product:
+  - the Temple Seal Bomber Jacket,
+  - the hoodie,
+  - the sweatshirt (crewneck),
+  - the tee.
+- Each product shows a different design.
+
+Steps:
+
+1. **Find candidates.** Search Pexels and Unsplash (or anywhere) for a studio photo
+   of four people that fits the brand. Show Evan a few candidates, with their
+   links and licences, and let him pick before any editing.
+2. **Build it with the spec-v2 pipeline.** See
+   `artifacts/quality-sections/spec-v2/README.md`, which made the current
+   three-friends photo from Pexels 7972658.
+   1. GPT Image 2.5 (Higgsfield MCP, cheap) dresses each person in a plain blank of
+      the right garment and colour.
+   2. The real designs go on with `place_spec.py` / `zoom-v2/place_logo.py`, at
+      measured placement.
+   3. Put hair and drawcords back in front of the print, as spec-v2 did.
+3. **Update the callouts** in `pp_spec_overlay` (`templates/index.json`):
+   - a point on each garment, with its weight and fabric;
+   - the guarantee line;
+   - the sizes from BRAND.md section 7;
+   - the bomber's own spec, checked in BRAND.md before writing it.
+
+### Raise with Evan before building
+
+- **Third-party photos.** BRAND.md section 17 says "Never display a third-party
+  photograph". It was written about social content, and the current spec photo is
+  already an edited Pexels image. Confirm that a licensed stock base, re-dressed in
+  our garments, is fine on the website.
+- **"Different designs".** Every temple garment carries the same box logo on the
+  front; the temple prints are on the back. So four people facing the camera show
+  the same front logo four times. Options:
+  - Turn some people so their backs show.
+  - Use front designs that differ: the Be Peculiar wordmark, the city-map
+    coordinates logo, the bomber's front.
+
+  Ask which.
+- **Stock licences.** Pexels and Unsplash allow commercial use and editing, with no
+  credit required. Neither gives model releases, so avoid shots that look
+  editorial or show other brands.
+
+## Cloud-session notes
+
+- **Not available in the cloud:**
+  - iCloud folders such as `Temples/` and `Other designs/`. The full-size design
+    files used for compositing live there.
+  - `.env`.
+  - `.venv.nosync`.
+
+  Install the Python dependencies with `pip install -r requirements.txt`.
+- **If the full-size design files cannot be reached:** do the photo search and the
+  blank-garment renders in the cloud, and leave the print compositing for a Mac
+  session. The theme's `pp-temple-<slug>.webp` files are only 741 px wide. They
+  are fine for a reference, but too small for a print on a photo.
+- **The browser preview** of the V4 theme needs the preview URL above. Animations
+  pause while the preview pane is hidden.
+
 # City map line: in flight (9 Oct 2026)
 
 The city map products (`scripts/map_run.py`, map Easify sets, garment collections) have their own handoff in the workspace: `designs/city-map-back/HANDOFF.md`. Read that before touching any map product.

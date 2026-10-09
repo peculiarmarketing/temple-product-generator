@@ -109,3 +109,9 @@ artifacts/quality-sections/zoom-v2/**/*.png
 !artifacts/quality-sections/zoom-v2/pp-logo-white.png
 __pycache__/
 artifacts/quality-sections/zoom-v2/**/*.mp4
+
+# Homepage prototypes (9 Oct 2026): copies of theme assets and CDN files, and the raw
+# generated textures and hoodie edits (their finished versions are in theme/assets).
+artifacts/homepage-proto/img/
+artifacts/homepage-proto/draw/
+artifacts/homepage-proto/gen/

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loupe prototype</title>
+<style>
+  /* Stand-ins: Tapstitch flat mockups of the Salt Lake hoodie, crew and tee, a macro
+     knit and a fleece texture from the old dive. The lens does not enlarge the
+     photo: it draws a separate macro layer (fabric texture in the garment's colour,
+     then the print from the full-size print file, then the weave over the ink),
+     lined up with the photo underneath. */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Montserrat, "Helvetica Neue", Arial, sans-serif; background: #fff; color: #222; }
+  .bar { height: 64px; background: #121212; color: #fff; display: flex; align-items: center; justify-content: center; letter-spacing: .1em; font-size: 14px; }
+  .loupe { position: relative; background: #f2f1ee; padding: clamp(48px, 8vw, 96px) 0; overflow: hidden; touch-action: pan-y; }
+  .head { text-align: center; margin: 0 auto 32px; padding: 0 20px; max-width: 640px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #F58000; margin: 0 0 10px; }
+  .head h2 { font-weight: 400; font-size: clamp(28px, 3.4vw, 44px); margin: 0 0 10px; color: #001A58; }
+  .head p { margin: 0; color: #555; font-size: 15px; }
+  .row { display: flex; justify-content: center; gap: clamp(0px, 1vw, 16px); padding: 0 16px; cursor: none; }
+  .g { position: relative; width: min(30vw, 440px); aspect-ratio: 1; }
+  .g img { width: 100%; height: 100%; display: block; mix-blend-mode: multiply; user-select: none; -webkit-user-drag: none; }
+  .tag { position: absolute; left: 0; right: 0; bottom: 4%; text-align: center; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #777; }
+
+  .lens {
+    --d: 260px;
+    position: absolute; left: 0; top: 0; width: var(--d); height: var(--d);
+    margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+    border-radius: 50%; overflow: hidden; pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.9), 0 0 0 7px rgba(18,18,18,.08), 0 18px 50px rgba(0,0,0,.35);
+    opacity: 0; transform: scale(.7); transition: opacity .35s ease, transform .45s cubic-bezier(.2,.7,.2,1);
+    will-change: transform, left, top; background: #ddd; z-index: 3;
+  }
+  .lens.on { opacity: 1; transform: none; }
+  .lens::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 40px rgba(0,0,0,.35); }
+  .lw { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+  .lw > * { position: absolute; left: 0; top: 0; }
+  .lw .photo { width: 1400px; height: 1400px; }
+  .lw .cloth { width: 1400px; height: 1400px; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .lw .fill { position: absolute; inset: 0; }
+  .lw .weave { position: absolute; inset: 0; background-repeat: repeat; mix-blend-mode: overlay; }
+  .lw .ink { position: absolute; }
+  .lw .ink img { width: 100%; height: 100%; display: block; }
+  .lw .weave2 { position: absolute; inset: 0; background-repeat: repeat; mix-blend-mode: multiply; opacity: .55; }
+  .readout { position: absolute; left: 0; right: 0; bottom: calc(-1 * var(--d) * .0); }
+  .label { position: absolute; z-index: 4; pointer-events: none; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #121212; background: #fff; padding: 6px 9px; border-radius: 2px; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+  .label.on { opacity: 1; }
+  .after { padding: 80px 24px; text-align: center; color: #333; }
+  @media (max-width: 749px) {
+    .row { flex-direction: column; align-items: center; cursor: auto; }
+    .g { width: min(86vw, 420px); }
+    .lens { --d: 200px; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">PECULIAR PEOPLE</div>
+<div class="after">Shop by garment (products sit above this section)</div>
+<section class="loupe">
+  <div class="head">
+    <p class="eyebrow">Look closer</p>
+    <h2>Heavyweight, printed into the cotton</h2>
+    <p>Move over the shirts to see the ink and the fabric up close.</p>
+  </div>
+  <div class="row">
+    <div class="g" data-g="hoodie_navy-blue_back"><img src="img/hoodie_navy-blue_back.png" alt="Navy hoodie, Salt Lake print on the back"><span class="tag">Hoodie · 350 GSM fleece</span></div>
+    <div class="g" data-g="crew_gray_back"><img src="img/crew_gray_back.png" alt="Heather gray crewneck, Salt Lake print"><span class="tag">Crewneck · 350 GSM fleece</span></div>
+    <div class="g" data-g="tee_maroon_back"><img src="img/tee_maroon_back.png" alt="Maroon tee, Salt Lake print"><span class="tag">Tee · 260 GSM cotton</span></div>
+  </div>
+  <div class="lens"><div class="lw"></div></div>
+  <div class="label"></div>
+</section>
+<div style="height: 80vh"></div>
+
+<script>
+(async () => {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const qs = new URLSearchParams(location.search);
+  const MAG = +qs.get('mag') || 7;          // lens magnification over the photo on screen
+  const WEAVE = +qs.get('weave') || 120;    // one texture tile, in photo px (smaller = coarser weave)
+
+  const M = await (await fetch('img/measure.json')).json();
+  const KIND = {
+    'hoodie_navy-blue_back': { tex: 'img/tex-fleece.jpg', name: 'Fleece, 350 GSM', ink: 'White ink, direct to garment' },
+    'crew_gray_back': { tex: 'img/tex-fleece.jpg', name: 'Fleece, 350 GSM', ink: 'White ink, direct to garment' },
+    'tee_maroon_back': { tex: 'img/tex-jersey.jpg', name: 'Cotton jersey, 260 GSM', ink: 'White ink, direct to garment' },
+  };
+
+  const sec = document.querySelector('.loupe');
+  const lens = document.querySelector('.lens');
+  const lw = lens.querySelector('.lw');
+  const label = document.querySelector('.label');
+  const cards = [...document.querySelectorAll('.g')];
+
+  // One macro world per garment, built once: photo, then the cloth (colour + weave,
+  // clipped to the garment), the print, and the weave again over the ink.
+  const worlds = {};
+  for (const c of cards) {
+    const k = c.dataset.g, m = M[k], kind = KIND[k];
+    const [px, py, pw, ph] = m.print;
+    const w = document.createElement('div');
+    w.style.cssText = 'position:absolute;inset:0;display:none';
+    const col = `rgb(${m.garment.join(',')})`;
+    const tile = `url(${kind.tex})`;
+    w.innerHTML = `
+      <img class="photo" src="img/${k}.png" alt="">
+      <div class="cloth" style="-webkit-mask-image:url(img/${k}-mask.png);mask-image:url(img/${k}-mask.png)">
+        <div class="fill" style="background:${col}"></div>
+        <div class="weave" style="background-image:${tile};background-size:${WEAVE}px ${WEAVE}px"></div>
+        <div class="ink" style="left:${px}px;top:${py}px;width:${pw}px;height:${ph}px"><img src="img/print-salt-lake.webp" alt=""></div>
+        <div class="weave2" style="background-image:${tile};background-size:${WEAVE}px ${WEAVE}px"></div>
+      </div>`;
+    lw.appendChild(w);
+    worlds[k] = { el: w, m, kind, card: c };
+  }
+  // Nothing in the lens until every layer has decoded: the lens never shows a
+  // half-loaded state.
+  await Promise.all([...lw.querySelectorAll('img')].map((i) => i.decode().catch(() => {})));
+  await Promise.all(['img/tex-jersey.jpg', 'img/tex-fleece.jpg'].map((s) => { const i = new Image(); i.src = s; return i.decode().catch(() => {}); }));
+
+  let active = null, want = null, pos = null, raf = 0, last = 0, auto = null, touched = false;
+
+  function show(k) {
+    if (active === k) return;
+    if (active) worlds[active].el.style.display = 'none';
+    active = k;
+    if (k) worlds[k].el.style.display = 'block';
+  }
+
+  function place() {
+    raf = 0;
+    if (!want) return;
+    const now = performance.now();
+    const dt = last ? Math.min(64, now - last) : 16; last = now;
+    if (!pos) pos = { ...want };
+    const a = 1 - Math.exp(-dt / 55);
+    pos.x = lerp(pos.x, want.x, a); pos.y = lerp(pos.y, want.y, a);
+    const sr = sec.getBoundingClientRect();
+    lens.style.left = pos.x - sr.left + 'px';
+    lens.style.top = pos.y - sr.top + 'px';
+    // Which garment is under the lens, and where in its photo.
+    const hit = cards.find((c) => { const r = c.getBoundingClientRect(); return pos.x >= r.left && pos.x <= r.right && pos.y >= r.top && pos.y <= r.bottom; });
+    if (hit) {
+      show(hit.dataset.g);
+      const r = hit.getBoundingClientRect();
+      const s = r.width / 1400;           // photo px -> screen px
+      const z = s * MAG;
+      const u = (pos.x - r.left) / s, v = (pos.y - r.top) / s;  // photo px under the centre
+      const d = lens.offsetWidth;
+      lw.style.transform = `translate(${d / 2 - u * z}px, ${d / 2 - v * z}px) scale(${z})`;
+      const w = worlds[hit.dataset.g], [px, py, pw, ph] = w.m.print;
+      const onInk = u > px && u < px + pw && v > py && v < py + ph;
+      label.textContent = onInk ? w.kind.ink : w.kind.name;
+      label.style.left = pos.x - sr.left + d / 2 - 10 + 'px';
+      label.style.top = pos.y - sr.top + d / 2 - 24 + 'px';
+      label.classList.add('on');
+    }
+    lens.classList.toggle('on', !!hit);
+    if (!hit) label.classList.remove('on');
+    if (Math.abs(pos.x - want.x) > .3 || Math.abs(pos.y - want.y) > .3) raf = requestAnimationFrame(place); else last = 0;
+  }
+  const go = (x, y) => { want = { x, y }; if (!raf) raf = requestAnimationFrame(place); };
+
+  // Pointer: the lens sits on the cursor; on touch it rides above the finger.
+  sec.addEventListener('pointermove', (e) => {
+    stopTour();
+    const lift = e.pointerType === 'touch' ? lens.offsetWidth * .65 : 0;
+    go(e.clientX, e.clientY - lift);
+  });
+  sec.addEventListener('pointerdown', (e) => { if (e.pointerType === 'touch') { stopTour(); go(e.clientX, e.clientY - lens.offsetWidth * .65); } });
+  sec.addEventListener('pointerleave', () => { if (!auto) { lens.classList.remove('on'); label.classList.remove('on'); } });
+  addEventListener('scroll', () => { if (want) { const p = pos; pos = null; go(want.x, want.y); } }, { passive: true });
+
+  // The tour: once, when the section comes into view, the lens glides over a print
+  // and across the fleece and the knit, then waits for the shopper.
+  function stopTour() { if (auto) { auto.stop = true; auto = null; } }
+  async function tour() {
+    const me = auto = { stop: false };
+    const at = (k, fx, fy) => { const r = worlds[k].card.getBoundingClientRect(); return [r.left + r.width * fx, r.top + r.height * fy]; };
+    const path = [
+      ['hoodie_navy-blue_back', .5, .42], ['hoodie_navy-blue_back', .5, .6], ['hoodie_navy-blue_back', .78, .78],
+      ['crew_gray_back', .3, .75], ['crew_gray_back', .5, .5],
+      ['tee_maroon_back', .45, .45], ['tee_maroon_back', .52, .74],
+    ];
+    for (const [k, fx, fy] of path) {
+      if (me.stop) return;
+      go(...at(k, fx, fy));
+      await new Promise((r) => setTimeout(r, 1300));
+    }
+  }
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting && !touched) { touched = true; tour(); }
+  }, { threshold: .6 }).observe(document.querySelector('.row'));
+})();
+</script>
+</body>
+</html>

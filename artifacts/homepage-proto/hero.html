@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero prototype: drawn, then printed</title>
+<style>
+  /* Stand-in images: the Tapstitch flat mockup of the black Salt Lake tee. The real
+     build swaps in a 6k composited lifestyle master and its print-area crop. */
+  :root { --shirt: rgb(31, 31, 31); --ease: cubic-bezier(.2, .7, .2, 1); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; font-family: Montserrat, "Helvetica Neue", Arial, sans-serif; }
+  .bar { height: 64px; background: #121212; color: #fff; display: flex; align-items: center; justify-content: center; letter-spacing: .1em; font-size: 14px; position: sticky; top: 0; z-index: 5; }
+  .hero { background: var(--shirt); }
+  .track { height: 340vh; position: relative; }
+  .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+
+  /* The world: shirt photo and drawing share one frame, so they move as one. */
+  .world { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+  .shirt { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; will-change: opacity; }
+  .shirt img { width: 100%; height: 100%; display: block; }
+  .draw { position: absolute; will-change: opacity; }
+  .draw svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .tip { transition: opacity .3s; }
+
+  .copy { position: absolute; left: clamp(20px, 6vw, 96px); bottom: clamp(48px, 12vh, 140px); color: #fff; max-width: 520px; z-index: 2; will-change: opacity, transform; }
+  .copy h1 { font-weight: 500; font-size: clamp(34px, 4.4vw, 60px); line-height: 1.05; margin: 0 0 16px; letter-spacing: -.01em; }
+  .copy p { margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: rgba(255,255,255,.8); }
+  .copy a { display: inline-block; background: #001A58; color: #fff; text-decoration: none; padding: 14px 22px; font-weight: 700; font-size: 13px; letter-spacing: .1em; border: 1px solid rgba(255,255,255,.6); }
+  .hint { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); color: rgba(255,255,255,.5); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
+  .after { padding: 80px 24px; text-align: center; font-size: 22px; color: #333; }
+  .dbg { position: fixed; right: 8px; bottom: 8px; z-index: 9; background: rgba(0,0,0,.6); color: #0f0; font: 11px/1.3 monospace; padding: 6px 8px; }
+  @media (max-width: 749px) {
+    .copy { right: 20px; }
+    .copy h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">PECULIAR PEOPLE</div>
+<section class="hero">
+  <div class="track">
+    <div class="stage">
+      <div class="world">
+        <div class="shirt"><img src="img/tee_black_back.png" alt="" decoding="async"></div>
+        <div class="draw"></div>
+      </div>
+      <div class="copy">
+        <h1>Made to start the conversation</h1>
+        <p>Premium apparel for Latter-day Saints, printed to order in the United States.</p>
+        <a href="#">FIND YOUR TEMPLE</a>
+      </div>
+      <div class="hint">Scroll</div>
+    </div>
+  </div>
+</section>
+<div class="after">Shop by garment (the products follow here)</div>
+<div style="height:60vh"></div>
+<div class="dbg"></div>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const smooth = (a, b, t) => { const x = clamp((t - a) / (b - a), 0, 1); return x * x * (3 - 2 * x); };
+  const qs = new URLSearchParams(location.search);
+  const STROKES = qs.get('strokes') || 'img/salt-lake.json';
+
+  // Where things sit in the shirt photo (px of the 1400 x 1400 mockup), measured
+  // by template matching the art against the photo (img/measure.json).
+  const PHOTO = 1400;
+  const ART = { x: 464, y: 440, w: 450, h: 510 };  // pp-temple-salt-lake.webp on the tee
+
+  // Scroll timeline, 0..1 through the pinned stretch.
+  const T = {
+    draw: [0, 0.52],      // pen follows the scroll
+    fabric: [0.50, 0.64], // the dark ground turns out to be the shirt
+    handoff: [0.58, 0.70],// crisp lines give way to the printed ones beneath
+    pull: [0.64, 0.97],   // camera pulls back to the whole shirt
+  };
+  const INTRO = 0.10;     // share of the pen drawn on its own at load (the outline)
+  const INTRO_MS = 2600;
+
+  const stage = document.querySelector('.stage');
+  const track = document.querySelector('.track');
+  const world = document.querySelector('.world');
+  const shirt = document.querySelector('.shirt');
+  const drawEl = document.querySelector('.draw');
+  const copy = document.querySelector('.copy');
+  const hint = document.querySelector('.hint');
+  const dbg = document.querySelector('.dbg');
+
+  let paths = [], lens = [], cum = [0], total = 1, tip, exact, ready = false, shirtReady = false;
+  let W = 0, H = 0, zIn = 1, zOut = 1, cIn = [0, 0], cOut = [0, 0];
+
+  // The close framing puts the print at 74% of the stage height; the wide one fits
+  // the whole shirt. Both are scale + the photo point placed at the stage centre.
+  function layout() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    const narrow = W < 750;
+    zIn = Math.min((H * (narrow ? .62 : .74)) / ART.h, (W * .86) / ART.w);
+    cIn = [ART.x + ART.w / 2 + (narrow ? 0 : -ART.w * .0), ART.y + ART.h / 2 + (narrow ? ART.h * .14 : 0)];
+    zOut = Math.min(H * .92, W * .92) / PHOTO;
+    cOut = [PHOTO / 2, PHOTO / 2];
+    world.style.width = world.style.height = PHOTO + 'px';
+    Object.assign(drawEl.style, { left: ART.x + 'px', top: ART.y + 'px', width: ART.w + 'px', height: ART.h + 'px' });
+    if (!narrow) cIn[0] -= (W * .16) / zIn;  // desktop: drawing sits right of the headline
+    render(lastP, true);
+  }
+
+  async function load() {
+    const data = await (await fetch(STROKES)).json();
+    const [x, y, w, h] = data.box;
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', `${x} ${y} ${w} ${h}`);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.innerHTML = `<defs><mask id="m" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">
+      <g id="pen" fill="none" stroke="#fff" stroke-width="${data.penWidth}" stroke-linecap="round" stroke-linejoin="round"></g></mask></defs>
+      <image href="img/salt-lake.webp" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" mask="url(#m)"/>
+      <image id="exact" href="img/salt-lake.webp" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" opacity="0"/>
+      <g class="tip" id="tip"><circle r="${data.penWidth * 1.6}" fill="#fff" opacity=".2"/><circle r="${data.penWidth * .55}" fill="#fff"/></g>`;
+    drawEl.appendChild(svg);
+    const pen = svg.querySelector('#pen');
+    lens = data.lens;
+    data.strokes.forEach((d, i) => {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d);
+      if (data.widths && data.widths[i]) p.setAttribute('stroke-width', data.widths[i]);
+      p.style.strokeDasharray = `${lens[i]} ${lens[i] + 1}`;
+      p.style.strokeDashoffset = lens[i];
+      p.style.visibility = 'hidden';
+      pen.appendChild(p);
+      paths.push(p);
+      cum.push(cum[cum.length - 1] + lens[i]);
+    });
+    total = cum[cum.length - 1];
+    tip = svg.querySelector('#tip');
+    exact = svg.querySelector('#exact');
+    // The shirt photo decodes in the background; the fabric stage waits for it, the
+    // drawing never does.
+    shirt.querySelector('img').decode().then(() => { shirtReady = true; render(lastP); }, () => { shirtReady = true; });
+    ready = true;
+  }
+
+  // Pen state: strokes before `target` are whole, the current one partial. Strokes
+  // only ever change when the pen position does, so scrolling back un-draws them.
+  let drawn = 0;
+  function setPen(frac) {
+    const target = frac * total;
+    let i = 0;
+    while (i < paths.length && cum[i + 1] <= target) i++;
+    // whole strokes
+    for (let k = Math.min(drawn, i); k < Math.max(drawn, i + 1) && k < paths.length; k++) {
+      const p = paths[k];
+      if (k < i) { p.style.visibility = 'visible'; p.style.strokeDashoffset = 0; }
+      else if (k > i) { p.style.visibility = 'hidden'; p.style.strokeDashoffset = lens[k]; }
+    }
+    if (i < paths.length) {
+      const along = target - cum[i];
+      const p = paths[i];
+      p.style.visibility = along > 0 ? 'visible' : 'hidden';
+      p.style.strokeDashoffset = lens[i] - along;
+      if (along > 0) {
+        const pt = p.getPointAtLength(along);
+        tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+      }
+    }
+    drawn = i;
+    tip.style.opacity = frac > 0 && frac < 1 ? 1 : 0;
+    exact.setAttribute('opacity', smooth(0.97, 1, frac));
+  }
+
+  // The camera: scale about a moving photo point, held at the stage centre.
+  function camera(t) {
+    const e = smooth(0, 1, t);
+    // zoom in log space so the pull-back reads as one steady move
+    const z = Math.exp(lerp(Math.log(zIn), Math.log(zOut), e));
+    const cx = lerp(cIn[0], cOut[0], e), cy = lerp(cIn[1], cOut[1], e);
+    world.style.transform = `translate3d(${W / 2 - cx * z}px, ${H / 2 - cy * z}px, 0) scale(${z})`;
+  }
+
+  let lastP = 0, intro = 0;
+  function render(p, force) {
+    if (!ready) return;
+    const span = (r) => clamp((p - r[0]) / (r[1] - r[0]), 0, 1);
+    const pen = Math.max(intro * INTRO, span(T.draw));
+    setPen(pen);
+    shirt.style.opacity = shirtReady ? smooth(0, 1, span(T.fabric)) : 0;
+    drawEl.style.opacity = shirtReady ? 1 - smooth(0, 1, span(T.handoff)) : 1;
+    camera(span(T.pull));
+    copy.style.opacity = 1 - smooth(0.28, 0.44, p);
+    copy.style.transform = `translateY(${-smooth(0.28, .44, p) * 24}px)`;
+    hint.style.opacity = 1 - smooth(0, .04, p);
+    dbg.textContent = `p ${p.toFixed(3)}  pen ${pen.toFixed(3)}  strokes ${drawn}/${paths.length}`;
+  }
+
+  // Scroll -> progress, with a short ease so the pen feels like a pen, and only
+  // while the hero is on screen.
+  let target = 0, cur = 0, raf = 0, lastT = 0, on = true;
+  const read = () => clamp(-track.getBoundingClientRect().top / (track.offsetHeight - stage.offsetHeight), 0, 1);
+  function tick(now) {
+    raf = 0;
+    target = read();
+    const dt = lastT ? Math.min(64, now - lastT) : 16; lastT = now;
+    cur = lerp(cur, target, 1 - Math.exp(-dt / 70));
+    if (Math.abs(cur - target) < 0.0003) cur = target;
+    lastP = cur;
+    render(cur);
+    if (cur !== target) raf = requestAnimationFrame(tick); else lastT = 0;
+  }
+  const kick = () => { if (on && !raf) raf = requestAnimationFrame(tick); };
+  new IntersectionObserver(([e]) => {
+    on = e.isIntersecting;
+    if (on) { addEventListener('scroll', kick, { passive: true }); kick(); }
+    else removeEventListener('scroll', kick);
+  }).observe(track);
+  new ResizeObserver(layout).observe(stage);
+
+  load().then(() => {
+    layout();
+    // The outline draws itself on arrival, so the page never opens on an empty stage.
+    const t0 = performance.now();
+    const run = (now) => {
+      intro = smooth(0, 1, (now - t0) / INTRO_MS);
+      render(lastP);
+      if (intro < 1) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  });
+})();
+</script>
+</body>
+</html>

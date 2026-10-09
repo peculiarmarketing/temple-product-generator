@@ -1,0 +1,231 @@
+<title>Temple Drawing Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: one control strip, then the two drawings side by side, the way the
+     line art appears on the site: white ink on the shirt's near-black. Single dark look on purpose. */
+  :root {
+    --ground: #0f1012;
+    --panel: #17191d;
+    --line: #2a2d33;
+    --ink: #eceae6;
+    --muted: #8d9099;
+    --orange: #f58000;
+    --navy: #2b4a9a;
+    --sans: Montserrat, "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--ground); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.45; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 40px; display: grid; gap: 16px; }
+  header { display: grid; gap: 4px; }
+  h1 { margin: 0; font-size: clamp(20px, 3vw, 26px); font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+  .sub { margin: 0; color: var(--muted); font-size: 13px; max-width: 62ch; }
+
+  .controls { display: grid; gap: 12px; background: var(--panel); border: 1px solid var(--line); padding: 14px; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .row > * { min-width: 0; }
+  select, button { font: inherit; color: var(--ink); background: var(--ground); border: 1px solid var(--line); border-radius: 3px; padding: 8px 10px; }
+  select { flex: 1 1 180px; font-weight: 600; }
+  button { cursor: pointer; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+  button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: #111; font-weight: 600; }
+  .seg { display: inline-flex; }
+  .seg button { border-radius: 0; margin-left: -1px; font-size: 13px; }
+  .seg button:first-child { border-radius: 3px 0 0 3px; margin-left: 0; }
+  .seg button:last-child { border-radius: 0 3px 3px 0; }
+  input[type=range] { flex: 1 1 200px; accent-color: var(--orange); }
+  .readout { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4ch; }
+  .stage { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .stage i { width: 9px; height: 9px; border-radius: 50%; background: var(--orange); display: inline-block; }
+
+  .panes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .panes.solo { grid-template-columns: 1fr; max-width: 640px; width: 100%; margin: 0 auto; }
+  figure { margin: 0; background: var(--panel); border: 1px solid var(--line); padding: 10px; display: grid; gap: 8px; min-width: 0; }
+  figure[hidden] { display: none !important; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  figcaption span:last-child { font-family: var(--mono); font-weight: 400; letter-spacing: 0; text-transform: none; }
+  .art { aspect-ratio: 741 / 840; width: 100%; max-width: 100%; }
+  .art svg { width: 100%; height: 100%; display: block; }
+  .note { font-size: 13px; color: var(--muted); }
+  .flag { color: var(--orange); }
+  .key { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+  .key b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 520px) {
+    .panes { gap: 8px; }
+    figure { padding: 6px; }
+    figcaption { font-size: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .stage i { animation: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Temple drawing order</h1>
+    <p class="sub">Each temple draws on the site the way a person would draw it: the outline first, then the full-length lines, then windows and doors, then the fine details. The new order is shown next to the drawing on the site today.</p>
+  </header>
+
+  <div class="controls" role="group" aria-label="Playback">
+    <div class="row">
+      <button id="prev" type="button" aria-label="Previous temple">‹</button>
+      <select id="temple" aria-label="Temple"></select>
+      <button id="next" type="button" aria-label="Next temple">›</button>
+    </div>
+    <div class="row">
+      <button id="play" type="button" aria-pressed="true">Pause</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Drawing progress">
+      <span class="readout" id="pct">0%</span>
+    </div>
+    <div class="row">
+      <span class="stage"><i></i><span id="stage">Outline</span></span>
+      <span style="flex:1"></span>
+      <div class="seg" role="group" aria-label="Speed">
+        <button id="s13" type="button" aria-pressed="true">13 s</button>
+        <button id="s6" type="button" aria-pressed="false">6 s</button>
+      </div>
+      <div class="seg" role="group" aria-label="View">
+        <button id="vBoth" type="button" aria-pressed="true">Both</button>
+        <button id="vNew" type="button" aria-pressed="false">New</button>
+        <button id="vOld" type="button" aria-pressed="false">Site now</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panes" id="panes">
+    <figure id="fOld"><figcaption><span>On the site now</span><span id="cOld"></span></figcaption><div class="art" id="aOld"></div></figure>
+    <figure id="fNew"><figcaption><span>New order</span><span id="cNew"></span></figcaption><div class="art" id="aNew"></div></figure>
+  </div>
+
+  <div class="key">
+    <span><b>Stages:</b> Outline, then major lines, then windows and doors, then fine details.</span>
+    <span><span class="flag">●</span> marks the four temples with a small known issue.</span>
+  </div>
+  <p class="note" id="flagNote" hidden></p>
+</div>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const TEMPLES = ['albuquerque','billings','boise','bountiful','brigham-city','burley','cedar-city','cody','deseret-peak','draper','ephraim','heber-valley','jordan-river','kirtland','layton','lehi','lindon','logan','manhattan','manti','mexico-city','monticello','mount-timpanogos','nauvoo','oakland','ogden','ogden-original','orem','provo','provo-city-center','provo-rock-canyon','red-cliffs','rome','salt-lake','san-antonio','san-diego','saratoga-springs','smithfield','spanish-fork','st-george','syracuse','taylorsville','vernal','washington-d-c','west-jordan'];
+  const FLAGS = {
+    'washington-d-c': 'Small spire pieces appear beside the first spire early on.',
+    'vernal': 'A roof line runs out ahead to the right early on (it is connected to the dome).',
+    'kirtland': 'One late detail stroke still floats.',
+    'nauvoo': 'Two late detail strokes still float.',
+  };
+  const STAGE = { 1: 'Outline', 2: 'Major lines', 3: 'Windows and doors', 4: 'Fine details' };
+  const name = (s) => s.split('-').map((w) => w === 'd' || w === 'c' ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)).join(' ').replace('D C', 'D.C.').replace('St ', 'St. ');
+
+  const $ = (id) => document.getElementById(id);
+  const sel = $('temple');
+  TEMPLES.forEach((t) => { const o = document.createElement('option'); o.value = t; o.textContent = name(t) + (FLAGS[t] ? '  ●' : ''); sel.appendChild(o); });
+  let start = 'salt-lake';
+  try { start = localStorage.getItem('pp-draw-temple') || start; } catch (e) {}
+  if (/^[a-z-]+$/.test(location.hash.slice(1)) && TEMPLES.includes(location.hash.slice(1))) start = location.hash.slice(1);
+  sel.value = start;
+
+  let DUR = 13000, HOLD = 1800, t0 = performance.now(), frac = 0, playing = true, views = [], token = 0;
+
+  // Same method as the site's pp-pen-draw.js: pen strokes are a mask over the finished art.
+  function mount(el, data, img) {
+    const [x, y, w, h] = data.box;
+    const id = 'm' + Math.random().toString(36).slice(2);
+    el.innerHTML = `<svg viewBox="${x} ${y} ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Line drawing of the temple"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}"><g fill="none" stroke="#fff" stroke-width="${data.penWidth}" stroke-linecap="round" stroke-linejoin="round"></g></mask></defs><image href="${img}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none" mask="url(#${id})"/><g><circle r="${data.penWidth * 1.6}" fill="#fff" opacity=".2"/><circle r="${data.penWidth * .55}" fill="#fff"/></g></svg>`;
+    const pen = el.querySelector('mask g'), tip = el.querySelector('svg > g');
+    const cum = [0];
+    const paths = data.strokes.map((d, i) => {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d);
+      if (data.widths && data.widths[i]) p.setAttribute('stroke-width', data.widths[i]);
+      p.style.strokeDasharray = `${data.lens[i]} ${data.lens[i] + 1}`;
+      p.style.strokeDashoffset = data.lens[i];
+      p.style.visibility = 'hidden';
+      pen.appendChild(p); cum.push(cum[cum.length - 1] + data.lens[i]);
+      return p;
+    });
+    return { data, paths, cum, tip, total: cum[cum.length - 1], drawn: 0 };
+  }
+
+  // Strokes before the pen are whole, the current one partial, the rest hidden.
+  function set(v, f) {
+    const target = f * v.total;
+    let i = 0;
+    while (i < v.paths.length && v.cum[i + 1] <= target) i++;
+    const lo = Math.min(v.drawn, i), hi = Math.min(Math.max(v.drawn, i) + 1, v.paths.length);
+    for (let k = lo; k < hi; k++) {
+      const p = v.paths[k], L = v.data.lens[k];
+      if (k < i) { p.style.visibility = 'visible'; p.style.strokeDashoffset = 0; }
+      else if (k > i) { p.style.visibility = 'hidden'; p.style.strokeDashoffset = L; }
+    }
+    if (i < v.paths.length) {
+      const along = target - v.cum[i], p = v.paths[i];
+      p.style.visibility = along > 0 ? 'visible' : 'hidden';
+      p.style.strokeDashoffset = v.data.lens[i] - along;
+      if (along > 0) { const pt = p.getPointAtLength(along); v.tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`); }
+    }
+    v.drawn = i;
+    v.tip.style.opacity = f > 0 && f < 1 ? 1 : 0;
+    return i;
+  }
+
+  async function load(t) {
+    const me = ++token;
+    try { localStorage.setItem('pp-draw-temple', t); } catch (e) {}
+    $('flagNote').hidden = !FLAGS[t];
+    $('flagNote').innerHTML = FLAGS[t] ? `<span class="flag">●</span> Still being fixed: ${FLAGS[t]}` : '';
+    const [o, n] = await Promise.all(['old', 'lines3'].map((k) => fetch(`draw/${t}-${k}.json`).then((r) => r.json())));
+    if (me !== token) return;
+    const img = `draw/${t}.webp`;
+    views = [mount($('aOld'), o, img), mount($('aNew'), n, img)];
+    $('cOld').textContent = `${o.strokes.length} strokes`;
+    $('cNew').textContent = `${n.strokes.length} strokes`;
+    frac = 0; t0 = performance.now();
+  }
+
+  function frame(now) {
+    if (playing) {
+      const e = (now - t0) % (DUR + HOLD);
+      frac = Math.min(1, e / DUR);
+      $('scrub').value = Math.round(frac * 1000);
+    }
+    if (views.length) {
+      views.forEach((v) => set(v, frac));
+      const nv = views[1], i = Math.min(nv.drawn, nv.data.tiers.length - 1);
+      $('stage').textContent = frac >= 1 ? 'Finished' : STAGE[nv.data.tiers[i]] || '';
+    }
+    $('pct').textContent = Math.round(frac * 100) + '%';
+    requestAnimationFrame(frame);
+  }
+
+  const press = (on, off) => { on.setAttribute('aria-pressed', 'true'); off.forEach((b) => b.setAttribute('aria-pressed', 'false')); };
+  const step = (d) => { const i = (TEMPLES.indexOf(sel.value) + d + TEMPLES.length) % TEMPLES.length; sel.value = TEMPLES[i]; load(sel.value); };
+  sel.addEventListener('change', () => load(sel.value));
+  $('prev').addEventListener('click', () => step(-1));
+  $('next').addEventListener('click', () => step(1));
+  $('play').addEventListener('click', () => {
+    playing = !playing;
+    $('play').textContent = playing ? 'Pause' : 'Play';
+    $('play').setAttribute('aria-pressed', String(playing));
+    if (playing) { if (frac >= 1) frac = 0; t0 = performance.now() - frac * DUR; }
+  });
+  $('scrub').addEventListener('input', () => {
+    playing = false; $('play').textContent = 'Play'; $('play').setAttribute('aria-pressed', 'false');
+    frac = $('scrub').value / 1000;
+  });
+  $('s13').addEventListener('click', () => { DUR = 13000; t0 = performance.now() - frac * DUR; press($('s13'), [$('s6')]); });
+  $('s6').addEventListener('click', () => { DUR = 6000; t0 = performance.now() - frac * DUR; press($('s6'), [$('s13')]); });
+  const view = (mode) => {
+    $('fOld').hidden = mode === 'new'; $('fNew').hidden = mode === 'old';
+    $('panes').classList.toggle('solo', mode !== 'both');
+    press($({ both: 'vBoth', new: 'vNew', old: 'vOld' }[mode]), ['vBoth', 'vNew', 'vOld'].filter((k) => k !== { both: 'vBoth', new: 'vNew', old: 'vOld' }[mode]).map($));
+  };
+  $('vBoth').addEventListener('click', () => view('both'));
+  $('vNew').addEventListener('click', () => view('new'));
+  $('vOld').addEventListener('click', () => view('old'));
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { playing = false; frac = 1; $('play').textContent = 'Play'; $('play').setAttribute('aria-pressed', 'false'); }
+
+  load(sel.value);
+  requestAnimationFrame(frame);
+})();
+</script>
