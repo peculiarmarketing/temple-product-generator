@@ -183,5 +183,50 @@
   "id": "gid://shopify/GenericFile/56553583444340",
   "pixels": "fc93f1eea2242612",
   "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-nauvoo_hoodie_back.png?v=1791561437"
+ },
+ "prints/nauvoo_hoodie_front.png": {
+  "id": "gid://shopify/GenericFile/56553585639796",
+  "pixels": "c0bf8c895379377f",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-nauvoo_hoodie_front.png?v=1791561446"
+ },
+ "prints/nauvoo_tee_back.png": {
+  "id": "gid://shopify/GenericFile/56553590391156",
+  "pixels": "93e4e7933a7e88a9",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-nauvoo_tee_back.png?v=1791561455"
+ },
+ "prints/nauvoo_tee_front.png": {
+  "id": "gid://shopify/GenericFile/56553595208052",
+  "pixels": "d1c11b61a1061bae",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-nauvoo_tee_front.png?v=1791561464"
+ },
+ "prints/salt-lake-city_crew_back.png": {
+  "id": "gid://shopify/GenericFile/56553597796724",
+  "pixels": "39a1b33883ec85d7",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_crew_back.png?v=1791561475"
+ },
+ "prints/salt-lake-city_crew_front.png": {
+  "id": "gid://shopify/GenericFile/56553598648692",
+  "pixels": "8b108daeacc647ae",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_crew_front.png?v=1791561484"
+ },
+ "prints/salt-lake-city_hoodie_back.png": {
+  "id": "gid://shopify/GenericFile/56553599041908",
+  "pixels": "78e890c119a0b374",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_hoodie_back.png?v=1791561494"
+ },
+ "prints/salt-lake-city_hoodie_front.png": {
+  "id": "gid://shopify/GenericFile/56553599631732",
+  "pixels": "de40b06c2057e3ec",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_hoodie_front.png?v=1791561502"
+ },
+ "prints/salt-lake-city_tee_back.png": {
+  "id": "gid://shopify/GenericFile/56553600057716",
+  "pixels": "302b257fab7c509a",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_tee_back.png?v=1791561511"
+ },
+ "prints/salt-lake-city_tee_front.png": {
+  "id": "gid://shopify/GenericFile/56553600385396",
+  "pixels": "76e8189413537a8c",
+  "url": "https://cdn.shopify.com/s/files/1/0923/2957/4772/files/pp-onmodel-maps-prints-salt-lake-city_tee_front.png?v=1791561519"
  }
 }
