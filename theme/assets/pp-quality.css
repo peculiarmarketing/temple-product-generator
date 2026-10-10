@@ -313,6 +313,7 @@
   background: var(--pp-spec-accent);
   box-shadow: 0 0 0 2px rgba(0, 0, 0, .35);
 }
+.pp-spec__side { display: contents; }
 .pp-spec__label { display: block; min-width: 0; }
 .pp-spec__label--above { grid-row: 1; }
 .pp-spec__label--below { grid-row: 3; align-self: start; }
@@ -343,19 +344,31 @@
   .pp-spec__media { grid-column: 2; grid-row: 1 / span var(--pp-spec-rows); margin: 0; }
   .pp-spec__img { border-radius: var(--pp-radius); }
   .pp-spec__dot { width: 10px; height: 10px; margin: -5px 0 0 -5px; }
-  .pp-spec__label { grid-row: auto; align-self: center; max-width: 240px; }
+  .pp-spec__label { grid-row: var(--r); align-self: center; max-width: 240px; }
   .pp-spec__label--left { grid-column: 1; justify-self: end; text-align: right; }
   .pp-spec__label--right { grid-column: 3; justify-self: start; text-align: left; }
   .pp-spec__eyebrow { font-size: 12px; letter-spacing: .16em; }
   .pp-spec__sub { font-size: 15px; }
 }
 
-/* The note under the photo: the guarantee and delivery line. */
-.pp-spec__note { max-width: 680px; margin: 32px auto 0; text-align: center; display: grid; gap: 8px; }
-.pp-spec__note p { margin: 0; font-size: 14px; line-height: 1.55; opacity: .85; }
+/* The note under the photo (the founders' letter since 10 Oct). Left aligned on the
+   photo's left edge: on phones the 20px gutter the labels use, on desktop the photo
+   column's width. Golden ratio throughout: line height φ, a blank line (φ em) between
+   paragraphs, φ² em between the photo and the note. */
+.pp-spec__note {
+  margin: 2.618em 0 0;
+  font-size: 16px;
+  line-height: 1.618;
+  text-align: left;
+}
+.pp-spec__note p { margin: 0 0 1.618em; font-size: inherit; line-height: inherit; opacity: .85; }
+.pp-spec__note p:last-child { margin-bottom: 0; }
 .pp-spec__note strong, .pp-spec__note b { font-family: var(--pp-head); font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; opacity: 1; }
 .pp-spec__note p:first-child { opacity: 1; }
-@media screen and (min-width: 990px) { .pp-spec__note p { font-size: 15px; } }
+@media screen and (min-width: 990px) {
+  /* The photo column: 680px, or what the 160px label columns and 48px gaps leave. */
+  .pp-spec__note { max-width: min(680px, 100vw - 456px); margin: 2.618em auto 0; font-size: 18px; }
+}
 
 .pp-spec.is-armed .pp-spec__label { opacity: 0; transform: translateY(6px); transition: opacity .5s ease calc(var(--i) * .3s + .5s), transform .5s ease calc(var(--i) * .3s + .5s); }
 .pp-spec.is-armed .pp-spec__dot { opacity: 0; transition: opacity .4s ease; }
@@ -364,64 +377,108 @@
 .pp-spec.is-armed.is-in .pp-spec__dot { opacity: 1; }
 .pp-spec.is-armed.is-in .pp-spec__lines line { stroke-dashoffset: 0; }
 
-/* Phone bands (sections/pp-spec-overlay.liquid, "Temple and map bands on phones").
-   Below 990px every temple's art sits in a band above the labels and every map's
-   below them, each drawing over its city line, underlined because it is a link. Each
-   band is a horizontal scroll area that assets/pp-bands.js drifts; the copy of the
-   list that makes the loop seamless only shows once that script is running.
-   Desktop never shows the bands. */
+/* Temple and map bands (sections/pp-spec-overlay.liquid). Every temple's art in a
+   band drifting right, every map's in a band drifting left, each drawing over its
+   city line, underlined because it is a link. Each band is a horizontal scroll area
+   that assets/pp-bands.js drifts; the copy of the list that makes the loop seamless
+   only shows once that script is running.
+   Phones (below 990px): band, labels, photo, labels, band.
+   Desktop (1200px and up, "Bands behind the photo on desktop"): the bands run the
+   full window width behind the top and bottom of the photo and come out either side.
+   The photo is split by the golden ratio: band, labels (φ times a band), band, so a
+   band is the photo's height / (2 + φ) = / 3.618.
+   990px to 1199px never shows the bands: the label columns are too narrow to hold
+   the labels between them. */
 .pp-spec__band { display: none; }
+.pp-spec__band-view {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.pp-spec__band-view::-webkit-scrollbar { display: none; }
+.pp-spec__band-list { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
+.pp-spec__band-list--copy { display: none; }
+.pp-spec__band.is-looping .pp-spec__band-list--copy { display: flex; }
+.pp-spec__tile { flex: none; width: 168px; padding: 0 8px; }
+.pp-spec__tile--map { width: 149px; padding: 0 16.5px; } /* 34px between maps (Evan, 10 Oct) */
+.pp-spec__tile-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: var(--pp-band-h);
+  color: var(--pp-spec-fg);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-spec__tile img { display: block; flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+.pp-spec__tile-city {
+  flex: none;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: .04em;
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  min-height: 2.6em;
+}
+.pp-spec__tile-link:focus-visible { outline: 2px solid var(--pp-spec-accent); outline-offset: -2px; border-radius: 2px; }
+
 @media screen and (max-width: 989px) {
   .pp-spec--bands .pp-spec__band {
     display: block;
     grid-column: 1 / -1;
     margin: 0 -20px;
   }
-  .pp-spec__band-view {
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .pp-spec__band-view::-webkit-scrollbar { display: none; }
-  .pp-spec__band-list { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
-  .pp-spec__band-list--copy { display: none; }
-  .pp-spec__band.is-looping .pp-spec__band-list--copy { display: flex; }
-  .pp-spec__tile { flex: none; width: 168px; padding: 0 8px; }
-  .pp-spec__tile--map { width: 149px; padding: 0 16.5px; } /* 34px between maps (Evan, 10 Oct) */
-  .pp-spec__tile-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    height: var(--pp-band-h);
-    color: var(--pp-spec-fg);
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .pp-spec__tile img { display: block; flex: 1 1 auto; min-height: 0; width: 100%; height: 100%; object-fit: contain; }
-  .pp-spec__tile-city {
-    flex: none;
-    font-size: 11px;
-    line-height: 1.3;
-    letter-spacing: .04em;
-    text-align: center;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    min-height: 2.6em;
-  }
-  .pp-spec__tile-link:focus-visible { outline: 2px solid var(--pp-spec-accent); outline-offset: -2px; border-radius: 2px; }
-
-  /* Band, labels, photo, labels, band. */
   .pp-spec--bands .pp-spec__stage { row-gap: 24px; }
   .pp-spec--bands .pp-spec__band--top { grid-row: 1; }
   .pp-spec--bands .pp-spec__label--above { grid-row: 2; }
   .pp-spec--bands .pp-spec__media { grid-row: 3; }
   .pp-spec--bands .pp-spec__label--below { grid-row: 4; }
   .pp-spec--bands .pp-spec__band--bottom { grid-row: 5; }
+}
+
+@media screen and (min-width: 1200px) {
+  .pp-spec--desk-bands { overflow-x: clip; }
+  .pp-spec--desk-bands .pp-spec__stage {
+    /* The photo column is its full 680px from 1200px up. */
+    --pp-band-h: calc(680px / var(--pp-spec-ar) / 3.618);
+    grid-template-rows: var(--pp-band-h) minmax(0, 1fr) var(--pp-band-h);
+    row-gap: 0;
+  }
+  .pp-spec--desk-bands .pp-spec__media { grid-row: 1 / -1; z-index: 2; }
+  /* Each side's labels in one column between the bands, the space above, between
+     and below them equal. */
+  .pp-spec--desk-bands .pp-spec__side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    grid-row: 2;
+    align-self: stretch;
+    position: relative;
+    z-index: 1;
+  }
+  .pp-spec--desk-bands .pp-spec__side--left { grid-column: 1; align-items: flex-end; }
+  .pp-spec--desk-bands .pp-spec__side--right { grid-column: 3; align-items: flex-start; }
+  .pp-spec--desk-bands .pp-spec__lines { z-index: 3; }
+  .pp-spec--desk-bands .pp-spec__band {
+    display: block;
+    grid-column: 1 / -1;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    z-index: 0;
+  }
+  .pp-spec--desk-bands .pp-spec__band--top { grid-row: 1; }
+  .pp-spec--desk-bands .pp-spec__band--bottom { grid-row: -2; }
+  .pp-spec--desk-bands .pp-spec__band-view { cursor: grab; }
+  .pp-spec--desk-bands .pp-spec__band-view.is-dragging { cursor: grabbing; }
+  /* Tiles keep their phone proportions at the shorter band height. */
+  .pp-spec--desk-bands .pp-spec__tile { width: calc(var(--pp-band-h) * .884); }
+  .pp-spec--desk-bands .pp-spec__tile--map { width: calc(var(--pp-band-h) * .61 + 33px); }
 }
 /* The art is white ink; black ink for a light background is the same file inverted. */
 .pp-spec--ink-black .pp-spec__tile img { filter: invert(1); }

@@ -256,3 +256,15 @@ with the weave over the ink. 24x by default.
 - Two traps: the theme hides empty divs (`div:empty`), and a lens world scaled by
   transform is painted small and stretched, so the world is laid out at the zoom
   (`calc(... * var(--z))`) and only translated.
+
+## Desktop bands and the founders' note (10 October 2026, "Claude Code V4")
+
+- `sections/pp-spec-overlay.liquid`: labels are grouped per side
+  (`.pp-spec__side`, `display: contents` except with the desktop bands, where it is a
+  column between them). New setting `desktop_bands` (default on): from 1200px the
+  temple and map bands run behind the top and bottom of the photo. Band height is
+  `680px / aspect ratio / 3.618`, from the image's `aspect_ratio`.
+- `assets/pp-quality.css`: band and tile styles no longer sit only in the phone media
+  query; the note is left aligned on golden-ratio spacing.
+- `assets/pp-bands.js`: mouse drag on the bands, with clicks swallowed after a drag.
+- `assets/pp-quality.js`: a callout line's draw order follows its block, not the DOM.

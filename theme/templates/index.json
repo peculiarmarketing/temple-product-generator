@@ -9,6 +9,23 @@
  */
 {
   "sections": {
+    "pp_hero_draw": {
+      "type": "pp-hero-draw",
+      "disabled": true,
+      "settings": {
+        "heading": "Made to start the conversation",
+        "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
+        "button_label": "Find your temple",
+        "link": "shopify://collections/temple-design-products",
+        "temple": "salt-lake",
+        "drawing_label": "Line drawing of the Salt Lake Temple, drawn as you scroll",
+        "art_x": 33.1,
+        "art_y": 31.4,
+        "art_w": 32.1,
+        "ground": "#1f1f1f",
+        "scroll_length": "medium"
+      }
+    },
     "pp_temple_showcase": {
       "type": "pp-temple-showcase",
       "settings": {
@@ -17,9 +34,9 @@
         "button_label": "Find your temple",
         "link": "shopify://collections/temple-design-products",
         "temples": "salt-lake, map:salt-lake-city, kirtland, map:kirtland, nauvoo, map:nauvoo, san-antonio, map:san-antonio, logan, map:sharon, mexico-city, map:palmyra-township, rome, map:harmony, salt-lake, map:fayette, kirtland, map:independence, nauvoo, map:far-west, logan, map:adam-ondi-ahman, mexico-city, map:carthage, rome, map:winter-quarters",
-        "drawing_label": "Line drawings of temples and city maps, drawn one after another",
         "draw_seconds": 6,
-        "colours": "light"
+        "colours": "light",
+        "drawing_label": "Line drawings of temples and city maps, drawn one after another"
       }
     },
     "pp_zoom_dive": {
@@ -89,7 +106,7 @@
             "eyebrow": "Ribbed collar",
             "text": "Ribbed knit, stitched down.",
             "transition": "zoom",
-            "next_x": 46.0,
+            "next_x": 46,
             "next_y": 48.4,
             "next_size": 21.5,
             "focus_x": 50,
@@ -104,7 +121,7 @@
             "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
             "transition": "zoom",
             "next_x": 43.9,
-            "next_y": 76.0,
+            "next_y": 76,
             "next_size": 23.8,
             "focus_x": 50,
             "focus_y": 50
@@ -134,13 +151,13 @@
         "step_3",
         "step_4"
       ],
+      "disabled": true,
       "settings": {
         "heading": "",
         "scroll_length": "story",
         "background": "#0d0e11",
         "text_color": "#ffffff"
-      },
-      "disabled": true
+      }
     },
     "pp_zoom_film": {
       "type": "pp-zoom-film",
@@ -311,6 +328,76 @@
         "padding_bottom": 36
       }
     },
+    "pp_look_closer": {
+      "type": "pp-look-closer",
+      "blocks": {
+        "closeup_1": {
+          "type": "closeup",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
+            "eyebrow": "The blank",
+            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
+            "next_x": 41.4,
+            "next_y": 32.5,
+            "next_size": 19.4,
+            "focus_x": 50,
+            "focus_y": 40
+          }
+        },
+        "closeup_2": {
+          "type": "closeup",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
+            "eyebrow": "Ribbed collar",
+            "text": "Ribbed knit, stitched down.",
+            "next_x": 46,
+            "next_y": 48.4,
+            "next_size": 21.5,
+            "focus_x": 50,
+            "focus_y": 55
+          }
+        },
+        "closeup_3": {
+          "type": "closeup",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
+            "eyebrow": "Printed into the cotton",
+            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
+            "next_x": 43.9,
+            "next_y": 76,
+            "next_size": 23.8,
+            "focus_x": 50,
+            "focus_y": 50
+          }
+        },
+        "closeup_4": {
+          "type": "closeup",
+          "settings": {
+            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
+            "eyebrow": "260 GSM, 100% cotton",
+            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
+            "next_x": 37.5,
+            "next_y": 37.5,
+            "next_size": 25,
+            "focus_x": 50,
+            "focus_y": 50
+          }
+        }
+      },
+      "block_order": [
+        "closeup_1",
+        "closeup_2",
+        "closeup_3",
+        "closeup_4"
+      ],
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "scroll_length": "medium",
+        "background": "#0d0e11",
+        "text_color": "#ffffff"
+      }
+    },
     "anatomy": {
       "type": "pp-garment-anatomy",
       "disabled": true,
@@ -391,10 +478,18 @@
         "heading": "",
         "text": "",
         "image": "shopify://shop_images/pp-spec-group-v3.jpg",
+        "note": "<p>You wear Peculiar People because it reminds you of an important moment. The day you got married, where you got an answer to a prayer you needed answered, where you first felt something you couldn't explain away.</p><p>Every design we make is made to do two things:<br/>1. Remind you of something special to you<br/>2. Prompt others to ask you about it</p><p>In order for this to work, our clothing needs to be the first thing you reach for, which is why we have worked hard to ensure our fabrics, build quality, and prints are premium and extremely comfortable.&nbsp;<br/><br/>The more you wear, the more you share.&nbsp;All it takes is one question. \"What's that on your shirt?\"</p><p>- Evan & Bailee, founders of Peculiar People</p>",
         "background": "#0d0e11",
         "text_color": "#ffffff",
         "accent": "#f58000",
-        "note": "<p><strong>Made right, or we replace it</strong></p><p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p><p>Tees, sweatshirts and hoodies are printed in the USA after you order and arrive in 4 to 7 business days. The bomber ships from overseas and takes longer.</p>"
+        "phone_bands": "stack",
+        "art_ink": "white",
+        "temple_collection": "",
+        "map_collection": "",
+        "band_height": 190,
+        "band_seconds": 3,
+        "temple_band_label": "Shop by temple",
+        "map_band_label": "Shop by Church history site"
       }
     },
     "process": {
@@ -473,68 +568,6 @@
         "after_image": "shopify://shop_images/2.png",
         "padding_top": 36,
         "padding_bottom": 36
-      }
-    },
-    "pp_why_chain": {
-      "type": "pp-why-chain",
-      "blocks": {
-        "line_1": {
-          "type": "line",
-          "settings": {
-            "text": "Comfortable from the first wear."
-          }
-        },
-        "line_2": {
-          "type": "line",
-          "settings": {
-            "text": "So it's the one you grab."
-          }
-        },
-        "line_3": {
-          "type": "line",
-          "settings": {
-            "text": "So people see it."
-          }
-        },
-        "line_4": {
-          "type": "line",
-          "settings": {
-            "text": "<b>So someone asks what's on your shirt.</b>"
-          }
-        }
-      },
-      "block_order": [
-        "line_1",
-        "line_2",
-        "line_3",
-        "line_4"
-      ],
-      "settings": {
-        "image": "shopify://shop_images/pp-fleece-black-fold.jpg",
-        "overlay": 45,
-        "text_color": "#ffffff",
-        "height": "medium",
-        "alignment": "left"
-      },
-      "disabled": true
-    },
-    "founder": {
-      "type": "pp-founder",
-      "settings": {
-        "quote": "It's the new white shirt and tie.",
-        "heading": "From the Founder",
-        "letter": "<p>You put on a Peculiar People shirt because it reminds you why we're all here. Because that building is where you were sealed to your spouse, where you got an answer to a prayer you'd been carrying for years, where you first felt something you couldn't explain away. A stepping stone. A day you'll never forget.</p><p>You put it on because you want to share that with someone. Because gospel conversations are hard to start. Harder than they were on your mission, when the whole day was built around them.</p><p>It's the new white shirt and tie. The new dress. The new name tag you don't need a calling to wear. A shirt you may even feel prompted to wear some days.</p><p>That's why I started this company. It doesn't take much for someone who has been prepared to tap you on the shoulder and ask a question that changes the direction of their life. No argument, no pitch, no lesson plan. Just an opening.</p><p>- Evan</p>",
-        "fallback_temple": "salt-lake",
-        "fallback_alt": "Line drawing of the Salt Lake Temple"
-      }
-    },
-    "marquee": {
-      "type": "pp-temple-marquee",
-      "settings": {
-        "collection": "temple-tees",
-        "heading": "Dotting the earth...",
-        "seconds_per_temple": 4,
-        "label": "Temple designs"
       }
     },
     "what_you_get": {
@@ -1230,93 +1263,6 @@
         "padding_top": 24,
         "padding_bottom": 36
       }
-    },
-    "pp_look_closer": {
-      "type": "pp-look-closer",
-      "blocks": {
-        "closeup_1": {
-          "type": "closeup",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-purpose-4-blank.jpg",
-            "eyebrow": "The blank",
-            "text": "We started with the blank. We put the samples side by side and passed on anything that felt light or stiff.",
-            "next_x": 41.4,
-            "next_y": 32.5,
-            "next_size": 19.4,
-            "focus_x": 50,
-            "focus_y": 40
-          }
-        },
-        "closeup_2": {
-          "type": "closeup",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-story-5-collar.jpg",
-            "eyebrow": "Ribbed collar",
-            "text": "Ribbed knit, stitched down.",
-            "next_x": 46.0,
-            "next_y": 48.4,
-            "next_size": 21.5,
-            "focus_x": 50,
-            "focus_y": 55
-          }
-        },
-        "closeup_3": {
-          "type": "closeup",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-3b-dtg-print.jpg",
-            "eyebrow": "Printed into the cotton",
-            "text": "The logo prints direct to the garment from a full-size 300 DPI file, which is why a line this thin still has clean edges this close.",
-            "next_x": 43.9,
-            "next_y": 76.0,
-            "next_size": 23.8,
-            "focus_x": 50,
-            "focus_y": 50
-          }
-        },
-        "closeup_4": {
-          "type": "closeup",
-          "settings": {
-            "image": "shopify://shop_images/pp-dive-wall-4-yarn.jpg",
-            "eyebrow": "260 GSM, 100% cotton",
-            "text": "260 grams of cotton in every square metre. You'll feel it the first time you pull it on.",
-            "next_x": 37.5,
-            "next_y": 37.5,
-            "next_size": 25,
-            "focus_x": 50,
-            "focus_y": 50
-          }
-        }
-      },
-      "block_order": [
-        "closeup_1",
-        "closeup_2",
-        "closeup_3",
-        "closeup_4"
-      ],
-      "settings": {
-        "heading": "",
-        "scroll_length": "medium",
-        "background": "#0d0e11",
-        "text_color": "#ffffff"
-      },
-      "disabled": true
-    },
-    "pp_hero_draw": {
-      "type": "pp-hero-draw",
-      "settings": {
-        "heading": "Made to start the conversation",
-        "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
-        "button_label": "Find your temple",
-        "link": "shopify://collections/temple-design-products",
-        "temple": "salt-lake",
-        "drawing_label": "Line drawing of the Salt Lake Temple, drawn as you scroll",
-        "art_x": 33.14,
-        "art_y": 31.43,
-        "art_w": 32.14,
-        "ground": "#1f1f1f",
-        "scroll_length": "medium"
-      },
-      "disabled": true
     }
   },
   "order": [
@@ -1330,9 +1276,6 @@
     "anatomy",
     "pp_spec_overlay",
     "process",
-    "pp_why_chain",
-    "founder",
-    "marquee",
     "what_you_get",
     "faq",
     "suggest_heading",

@@ -514,7 +514,7 @@
         line.setAttribute('x2', x2.toFixed(1));
         line.setAttribute('y2', y2.toFixed(1));
         line.style.setProperty('--len', Math.hypot(x2 - x1, y2 - y1).toFixed(1));
-        line.style.setProperty('--i', k);
+        line.style.setProperty('--i', label.style.getPropertyValue('--i') || k);
         svg.appendChild(line);
       });
     }

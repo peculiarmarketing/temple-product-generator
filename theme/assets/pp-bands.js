@@ -6,7 +6,8 @@
    drawings half vanish, and a scroll area gives swiping and flinging for free.
    The drift stops while a finger, mouse or keyboard focus is on the band and starts
    again a few seconds after. Under reduced motion nothing moves and the band is a
-   single list to swipe by hand. */
+   single list to swipe by hand. On desktop a mouse can drag the band too (a scroll
+   area only scrolls by touch, trackpad or keys); a drag never counts as a click. */
 (() => {
   const IDLE_MS = 2500;
   const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -15,7 +16,9 @@
     const view = band.querySelector('[data-pp-band-view]');
     const first = band.querySelector('[data-pp-band-list]');
     const copy = band.querySelector('[data-pp-band-copy]');
-    if (!view || !first || !copy || reduced()) return;
+    if (!view || !first || !copy) return;
+    initDrag(view);
+    if (reduced()) return;
 
     band.classList.add('is-looping');
     copy.querySelectorAll('a').forEach((a) => { a.tabIndex = -1; });
@@ -98,6 +101,41 @@
       write(pos);
     };
     requestAnimationFrame(frame);
+  }
+
+  function initDrag(view) {
+    let startX = 0;
+    let startLeft = 0;
+    let down = false;
+    let dragged = false;
+    view.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      down = true;
+      dragged = false;
+      startX = e.clientX;
+      startLeft = view.scrollLeft;
+    });
+    view.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (!dragged && Math.abs(dx) < 5) return;
+      if (!dragged) {
+        dragged = true;
+        view.classList.add('is-dragging');
+        view.setPointerCapture(e.pointerId);
+      }
+      view.scrollLeft = startLeft - dx;
+    });
+    const up = () => {
+      down = false;
+      view.classList.remove('is-dragging');
+    };
+    view.addEventListener('pointerup', up);
+    view.addEventListener('pointercancel', up);
+    view.addEventListener('click', (e) => {
+      if (dragged) { e.preventDefault(); e.stopPropagation(); dragged = false; }
+    }, true);
+    view.addEventListener('dragstart', (e) => e.preventDefault());
   }
 
   function init(root = document) {

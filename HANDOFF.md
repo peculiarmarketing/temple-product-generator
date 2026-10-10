@@ -1,3 +1,22 @@
+# Founders' note left aligned; desktop bands behind the spec photo (10 Oct 2026, evening)
+
+**State:** on "Claude Code V4", which is UNPUBLISHED again ("Claude Code V3.5" is MAIN as
+of 10 Oct evening). Evan's own V4 edits came first: he removed the founder section, the
+why-chain and the standalone temple marquee, and wrote a new founders' note into the
+spec section's "Note under the photo". `theme/templates/index.json` is now a copy of
+that V4 template. Uploaded to V4 and checked at 390, 1100, 1280, 1440 and 1920px wide:
+
+- **Note:** left aligned on the photo's left edge (desktop: the photo column's width,
+  18px; phones: the labels' 20px gutter, 16px). Line height φ, a blank line between
+  paragraphs, φ² em above. The words are Evan's and untouched.
+- **Desktop bands (1200px up, new "Bands behind the photo on desktop" setting, on by
+  default):** the phone temple and map bands run the full window width behind the top
+  and bottom of the photo. Each band is the photo's height / (2 + φ) (125px for the
+  680 x 453 photo); the labels sit between them in one column per side, spaced evenly.
+  Tiles left and right of the photo click through to the place page; trackpads scroll
+  them and a mouse can drag them (a drag never clicks). 990 to 1199px has no bands:
+  the 160px label columns cannot hold labels and bands both.
+
 # Spec section phone bands: done and on the V4 homepage (10 Oct 2026)
 
 **State:** on "Claude Code V4" (now the live theme), phones below 990px show the spec section as

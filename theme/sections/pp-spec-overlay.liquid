@@ -8,9 +8,14 @@
   shape. An optional note sits under the photo (the guarantee and delivery line).
   With the script off or reduced motion on, the labels and dots are simply shown.
 
-  Phone bands (below 990px only; desktop is unchanged): every temple's art drifts to
-  the right above the labels and every city map's art drifts to the left below them,
-  each drawing with its city underlined beneath it. The bands are scroll areas that
+  Phone bands (below 990px): every temple's art drifts to the right above the labels
+  and every city map's art drifts to the left below them, each drawing with its city
+  underlined beneath it. From 1200px wide ("Bands behind the photo on desktop") the
+  same two bands run the full width of the window behind the top and bottom of the
+  photo, so they come out either side of it and add no height. Each band is
+  1 / (2 + golden ratio) of the photo's height and the labels sit in the middle part
+  between them, which is the golden ratio times a band. Between 990px and 1199px the
+  side columns are too narrow for labels and bands both, so there are no bands. The bands are scroll areas that
   assets/pp-bands.js moves, so a visitor can also swipe either way. "Drawing colour"
   black inverts the white-ink art for a light background. A tile links to every product from its place: /search?view=place with the
   place line ("Provo, Utah") as the search terms, which templates/search.place.json
@@ -27,6 +32,7 @@
 {%- liquid
   assign s = section.settings
   assign image_alt = s.image.alt | default: 'Four friends in the bomber jacket, the hoodie, the sweatshirt and the tee'
+  assign image_ratio = s.image.aspect_ratio | default: 1.5
   assign left_count = 0
   assign right_count = 0
   for block in section.blocks
@@ -166,9 +172,9 @@
 {%- endif -%}
 
 <section
-  class="pp-spec{% if bands != 'none' %} pp-spec--bands{% if s.art_ink == 'black' %} pp-spec--ink-black{% endif %}{% endif %}"
+  class="pp-spec{% if bands != 'none' %} pp-spec--bands{% if s.desktop_bands %} pp-spec--desk-bands{% endif %}{% if s.art_ink == 'black' %} pp-spec--ink-black{% endif %}{% endif %}"
   data-pp-spec
-  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px;{% endif %}"
+  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }}; --pp-spec-ar: {{ image_ratio }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px;{% endif %}"
 >
   <div class="pp-spec__inner">
     {%- if s.heading != blank or s.text != blank -%}
@@ -217,21 +223,36 @@
         {%- endfor -%}
       </div>
 
-      {%- for block in section.blocks -%}
-        <div
-          class="pp-spec__label pp-spec__label--{{ block.settings.side }} pp-spec__label--{{ block.settings.phone | default: 'below' }}"
-          style="--i: {{ forloop.index0 }};"
-          data-pp-spec-label="{{ forloop.index }}"
-          {{ block.shopify_attributes }}
-        >
-          <span class="pp-spec__words">
-            {%- if block.settings.eyebrow != blank -%}
-              <span class="pp-spec__eyebrow">{{ block.settings.eyebrow | escape }}</span>
-            {%- endif -%}
-            {%- if block.settings.label != blank -%}
-              <span class="pp-spec__sub">{{ block.settings.label | escape }}</span>
-            {%- endif -%}
-          </span>
+      {%- comment -%}
+        Labels grouped by side. On phones and narrow desktops the group box is
+        display: contents and each label takes its own grid cell (--r is its row on
+        desktop); with the desktop bands the group is one column between the bands
+        that spaces its labels evenly. --i and the label number keep block order.
+      {%- endcomment -%}
+      {%- assign sides = 'left,right' | split: ',' -%}
+      {%- for side in sides -%}
+        {%- assign side_row = 0 -%}
+        <div class="pp-spec__side pp-spec__side--{{ side }}">
+          {%- for block in section.blocks -%}
+            {%- assign block_side = block.settings.side | default: 'right' -%}
+            {%- if block_side != side -%}{%- continue -%}{%- endif -%}
+            {%- assign side_row = side_row | plus: 1 -%}
+            <div
+              class="pp-spec__label pp-spec__label--{{ side }} pp-spec__label--{{ block.settings.phone | default: 'below' }}"
+              style="--i: {{ forloop.index0 }}; --r: {{ side_row }};"
+              data-pp-spec-label="{{ forloop.index }}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="pp-spec__words">
+                {%- if block.settings.eyebrow != blank -%}
+                  <span class="pp-spec__eyebrow">{{ block.settings.eyebrow | escape }}</span>
+                {%- endif -%}
+                {%- if block.settings.label != blank -%}
+                  <span class="pp-spec__sub">{{ block.settings.label | escape }}</span>
+                {%- endif -%}
+              </span>
+            </div>
+          {%- endfor -%}
         </div>
       {%- endfor -%}
 
@@ -269,7 +290,7 @@
     { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
     { "type": "color", "id": "text_color", "label": "Text and lines", "default": "#ffffff" },
     { "type": "color", "id": "accent", "label": "Dot colour", "default": "#F58000" },
-    { "type": "header", "content": "Phone bands" },
+    { "type": "header", "content": "Temple and map bands" },
     {
       "type": "select",
       "id": "phone_bands",
@@ -279,7 +300,14 @@
         { "value": "stack", "label": "Above and below the labels" }
       ],
       "default": "stack",
-      "info": "Below 990px wide only. Temples drift right above the labels, maps drift left below them; visitors can swipe either way. Every drawing links to all products from its place."
+      "info": "Temples drift right above the labels, maps drift left below them; visitors can swipe either way. Every drawing links to all products from its place."
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_bands",
+      "label": "Bands behind the photo on desktop",
+      "default": true,
+      "info": "1200px and wider: the same bands run behind the top and bottom of the photo and come out either side. Visitors can drag or scroll them."
     },
     {
       "type": "select",
