@@ -17,7 +17,7 @@ Evan emptied the four callouts' words on V4 (template pulled into
   22%, the golden-ratio split; never under 80px).
 - **Founders' note set as a letter** (styling only, words untouched): the first
   paragraph is a lead in the light display face across the photo's width, the rest is
-  indented to the golden-ratio line (38.2%) on desktop, and the last paragraph is a
+  on the same left edge (desktop indent removed at Evan's ask), and the last paragraph is a
   signature line in small spaced capitals under a short rule. The section splits the
   note at its first paragraph; the editor field is unchanged.
 - **New "PP gradient divider" section** on V4 (not placed on any page; Evan adds it in
