@@ -5,6 +5,12 @@
   or a block of colour on its own. The blend runs in OKLab, so the middle stays clean
   (blue to orange does not pass through grey); older browsers fall back to an
   ordinary sRGB blend. An optional line of text sits in the middle.
+
+  Smoothness: "Linear" changes colour at one rate and stops dead at each end, which
+  the eye reads as an edge. "Smooth" and "Extra smooth" ease in and out (smoothstep
+  and smootherstep curves, 16 stops per colour pair mixed with color-mix in OKLab), so
+  the band leaves and meets the flat colours either side without a visible line, at
+  the same height. "Grain" lays a faint noise over it to break up banding steps.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
@@ -27,6 +33,55 @@
     assign stops = stops | append: ', ' | append: s.color_middle | append: ' ' | append: s.middle_position | append: '%'
   endif
   assign stops = stops | append: ', ' | append: s.color_to | append: ' 100%'
+
+  comment
+    Eased stops: for each colour pair, 17 stops along a smoothstep or smootherstep
+    curve. Each stop is color-mix(in oklab, end t%, start) at position p%.
+  endcomment
+  assign curve = s.smoothness | default: 'smooth'
+  assign eased = ''
+  if curve != 'linear'
+    assign n = 16
+    if s.use_middle
+      assign seg_from = s.color_from | append: '|' | append: s.color_middle
+      assign seg_to = s.color_middle | append: '|' | append: s.color_to
+      assign seg_p0 = '0|' | append: s.middle_position
+      assign seg_p1 = s.middle_position | append: '|100'
+    else
+      assign seg_from = s.color_from
+      assign seg_to = s.color_to
+      assign seg_p0 = '0'
+      assign seg_p1 = '100'
+    endif
+    assign c0s = seg_from | split: '|'
+    assign c1s = seg_to | split: '|'
+    assign p0s = seg_p0 | split: '|'
+    assign p1s = seg_p1 | split: '|'
+    for c0 in c0s
+      assign k = forloop.index0
+      assign c1 = c1s[k]
+      assign p0 = p0s[k] | times: 1.0
+      assign p1 = p1s[k] | times: 1.0
+      assign span = p1 | minus: p0
+      for i in (0..n)
+        if k > 0 and i == 0
+          continue
+        endif
+        assign x = i | times: 1.0 | divided_by: n
+        if curve == 'extra'
+          assign t = x | times: 6 | minus: 15 | times: x | plus: 10 | times: x | times: x | times: x
+        else
+          assign t = 3 | minus: x | minus: x | times: x | times: x
+        endif
+        assign tp = t | times: 100 | round: 2
+        assign pos = x | times: span | plus: p0 | round: 2
+        if eased != ''
+          assign eased = eased | append: ', '
+        endif
+        assign eased = eased | append: 'color-mix(in oklab, ' | append: c1 | append: ' ' | append: tp | append: '%, ' | append: c0 | append: ') ' | append: pos | append: '%'
+      endfor
+    endfor
+  endif
   if s.direction == 'radial'
     assign shape = 'radial-gradient(ellipse at center'
   else
@@ -39,6 +94,11 @@
     background: {{ s.color_to }};
     background-image: {{ shape }}, {{ stops }});
     background-image: {{ shape }} in oklab, {{ stops }});
+    {%- if eased != '' %}
+    background-image: {{ shape }}, {{ eased }});
+    {%- endif %}
+    position: relative;
+    isolation: isolate;
     min-height: {{ s.height_phone }}px;
     color: {{ s.text_color }};
   }
@@ -46,13 +106,24 @@
     #pp-gradient-{{ section.id }} { min-height: {{ s.height_desktop }}px; }
   }
 </style>
-<div id="pp-gradient-{{ section.id }}" class="pp-gradient"{% if s.text == blank %} aria-hidden="true"{% endif %}>
+<div id="pp-gradient-{{ section.id }}" class="pp-gradient{% if s.grain %} pp-gradient--grain{% endif %}"{% if s.text == blank %} aria-hidden="true"{% endif %}>
   {%- if s.text != blank -%}
     <div class="pp-gradient__text">{{ s.text }}</div>
   {%- endif -%}
 </div>
 <style>
   .pp-gradient { display: flex; align-items: center; justify-content: center; padding: 0 20px; }
+  /* Grain: fine noise at low strength breaks the 8-bit steps a long blend shows. */
+  .pp-gradient--grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
   .pp-gradient__text { max-width: 680px; text-align: center; font-size: 18px; line-height: 1.618; }
   .pp-gradient__text p { margin: 0; }
   .pp-gradient__text h2, .pp-gradient__text h3 { margin: 0 0 .5em; color: inherit; }
@@ -68,6 +139,19 @@
     { "type": "checkbox", "id": "use_middle", "label": "Add a middle colour", "default": false },
     { "type": "color", "id": "color_middle", "label": "Middle", "default": "#1f3a5f" },
     { "type": "range", "id": "middle_position", "label": "Middle colour sits at", "min": 5, "max": 95, "step": 5, "unit": "%", "default": 50 },
+    {
+      "type": "select",
+      "id": "smoothness",
+      "label": "Smoothness",
+      "options": [
+        { "value": "linear", "label": "Linear" },
+        { "value": "smooth", "label": "Smooth" },
+        { "value": "extra", "label": "Extra smooth" }
+      ],
+      "default": "smooth",
+      "info": "Smooth eases into and out of each colour, so the divider has no visible top or bottom edge."
+    },
+    { "type": "checkbox", "id": "grain", "label": "Grain", "default": true, "info": "A faint texture that hides banding steps in long blends." },
     {
       "type": "select",
       "id": "direction",

@@ -286,3 +286,9 @@ with the weave over the ink. 24x by default.
   right, diagonal, from the centre, custom angle), desktop and phone heights, optional
   text. Blends in OKLab with an sRGB fallback. Sets `display: flex` on itself because
   the theme hides empty divs (`div:empty`), which hid text-less dividers at 0px.
+- Smoothness (`linear`, `smooth`, `extra`): eased dividers are 17 `color-mix(in oklab)`
+  stops per colour pair on a smoothstep or smootherstep curve, so there is no visible
+  edge where the band meets flat colour. `grain` (default on) lays faint SVG noise over
+  it against banding. Upload a template that uses new section settings in a separate
+  call after the section: in one batch Shopify validated it against the old schema and
+  silently dropped the new settings.

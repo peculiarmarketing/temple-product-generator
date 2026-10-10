@@ -21,7 +21,9 @@ Evan emptied the four callouts' words on V4 (template pulled into
   signature line in small spaced capitals under a short rule. The section splits the
   note at its first paragraph; the editor field is unchanged.
 - **New "PP gradient divider" section** on V4 (not placed on any page; Evan adds it in
-  the editor): from/to colours, optional middle, direction, desktop and phone heights.
+  the editor): from/to colours, optional middle, direction, desktop and phone heights,
+  Smoothness (Linear / Smooth / Extra smooth, default Smooth: eased so no edge line
+  shows) and Grain (on).
 - **Note formatting** (Evan asked, words untouched): the "two things" lines are a
   numbered list (large light numerals), and "The more you wear..." is its own
   paragraph. The paragraph just before the sign-off is set as the closing line, so
