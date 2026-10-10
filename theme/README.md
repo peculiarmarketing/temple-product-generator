@@ -270,3 +270,11 @@ with the weave over the ink. 24x by default.
   query; the note is left aligned on golden-ratio spacing.
 - `assets/pp-bands.js`: mouse drag on the bands, with clicks swallowed after a drag.
 - `assets/pp-quality.js`: a callout line's draw order follows its block, not the DOM.
+
+## Dot and line controls (10 October 2026, night, "Claude Code V4")
+
+- `sections/pp-spec-overlay.liquid`: `show_callouts` (section) and per callout
+  `show_dot`, `line` (`label`, `point`, `none`), `end_x`/`end_y` (desktop) and
+  `end_x_phone`/`end_y_phone`, in % of the photo. Callouts with no words get
+  `pp-spec__label--empty` and are not shown. Desktop bands now start at 990px.
+- `assets/pp-quality.js`: lines are drawn per dot, to its label or to its placed point.

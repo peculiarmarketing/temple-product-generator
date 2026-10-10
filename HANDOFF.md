@@ -1,3 +1,17 @@
+# Spec section: dot and line controls; desktop bands from 990px (10 Oct 2026, night)
+
+Evan emptied the four callouts' words on V4 (template pulled into
+`theme/templates/index.json`). Uploaded to V4 and checked in a browser at 1050 and 1440px:
+
+- **Bands "disappeared"** in the theme editor because they started at 1200px and the
+  editor's preview pane is narrower. They now start at 990px (label columns
+  160 to 280px), with a 110px minimum band height so the art stays readable.
+- **Dots and lines are editable:** section checkbox "Show callout dots and lines"; per
+  callout "Show dot", "Line goes to" (its label / a point I place / no line), and line
+  end sliders in % of the photo, desktop (-50 to 150) and phones apart. "Its label"
+  draws nothing when the callout has no words, so with today's empty callouts the
+  dots show and no lines draw until Evan places their ends.
+
 # Founders' note left aligned; desktop bands behind the spec photo (10 Oct 2026, evening)
 
 **State:** on "Claude Code V4", which is UNPUBLISHED again ("Claude Code V3.5" is MAIN as

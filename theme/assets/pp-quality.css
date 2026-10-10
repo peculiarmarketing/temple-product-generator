@@ -315,6 +315,8 @@
 }
 .pp-spec__side { display: contents; }
 .pp-spec__label { display: block; min-width: 0; }
+.pp-spec__label--empty { display: none; }
+.pp-spec__dot--hidden { visibility: hidden; }
 .pp-spec__label--above { grid-row: 1; }
 .pp-spec__label--below { grid-row: 3; align-self: start; }
 .pp-spec__label--left { grid-column: 1; text-align: left; }
@@ -383,12 +385,11 @@
    that assets/pp-bands.js drifts; the copy of the list that makes the loop seamless
    only shows once that script is running.
    Phones (below 990px): band, labels, photo, labels, band.
-   Desktop (1200px and up, "Bands behind the photo on desktop"): the bands run the
+   Desktop (990px and up, "Bands behind the photo on desktop"): the bands run the
    full window width behind the top and bottom of the photo and come out either side.
    The photo is split by the golden ratio: band, labels (φ² times a band), band, so a
    band is the photo's height / (2 + φ²) = / 4.618. The photo is up to 960px wide.
-   990px to 1199px never shows the bands: the label columns are too narrow to hold
-   the labels between them. */
+   */
 .pp-spec__band { display: none; }
 .pp-spec__band-view {
   display: flex;
@@ -442,18 +443,18 @@
   .pp-spec--bands .pp-spec__band--bottom { grid-row: 5; }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 990px) {
   /* The photo grows with the window (up to 960px) between label columns of 200 to
      280px, so the space between the bands grows with it. */
   .pp-spec--desk-bands {
     overflow-x: clip;
-    --pp-label-w: clamp(200px, 16vw, 280px);
+    --pp-label-w: clamp(160px, 16vw, 280px);
     /* 48px window margins and 48px gaps either side of the photo. */
     --pp-photo-w: min(960px, 100vw - 192px - 2 * var(--pp-label-w));
   }
   .pp-spec--desk-bands .pp-spec__inner { max-width: none; padding-left: 48px; padding-right: 48px; }
   .pp-spec--desk-bands .pp-spec__stage {
-    --pp-band-h: calc(var(--pp-photo-w) / var(--pp-spec-ar) / 4.618);
+    --pp-band-h: max(110px, var(--pp-photo-w) / var(--pp-spec-ar) / 4.618); /* 110px keeps the art readable on small laptops */
     grid-template-columns: var(--pp-label-w) var(--pp-photo-w) var(--pp-label-w);
     grid-template-rows: var(--pp-band-h) minmax(0, 1fr) var(--pp-band-h);
     justify-content: center;

@@ -488,25 +488,37 @@
       const s = stage.getBoundingClientRect();
       if (!s.width) return;
       svg.setAttribute('viewBox', `0 0 ${s.width} ${s.height}`);
-      section.querySelectorAll('[data-pp-spec-label]').forEach((label, k) => {
-        const dot = section.querySelector(`[data-pp-spec-dot="${label.dataset.ppSpecLabel}"]`);
-        if (!dot) return;
+      const media = section.querySelector('.pp-spec__media');
+      const m = media ? media.getBoundingClientRect() : s;
+      section.querySelectorAll('[data-pp-spec-dot]').forEach((dot, k) => {
+        const mode = dot.dataset.line || 'label';
+        if (mode === 'none') return;
         const d = dot.getBoundingClientRect();
-        const l = label.getBoundingClientRect();
         const x1 = d.left + d.width / 2 - s.left;
         const y1 = d.top + d.height / 2 - s.top;
         let x2;
         let y2;
-        if (wide.matches) {
-          // desktop: to the inner edge of the label, level with the small caps
-          const left = label.classList.contains('pp-spec__label--left');
-          x2 = (left ? l.right + 10 : l.left - 10) - s.left;
-          y2 = l.top + 9 - s.top;
+        if (mode === 'point') {
+          // a point placed in the editor, in % of the photo (past its edges allowed)
+          const [ex, ey] = ((wide.matches ? dot.dataset.end : dot.dataset.endPhone) || '').split(',').map(Number);
+          if (!Number.isFinite(ex) || !Number.isFinite(ey)) return;
+          x2 = m.left + (m.width * ex) / 100 - s.left;
+          y2 = m.top + (m.height * ey) / 100 - s.top;
         } else {
-          // phones: straight up or down to the label, kept under or over its text
-          const above = label.classList.contains('pp-spec__label--above');
-          x2 = Math.min(Math.max(x1 + s.left, l.left + 4), l.right - 4) - s.left;
-          y2 = (above ? l.bottom + 8 : l.top - 8) - s.top;
+          const label = section.querySelector(`[data-pp-spec-label="${dot.dataset.ppSpecDot}"]`);
+          if (!label || label.classList.contains('pp-spec__label--empty')) return;
+          const l = label.getBoundingClientRect();
+          if (wide.matches) {
+            // desktop: to the inner edge of the label, level with the small caps
+            const left = label.classList.contains('pp-spec__label--left');
+            x2 = (left ? l.right + 10 : l.left - 10) - s.left;
+            y2 = l.top + 9 - s.top;
+          } else {
+            // phones: straight up or down to the label, kept under or over its text
+            const above = label.classList.contains('pp-spec__label--above');
+            x2 = Math.min(Math.max(x1 + s.left, l.left + 4), l.right - 4) - s.left;
+            y2 = (above ? l.bottom + 8 : l.top - 8) - s.top;
+          }
         }
         const line = document.createElementNS(NS, 'line');
         line.setAttribute('x1', x1.toFixed(1));
@@ -514,7 +526,7 @@
         line.setAttribute('x2', x2.toFixed(1));
         line.setAttribute('y2', y2.toFixed(1));
         line.style.setProperty('--len', Math.hypot(x2 - x1, y2 - y1).toFixed(1));
-        line.style.setProperty('--i', label.style.getPropertyValue('--i') || k);
+        line.style.setProperty('--i', k);
         svg.appendChild(line);
       });
     }

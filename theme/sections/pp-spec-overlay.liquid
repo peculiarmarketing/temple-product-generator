@@ -4,19 +4,21 @@
   section scrolls into view. Each callout is a block (point on the photo, desktop
   side, phone place, small caps label, short line). Desktop puts the labels in
   columns either side of the photo; phones put them in two rows above and below a
-  full-width photo. pp-quality.js draws the lines on both. The photo keeps its own
+  full-width photo. pp-quality.js draws the lines on both. Each callout's dot can be
+  hidden, and its line can go to its label, to a point placed with the line-end
+  sliders (desktop and phones set apart, in % of the photo, past its edges allowed),
+  or nowhere; "Show callout dots and lines" turns them all off. The photo keeps its own
   shape. An optional note sits under the photo (the guarantee and delivery line).
   With the script off or reduced motion on, the labels and dots are simply shown.
 
   Phone bands (below 990px): every temple's art drifts to the right above the labels
   and every city map's art drifts to the left below them, each drawing with its city
-  underlined beneath it. From 1200px wide ("Bands behind the photo on desktop") the
+  underlined beneath it. From 990px wide ("Bands behind the photo on desktop") the
   same two bands run the full width of the window behind the top and bottom of the
   photo, so they come out either side of it and add no height. The photo grows with
   the window there (up to 960px). Each band is 1 / (2 + golden ratio squared) of the
   photo's height and the labels sit evenly in the middle part between them, which is
-  the golden ratio squared times a band. Between 990px and 1199px the
-  side columns are too narrow for labels and bands both, so there are no bands. The bands are scroll areas that
+  the golden ratio squared times a band. The bands are scroll areas that
   assets/pp-bands.js moves, so a visitor can also swipe either way. "Drawing colour"
   black inverts the white-ink art for a light background. A tile links to every product from its place: /search?view=place with the
   place line ("Provo, Utah") as the search terms, which templates/search.place.json
@@ -207,21 +209,33 @@
             | image_tag:
               loading: 'lazy',
               widths: '550, 750, 1000, 1400, 1920',
-              sizes: '(min-width: 1200px) 960px, (min-width: 990px) 680px, 100vw',
+              sizes: '(min-width: 990px) 960px, 100vw',
               class: 'pp-spec__img',
               alt: image_alt
           }}
         {%- else -%}
           {{ 'product-apparel-1' | placeholder_svg_tag: 'pp-spec__img pp-spec__img--placeholder' }}
         {%- endif -%}
-        {%- for block in section.blocks -%}
-          <span
-            class="pp-spec__dot"
-            style="--x: {{ block.settings.x }}%; --y: {{ block.settings.y }}%;"
-            data-pp-spec-dot="{{ forloop.index }}"
-            aria-hidden="true"
-          ></span>
-        {%- endfor -%}
+        {%- if s.show_callouts -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign b = block.settings
+              assign line = b.line | default: 'label'
+              if b.show_dot == false and line == 'none'
+                continue
+              endif
+            -%}
+            <span
+              class="pp-spec__dot{% if b.show_dot == false %} pp-spec__dot--hidden{% endif %}"
+              style="--x: {{ b.x }}%; --y: {{ b.y }}%;"
+              data-pp-spec-dot="{{ forloop.index }}"
+              data-line="{{ line }}"
+              data-end="{{ b.end_x }},{{ b.end_y }}"
+              data-end-phone="{{ b.end_x_phone }},{{ b.end_y_phone }}"
+              aria-hidden="true"
+            ></span>
+          {%- endfor -%}
+        {%- endif -%}
       </div>
 
       {%- comment -%}
@@ -239,7 +253,7 @@
             {%- if block_side != side -%}{%- continue -%}{%- endif -%}
             {%- assign side_row = side_row | plus: 1 -%}
             <div
-              class="pp-spec__label pp-spec__label--{{ side }} pp-spec__label--{{ block.settings.phone | default: 'below' }}"
+              class="pp-spec__label pp-spec__label--{{ side }} pp-spec__label--{{ block.settings.phone | default: 'below' }}{% if block.settings.eyebrow == blank and block.settings.label == blank %} pp-spec__label--empty{% endif %}"
               style="--i: {{ forloop.index0 }}; --r: {{ side_row }};"
               data-pp-spec-label="{{ forloop.index }}"
               {{ block.shopify_attributes }}
@@ -291,6 +305,13 @@
     { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
     { "type": "color", "id": "text_color", "label": "Text and lines", "default": "#ffffff" },
     { "type": "color", "id": "accent", "label": "Dot colour", "default": "#F58000" },
+    {
+      "type": "checkbox",
+      "id": "show_callouts",
+      "label": "Show callout dots and lines",
+      "default": true,
+      "info": "Off hides every dot and line. Each callout can also hide its own dot or line."
+    },
     { "type": "header", "content": "Temple and map bands" },
     {
       "type": "select",
@@ -308,7 +329,7 @@
       "id": "desktop_bands",
       "label": "Bands behind the photo on desktop",
       "default": true,
-      "info": "1200px and wider: the same bands run behind the top and bottom of the photo and come out either side. Visitors can drag or scroll them."
+      "info": "990px and wider: the same bands run behind the top and bottom of the photo and come out either side. Visitors can drag or scroll them."
     },
     {
       "type": "select",
@@ -356,8 +377,27 @@
           "default": "below",
           "info": "Use one left and one right callout per row."
         },
-        { "type": "range", "id": "x", "label": "Point across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
-        { "type": "range", "id": "y", "label": "Point down the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 }
+        { "type": "header", "content": "Dot" },
+        { "type": "checkbox", "id": "show_dot", "label": "Show dot", "default": true },
+        { "type": "range", "id": "x", "label": "Dot across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "y", "label": "Dot down the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "header", "content": "Line" },
+        {
+          "type": "select",
+          "id": "line",
+          "label": "Line goes to",
+          "options": [
+            { "value": "label", "label": "Its label" },
+            { "value": "point", "label": "A point I place" },
+            { "value": "none", "label": "No line" }
+          ],
+          "default": "label",
+          "info": "\"Its label\" draws nothing when the callout has no words. \"A point I place\" uses the sliders below; under 0 or over 100 runs past the photo's edge."
+        },
+        { "type": "range", "id": "end_x", "label": "Desktop: line end across the photo (%)", "min": -50, "max": 150, "step": 2, "default": -20 },
+        { "type": "range", "id": "end_y", "label": "Desktop: line end down the photo (%)", "min": -50, "max": 150, "step": 2, "default": 50 },
+        { "type": "range", "id": "end_x_phone", "label": "Phones: line end across the photo (%)", "min": 0, "max": 100, "step": 1, "default": 50 },
+        { "type": "range", "id": "end_y_phone", "label": "Phones: line end down the photo (%)", "min": -50, "max": 150, "step": 2, "default": 110 }
       ]
     }
   ],
