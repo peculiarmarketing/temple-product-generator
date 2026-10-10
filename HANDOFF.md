@@ -20,6 +20,10 @@ Evan emptied the four callouts' words on V4 (template pulled into
   indented to the golden-ratio line (38.2%) on desktop, and the last paragraph is a
   signature line in small spaced capitals under a short rule. The section splits the
   note at its first paragraph; the editor field is unchanged.
+- **Note formatting** (Evan asked, words untouched): the "two things" lines are a
+  numbered list (large light numerals), and "The more you wear..." is its own
+  paragraph. The paragraph just before the sign-off is set as the closing line, so
+  that rule follows whatever paragraph sits there after future edits.
 
 # Founders' note left aligned; desktop bands behind the spec photo (10 Oct 2026, evening)
 
