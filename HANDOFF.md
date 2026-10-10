@@ -1,3 +1,25 @@
+# Founders' note on products; duplicate drafts; map parent titles (10 Oct 2026, late)
+
+- **New founders' note in the pipeline:** `reference/garment-copy/{tee,crew,hoodie}/product-intro.html`
+  now carry Evan's homepage note (spec section, "You wear Peculiar People because..."),
+  heading "From the Founders", signed "Evan & Bailee, founders of Peculiar People", with a
+  scoped style that forces the "two things" list to show its numbers. `COLLAPSIBLE_FIXED_HEADINGS`
+  takes both headings. Bomber and the six Be Peculiar products keep their own notes.
+- **Live pages NOT yet swapped.** `scripts/founder_note_rollout.py` dry-runs clean on the
+  10 Oct export (`artifacts/descriptions/backup-2026-10-10/active-products.jsonl`, the
+  backup): 216 swaps, only the founder row changes, the 7 product-specific notes are left
+  alone. The push (bulk productUpdate) was blocked by the cloud session's permission check;
+  waiting on Evan.
+- **"Duplicates" are retired drafts, not copies.** No ACTIVE product is duplicated. The
+  DRAFT twins are the old listings each colour swap left behind (`*-retired-2026-09-2x`
+  hoodies, `*-retired-2026-10-08` tees and map tees, 92 in all) plus 40 August Printify
+  "Essential Temple Tee - with personalizable date" drafts. Proposed: archive all 132
+  (not delete: retired hoodies share Tapstitch templates with live ones). Waiting on Evan.
+- **Naming:** temple products already follow the rule (Salt Lake parents bare, every other
+  temple "(Place)"). The odd one out is the map line's parent, still titled
+  "... Map Tee/Sweatshirt/Hoodie (Salt Lake City)". Proposed: drop the place from those three
+  and from `map_run.title_for` for the parent. Waiting on Evan.
+
 # Spec section: dot and line controls; desktop bands from 990px (10 Oct 2026, night)
 
 Evan emptied the four callouts' words on V4 (template pulled into

@@ -144,15 +144,18 @@ for garment in ("crew", "hoodie", "tee"):
 # --- the collapsed From the Founder row (Evan, 18 Sep 2026) -----------------
 # Same machinery as the care row, scoped to product-intro.
 assert "From the Founder" in COLLAPSIBLE_FIXED_HEADINGS
+assert "From the Founders" in COLLAPSIBLE_FIXED_HEADINGS
 for garment in ("crew", "hoodie", "tee"):
     raw = fixed_description(load_garment_config(garment))
     out = compose_description(raw, MINI_FRAGMENT)
     assert out.count('<details class="product-intro__block">') == 1, garment
     assert out.count('<style class="product-intro__style">') == 1, garment
-    assert "<summary><h3>From the Founder</h3></summary>" in out, garment
+    assert "<summary><h3>From the Founders</h3></summary>" in out, garment
     # The founder message itself must survive the wrap, every paragraph of it.
     assert out.count("<p>") == raw.count("<p>"), f"{garment}: copy lost in the wrap"
-    assert "<p>- Evan</p>" in out, f"{garment}: the signoff must survive"
+    assert "<p>Evan &amp; Bailee, founders of Peculiar People</p>" in out, \
+        f"{garment}: the signoff must survive"
+    assert "<ol><li>" in out, f"{garment}: the numbered list must survive"
 # Collapsing a LIVE description is the same transform as collapsing the repo's
 # assets, which is what lets scripts/collapse_live_sections.py backfill without
 # recomposing. Applied twice it must be a no-op, and it must leave a section

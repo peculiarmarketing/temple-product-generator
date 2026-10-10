@@ -22,8 +22,11 @@ import re
 # listed section renders as a row whether or not the product also has temple
 # facts. Evan's 26 Aug 2026 scope was facts only; Care Instructions joined it
 # 18 Sep 2026 and From the Founder the same day. Matching is by heading text,
-# not by section class.
-COLLAPSIBLE_FIXED_HEADINGS = ("Care Instructions", "From the Founder")
+# not by section class. The note became "From the Founders" on 10 Oct 2026
+# (Evan's homepage founders' note, signed by Evan and Bailee); the bomber and
+# Be Peculiar lines still carry their own single-founder notes.
+COLLAPSIBLE_FIXED_HEADINGS = ("Care Instructions", "From the Founder",
+                              "From the Founders")
 
 _FACTS_SECTION_RE = re.compile(
     r'^(<section class="temple-facts">)\n?(.*)(</section>)\s*$', re.S)
