@@ -372,6 +372,47 @@
   .pp-spec__note { max-width: min(680px, 100vw - 456px); margin: 2.618em auto 0; font-size: 18px; }
 }
 
+/* The note as a letter (sections/pp-spec-overlay.liquid splits it): a lead in the
+   light display face, the body, and the last paragraph as a signature line in small
+   spaced capitals under a short rule. On desktop the lead runs the photo's width and
+   the body starts on the golden-ratio line beneath it (38.2% in). */
+.pp-spec__lead { margin-bottom: 1.618em; }
+.pp-spec__lead p {
+  margin: 0;
+  font-family: var(--pp-head);
+  font-weight: 300;
+  font-size: 1.375em;
+  line-height: 1.3;
+  letter-spacing: -.005em;
+  opacity: 1;
+  text-wrap: pretty;
+}
+.pp-spec__body p { text-wrap: pretty; }
+.pp-spec__note--letter .pp-spec__body > p:last-child:not(:first-child) {
+  margin-top: 2.618em;
+  font-family: var(--pp-head);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .75;
+}
+.pp-spec__note--letter .pp-spec__body > p:last-child:not(:first-child)::before {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin-bottom: 1.618em;
+  background: currentColor;
+  opacity: .5;
+}
+@media screen and (min-width: 990px) {
+  .pp-spec__lead { margin-bottom: 2.618em; }
+  .pp-spec__lead p { font-size: clamp(24px, 2.2vw, 32px); line-height: 1.3; }
+  .pp-spec__note--letter .pp-spec__body { margin-left: 38.2%; }
+}
+
 .pp-spec.is-armed .pp-spec__label { opacity: 0; transform: translateY(6px); transition: opacity .5s ease calc(var(--i) * .3s + .5s), transform .5s ease calc(var(--i) * .3s + .5s); }
 .pp-spec.is-armed .pp-spec__dot { opacity: 0; transition: opacity .4s ease; }
 .pp-spec.is-armed .pp-spec__lines line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .9s ease calc(var(--i) * .3s); }

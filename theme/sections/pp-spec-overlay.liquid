@@ -284,7 +284,22 @@
     </div>
 
     {%- if s.note != blank -%}
-      <div class="pp-spec__note">{{ s.note }}</div>
+      {%- comment -%}
+        The note as a letter: its first paragraph is the lead, the rest the body, the
+        last paragraph (the sign-off) set as a signature line. Words untouched.
+      {%- endcomment -%}
+      {%- liquid
+        assign lead = ''
+        assign rest = s.note
+        if s.note contains '</p>'
+          assign lead = s.note | split: '</p>' | first | append: '</p>'
+          assign rest = s.note | remove_first: lead | strip
+        endif
+      -%}
+      <div class="pp-spec__note{% if lead != blank and rest != blank %} pp-spec__note--letter{% endif %}">
+        {%- if lead != blank -%}<div class="pp-spec__lead">{{ lead }}</div>{%- endif -%}
+        {%- if rest != blank -%}<div class="pp-spec__body">{{ rest }}</div>{%- endif -%}
+      </div>
     {%- endif -%}
   </div>
 </section>
