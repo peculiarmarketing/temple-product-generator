@@ -262,8 +262,10 @@ with the weave over the ink. 24x by default.
 - `sections/pp-spec-overlay.liquid`: labels are grouped per side
   (`.pp-spec__side`, `display: contents` except with the desktop bands, where it is a
   column between them). New setting `desktop_bands` (default on): from 1200px the
-  temple and map bands run behind the top and bottom of the photo. Band height is
-  `680px / aspect ratio / 3.618`, from the image's `aspect_ratio`.
+  temple and map bands run behind the top and bottom of the photo. The photo column
+  is `min(960px, 100vw - 192px - 2 * label column)`, label columns
+  `clamp(200px, 16vw, 280px)`; band height is `photo width / aspect ratio / 4.618`,
+  from the image's `aspect_ratio`.
 - `assets/pp-quality.css`: band and tile styles no longer sit only in the phone media
   query; the note is left aligned on golden-ratio spacing.
 - `assets/pp-bands.js`: mouse drag on the bands, with clicks swallowed after a drag.

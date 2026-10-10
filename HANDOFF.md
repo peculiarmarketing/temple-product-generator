@@ -11,8 +11,12 @@ that V4 template. Uploaded to V4 and checked at 390, 1100, 1280, 1440 and 1920px
   paragraphs, φ² em above. The words are Evan's and untouched.
 - **Desktop bands (1200px up, new "Bands behind the photo on desktop" setting, on by
   default):** the phone temple and map bands run the full window width behind the top
-  and bottom of the photo. Each band is the photo's height / (2 + φ) (125px for the
-  680 x 453 photo); the labels sit between them in one column per side, spaced evenly.
+  and bottom of the photo. The photo grows with the window (787px wide at 1440, 960px
+  max) between 200 to 280px label columns, with 48px margins and gaps. Each band is the
+  photo's height / (2 + φ²) (114px at 1440); the labels sit between them in one column
+  per side, spaced evenly (about 50px apart at 1440), lines balanced. Labels still run
+  three lines at 1440 and two at 1920; two lines at 1440 would cost about 140px of
+  photo width.
   Tiles left and right of the photo click through to the place page; trackpads scroll
   them and a mouse can drag them (a drag never clicks). 990 to 1199px has no bands:
   the 160px label columns cannot hold labels and bands both.

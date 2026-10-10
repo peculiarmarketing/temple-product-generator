@@ -12,9 +12,10 @@
   and every city map's art drifts to the left below them, each drawing with its city
   underlined beneath it. From 1200px wide ("Bands behind the photo on desktop") the
   same two bands run the full width of the window behind the top and bottom of the
-  photo, so they come out either side of it and add no height. Each band is
-  1 / (2 + golden ratio) of the photo's height and the labels sit in the middle part
-  between them, which is the golden ratio times a band. Between 990px and 1199px the
+  photo, so they come out either side of it and add no height. The photo grows with
+  the window there (up to 960px). Each band is 1 / (2 + golden ratio squared) of the
+  photo's height and the labels sit evenly in the middle part between them, which is
+  the golden ratio squared times a band. Between 990px and 1199px the
   side columns are too narrow for labels and bands both, so there are no bands. The bands are scroll areas that
   assets/pp-bands.js moves, so a visitor can also swipe either way. "Drawing colour"
   black inverts the white-ink art for a light background. A tile links to every product from its place: /search?view=place with the
@@ -202,11 +203,11 @@
         {%- if s.image != blank -%}
           {{
             s.image
-            | image_url: width: 1400
+            | image_url: width: 1920
             | image_tag:
               loading: 'lazy',
-              widths: '550, 750, 1000, 1400',
-              sizes: '(min-width: 990px) 680px, 100vw',
+              widths: '550, 750, 1000, 1400, 1920',
+              sizes: '(min-width: 1200px) 960px, (min-width: 990px) 680px, 100vw',
               class: 'pp-spec__img',
               alt: image_alt
           }}
