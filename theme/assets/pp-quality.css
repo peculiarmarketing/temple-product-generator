@@ -454,7 +454,9 @@
   }
   .pp-spec--desk-bands .pp-spec__inner { max-width: none; padding-left: 48px; padding-right: 48px; }
   .pp-spec--desk-bands .pp-spec__stage {
-    --pp-band-h: max(110px, var(--pp-photo-w) / var(--pp-spec-ar) / 4.618); /* 110px keeps the art readable on small laptops */
+    /* "Desktop band height", % of the photo's height; the 22% default is 1 / (2 + φ²).
+       Never under 80px, so the art stays readable on small laptops. */
+    --pp-band-h: max(80px, var(--pp-photo-w) / var(--pp-spec-ar) * var(--pp-desk-band, 22) / 100);
     grid-template-columns: var(--pp-label-w) var(--pp-photo-w) var(--pp-label-w);
     grid-template-rows: var(--pp-band-h) minmax(0, 1fr) var(--pp-band-h);
     justify-content: center;

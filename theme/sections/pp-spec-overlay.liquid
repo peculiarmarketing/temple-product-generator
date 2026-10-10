@@ -177,7 +177,7 @@
 <section
   class="pp-spec{% if bands != 'none' %} pp-spec--bands{% if s.desktop_bands %} pp-spec--desk-bands{% endif %}{% if s.art_ink == 'black' %} pp-spec--ink-black{% endif %}{% endif %}"
   data-pp-spec
-  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }}; --pp-spec-ar: {{ image_ratio }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px;{% endif %}"
+  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }}; --pp-spec-ar: {{ image_ratio }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px; --pp-desk-band: {{ s.desk_band_size | default: 22 }};{% endif %}"
 >
   <div class="pp-spec__inner">
     {%- if s.heading != blank or s.text != blank -%}
@@ -343,7 +343,8 @@
     },
     { "type": "collection", "id": "temple_collection", "label": "Temples from", "info": "Empty uses Marquee: designed temples (temple-tees), the collection the homepage marquee reads. Each temple shows once." },
     { "type": "collection", "id": "map_collection", "label": "Maps from", "info": "Empty uses Church History Maps." },
-    { "type": "range", "id": "band_height", "label": "Band height", "min": 140, "max": 260, "step": 10, "unit": "px", "default": 190, "info": "Drawing plus its city line." },
+    { "type": "range", "id": "band_height", "label": "Phone band height", "min": 140, "max": 260, "step": 10, "unit": "px", "default": 190, "info": "Phones only. Drawing plus its city line." },
+    { "type": "range", "id": "desk_band_size", "label": "Desktop band height", "min": 10, "max": 40, "step": 1, "unit": "%", "default": 22, "info": "Desktop only, as a share of the photo's height. 22% is the golden-ratio split: band, gap, band." },
     { "type": "range", "id": "band_seconds", "label": "Seconds each drawing takes to drift past", "min": 2, "max": 8, "step": 1, "default": 3 },
     { "type": "text", "id": "temple_band_label", "label": "Temple band name for screen readers", "default": "Shop by temple" },
     { "type": "text", "id": "map_band_label", "label": "Map band name for screen readers", "default": "Shop by Church history site" }

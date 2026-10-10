@@ -11,6 +11,10 @@ Evan emptied the four callouts' words on V4 (template pulled into
   end sliders in % of the photo, desktop (-50 to 150) and phones apart. "Its label"
   draws nothing when the callout has no words, so with today's empty callouts the
   dots show and no lines draw until Evan places their ends.
+- **Band height sliders:** the old "Band height" only ever applied to phones (desktop
+  computed its own), so it seemed broken. It is now "Phone band height", and a new
+  "Desktop band height" sets the desktop bands as a % of the photo's height (default
+  22%, the golden-ratio split; never under 80px).
 
 # Founders' note left aligned; desktop bands behind the spec photo (10 Oct 2026, evening)
 
