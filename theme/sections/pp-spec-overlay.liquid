@@ -17,7 +17,8 @@
   turns into the temples and maps whose `peculiar.temple_city` and `temple_state`
   match (sections/pp-place-results.liquid). A temple shows
   once its city line is in snippets/pp-temple-city.liquid, the same rule as the
-  homepage marquee; a map shows once it is in the map collection.
+  homepage marquee; a map shows once it is in the map collection. With no collection
+  picked, temples come from temple-tees and maps from church-history-maps.
 {%- endcomment -%}
 {{ 'pp-quality.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
@@ -44,9 +45,8 @@
   endif
 
   assign bands = s.phone_bands | default: 'none'
-  if s.temple_collection == blank and s.map_collection == blank
-    assign bands = 'none'
-  endif
+  assign temple_source = s.temple_collection | default: collections['temple-tees']
+  assign map_source = s.map_collection | default: collections['church-history-maps']
 -%}
 
 {%- if bands != 'none' -%}
@@ -59,10 +59,10 @@
     assign maps = ''
     assign seen = ','
   -%}
-  {%- if s.temple_collection != blank -%}
-    {%- paginate s.temple_collection.products by 250 -%}
+  {%- if temple_source != blank -%}
+    {%- paginate temple_source.products by 250 -%}
       {%- liquid
-        for product in s.temple_collection.products
+        for product in temple_source.products
           assign slug = ''
           for tag in product.tags
             assign head = tag | slice: 0, 7
@@ -93,10 +93,10 @@
       -%}
     {%- endpaginate -%}
   {%- endif -%}
-  {%- if s.map_collection != blank -%}
-    {%- paginate s.map_collection.products by 250 -%}
+  {%- if map_source != blank -%}
+    {%- paginate map_source.products by 250 -%}
       {%- liquid
-        for product in s.map_collection.products
+        for product in map_source.products
           assign slug = ''
           for tag in product.tags
             assign head = tag | slice: 0, 4
@@ -278,7 +278,7 @@
         { "value": "none", "label": "None" },
         { "value": "stack", "label": "Above and below the labels" }
       ],
-      "default": "none",
+      "default": "stack",
       "info": "Below 990px wide only. Temples drift right above the labels, maps drift left below them; visitors can swipe either way. Every drawing links to all products from its place."
     },
     {
@@ -291,8 +291,8 @@
       ],
       "default": "white"
     },
-    { "type": "collection", "id": "temple_collection", "label": "Temples from", "info": "The tee collection the homepage marquee reads (temple-tees). Each temple shows once." },
-    { "type": "collection", "id": "map_collection", "label": "Maps from", "info": "Church History Maps." },
+    { "type": "collection", "id": "temple_collection", "label": "Temples from", "info": "Empty uses Marquee: designed temples (temple-tees), the collection the homepage marquee reads. Each temple shows once." },
+    { "type": "collection", "id": "map_collection", "label": "Maps from", "info": "Empty uses Church History Maps." },
     { "type": "range", "id": "band_height", "label": "Band height", "min": 140, "max": 260, "step": 10, "unit": "px", "default": 190, "info": "Drawing plus its city line." },
     { "type": "range", "id": "band_seconds", "label": "Seconds each drawing takes to drift past", "min": 2, "max": 8, "step": 1, "default": 3 },
     { "type": "text", "id": "temple_band_label", "label": "Temple band name for screen readers", "default": "Shop by temple" },

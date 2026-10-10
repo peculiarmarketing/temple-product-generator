@@ -1,3 +1,11 @@
+# Spec section phone bands: LIVE on the V4 homepage, black background (10 Oct 2026, last)
+
+Evan chose C on black. The section's defaults are now C (bands on, 190px, temples from
+temple-tees and maps from church-history-maps when no collection is picked), so the V4
+homepage shows it without any change to `index.json`. Maps sit 34px apart (was 17px).
+The preview templates `index.spec-{a,b,c,light}.json` and the three `*dbg-tmp*` files can
+be deleted in the code editor. Still open: the 250-product limit on the place page (below).
+
 # Spec section phone bands: Evan chose C; white-background preview up (10 Oct 2026, later)
 
 - **C (dark):** https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-c

@@ -390,7 +390,7 @@
   .pp-spec__band-list--copy { display: none; }
   .pp-spec__band.is-looping .pp-spec__band-list--copy { display: flex; }
   .pp-spec__tile { flex: none; width: 168px; padding: 0 8px; }
-  .pp-spec__tile--map { width: 132px; }
+  .pp-spec__tile--map { width: 149px; padding: 0 16.5px; } /* 34px between maps (Evan, 10 Oct) */
   .pp-spec__tile-link {
     display: flex;
     flex-direction: column;
