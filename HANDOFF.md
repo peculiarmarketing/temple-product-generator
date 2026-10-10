@@ -34,7 +34,7 @@ Desktop is unchanged (Evan's later idea: the bands run behind the photo on deskt
 - **Theme writes from a cloud session:** `themeFilesUpsert` with a TEXT body. URL bodies
   failed silently. `themeFilesDelete` is blocked by the connector, so deleting theme
   files is done by hand in the code editor.
-- **Left on V4 for Evan to delete by hand** (no longer used, not in this repo):
+- **Left on V4, unused** (delete on the Mac with `python scripts/theme_delete_files.py --theme 194532671860 --apply`, or by hand in the code editor):
   `templates/index.spec-a.json`, `index.spec-b.json`, `index.spec-c.json`,
   `index.spec-light.json`, `index.dbg-tmp.json`, `templates/search.dbg-tmp.json`,
   `sections/pp-debug-tmp.liquid` (blanked).
