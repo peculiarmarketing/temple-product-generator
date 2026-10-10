@@ -1,0 +1,175 @@
+/* Peculiar People homepage story sections: sections/pp-conversation.liquid and
+   sections/pp-look-closer.liquid. Behaviour lives in pp-story.js. Every animation is
+   opt-in: it only runs once the script has marked a section as armed, and never
+   under reduced motion. Unarmed, each section is a plain, complete layout. Only
+   transform and opacity ever animate. */
+
+.pp-convo, .pp-closer {
+  --pp-head: var(--font-heading-family, Montserrat, "Helvetica Neue", Arial, sans-serif);
+  --pp-ease: cubic-bezier(.2, .7, .2, 1);
+  --pp-pad: clamp(20px, 5vw, 72px);
+  background: var(--pp-bg);
+  color: var(--pp-fg);
+}
+.pp-convo *, .pp-closer * { box-sizing: border-box; }
+.pp-convo figure, .pp-closer figure { margin: 0; }
+
+.pp-convo__eyebrow, .pp-closer__eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--pp-head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #F58000;
+}
+.pp-convo__line, .pp-closer__line, .pp-closer__heading {
+  margin: 0;
+  font-family: var(--pp-head);
+  font-weight: 300;
+  line-height: 1.16;
+  letter-spacing: -.01em;
+  color: var(--pp-fg);
+  text-wrap: balance;
+}
+.pp-convo__line b, .pp-convo__line strong,
+.pp-closer__line b, .pp-closer__line strong { font-weight: 700; }
+
+/* ---------- Unarmed: a plain sequence ---------- */
+
+.pp-story__sticky { max-width: 1200px; margin: 0 auto; padding: 56px 20px; }
+.pp-convo__moments, .pp-closer__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+.pp-convo__photo, .pp-closer__photo { margin-bottom: 16px; overflow: hidden; border-radius: 4px; }
+.pp-convo__photo img, .pp-closer__photo img { display: block; width: 100%; height: auto; }
+.pp-convo__line { font-size: clamp(24px, 3vw, 36px); }
+.pp-closer__line { font-size: clamp(20px, 2.2vw, 26px); max-width: 30ch; }
+.pp-closer__heading { font-size: clamp(26px, 3vw, 40px); margin-bottom: 28px; }
+@media (min-width: 750px) {
+  .pp-convo__moments, .pp-closer__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 40px; }
+}
+
+/* ---------- Armed: shared pinning ---------- */
+
+.is-armed .pp-story__track { position: relative; height: var(--pp-track); }
+.is-armed .pp-story__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  max-width: none;
+  margin: 0;
+  padding: 0 var(--pp-pad) calc(clamp(40px, 9vh, 96px) + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+/* Shade under the words: from the bottom, and a little from the left. */
+.is-armed .pp-story__sticky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, calc(var(--pp-shade, .55) + .2)) 0%, rgba(0, 0, 0, var(--pp-shade, .55)) 26%, rgba(0, 0, 0, 0) 64%),
+    linear-gradient(to right, rgba(0, 0, 0, calc(var(--pp-shade, .55) * .6)) 0%, rgba(0, 0, 0, 0) 50%);
+}
+
+/* ---------- Conversation ---------- */
+
+.pp-convo.is-armed .pp-convo__moments { display: flex; flex-direction: column; gap: 6px; max-width: 880px; }
+.pp-convo.is-armed .pp-convo__moment { display: contents; }
+
+.pp-convo.is-armed .pp-convo__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  margin: 0;
+  border-radius: 0;
+  opacity: 0;
+  transition: opacity .9s var(--pp-ease);
+}
+.pp-convo.is-armed .pp-convo__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--fx) var(--fy);
+  transform: scale(1.06);
+  transition: transform 1.8s var(--pp-ease);
+  will-change: transform;
+}
+/* Every photo up to the current one stays up; the newest fades in on top and
+   settles. Scrolling back fades the top one away to the one beneath. */
+.pp-convo.is-armed .is-shown .pp-convo__photo { opacity: 1; }
+.pp-convo.is-armed .is-shown .pp-convo__photo img { transform: none; }
+
+/* The chain: each line rises out of a mask when its moment arrives and stays,
+   dimmed, under the lines after it. Lines still to come keep their space, so the
+   block never jumps. */
+.pp-convo.is-armed .pp-convo__line {
+  font-size: clamp(26px, 3.6vw, 50px);
+  overflow: hidden;
+  padding-bottom: .08em;
+  text-shadow: 0 1px 20px rgba(0, 0, 0, .45);
+}
+.pp-convo.is-armed .pp-convo__line span {
+  display: inline-block;
+  transform: translateY(105%);
+  opacity: 0;
+  transition: transform .8s var(--pp-ease), opacity .5s ease, color .6s ease;
+}
+.pp-convo.is-armed .is-shown .pp-convo__line span { transform: none; opacity: .62; }
+.pp-convo.is-armed .is-active .pp-convo__line span { opacity: 1; transition-delay: .15s, .15s, 0s; }
+
+/* ---------- Look closer ---------- */
+
+.pp-closer.is-armed .pp-story__sticky { --pp-shade: .5; }
+.pp-closer.is-armed .pp-closer__heading {
+  position: absolute;
+  top: clamp(88px, 14vh, 140px);
+  left: var(--pp-pad);
+  margin: 0;
+  max-width: 18ch;
+}
+.pp-closer.is-armed .pp-closer__steps { display: grid; gap: 0; max-width: 640px; }
+.pp-closer.is-armed .pp-closer__step { display: contents; }
+.pp-closer.is-armed .pp-closer__photo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -2;
+  width: var(--pp-l, 100vw);
+  height: var(--pp-l, 100vw);
+  margin: 0;
+  border-radius: 0;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+  visibility: hidden;
+}
+.pp-closer.is-armed .pp-closer__photo img { width: 100%; height: 100%; object-fit: cover; }
+.pp-closer.is-armed .pp-closer__caption {
+  grid-area: 1 / 1;
+  align-self: end;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.pp-closer.is-armed .is-active .pp-closer__caption {
+  opacity: 1;
+  transform: none;
+  transition: opacity .6s ease .2s, transform .8s var(--pp-ease) .2s;
+}
+.pp-closer.is-armed .pp-closer__line { font-size: clamp(22px, 2.2vw, 30px); max-width: 32ch; text-shadow: 0 1px 20px rgba(0, 0, 0, .45); }
+
+@media (max-width: 749px) {
+  .pp-convo.is-armed .pp-convo__photo img { object-position: var(--fx-m) var(--fy); }
+  .pp-convo.is-armed .pp-convo__line { font-size: clamp(24px, 7vw, 32px); }
+  .pp-closer.is-armed .pp-closer__line { font-size: 22px; }
+  .pp-convo__eyebrow, .pp-closer__eyebrow { font-size: 11px; margin-bottom: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-convo *, .pp-closer * { transition: none !important; }
+}

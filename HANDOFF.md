@@ -1,3 +1,172 @@
+# Spec section phone bands: done and on the V4 homepage (10 Oct 2026)
+
+**State:** on "Claude Code V4" (unpublished), phones below 990px show the spec section as
+temple band, labels, photo, labels, map band, guarantee. Black background, white ink.
+Desktop is unchanged (Evan's later idea: the bands run behind the photo on desktop).
+
+- **Bands:** every temple (from temple-tees, once its city line is in
+  `snippets/pp-temple-city.liquid`) drifts right; every map (church-history-maps) drifts
+  left, 34px apart. Each drawing has its city underlined under it and links to
+  `/search?view=place&q=<City, State>`. Swipe or fling either way; the drift waits 2.5 s
+  after a touch (`assets/pp-bands.js`). New temples and maps join on their own.
+- **Why a scroll area, not a CSS marquee:** a ~15,000px strip moved by a transform made
+  phones drop parts of it (drawings half vanished), a sticky tap-hover froze it, and the
+  `inert` loop copy made half the taps dead. Do not go back to a transform marquee.
+- **Defaults carry the design:** `phone_bands` defaults to "Above and below the labels",
+  height 190, and empty collection settings fall back to temple-tees and
+  church-history-maps, so `templates/index.json` needed no change. `Drawing colour` black
+  (CSS invert) exists for a light background; Evan chose black background, white ink.
+- **Place page:** `sections/pp-place-results.liquid` via `templates/search.place.json`
+  lists the temples and maps whose `peculiar.temple_city`/`temple_state` make the place
+  line (Provo: three temples; St. George: Red Cliffs and St. George; Nauvoo: temple and
+  map). Store search was tried and dropped: its tag search misses published products.
+  Apostrophes are ignored in the match (Haun's Mill, Martin's Cove).
+- **Callout text is placeholder** (Evan, 10 Oct). No editing passes run on it.
+
+> **WARNING, 250-product limit.** The place page reads the "all" collection in one pass,
+> and the storefront caps a pass at 250 products. 224 are published today; after about
+> eight more temples, products past 250 silently drop off place pages. Fix before then:
+> publish Temple Tees, Temple Hoodies and Temple Crewnecks to the Online Store channel
+> (only temple-tees is today) and set the section's Collection 1 to 4 to those three plus
+> Church History Maps. That is a store change: Evan's call. Check the count on every
+> sweep (`collections.all.products_count` on the storefront).
+
+- **Theme writes from a cloud session:** `themeFilesUpsert` with a TEXT body. URL bodies
+  failed silently. `themeFilesDelete` is blocked by the connector, so deleting theme
+  files is done by hand in the code editor.
+- **Left on V4 for Evan to delete by hand** (no longer used, not in this repo):
+  `templates/index.spec-a.json`, `index.spec-b.json`, `index.spec-c.json`,
+  `index.spec-light.json`, `index.dbg-tmp.json`, `templates/search.dbg-tmp.json`,
+  `sections/pp-debug-tmp.liquid` (blanked).
+
+# Homepage on "Claude Code V4": four-person spec photo BUILT; next, callouts, guarantee line, theme (9 Oct 2026, night)
+
+**Branch:** `claude/homepage-conversation` (pushed). Check it out; `main` does not have this work.
+**Start by reading** `artifacts/quality-sections/spec-v3/README.md`: every render, prompt,
+job id and decision from this session, in order.
+
+## Where things stand
+
+- **The photo is built:** `artifacts/quality-sections/spec-v3/web/pp-spec-group-v3.jpg`
+  (3504 x 2336, q95). Four people in a dark cyclorama studio, Evan's reference for the
+  setting. Evan was hand-nudging print positions at the end and his last ask (hoodie
+  wordmark 8 px back left) is in. **Confirm with him that it is final** before uploading.
+- **Nothing from this session is on Shopify or the theme yet.** The live V4 spec
+  section still shows spec-v2's `pp-spec-group-k.jpg` and its four callouts.
+- **Themes, unchanged:** all homepage work is on the unpublished theme "Claude Code V4"
+  (`gid://shopify/OnlineStoreTheme/194532671860`), preview
+  https://peculiarpeopleco.com/?preview_theme_id=194532671860 . The live theme is
+  "Claude Code V3" (`194273870196`); never write to it. Evan publishes V4 himself.
+- **Writing to V4:** on the Mac, `ShopifyClient` (token in `.env`) with
+  `themeFilesUpsert` as `scripts/web_drawings.py` does; assert the theme role is not
+  MAIN, then read the checksums back. In a cloud session, the claude.ai Shopify
+  connector's `graphql_mutation` with `themeFilesUpsert` (allowed on unpublished
+  themes only). `theme/templates/index.json` here is a copy of V4's.
+
+## The photo: who wears what
+
+| Person | Seat | Garment (colour) | Front design | Print centre (% of width, height) |
+|---|---|---|---|---|
+| Slim woman, short ash-blonde bob | tall wooden stool | Temple Seal Bomber, forest green, worn open | bomber chest logo | 41.0, 25.4 |
+| East Asian man, wire glasses | director's chair | Oversized hoodie, navy (no drawcords) | Be Peculiar wordmark + verse line | 56.9, 28.5 |
+| Black woman, high puff | floor, cross-legged | Sweatshirt (crewneck), black | Salt Lake coordinates box logo | 35.8, 59.8 |
+| White man, auburn hair, ginger beard | floor, knee up | Heavyweight tee, maroon | Peculiar People box logo | 67.5, 58.6 |
+
+## Decisions this session (keep them)
+
+- **Stock photos (BRAND.md s17):** Evan, "Yes, everywhere". A licensed stock photo of
+  people may be used on the website and on social once every garment is re-dressed in
+  our products with the real design files. Edited in `../project-sync/BRAND.md`
+  (outside this repo, so a cloud session will not see it). The claude.ai Project copy
+  of BRAND.md is now stale: Evan needs to re-upload it.
+- **"Different designs":** a mix of fronts, everyone facing camera (not backs).
+- **Stock search was dropped.** Three rounds on Pexels and Unsplash (sheets in spec-v3)
+  found no stool-plus-sitting shot. Evan supplied a reference photo and the scene was
+  generated instead. Three people would have been acceptable; four were generated.
+- **Model:** GPT Image 2 on kie.ai, image-to-image, 4K, 3:2, `prompt-v4.txt`, with the
+  setting reference plus four garment references (the plain blanks behind the live
+  on-model photos, cropped to the garment so faces are not copied: `spec-v3/refs/`).
+  Evan picked `kie-v4-img2-c` (task 06cac5e5) over GPT Image 2.5 Sunburst and Flare.
+  Notes for next time: kie.ai charges 16 credits per image on every GPT model;
+  Higgsfield charges about 4.25 for 2.5 Sunburst 4K. 4K adds pixels, not realism.
+  Flare draws the navy hoodie as a faded wash.
+- **People:** Evan wanted the two women and the two men to look clearly different;
+  each person is described individually in the prompt. He then had the tee wearer
+  changed to a white man.
+- **Faces matte, chests flat and clear** (prompt asks for both) so prints go on cleanly.
+- **Sneakers:** the render has faint look-alike brand marks on two pairs. A cleaned
+  version was made (`base/spec-v3-blanks.png`, not committed); **Evan chose the
+  original render**. Do not clean them unless he asks.
+- **Prints:** `spec-v3/place_v3.py` with `composite()` from
+  `photo-mockup-spike/composite_front_v2.py` (flat, the photo's light and shade, light
+  knit texture), not spec-v2's `place_logo.py`, whose cloth mask only finds black
+  fabric. Starting sizes: hoodie wordmark option F (51 percent of chest); box logo and
+  coordinates logo 6/11 of that (they print 6 in against the wordmark's 11 in);
+  bomber chest logo from `onmodel-v2/flat_geometry.json`, moved out with the open
+  panel and turned 12.3 deg to run parallel to the zip.
+- **Evan then tuned every position by eye.** Those values live in `ADJUST`, `SCALE`
+  and `WARP` in `place_v3.py`. They are his calls: do not recompute or "correct" them.
+  The tee logo is 1.3x the rule size at his request; its right end sits just above
+  the wearer's forearm, so it cannot go lower or further right.
+- **One print bends:** the hoodie's BE follows the fold under it (3 px, left 27
+  percent of the print, verse line excluded). Product photos keep prints flat; this
+  exception is Evan's, for this photo only.
+
+## Next (in order)
+
+1. **Get Evan's final OK on the photo.** Rebuild after any nudge with
+   `python artifacts/quality-sections/spec-v3/place_v3.py` (seconds; needs numpy,
+   scipy, Pillow from `requirements.txt`; every input is committed).
+2. **Guarantee line (task 1 from the previous handoff).** Approved wording is in the
+   hidden `what_you_get` block `wyg_3`: "Made right, or we replace it. Damaged,
+   misprinted or the wrong item? Email us a photo within 30 days and we'll send a new
+   one at no cost. You don't ship anything back." Add it as a fifth callout or a line
+   under the photo. Any new or shortened wording gets the humanizer and
+   structural-humanizer passes (workspace CLAUDE.md).
+3. **Callouts in `pp_spec_overlay`** (`theme/templates/index.json`): a point on each
+   of the four garments (table above for where the prints sit; point at the fabric,
+   not the print), with each garment's weight and fabric from `garments/*.json`
+   (tee RT0063 260 gsm; hoodie R00286 and crew R00368 350 gsm, 10.3 oz) and the
+   bomber's own spec from `reference/garment-copy/bomber/product-details.html`
+   (check it against BRAND.md before writing); sizes from BRAND.md s7; the
+   guarantee line. The spec-v2 callouts used `x`/`y` in percent of the photo,
+   `side` left/right and `phone` above/below; the new photo is the same 3:2 shape.
+   The current "Designed and printed in the USA" callout can stay if Evan wants it.
+4. **Upload and wire up:** put `pp-spec-group-v3.jpg` in Shopify Files (alt text
+   naming the four garments and colours), set the section's `image` to it, write
+   `templates/index.json` to V4, read the checksum back, and check desktop and phone
+   in the preview (animations pause while the preview pane is hidden).
+5. **Evan, at the end:** re-upload `project-sync/BRAND.md` to the claude.ai Project
+   (workspace CLAUDE.md, "Keeping the claude.ai project in sync").
+
+## Rules Evan set (still in force)
+
+- **Every temple animation draws the way a person would:** the full outline, then the
+  major lines, then the windows and doors, then the fine details, each line whole, one
+  at a time, nothing floating away from ink already drawn.
+- **No more "quality" visuals.** The dive, the conversation band, look closer, the
+  scroll-drawn hero and the loupe were built and rejected: shoppers cannot feel fabric
+  through a screen, and composited logos look fake once enlarged. Quality is shown by
+  the spec photo with the guarantee, and later by real reviews and customer photos.
+- **Composites:** never enlarge one. The image model never draws a print; real design
+  files go on at full size.
+
+## Cloud-session notes
+
+- **Committed and usable in the cloud:** everything `place_v3.py` needs (base PNG, the
+  four art files, `composite_front_v2.py`), the final JPEG, prompts, references,
+  contact sheets, QA crops.
+- **Not in the cloud:** iCloud folders (`Temples/`, `Other designs/`, `Important
+  Elements/`; the four art files were copied into `spec-v3/art/`, so they are not
+  needed), `.env` (Shopify token, `KIE_API_KEY`), `.venv.nosync`, the raw renders
+  (`spec-v3/render/*.png`, gitignored, ids in the README), and `project-sync/`.
+  Install Python dependencies with `pip install -r requirements.txt`.
+- **Generating more images in the cloud:** use the claude.ai Higgsfield connector
+  (cheaper). Reference images uploaded to Higgsfield on 9 Oct (media ids in the
+  README) expire from its upload links but their CDN copies stayed public.
+- **Shopify Files from the cloud** needs a public URL: push the JPEG and use its
+  raw.githubusercontent.com address, as earlier sessions did.
+
 # City map line: all 27 maps live (9 Oct 2026, evening)
 
 The city map products (`scripts/map_run.py`, map Easify sets, garment collections) have their own handoff in the workspace: `designs/city-map-back/HANDOFF.md`. Read that before touching any map product.

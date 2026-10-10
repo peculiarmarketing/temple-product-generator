@@ -136,3 +136,123 @@ sections are on a duplicate, unpublished "Claude Code V3 zoom preview"
 then the old scroll zoom set `"disabled": true`. `templates/index.json` here is that
 preview's template. Preview:
 https://peculiarpeopleco.com/?preview_theme_id=194273870196
+
+## Conversation and Look closer (9 October 2026, "Claude Code V4" only)
+
+The dive pinned the homepage for about nine screens and felt rubbery. Its picture
+eased about 330 ms behind the scrollbar, and it repainted a full-screen canvas on
+every scroll anywhere on the page. It is replaced by two short sections on the
+unpublished "Claude Code V4" theme (`gid://shopify/OnlineStoreTheme/194532671860`),
+pushed through the Shopify connector.
+
+- `sections/pp-conversation.liquid`: the why chain told over photos. The band pins
+  (about 2.2 screens); each stretch of scroll brings in the next moment, its photo
+  fading in over the last and its line joining the chain. Scroll only picks the
+  moment; the transitions run on CSS timing, so nothing trails the scrollbar.
+  Each moment is a block: photo, line, focus point (with a separate one across on phones).
+- `sections/pp-look-closer.liquid`: the dive's zoom from the tee to the knit
+  (about 2.5 screens), placed after Shop by garment. Same block fields as the dive's
+  zoom steps (square of the next photo, focus), so the existing values carried over.
+  Stacked photos scaled by CSS transforms about the zoom's fixed point; no canvas.
+- `assets/pp-story.js`, `assets/pp-story.css`: behaviour and styles for both. The
+  scroll listener is attached only while a section is near the viewport; a frame is
+  drawn only when the position moved. Reduced motion or no script: a plain sequence.
+- `templates/index.json` (copy of V4's): adds both sections. `pp_zoom_dive` and
+  `pp_why_chain` are set `"disabled": true`, not deleted; turn them back on in the
+  theme editor to roll back. Every other section is unchanged.
+- Preview: https://peculiarpeopleco.com/?preview_theme_id=194532671860
+
+Not yet copied here from V4: `sections/pp-collection-tabs.liquid`,
+`snippets/pp-temple-facts.liquid`, and V4's newer `assets/pp-home.css` and `pp-home.js`.
+
+## Line-first drawing order (9 October 2026, "Claude Code V4" only)
+
+Evan's rule for every temple animation: the full outline first, then the major lines,
+then windows and doors, then fine details, each line drawn whole, one at a time.
+The skeleton tracer in `scripts/pen_strokes.py` could not tell that a corner edge
+and its overshoot tail are one ruled line, so lines appeared in fragments and
+window details floated early. `scripts/pen_strokes_lines.py` replaces it as the
+builder (it reuses helpers from `pen_strokes.py`):
+
+- Ruled lines are found first, merged across crossings into full-length lines, and
+  drawn as one straight stroke each; a corner and its tail are one stroke.
+- Outline: one walk from the foot of the left side, up over the roof and spires,
+  down the right side, then the ground lines. Major lines next, then features
+  (windows, doors, quoin ladders beside a structural upright) row by row down each
+  facade, then fine details and specks.
+- Same JSON format and keys, so `pp-pen-draw.js` is unchanged.
+
+All 45 `assets/pp-temple-<slug>.json` files here were rebuilt with it and pushed
+to Claude Code V4 only (checksums verified against these files); the art `.webp`
+files were already identical on V4. V4's homepage showcase is set to Salt Lake
+only. Coverage is 99.90% or higher on every temple. Still being fixed: early stray
+pieces on Vernal, Provo, Mexico City, Washington D.C. and Nauvoo.
+
+## Hero: drawn, then printed (9 October 2026, "Claude Code V4" only)
+
+`sections/pp-hero-draw.liquid` with `assets/pp-hero-draw.js` and `.css` replaces the
+temple showcase at the top of V4's homepage (the showcase is set `"disabled": true`).
+Salt Lake draws as you scroll (same stroke files as the product band; the outline
+draws by itself on arrival), then the dark ground turns out to be the shirt, the
+lines hand off to the print beneath them and the camera pulls back to the photo.
+About 2.4 screens of scroll. "Where the print sits" (percent of the photo) places
+the drawing on the photo. Until the Temple Square photo exists, it uses
+`assets/pp-hero-tee-salt-lake.jpg`, the Tapstitch flat lay of the black Salt Lake
+tee. Reduced motion or no script: the photo with the headline over it.
+
+## Hero back to the self-drawing showcase, black on white (9 October 2026, V4 only)
+
+Evan preferred the timed showcase to the scroll hero, so `pp_hero_draw` is set
+`"disabled": true` and `pp_temple_showcase` is back on top, with three new settings:
+"Drawings" accepts city maps as `map:<slug>` (pp-map-<slug> files) beside temple
+names; "Seconds to draw each one" (6 on V4; product pages keep 13 s); "Colours"
+light, which shows the white-ink art inverted, black on white. V4 rotates temple,
+map, temple, map: Salt Lake, SLC map, Kirtland, Nauvoo map, Nauvoo, SLC map, Logan,
+Nauvoo map, Mexico City, SLC map, Rome, Nauvoo map. Each turn is 6 s drawing, the
+city line, a 3 s hold and the fade, about 11.3 s.
+
+## Pen drawing on a canvas (9 October 2026, V4 only)
+
+`assets/pp-pen-draw.js` now paints the pen on a canvas instead of an SVG mask. The
+mask version re-rendered every stroke on every frame, so cost grew with stroke count
+(about 30 fps on the 11,800-line Salt Lake City map). Each frame now adds only the
+new length of pen line to an offscreen mask canvas and shows the art through it in
+one composite (under 1 ms of script per frame on that map). The finished art still
+fades in over it at the end, and a resize repaints what is drawn so far. Same data
+files, same behaviour for the product band and the homepage showcase.
+
+All 27 city maps in the hero (9 October 2026, V4): the 25 map drawings uploaded to
+the live theme after V4 was duplicated were copied into V4 (checksums match live).
+The showcase opens with the four temples that have a matching map, each followed by
+its map (Salt Lake, Kirtland, Nauvoo, San Antonio), then the other 23 maps in Church
+history order, Sharon to Martin's Cove, alternating with the six hero temples.
+54 drawings, about 11 s each.
+
+Lighter rotation (9 October 2026, V4): 26 drawings, the four matched pairs then
+nine Church history maps (Sharon, Palmyra township, Harmony, Fayette, Independence,
+Far West, Adam-ondi-Ahman, Carthage, Winter Quarters) alternating with the hero
+temples. `pp-pen-draw.js` now downloads the next drawing only after the current one
+has drawn (it used to fetch both on arrival), and the showcase keeps only the
+current and next drawings in memory (`forgetExcept`).
+
+## Loupe (9 October 2026, V4 only)
+
+`sections/pp-loupe.liquid`, `assets/pp-loupe.js` and `.css` replace "Look closer"
+(hidden). The store's flat mockups (navy hoodie, heather gray crew, maroon tee, Salt
+Lake back print) sit side by side; a lens follows the mouse, or a tap on phones
+(drawn above the finger), and labels what it is over. The lens draws its own macro
+layer, not an enlarged photo: garment colour plus a seamless weave at true scale
+(the print is 12 in wide, which gives px per cm), rib on hems, cuffs and collars,
+the brushed lining where the hoodie's hem is rolled back, then the full-size print
+with the weave over the ink. 24x by default.
+
+- Textures `pp-loupe-tex-{jersey,fleece,rib,brushed}.jpg`: generated (GPT Image
+  2.5), high-passed to neutral grey and made seamless (knits trimmed to whole stitch
+  columns and blended top to bottom only).
+- `pp-loupe-hoodie-navy.jpg`: the mockup with the hem rolled up by GPT Image 2.5;
+  the original print pixels were put back (the print sat at the same place and
+  scale, offset 0,0).
+- Zone masks `pp-loupe-<garment>-rib.png` / `-brushed.png`, outline masks `-mask.png`.
+- Two traps: the theme hides empty divs (`div:empty`), and a lens world scaled by
+  transform is painted small and stretched, so the world is laid out at the zoom
+  (`calc(... * var(--z))`) and only translated.

@@ -1,0 +1,11 @@
+# Raw renders are 8-9MB PNGs each (233MB in all). Every one is listed in
+# README.md with its Higgsfield job or kie.ai task id, and the contact sheets
+# (render/contact-*.jpg) are the reviewable copy. They stay on disk in iCloud.
+render/*.png
+# Shoe-cleanup experiment Evan turned down, and its mask. Only the chosen base
+# is needed to rebuild the photo with place_v3.py.
+base/*.png
+!base/spec-v3-base.png
+# The final PNG is rebuilt by place_v3.py in seconds; the q95 JPEG is tracked.
+web/*.png
+art/_warped_*.png

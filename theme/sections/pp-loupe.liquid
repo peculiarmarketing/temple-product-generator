@@ -1,0 +1,158 @@
+{%- comment -%}
+  Peculiar People homepage: the loupe. Garments side by side; a lens follows the
+  pointer (or a tap on phones) and shows the fabric and the print up close. The
+  lens does not enlarge the photo: it draws a separate macro layer lined up with it
+  (the fabric texture in the garment's colour, clipped to the garment's outline, the
+  full-size print file where the print sits, then the weave again over the ink), so
+  it stays sharp at any magnification. pp-loupe.js runs it; when the section comes
+  into view the lens glides once over a print and the fabrics on its own.
+
+  Each garment is a block: photo, outline mask (a PNG whose opaque part is the
+  garment), colour, fabric, and where the print sits on the photo in percent. Until
+  final photos exist, each falls back to a stand-in theme asset (the Tapstitch flat
+  mockups of the Salt Lake designs). Without the script the garments simply show.
+{%- endcomment -%}
+{{ 'pp-loupe.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-loupe.js' | asset_url }}" defer></script>
+{%- render 'pp-quality-font' -%}
+{%- assign s = section.settings -%}
+<section
+  class="pp-loupe"
+  data-pp-loupe
+  data-mag="{{ s.magnification }}"
+  data-print="{{ s.print_asset | asset_url }}"
+  style="--pp-loupe-bg: {{ s.background }}; --pp-loupe-d: {{ s.lens_size }}px;"
+>
+  <div class="pp-loupe__inner">
+    <div class="pp-loupe__head">
+      {%- if s.eyebrow != blank -%}<p class="pp-loupe__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<h2 class="pp-loupe__heading">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<p class="pp-loupe__text">{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+    <ul class="pp-loupe__row" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          if b.image != blank
+            assign photo = b.image | image_url: width: 1400
+          else
+            assign photo = b.image_asset | asset_url
+          endif
+          if b.mask != blank
+            assign mask = b.mask | image_url: width: 700
+          else
+            assign mask = b.mask_asset | asset_url
+          endif
+          if b.fabric == 'fleece'
+            assign tex = 'pp-loupe-tex-fleece.jpg' | asset_url
+          else
+            assign tex = 'pp-loupe-tex-jersey.jpg' | asset_url
+          endif
+          assign rib_tex = 'pp-loupe-tex-rib.jpg' | asset_url
+          assign brushed_tex = 'pp-loupe-tex-brushed.jpg' | asset_url
+          assign rib_url = ''
+          if b.rib_mask_asset != blank
+            assign rib_url = b.rib_mask_asset | asset_url
+          endif
+          assign lining_url = ''
+          if b.brushed_mask_asset != blank
+            assign lining_url = b.brushed_mask_asset | asset_url
+          endif
+          capture zones
+            echo '['
+            if rib_url != blank
+              echo '{"kind":"rib","mask":"'
+              echo rib_url
+              echo '","tex":"'
+              echo rib_tex
+              echo '","label":'
+              echo b.rib_label | json
+              echo '}'
+            endif
+            if lining_url != blank
+              if rib_url != blank
+                echo ','
+              endif
+              echo '{"kind":"brushed","mask":"'
+              echo lining_url
+              echo '","tex":"'
+              echo brushed_tex
+              echo '","colour":"'
+              echo b.brushed_colour
+              echo '","label":'
+              echo b.brushed_label | json
+              echo '}'
+            endif
+            echo ']'
+          endcapture
+        -%}
+        <li
+          class="pp-loupe__g"
+          data-pp-loupe-g
+          data-photo="{{ photo }}"
+          data-mask="{{ mask }}"
+          data-tex="{{ tex }}"
+          data-fabric="{{ b.fabric }}"
+          data-zones="{{ zones | escape }}"
+          data-colour="{{ b.colour }}"
+          data-print-x="{{ b.print_x }}"
+          data-print-y="{{ b.print_y }}"
+          data-print-w="{{ b.print_w }}"
+          data-fabric-label="{{ b.fabric_label | escape }}"
+          data-ink-label="{{ b.ink_label | escape }}"
+          {{ block.shopify_attributes }}
+        >
+          <img class="pp-loupe__img" src="{{ photo }}" alt="{{ b.alt | escape }}" width="1400" height="1400" loading="lazy">
+          <span class="pp-loupe__tag">{{ b.tag | escape }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  <div class="pp-loupe__lens" aria-hidden="true"><div class="pp-loupe__world"></div></div>
+  <div class="pp-loupe__label" aria-hidden="true"></div>
+</section>
+
+{% schema %}
+{
+  "name": "PP loupe",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small caps label", "default": "Look closer" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Heavyweight, printed into the cotton" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Move over the shirts to see the ink and the fabric up close." },
+    { "type": "range", "id": "magnification", "label": "Magnification", "min": 4, "max": 40, "step": 2, "default": 24 },
+    { "type": "range", "id": "lens_size", "label": "Lens size", "min": 160, "max": 340, "step": 10, "unit": "px", "default": 260 },
+    { "type": "text", "id": "print_asset", "label": "Print file (theme asset)", "default": "pp-loupe-print-salt-lake.webp", "info": "The full-size print, white ink on transparent, shown inside the lens." },
+    { "type": "color", "id": "background", "label": "Background", "default": "#f2f1ee" }
+  ],
+  "blocks": [
+    {
+      "type": "garment",
+      "name": "Garment",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "Square. Leave empty to use the stand-in below." },
+        { "type": "text", "id": "image_asset", "label": "Stand-in photo (theme asset)" },
+        { "type": "image_picker", "id": "mask", "label": "Outline mask", "info": "Same size as the photo; opaque where the garment is." },
+        { "type": "text", "id": "mask_asset", "label": "Stand-in mask (theme asset)" },
+        { "type": "text", "id": "alt", "label": "Photo description" },
+        { "type": "text", "id": "tag", "label": "Caption" },
+        { "type": "color", "id": "colour", "label": "Garment colour", "default": "#1f1f1f" },
+        { "type": "select", "id": "fabric", "label": "Fabric in the lens", "options": [{ "value": "jersey", "label": "Cotton jersey" }, { "value": "fleece", "label": "Fleece" }], "default": "jersey" },
+        { "type": "text", "id": "fabric_label", "label": "Lens label over the fabric", "default": "Cotton jersey, 260 GSM" },
+        { "type": "text", "id": "ink_label", "label": "Lens label over the print", "default": "White ink, direct to garment" },
+        { "type": "header", "content": "Ribbed and lined areas", "info": "Masks (theme assets, opaque where the area is) for ribbed hems, cuffs and collars, and for brushed lining showing where a hem is rolled back. The lens shows rib knit or brushed fleece there." },
+        { "type": "text", "id": "rib_mask_asset", "label": "Rib mask (theme asset)" },
+        { "type": "text", "id": "rib_label", "label": "Lens label over rib", "default": "Ribbed cuffs and hem" },
+        { "type": "text", "id": "brushed_mask_asset", "label": "Lining mask (theme asset)" },
+        { "type": "color", "id": "brushed_colour", "label": "Lining colour", "default": "#4a5566" },
+        { "type": "text", "id": "brushed_label", "label": "Lens label over lining", "default": "Brushed fleece inside" },
+        { "type": "header", "content": "Where the print sits", "info": "Percent of the photo: left and top edges, and width. The print is 12 inches across, which sets the fabric's scale in the lens." },
+        { "type": "number", "id": "print_x", "label": "Left (%)", "default": 33.9 },
+        { "type": "number", "id": "print_y", "label": "Top (%)", "default": 29.9 },
+        { "type": "number", "id": "print_w", "label": "Width (%)", "default": 30.6 }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "PP loupe" }]
+}
+{% endschema %}

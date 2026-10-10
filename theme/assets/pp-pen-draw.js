@@ -8,12 +8,14 @@
    stroke its own pen width (`widths`); version 1 files used one width for all.
    The strokes are a MASK over the finished art, so a shopper always ends up
    looking at the stored drawing; the last 600 ms fades the unmasked art in to
-   cover hairline edges the pen does not reach. */
+   cover hairline edges the pen does not reach. The mask and the art are drawn on
+   a canvas (see mount()). */
 (() => {
   if (window.PPPen) return;
 
   const NS = 'http://www.w3.org/2000/svg';
   const DRAW_MS = 13000;  // pen down to pen up, one temple, at one steady speed
+                          // (the homepage showcase sets its own: data-draw-ms)
   const HOLD_MS = 3000;   // finished drawing stays up once the city line is complete
   const FADE_MS = 700;    // showcase cross-fade between temples
   const EXACT_MS = 600;   // unmasked art fades in at the end
@@ -23,7 +25,6 @@
   const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const cache = new Map();
-  let uid = 0;
 
   // Element.replaceChildren is missing on iOS 13 and older; this does the same job.
   function setKids(el, kids) {
@@ -46,48 +47,110 @@
         }),
         new Promise((resolve, reject) => {
           const img = new Image();
-          img.onload = resolve;
+          img.onload = () => resolve(img);
           img.onerror = () => reject(new Error(`pp-pen: image failed ${item.img}`));
           img.src = item.img;
         }),
-      ]).then(([data]) => data);
+      ]).then(([data, img]) => { data.__img = img; return data; });
       p.catch(() => cache.delete(item.json));
       cache.set(item.json, p);
     }
     return cache.get(item.json);
   }
 
-  function svgEl(name, attrs) {
-    const node = document.createElementNS(NS, name);
-    for (const k in attrs) node.setAttribute(k, attrs[k]);
-    return node;
+  // Drop every cached drawing except these items (the showcase keeps only the one on
+  // screen and the next, so a long visit does not keep all of them in memory).
+  function forgetExcept(keep) {
+    const urls = new Set(keep.filter(Boolean).map((k) => k.json));
+    [...cache.keys()].forEach((url) => { if (!urls.has(url)) cache.delete(url); });
   }
 
-  function mount(artEl, data, imgUrl) {
+  // The drawing is painted on a canvas (9 October 2026; it was an SVG mask, which
+  // re-rendered every stroke on every frame and dropped to ~30 fps on the 11,800-line
+  // Salt Lake City map). Each frame paints only the new length of pen line onto an
+  // offscreen MASK canvas, then shows the finished art through that mask in one
+  // composite, so the cost no longer grows with the number of strokes.
+  function mount(artEl, data, img) {
     const [x, y, w, h] = data.box;
-    const id = `pp-pen-mask-${++uid}`;
-    const svg = svgEl('svg', { viewBox: `${x} ${y} ${w} ${h}`, 'aria-hidden': 'true', focusable: 'false' });
-    const mask = svgEl('mask', { id, maskUnits: 'userSpaceOnUse', x, y, width: w, height: h });
-    const pen = svgEl('g', { fill: 'none', stroke: '#fff', 'stroke-width': data.penWidth,
-      'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
-    // Each stroke only as wide as its own ink, so a line drawn early does not
-    // uncover pieces of the lines that cross it later.
+    const view = document.createElement('canvas');
+    view.setAttribute('aria-hidden', 'true');
+    const mask = document.createElement('canvas');
+    const exact = new Image();
+    exact.className = 'pp-pen__exact';
+    exact.alt = '';
+    exact.src = img.src;
+    // A hidden path, used only to find the pen tip along the current stroke.
+    const probeSvg = document.createElementNS(NS, 'svg');
+    probeSvg.setAttribute('aria-hidden', 'true');
+    probeSvg.setAttribute('class', 'pp-pen__probe');
+    const probe = document.createElementNS(NS, 'path');
+    probeSvg.appendChild(probe);
+    setKids(artEl, [view, exact, probeSvg]);
+
+    const strokes = data.strokes.map((d) => new Path2D(d));
     const widths = data.widths || [];
-    const paths = data.strokes.map((d, i) => pen.appendChild(
-      svgEl('path', widths[i] ? { d, 'stroke-width': widths[i] } : { d })));
-    mask.appendChild(pen);
-    const defs = svgEl('defs', {});
-    defs.appendChild(mask);
-    const image = (extra) => svgEl('image', { href: imgUrl, x, y, width: w, height: h,
-      preserveAspectRatio: 'none', ...extra });
-    const drawn = image({ mask: `url(#${id})` });
-    const exact = image({ class: 'pp-pen__exact' });
-    const tip = svgEl('g', { class: 'pp-pen__tip' });
-    tip.appendChild(svgEl('circle', { r: data.penWidth * 1.6, fill: '#ffffff', opacity: '0.2' }));
-    tip.appendChild(svgEl('circle', { r: data.penWidth * 0.55, fill: '#ffffff' }));
-    svg.append(defs, drawn, exact, tip);
-    setKids(artEl, [svg]);
-    return { paths, exact, tip };
+    const vctx = view.getContext('2d');
+    const mctx = mask.getContext('2d');
+    const m = { scale: 1, ox: 0, oy: 0, dpr: 1 };
+
+    // Size both canvases to the box on screen (the art is fitted inside it, centred,
+    // like an SVG's default preserveAspectRatio) and set the art-to-pixel transform.
+    function size() {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const cw = Math.max(1, Math.round(artEl.clientWidth * dpr));
+      const ch = Math.max(1, Math.round(artEl.clientHeight * dpr));
+      const changed = view.width !== cw || view.height !== ch;
+      if (changed) { view.width = mask.width = cw; view.height = mask.height = ch; }
+      m.scale = Math.min(cw / w, ch / h);
+      m.ox = (cw - w * m.scale) / 2 - x * m.scale;
+      m.oy = (ch - h * m.scale) / 2 - y * m.scale;
+      m.dpr = dpr;
+      return changed;
+    }
+    function pen(ctx, i) {
+      ctx.setTransform(m.scale, 0, 0, m.scale, m.ox, m.oy);
+      ctx.lineWidth = widths[i] || data.penWidth;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#fff';
+    }
+    // Stroke i from `from` to `to` along its length, onto the mask.
+    function paint(i, from, to) {
+      if (to <= from) return;
+      pen(mctx, i);
+      const L = data.lens[i];
+      if (from <= 0 && to >= L) mctx.setLineDash([]);
+      else { mctx.setLineDash([to - from, L + to]); mctx.lineDashOffset = -from; }
+      mctx.stroke(strokes[i]);
+    }
+    function clearMask() {
+      mctx.setTransform(1, 0, 0, 1, 0, 0);
+      mctx.clearRect(0, 0, mask.width, mask.height);
+    }
+    // The art, shown only where the mask has ink, plus the pen tip.
+    function compose(tipAt) {
+      vctx.setTransform(1, 0, 0, 1, 0, 0);
+      vctx.globalCompositeOperation = 'source-over';
+      vctx.clearRect(0, 0, view.width, view.height);
+      vctx.setTransform(m.scale, 0, 0, m.scale, m.ox, m.oy);
+      vctx.drawImage(img, x, y, w, h);
+      vctx.setTransform(1, 0, 0, 1, 0, 0);
+      vctx.globalCompositeOperation = 'destination-in';
+      vctx.drawImage(mask, 0, 0);
+      vctx.globalCompositeOperation = 'source-over';
+      if (tipAt) {
+        const px = tipAt.x * m.scale + m.ox, py = tipAt.y * m.scale + m.oy;
+        vctx.fillStyle = 'rgba(255, 255, 255, .2)';
+        vctx.beginPath(); vctx.arc(px, py, data.penWidth * 1.6 * m.scale, 0, Math.PI * 2); vctx.fill();
+        vctx.fillStyle = '#fff';
+        vctx.beginPath(); vctx.arc(px, py, data.penWidth * 0.55 * m.scale, 0, Math.PI * 2); vctx.fill();
+      }
+    }
+    function tipOf(i, along) {
+      if (probe.dataset.i !== String(i)) { probe.setAttribute('d', data.strokes[i]); probe.dataset.i = String(i); }
+      return probe.getPointAtLength(along);
+    }
+    return { size, paint, clearMask, compose, tipOf, exact };
   }
 
   // Resolves once the last letter has faded in.
@@ -106,13 +169,13 @@
     return wait(letters.length * LETTER_MS + 250);
   }
 
-  async function draw(stage, data, imgUrl, live) {
+  async function draw(stage, data, imgUrl, live, drawMs = DRAW_MS) {
     const cityEl = stage.querySelector('.pp-pen__city');
     setKids(cityEl, []);
-    const { paths, exact, tip } = mount(stage.querySelector('.pp-pen__art'), data, imgUrl);
+    const artEl = stage.querySelector('.pp-pen__art');
+    const c = mount(artEl, data, data.__img);
     if (REDUCED) {
-      tip.remove();
-      exact.classList.add('is-instant', 'is-on');
+      c.exact.classList.add('is-instant', 'is-on');
       await typeCity(cityEl, data.city, live);
       return;
     }
@@ -120,41 +183,48 @@
     const cum = [0];
     for (const l of lens) cum.push(cum[cum.length - 1] + l);
     const total = cum[cum.length - 1];
-    // Hidden until the pen reaches it: a zero-length stroke would otherwise show
-    // its round cap as a stray dot from the first frame.
-    paths.forEach((p, i) => {
-      p.style.visibility = 'hidden';
-      p.style.strokeDasharray = `${lens[i]} ${lens[i] + 1}`;
-      p.style.strokeDashoffset = lens[i];
-    });
+    c.size();
+    // Pen state: strokes before i are whole on the mask, stroke i is painted up to
+    // `done` along its length.
     let i = 0;
+    let done = 0;
+    // A resize clears the canvases: repaint what has been drawn so far.
+    const ro = new ResizeObserver(() => {
+      if (!c.size()) return;
+      c.clearMask();
+      for (let k = 0; k < i; k++) c.paint(k, 0, lens[k]);
+      if (i < lens.length) c.paint(i, 0, done);
+      c.compose(null);
+    });
+    ro.observe(artEl);
     const t0 = performance.now();
-    await new Promise((done) => {
+    await new Promise((finish) => {
       const frame = (now) => {
-        if (!live()) return done();
-        const progress = Math.min(1, (now - t0) / DRAW_MS);
+        if (!live()) return finish();
+        const progress = Math.min(1, (now - t0) / drawMs);
         const target = progress * total;  // steady pen: no speeding up or slowing down
-        while (i < paths.length && cum[i + 1] <= target) {
-          paths[i].style.visibility = 'visible';
-          paths[i].style.strokeDashoffset = 0;
+        while (i < lens.length && cum[i + 1] <= target) {
+          c.paint(i, done, lens[i]);
           i++;
+          done = 0;
         }
-        if (i < paths.length) {
+        let tip = null;
+        if (i < lens.length) {
           const along = target - cum[i];
-          if (along > 0) {
-            paths[i].style.visibility = 'visible';
-            paths[i].style.strokeDashoffset = lens[i] - along;
-            const pt = paths[i].getPointAtLength(along);
-            tip.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+          if (along > done) {
+            c.paint(i, done, along);
+            done = along;
+            tip = c.tipOf(i, along);
           }
         }
-        if (progress < 1) requestAnimationFrame(frame); else done();
+        c.compose(progress < 1 ? tip : null);
+        if (progress < 1) requestAnimationFrame(frame); else finish();
       };
       requestAnimationFrame(frame);
     });
+    ro.disconnect();
     if (!live()) return;
-    tip.classList.add('is-off');
-    exact.classList.add('is-on');
+    c.exact.classList.add('is-on');
     await wait(EXACT_MS);
     if (live()) await typeCity(cityEl, data.city, live);
   }
@@ -211,8 +281,10 @@
     whenVisible(section, (v) => { visible = v; if (v) start(); else run++; });
   }
 
-  // Homepage showcase: each temple in turn. Entries whose files are missing are dropped.
+  // Homepage showcase: each drawing in turn (temples and city maps). Entries whose
+  // files are missing are dropped.
   function initShowcase(section) {
+    const drawMs = (+section.dataset.drawSeconds || DRAW_MS / 1000) * 1000;
     const stage = section.querySelector('.pp-pen');
     const items = [...section.querySelectorAll('[data-pp-pen-item]')]
       .map((n) => ({ json: n.dataset.json, img: n.dataset.img }));
@@ -248,8 +320,13 @@
           if (!live()) break;
           setCount();
           stage.classList.remove('is-faded');
-          if (items.length > 1) load(items[(idx + 1) % items.length]).catch(() => {});
-          await draw(stage, data, item.img, live);
+          // Only the drawing on screen and the one after it are kept in memory.
+          const next = items.length > 1 ? items[(idx + 1) % items.length] : null;
+          forgetExcept([item, next]);
+          await draw(stage, data, item.img, live, drawMs);
+          // The next drawing downloads once this one is drawn, not alongside it, so
+          // the first one has the connection to itself on a slow phone.
+          if (next && live()) load(next).catch(() => {});
           if (!live()) break;
           await wait(HOLD_MS);
           if (!live() || items.length < 2) break;  // a single temple just stays drawn

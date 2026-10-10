@@ -1,0 +1,78 @@
+/* Peculiar People homepage hero: drawn, then printed (sections/pp-hero-draw.liquid).
+   Behaviour lives in pp-hero-draw.js. Unarmed (no script, reduced motion, or no
+   drawing file) the hero is the photo with the headline over it. Armed, the stage
+   pins while the drawing, the shirt and the pull-back play. Only transform and
+   opacity animate. */
+
+.pp-hero {
+  --pp-hero-pad: clamp(20px, 6vw, 96px);
+  background: var(--pp-hero-ground, #1f1f1f);
+  color: #fff;
+}
+.pp-hero * { box-sizing: border-box; }
+
+/* Still layout: the photo fills the band, the headline sits over its lower left. */
+.pp-hero__stage { position: relative; overflow: hidden; min-height: min(80vh, 760px); display: flex; align-items: flex-end; }
+.pp-hero__world { position: absolute; inset: 0; }
+.pp-hero__photo { position: absolute; inset: 0; }
+.pp-hero__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pp-hero__draw { display: none; }
+.pp-hero__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  padding: 48px var(--pp-hero-pad) clamp(48px, 12vh, 140px);
+}
+.pp-hero__heading {
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: clamp(32px, 4.4vw, 60px);
+  line-height: 1.06;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.pp-hero__text { margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: rgba(255, 255, 255, .82); max-width: 40ch; }
+.pp-hero__btn {
+  display: inline-block;
+  padding: 15px 24px;
+  background: #001A58;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .6);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.pp-hero__btn:hover { background: #0a2a7a; }
+.pp-hero__btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.pp-hero__cue { display: none; }
+.pp-hero:not(.is-armed) .pp-hero__copy { background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0)); max-width: none; width: 100%; }
+
+/* Armed: pinned stage, the world (photo + drawing) moved by one transform. */
+.pp-hero.is-armed .pp-hero__track { position: relative; height: var(--pp-hero-track, 340vh); }
+.pp-hero.is-armed .pp-hero__stage { position: sticky; top: 0; height: 100vh; height: 100svh; min-height: 0; }
+.pp-hero.is-armed .pp-hero__world { inset: auto; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.pp-hero.is-armed .pp-hero__photo { inset: 0; opacity: 0; will-change: opacity; }
+.pp-hero.is-armed .pp-hero__photo img { object-fit: fill; }
+.pp-hero.is-armed .pp-hero__draw { display: block; position: absolute; will-change: opacity; }
+.pp-hero__draw svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.pp-hero__exact { opacity: 0; }
+.pp-hero.is-armed .pp-hero__copy { will-change: opacity, transform; padding-bottom: calc(clamp(40px, 8vh, 110px) + var(--pp-hero-off, 0px)); }
+.pp-hero.is-armed .pp-hero__cue {
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+
+@media (max-width: 749px) {
+  .pp-hero__copy { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
+  .pp-hero.is-armed .pp-hero__copy { padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px) + var(--pp-hero-off, 0px)); }
+  .pp-hero__heading { font-size: 32px; }
+}

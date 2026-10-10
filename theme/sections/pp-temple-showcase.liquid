@@ -1,14 +1,16 @@
 {%- comment -%}
-  Peculiar People homepage showcase: temples drawn by pen, one after another.
-  Drawing files are built and uploaded by scripts/web_drawings.py as
-  pp-temple-<slug>.json and .webp. "Temples" takes the temple tag names (the part
-  after `temple:`), comma separated, in the order they draw. A name with no uploaded
-  drawing is skipped.
+  Peculiar People homepage showcase: temples and city maps drawn by pen, one after
+  another. Temple files are built by scripts/web_drawings.py as pp-temple-<slug>.json
+  and .webp; map files by scripts/map_run.py as pp-map-<slug>.json and .webp.
+  "Drawings" takes temple tag names (the part after `temple:`) and maps written
+  `map:<slug>`, comma separated, in the order they draw. A name with no uploaded
+  drawing is skipped. "Colours" light draws the white-ink art inverted, black on
+  white (pp-pen-draw.css).
 {%- endcomment -%}
 {{ 'pp-pen-draw.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-pen-draw.js' | asset_url }}" defer></script>
 {%- assign slugs = section.settings.temples | split: ',' -%}
-<section class="pp-showcase" data-pp-pen-showcase>
+<section class="pp-showcase{% if section.settings.colours == 'light' %} pp-showcase--light{% endif %}" data-pp-pen-showcase data-draw-seconds="{{ section.settings.draw_seconds }}">
   <div class="pp-showcase__inner">
     <div class="pp-showcase__stage">
       <div class="pp-pen" role="img" aria-label="{{ section.settings.drawing_label | escape }}">
@@ -16,11 +18,19 @@
         <div class="pp-pen__city" aria-hidden="true"></div>
       </div>
       {%- for s in slugs -%}
-        {%- assign slug = s | strip | downcase -%}
+        {%- liquid
+          assign slug = s | strip | downcase
+          assign prefix = 'pp-temple-'
+          assign head = slug | slice: 0, 4
+          if head == 'map:'
+            assign slug = slug | remove_first: 'map:' | strip
+            assign prefix = 'pp-map-'
+          endif
+        -%}
         {%- if slug != blank -%}
           <span hidden data-pp-pen-item
-            data-json="{{ 'pp-temple-' | append: slug | append: '.json' | asset_url }}"
-            data-img="{{ 'pp-temple-' | append: slug | append: '.webp' | asset_url }}"></span>
+            data-json="{{ prefix | append: slug | append: '.json' | asset_url }}"
+            data-img="{{ prefix | append: slug | append: '.webp' | asset_url }}"></span>
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -49,9 +59,27 @@
     {
       "type": "text",
       "id": "temples",
-      "label": "Temples",
-      "info": "Temple tag names (after temple:), comma separated, in the order they draw.",
+      "label": "Drawings",
+      "info": "Temple tag names (after temple:) and city maps as map:<slug>, comma separated, in the order they draw.",
       "default": "salt-lake, kirtland, nauvoo, logan, mexico-city, rome"
+    },
+    {
+      "type": "range",
+      "id": "draw_seconds",
+      "label": "Seconds to draw each one",
+      "min": 3, "max": 20, "step": 1, "unit": "s",
+      "default": 13,
+      "info": "Each finished drawing then holds for 3 seconds."
+    },
+    {
+      "type": "select",
+      "id": "colours",
+      "label": "Colours",
+      "options": [
+        { "value": "dark", "label": "White drawing on black" },
+        { "value": "light", "label": "Black drawing on white" }
+      ],
+      "default": "dark"
     },
     {
       "type": "text",

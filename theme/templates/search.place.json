@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "pp-place-results",
+      "settings": {
+        "eyebrow": "Everything from",
+        "fallback_heading": "Shop by place",
+        "map_suffix": "map",
+        "empty_text": "Nothing here yet.",
+        "empty_link": "See everything",
+        "accent": "#F58000",
+        "collection_1": "all"
+      }
+    }
+  },
+  "order": ["main"]
+}
