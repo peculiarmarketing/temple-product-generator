@@ -8,12 +8,11 @@
   shape. An optional note sits under the photo (the guarantee and delivery line).
   With the script off or reduced motion on, the labels and dots are simply shown.
 
-  Phone bands (below 990px only; desktop is unchanged): every temple's art loops to
-  the right above the photo and every city map's art loops to the left below it.
-  "scrim": the labels sit on the bands on dark cards and every tile is a link.
-  "dim": the bands are faded into texture under plain labels and are decoration.
-  "stack": the bands sit outside the labels, above and below, and every tile is a
-  link. A tile links to every product from its place: /search?view=place with the
+  Phone bands (below 990px only; desktop is unchanged): every temple's art drifts to
+  the right above the labels and every city map's art drifts to the left below them,
+  each drawing with its city underlined beneath it. The bands are scroll areas that
+  assets/pp-bands.js moves, so a visitor can also swipe either way. "Drawing colour"
+  black inverts the white-ink art for a light background. A tile links to every product from its place: /search?view=place with the
   place line ("Provo, Utah") as the search terms, which templates/search.place.json
   turns into the temples and maps whose `peculiar.temple_city` and `temple_state`
   match (sections/pp-place-results.liquid). A temple shows
@@ -22,6 +21,7 @@
 {%- endcomment -%}
 {{ 'pp-quality.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
+<script src="{{ 'pp-bands.js' | asset_url }}" defer></script>
 {%- render 'pp-quality-font' -%}
 {%- liquid
   assign s = section.settings
@@ -46,10 +46,6 @@
   assign bands = s.phone_bands | default: 'none'
   if s.temple_collection == blank and s.map_collection == blank
     assign bands = 'none'
-  endif
-  assign linked = true
-  if bands == 'dim'
-    assign linked = false
   endif
 -%}
 
@@ -140,13 +136,10 @@
         assign art = 'pp-temple-' | append: slug | append: '.webp' | asset_url
       -%}
       <li class="pp-spec__tile pp-spec__tile--temple">
-        {%- if linked -%}
-          <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }}. Shop everything from {{ place | escape }}">
-            <img src="{{ art }}" alt="" width="420" height="352" loading="lazy" decoding="async">
-          </a>
-        {%- else -%}
+        <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }}. Shop everything from {{ place | escape }}">
           <img src="{{ art }}" alt="" width="420" height="352" loading="lazy" decoding="async">
-        {%- endif -%}
+          <span class="pp-spec__tile-city">{{ place | escape }}</span>
+        </a>
       </li>
     {%- endfor -%}
   {%- endcapture -%}
@@ -163,22 +156,19 @@
         assign art = 'pp-map-' | append: slug | append: '.webp' | asset_url
       -%}
       <li class="pp-spec__tile pp-spec__tile--map">
-        {%- if linked -%}
-          <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }} map. Shop everything from {{ place | escape }}">
-            <img src="{{ art }}" alt="" width="315" height="420" loading="lazy" decoding="async">
-          </a>
-        {%- else -%}
+        <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }} map. Shop everything from {{ place | escape }}">
           <img src="{{ art }}" alt="" width="315" height="420" loading="lazy" decoding="async">
-        {%- endif -%}
+          <span class="pp-spec__tile-city">{{ place | escape }}</span>
+        </a>
       </li>
     {%- endfor -%}
   {%- endcapture -%}
 {%- endif -%}
 
 <section
-  class="pp-spec{% if bands != 'none' %} pp-spec--bands pp-spec--bands-{{ bands }}{% endif %}"
+  class="pp-spec{% if bands != 'none' %} pp-spec--bands{% if s.art_ink == 'black' %} pp-spec--ink-black{% endif %}{% endif %}"
   data-pp-spec
-  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px; --pp-band-t: {{ temple_count | times: s.band_seconds }}s; --pp-band-m: {{ map_count | times: s.band_seconds }}s;{% endif %}"
+  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px;{% endif %}"
 >
   <div class="pp-spec__inner">
     {%- if s.heading != blank or s.text != blank -%}
@@ -194,10 +184,10 @@
 
     <div class="pp-spec__stage" data-pp-spec-stage>
       {%- if bands != 'none' and temple_count > 0 -%}
-        <div class="pp-spec__band pp-spec__band--top"{% unless linked %} aria-hidden="true"{% else %} role="region" aria-label="{{ s.temple_band_label | escape }}"{% endunless %}>
-          <div class="pp-spec__band-track pp-spec__band-track--right">
-            <ul class="pp-spec__band-list" role="list">{{ temple_items }}</ul>
-            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" inert>{{ temple_items }}</ul>
+        <div class="pp-spec__band pp-spec__band--top" data-pp-band data-dir="right" data-seconds="{{ s.band_seconds }}" role="region" aria-label="{{ s.temple_band_label | escape }}">
+          <div class="pp-spec__band-view" data-pp-band-view>
+            <ul class="pp-spec__band-list" role="list" data-pp-band-list>{{ temple_items }}</ul>
+            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" data-pp-band-copy>{{ temple_items }}</ul>
           </div>
         </div>
       {%- endif -%}
@@ -246,10 +236,10 @@
       {%- endfor -%}
 
       {%- if bands != 'none' and map_count > 0 -%}
-        <div class="pp-spec__band pp-spec__band--bottom"{% unless linked %} aria-hidden="true"{% else %} role="region" aria-label="{{ s.map_band_label | escape }}"{% endunless %}>
-          <div class="pp-spec__band-track pp-spec__band-track--left">
-            <ul class="pp-spec__band-list" role="list">{{ map_items }}</ul>
-            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" inert>{{ map_items }}</ul>
+        <div class="pp-spec__band pp-spec__band--bottom" data-pp-band data-dir="left" data-seconds="{{ s.band_seconds }}" role="region" aria-label="{{ s.map_band_label | escape }}">
+          <div class="pp-spec__band-view" data-pp-band-view>
+            <ul class="pp-spec__band-list" role="list" data-pp-band-list>{{ map_items }}</ul>
+            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" data-pp-band-copy>{{ map_items }}</ul>
           </div>
         </div>
       {%- endif -%}
@@ -286,17 +276,25 @@
       "label": "Temple and map bands on phones",
       "options": [
         { "value": "none", "label": "None" },
-        { "value": "scrim", "label": "A: labels on dark cards over the bands" },
-        { "value": "dim", "label": "B: faded bands behind the labels" },
-        { "value": "stack", "label": "C: bands outside the labels" }
+        { "value": "stack", "label": "Above and below the labels" }
       ],
       "default": "none",
-      "info": "Below 990px wide only. Temples move right above the photo, maps move left below it. In A and C every drawing links to all products from its place; in B they are decoration."
+      "info": "Below 990px wide only. Temples drift right above the labels, maps drift left below them; visitors can swipe either way. Every drawing links to all products from its place."
+    },
+    {
+      "type": "select",
+      "id": "art_ink",
+      "label": "Drawing colour",
+      "options": [
+        { "value": "white", "label": "White (dark background)" },
+        { "value": "black", "label": "Black (light background)" }
+      ],
+      "default": "white"
     },
     { "type": "collection", "id": "temple_collection", "label": "Temples from", "info": "The tee collection the homepage marquee reads (temple-tees). Each temple shows once." },
     { "type": "collection", "id": "map_collection", "label": "Maps from", "info": "Church History Maps." },
-    { "type": "range", "id": "band_height", "label": "Band height", "min": 100, "max": 220, "step": 10, "unit": "px", "default": 150 },
-    { "type": "range", "id": "band_seconds", "label": "Seconds each drawing takes to pass", "min": 2, "max": 8, "step": 1, "default": 3 },
+    { "type": "range", "id": "band_height", "label": "Band height", "min": 140, "max": 260, "step": 10, "unit": "px", "default": 190, "info": "Drawing plus its city line." },
+    { "type": "range", "id": "band_seconds", "label": "Seconds each drawing takes to drift past", "min": 2, "max": 8, "step": 1, "default": 3 },
     { "type": "text", "id": "temple_band_label", "label": "Temple band name for screen readers", "default": "Shop by temple" },
     { "type": "text", "id": "map_band_label", "label": "Map band name for screen readers", "default": "Shop by Church history site" }
   ],

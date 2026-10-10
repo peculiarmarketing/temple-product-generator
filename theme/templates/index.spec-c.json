@@ -65,10 +65,11 @@
         "phone_bands": "stack",
         "temple_collection": "temple-tees",
         "map_collection": "church-history-maps",
-        "band_height": 150,
+        "band_height": 190,
         "band_seconds": 3,
         "temple_band_label": "Shop by temple",
-        "map_band_label": "Shop by Church history site"
+        "map_band_label": "Shop by Church history site",
+        "art_ink": "white"
       }
     }
   },

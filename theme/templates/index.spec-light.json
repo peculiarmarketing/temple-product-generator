@@ -58,8 +58,8 @@
         "heading": "",
         "text": "",
         "image": "shopify://shop_images/pp-spec-group-v3.jpg",
-        "background": "#0d0e11",
-        "text_color": "#ffffff",
+        "background": "#ffffff",
+        "text_color": "#111111",
         "accent": "#f58000",
         "note": "<p><strong>Made right, or we replace it</strong></p><p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p><p>Tees, sweatshirts and hoodies are printed in the USA after you order and arrive in 4 to 7 business days. The bomber ships from overseas and takes longer.</p>",
         "phone_bands": "stack",
@@ -69,7 +69,7 @@
         "band_seconds": 3,
         "temple_band_label": "Shop by temple",
         "map_band_label": "Shop by Church history site",
-        "art_ink": "white"
+        "art_ink": "black"
       }
     }
   },

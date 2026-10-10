@@ -1,3 +1,18 @@
+# Spec section phone bands: Evan chose C; white-background preview up (10 Oct 2026, later)
+
+- **C (dark):** https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-c
+- **C on white, black ink:** https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-light
+  (art inverted in CSS, `Drawing colour` = black; no new art files made)
+- Options A and B are gone from the section; `index.spec-a/b.json` now hold C and can be
+  deleted in the code editor with the three `*dbg-tmp*` files.
+- Glitch fixed: the bands were one ~15,000px strip moved by a CSS animation (phones drop
+  parts of a layer that wide), paused on a sticky tap-hover, and the loop's second copy
+  was `inert`. Now each band is a scroll area drifted by `assets/pp-bands.js`: swipe or
+  fling either way, the drift waits 2.5 s after a touch, every visible drawing is tappable.
+- Each drawing has its city underlined under it.
+- To ship: on the homepage's PP spec overlay set the bands to "Above and below the labels",
+  Temples from temple-tees, Maps from Church History Maps, height 190, and pick the colours.
+
 # Spec section phone bands: three options on V4 for Evan to pick (10 Oct 2026)
 
 **Previews (phone width; desktop is unchanged):**
