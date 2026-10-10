@@ -1,58 +1,43 @@
-# Spec section phone bands: LIVE on the V4 homepage, black background (10 Oct 2026, last)
+# Spec section phone bands: done and on the V4 homepage (10 Oct 2026)
 
-Evan chose C on black. The section's defaults are now C (bands on, 190px, temples from
-temple-tees and maps from church-history-maps when no collection is picked), so the V4
-homepage shows it without any change to `index.json`. Maps sit 34px apart (was 17px).
-The preview templates `index.spec-{a,b,c,light}.json` and the three `*dbg-tmp*` files can
-be deleted in the code editor. Still open: the 250-product limit on the place page (below).
+**State:** on "Claude Code V4" (unpublished), phones below 990px show the spec section as
+temple band, labels, photo, labels, map band, guarantee. Black background, white ink.
+Desktop is unchanged (Evan's later idea: the bands run behind the photo on desktop).
 
-# Spec section phone bands: Evan chose C; white-background preview up (10 Oct 2026, later)
+- **Bands:** every temple (from temple-tees, once its city line is in
+  `snippets/pp-temple-city.liquid`) drifts right; every map (church-history-maps) drifts
+  left, 34px apart. Each drawing has its city underlined under it and links to
+  `/search?view=place&q=<City, State>`. Swipe or fling either way; the drift waits 2.5 s
+  after a touch (`assets/pp-bands.js`). New temples and maps join on their own.
+- **Why a scroll area, not a CSS marquee:** a ~15,000px strip moved by a transform made
+  phones drop parts of it (drawings half vanished), a sticky tap-hover froze it, and the
+  `inert` loop copy made half the taps dead. Do not go back to a transform marquee.
+- **Defaults carry the design:** `phone_bands` defaults to "Above and below the labels",
+  height 190, and empty collection settings fall back to temple-tees and
+  church-history-maps, so `templates/index.json` needed no change. `Drawing colour` black
+  (CSS invert) exists for a light background; Evan chose black background, white ink.
+- **Place page:** `sections/pp-place-results.liquid` via `templates/search.place.json`
+  lists the temples and maps whose `peculiar.temple_city`/`temple_state` make the place
+  line (Provo: three temples; St. George: Red Cliffs and St. George; Nauvoo: temple and
+  map). Store search was tried and dropped: its tag search misses published products.
+  Apostrophes are ignored in the match (Haun's Mill, Martin's Cove).
+- **Callout text is placeholder** (Evan, 10 Oct). No editing passes run on it.
 
-- **C (dark):** https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-c
-- **C on white, black ink:** https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-light
-  (art inverted in CSS, `Drawing colour` = black; no new art files made)
-- Options A and B are gone from the section; `index.spec-a/b.json` now hold C and can be
-  deleted in the code editor with the three `*dbg-tmp*` files.
-- Glitch fixed: the bands were one ~15,000px strip moved by a CSS animation (phones drop
-  parts of a layer that wide), paused on a sticky tap-hover, and the loop's second copy
-  was `inert`. Now each band is a scroll area drifted by `assets/pp-bands.js`: swipe or
-  fling either way, the drift waits 2.5 s after a touch, every visible drawing is tappable.
-- Each drawing has its city underlined under it.
-- To ship: on the homepage's PP spec overlay set the bands to "Above and below the labels",
-  Temples from temple-tees, Maps from Church History Maps, height 190, and pick the colours.
+> **WARNING, 250-product limit.** The place page reads the "all" collection in one pass,
+> and the storefront caps a pass at 250 products. 224 are published today; after about
+> eight more temples, products past 250 silently drop off place pages. Fix before then:
+> publish Temple Tees, Temple Hoodies and Temple Crewnecks to the Online Store channel
+> (only temple-tees is today) and set the section's Collection 1 to 4 to those three plus
+> Church History Maps. That is a store change: Evan's call. Check the count on every
+> sweep (`collections.all.products_count` on the storefront).
 
-# Spec section phone bands: three options on V4 for Evan to pick (10 Oct 2026)
-
-**Previews (phone width; desktop is unchanged):**
-- A, labels on dark cards over the bands: https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-a
-- B, faded bands behind plain labels (decoration, no links): https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-b
-- C, bands outside the labels: https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-c
-
-Each preview template (`theme/templates/index.spec-{a,b,c}.json`) holds only the spec
-section, a copy of V4's with `phone_bands` set. The real homepage (`index.json`) is
-unchanged; the setting defaults to "None". **When Evan picks**, set "Temple and map
-bands on phones" on the homepage's PP spec overlay (plus Temples from = temple-tees,
-Maps from = Church History Maps, band height 190 for A/B, 150 for C) and delete the
-three preview templates.
-
-- Temples loop right above the photo (all 45, from temple-tees), maps loop left below
-  it (all 27, from church-history-maps). New ones join on their own, same rule as the
-  homepage marquee.
-- In A and C each drawing links to `/search?view=place&q=<City, State>`:
-  `sections/pp-place-results.liquid` via `templates/search.place.json` lists every
-  temple and map product whose `peculiar.temple_city`/`temple_state` match (Provo: three
-  temples, nine products; Nauvoo: temple and map). The store's own search was tried
-  first and dropped: tag search missed published products (Afton tee and hoodie).
-- **Limit to fix before launch:** the place page reads the "all" collection in one pass
-  of 250 products (storefront cap); there are 224 today. The fix is publishing Temple
-  Tees/Hoodies/Crewnecks to the Online Store channel (only temple-tees is now) and
-  listing those plus the map collection in the section's Collection 1 to 4. Store
-  change, so Evan's call.
-- Callout text is placeholder (Evan, 10 Oct); no editing passes run on it.
-- Theme writes from a cloud session: `themeFilesUpsert` with a TEXT body. URL bodies
-  failed silently several times. `themeFilesDelete` is blocked by the connector, so
-  `sections/pp-debug-tmp.liquid`, `templates/index.dbg-tmp.json` and
-  `templates/search.dbg-tmp.json` (blanked) are still on V4; delete them in the code editor.
+- **Theme writes from a cloud session:** `themeFilesUpsert` with a TEXT body. URL bodies
+  failed silently. `themeFilesDelete` is blocked by the connector, so deleting theme
+  files is done by hand in the code editor.
+- **Left on V4 for Evan to delete by hand** (no longer used, not in this repo):
+  `templates/index.spec-a.json`, `index.spec-b.json`, `index.spec-c.json`,
+  `index.spec-light.json`, `index.dbg-tmp.json`, `templates/search.dbg-tmp.json`,
+  `sections/pp-debug-tmp.liquid` (blanked).
 
 # Homepage on "Claude Code V4": four-person spec photo BUILT; next, callouts, guarantee line, theme (9 Oct 2026, night)
 
