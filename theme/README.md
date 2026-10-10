@@ -278,3 +278,11 @@ with the weave over the ink. 24x by default.
   `end_x_phone`/`end_y_phone`, in % of the photo. Callouts with no words get
   `pp-spec__label--empty` and are not shown. Desktop bands now start at 990px.
 - `assets/pp-quality.js`: lines are drawn per dot, to its label or to its placed point.
+
+## Gradient divider (10 October 2026, night, "Claude Code V4")
+
+- `sections/pp-gradient.liquid` ("PP gradient divider" in Add section): any colour to
+  any colour, optional middle colour and its position, direction (down, up, left,
+  right, diagonal, from the centre, custom angle), desktop and phone heights, optional
+  text. Blends in OKLab with an sRGB fallback. Sets `display: flex` on itself because
+  the theme hides empty divs (`div:empty`), which hid text-less dividers at 0px.

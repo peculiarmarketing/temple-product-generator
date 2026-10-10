@@ -1,0 +1,94 @@
+{%- comment -%}
+  Peculiar People: a gradient section divider. Any colour to any colour, with an optional middle
+  colour, in a direction picked in the editor. Mostly a transition between two
+  sections (set "From" to the colour of the section above and "To" to the one below),
+  or a block of colour on its own. The blend runs in OKLab, so the middle stays clean
+  (blue to orange does not pass through grey); older browsers fall back to an
+  ordinary sRGB blend. An optional line of text sits in the middle.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  case s.direction
+    when 'up'
+      assign dir = 'to top'
+    when 'right'
+      assign dir = 'to right'
+    when 'left'
+      assign dir = 'to left'
+    when 'diagonal'
+      assign dir = '135deg'
+    when 'angle'
+      assign dir = s.angle | append: 'deg'
+    else
+      assign dir = 'to bottom'
+  endcase
+  assign stops = s.color_from | append: ' 0%'
+  if s.use_middle
+    assign stops = stops | append: ', ' | append: s.color_middle | append: ' ' | append: s.middle_position | append: '%'
+  endif
+  assign stops = stops | append: ', ' | append: s.color_to | append: ' 100%'
+  if s.direction == 'radial'
+    assign shape = 'radial-gradient(ellipse at center'
+  else
+    assign shape = 'linear-gradient(' | append: dir
+  endif
+-%}
+<style>
+  #pp-gradient-{{ section.id }} {
+    display: flex; /* the theme hides empty divs (div:empty), and a divider usually is one */
+    background: {{ s.color_to }};
+    background-image: {{ shape }}, {{ stops }});
+    background-image: {{ shape }} in oklab, {{ stops }});
+    min-height: {{ s.height_phone }}px;
+    color: {{ s.text_color }};
+  }
+  @media screen and (min-width: 990px) {
+    #pp-gradient-{{ section.id }} { min-height: {{ s.height_desktop }}px; }
+  }
+</style>
+<div id="pp-gradient-{{ section.id }}" class="pp-gradient"{% if s.text == blank %} aria-hidden="true"{% endif %}>
+  {%- if s.text != blank -%}
+    <div class="pp-gradient__text">{{ s.text }}</div>
+  {%- endif -%}
+</div>
+<style>
+  .pp-gradient { display: flex; align-items: center; justify-content: center; padding: 0 20px; }
+  .pp-gradient__text { max-width: 680px; text-align: center; font-size: 18px; line-height: 1.618; }
+  .pp-gradient__text p { margin: 0; }
+  .pp-gradient__text h2, .pp-gradient__text h3 { margin: 0 0 .5em; color: inherit; }
+</style>
+
+{% schema %}
+{
+  "name": "PP gradient divider",
+  "class": "pp-gradient-section",
+  "settings": [
+    { "type": "color", "id": "color_from", "label": "From", "default": "#0d0e11", "info": "Top (or start) colour. To blend out of the section above, use its background colour." },
+    { "type": "color", "id": "color_to", "label": "To", "default": "#ffffff", "info": "Bottom (or end) colour." },
+    { "type": "checkbox", "id": "use_middle", "label": "Add a middle colour", "default": false },
+    { "type": "color", "id": "color_middle", "label": "Middle", "default": "#1f3a5f" },
+    { "type": "range", "id": "middle_position", "label": "Middle colour sits at", "min": 5, "max": 95, "step": 5, "unit": "%", "default": 50 },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "down", "label": "Top to bottom" },
+        { "value": "up", "label": "Bottom to top" },
+        { "value": "right", "label": "Left to right" },
+        { "value": "left", "label": "Right to left" },
+        { "value": "diagonal", "label": "Diagonal" },
+        { "value": "radial", "label": "From the centre out" },
+        { "value": "angle", "label": "Custom angle" }
+      ],
+      "default": "down"
+    },
+    { "type": "range", "id": "angle", "label": "Custom angle", "min": 0, "max": 360, "step": 5, "unit": "°", "default": 180, "info": "Only with \"Custom angle\". 180° is top to bottom, 90° left to right." },
+    { "type": "range", "id": "height_desktop", "label": "Height on desktop", "min": 0, "max": 800, "step": 10, "unit": "px", "default": 160 },
+    { "type": "range", "id": "height_phone", "label": "Height on phones", "min": 0, "max": 600, "step": 10, "unit": "px", "default": 100 },
+    { "type": "richtext", "id": "text", "label": "Text in the middle (optional)" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#ffffff" }
+  ],
+  "presets": [{ "name": "PP gradient divider" }]
+}
+{% endschema %}
