@@ -595,7 +595,7 @@
       ],
       "name": "The temple, the drawing",
       "settings": {
-        "heading": "Carefully made designs",
+        "heading": "<strong>Carefully made designs</strong>",
         "text": "Made to capture all the details that are important to you.",
         "photo": "shopify://shop_images/1_a4ea5b67-62a6-4abb-bbef-0d555fc340f0.png",
         "drawing": "shopify://shop_images/2.png",
@@ -605,7 +605,7 @@
         "stage_label": "The temple, its drawing, and the drawing on each garment",
         "background": "#ffffff",
         "text_color": "#121212",
-        "button_color": "#F58000",
+        "button_color": "#f58000",
         "padding_top": 36,
         "padding_bottom": 36,
         "print_zoom": 4375,
@@ -800,18 +800,6 @@
           },
           "blocks": {}
         },
-        "collapsible_row_content_iCLqdM": {
-          "type": "collapsible-row-content",
-          "settings": {
-            "open": false,
-            "heading": "Where do people usually wear these?",
-            "icon": "question_mark",
-            "filled_icon": false,
-            "row_content": "<p>Our goal with our clothing is for it to be seen. Which means it also needs to be your go-to comfort clothing.<br/><br/>It's made to be the first thing you grab when you want to be comfortable, and the first clothing you'll be prompted to wear.</p>",
-            "page": ""
-          },
-          "blocks": {}
-        },
         "collapsible_row_content_6Py6Ex": {
           "type": "collapsible-row-content",
           "settings": {
@@ -824,18 +812,6 @@
           },
           "blocks": {}
         },
-        "collapsible_row_content_WdJtJy": {
-          "type": "collapsible-row-content",
-          "settings": {
-            "open": false,
-            "heading": "It says unisex. How do I size it if I want a women's fit?",
-            "icon": "question_mark",
-            "filled_icon": false,
-            "row_content": "<p>It's a men's cut. If you normally wear a women's medium, order a small for a fitted look or a medium if you want it roomier. The size guide video shows a woman at 5'9\" in a small and a man at 6'4\" in a large.</p>",
-            "page": ""
-          },
-          "blocks": {}
-        },
         "collapsible_row_content_rBijbT": {
           "type": "collapsible-row-content",
           "settings": {
@@ -843,7 +819,7 @@
             "heading": "Where does the artwork come from?",
             "icon": "question_mark",
             "filled_icon": false,
-            "row_content": "<p>Original line art, made here, one temple at a time. Every drawing gets checked against verified references before we add it to our collection.</p>",
+            "row_content": "<p>Original line art, made by us, one at a time. Every drawing gets checked against verified references before we add it to our collection.</p>",
             "page": ""
           },
           "blocks": {}
@@ -876,9 +852,7 @@
       "block_order": [
         "collapsible_row_content_HiKLPd",
         "collapsible_row_content_DJ79XT",
-        "collapsible_row_content_iCLqdM",
         "collapsible_row_content_6Py6Ex",
-        "collapsible_row_content_WdJtJy",
         "collapsible_row_content_rBijbT",
         "collapsible_row_content_KDgPP7",
         "collapsible_row_content_YxXEG3"
