@@ -315,6 +315,6 @@ homepage) on the unpublished "Claude Code V4" theme (194532671860).
   print zoom 4375 (×1000), origin 4889, 5343 (hundredths of %). Re-measure with new art.
 - The drawing's line cut-outs are made in the browser from the drawing (canvas), which
   needs the CDN's CORS header (it sends `*`).
-- `templates/index.json` here is not updated: the V4 copy is being changed by other
-  work. On V4 only the `process` entry changed (type and settings); order and every
-  other section were left byte-for-byte.
+- `templates/index.json`: on V4 only the `process` entry changed (type and settings);
+  order and every other section were left byte-for-byte. The copy here came in with
+  the 10 October pull of Evan's theme-editor edits.
