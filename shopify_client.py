@@ -1,11 +1,12 @@
 """Minimal Shopify Admin API client for post-publish product media work.
 
-Needs in .env:
+Needs in .env (or, in a cloud session, the environment):
   SHOPIFY_STORE_DOMAIN=xxxx.myshopify.com
   SHOPIFY_ADMIN_TOKEN=shpat_...   (custom app, read_products + write_products)
 """
 
 import mimetypes
+import os
 import time
 from pathlib import Path
 
@@ -23,9 +24,11 @@ class ShopifyError(Exception):
 class ShopifyClient:
     def __init__(self):
         env = dotenv_values(PROJECT_ROOT / ".env")
-        domain, token = env.get("SHOPIFY_STORE_DOMAIN"), env.get("SHOPIFY_ADMIN_TOKEN")
+        domain = env.get("SHOPIFY_STORE_DOMAIN") or os.environ.get("SHOPIFY_STORE_DOMAIN")
+        token = env.get("SHOPIFY_ADMIN_TOKEN") or os.environ.get("SHOPIFY_ADMIN_TOKEN")
         if not domain or not token:
-            raise SystemExit("Add SHOPIFY_STORE_DOMAIN and SHOPIFY_ADMIN_TOKEN to .env first.")
+            raise SystemExit("Add SHOPIFY_STORE_DOMAIN and SHOPIFY_ADMIN_TOKEN to .env "
+                             "(or the cloud environment's secrets) first.")
         self.url = f"https://{domain}/admin/api/{API_VERSION}/graphql.json"
         self.headers = {"X-Shopify-Access-Token": token, "Content-Type": "application/json"}
 

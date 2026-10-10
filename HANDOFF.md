@@ -1,6 +1,6 @@
 # Spec section phone bands: done and on the V4 homepage (10 Oct 2026)
 
-**State:** on "Claude Code V4" (unpublished), phones below 990px show the spec section as
+**State:** on "Claude Code V4" (now the live theme), phones below 990px show the spec section as
 temple band, labels, photo, labels, map band, guarantee. Black background, white ink.
 Desktop is unchanged (Evan's later idea: the bands run behind the photo on desktop).
 
@@ -31,13 +31,14 @@ Desktop is unchanged (Evan's later idea: the bands run behind the photo on deskt
 > Church History Maps. That is a store change: Evan's call. Check the count on every
 > sweep (`collections.all.products_count` on the storefront).
 
-- **Theme writes from a cloud session:** `themeFilesUpsert` with a TEXT body. URL bodies
-  failed silently. `themeFilesDelete` is blocked by the connector, so deleting theme
-  files is done by hand in the code editor.
-- **Left on V4, unused** (delete on the Mac with `python scripts/theme_delete_files.py --theme 194532671860 --apply`, or by hand in the code editor):
-  `templates/index.spec-a.json`, `index.spec-b.json`, `index.spec-c.json`,
-  `index.spec-light.json`, `index.dbg-tmp.json`, `templates/search.dbg-tmp.json`,
-  `sections/pp-debug-tmp.liquid` (blanked).
+- **Theme writes from a cloud session:** `themeFilesUpsert` with a TEXT body through the
+  connector (URL bodies failed silently). The connector blocks `themeFilesDelete`; use
+  `scripts/theme_delete_files.py`, which runs on the PP Pipeline token. The cloud
+  environment has `SHOPIFY_STORE_DOMAIN` and `SHOPIFY_ADMIN_TOKEN` as secrets, and
+  `shopify_client.py` now falls back to them when there is no `.env`.
+- **V4 is the live theme** since 10 Oct 2026, 07:04 UTC (Evan published it; "Claude Code
+  V3.5" appeared at the same moment). The seven preview and debug files were deleted from
+  it with Evan's go-ahead; homepage bands and place pages checked after.
 
 # Homepage on "Claude Code V4": four-person spec photo BUILT; next, callouts, guarantee line, theme (9 Oct 2026, night)
 
