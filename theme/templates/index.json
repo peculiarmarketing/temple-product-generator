@@ -31,7 +31,7 @@
       "settings": {
         "heading": "Made to start the conversation",
         "subheading": "Premium apparel for Latter-day Saints, printed to order in the United States.",
-        "button_label": "Find your temple",
+        "button_label": "PICK YOURS",
         "link": "shopify://collections/temple-design-products",
         "temples": "salt-lake, map:salt-lake-city, kirtland, map:kirtland, nauvoo, map:nauvoo, san-antonio, map:san-antonio, logan, map:sharon, mexico-city, map:palmyra-township, rome, map:harmony, salt-lake, map:fayette, kirtland, map:independence, nauvoo, map:far-west, logan, map:adam-ondi-ahman, mexico-city, map:carthage, rome, map:winter-quarters",
         "draw_seconds": 6,
@@ -420,6 +420,25 @@
         "city_y": 67
       }
     },
+    "pp_gradient_7HRnJd": {
+      "type": "pp-gradient",
+      "name": "PP gradient divider",
+      "settings": {
+        "color_from": "#000000",
+        "color_to": "#ffffff",
+        "use_middle": false,
+        "color_middle": "#1f3a5f",
+        "middle_position": 50,
+        "smoothness": "smooth",
+        "grain": true,
+        "direction": "up",
+        "angle": 180,
+        "height_desktop": 160,
+        "height_phone": 80,
+        "text": "",
+        "text_color": "#ffffff"
+      }
+    },
     "pp_spec_overlay": {
       "type": "pp-spec-overlay",
       "blocks": {
@@ -430,8 +449,14 @@
             "label": "",
             "side": "left",
             "phone": "above",
+            "show_dot": true,
             "x": 33,
-            "y": 32
+            "y": 32,
+            "line": "label",
+            "end_x": -20,
+            "end_y": 50,
+            "end_x_phone": 50,
+            "end_y_phone": 110
           }
         },
         "callout_hoodie": {
@@ -441,8 +466,14 @@
             "label": "",
             "side": "right",
             "phone": "above",
+            "show_dot": true,
             "x": 62,
-            "y": 26
+            "y": 26,
+            "line": "label",
+            "end_x": -20,
+            "end_y": 50,
+            "end_x_phone": 50,
+            "end_y_phone": 110
           }
         },
         "callout_sweatshirt": {
@@ -452,8 +483,14 @@
             "label": "",
             "side": "left",
             "phone": "below",
+            "show_dot": true,
             "x": 30,
-            "y": 65
+            "y": 65,
+            "line": "label",
+            "end_x": -20,
+            "end_y": 50,
+            "end_x_phone": 50,
+            "end_y_phone": 110
           }
         },
         "callout_tee": {
@@ -463,8 +500,14 @@
             "label": "",
             "side": "right",
             "phone": "below",
+            "show_dot": true,
             "x": 75,
-            "y": 55
+            "y": 55,
+            "line": "label",
+            "end_x": -20,
+            "end_y": 50,
+            "end_x_phone": 50,
+            "end_y_phone": 110
           }
         }
       },
@@ -478,97 +521,96 @@
         "heading": "",
         "text": "",
         "image": "shopify://shop_images/pp-spec-group-v3.jpg",
-        "note": "<p>You wear Peculiar People because it reminds you of an important moment. The day you got married, where you got an answer to a prayer you needed answered, where you first felt something you couldn't explain away.</p><p>Every design we make is made to do two things:</p><ol><li>Remind you of something special to you</li><li>Prompt others to ask you about it</li></ol><p>In order for this to work, our clothing needs to be the first thing you reach for, which is why we have worked hard to ensure our fabrics, build quality, and prints are premium and extremely comfortable.</p><p>The more you wear, the more you share.&nbsp;All it takes is one question. \"What's that on your shirt?\"</p><p>- Evan & Bailee, founders of Peculiar People</p>",
-        "background": "#0d0e11",
+        "note": "<p>You wear Peculiar People because it reminds you of an important moment. The day you got married, where you got an answer to a prayer you needed answered, where you first felt something you couldn't explain away.</p><p>Every design we make is made to do two things:</p><ol><li>Remind you of something special to you</li><li>Prompt others to ask you about it</li></ol><p>In order for this to work, our clothing needs to be the first thing you reach for, which is why we have worked hard to ensure our fabrics, build quality, and prints are premium and extremely comfortable.</p><p>The more you wear, the more you share.&nbsp;All it takes is one question. \"What's that on your shirt?\"</p><p>Evan & Bailee, founders of Peculiar People</p>",
+        "background": "#000000",
         "text_color": "#ffffff",
-        "accent": "#FFFFFF",
+        "accent": "#ffffff",
+        "show_callouts": false,
         "phone_bands": "stack",
         "desktop_bands": true,
         "art_ink": "white",
         "temple_collection": "",
         "map_collection": "",
-        "band_height": 190,
+        "band_height": 140,
+        "desk_band_size": 40,
         "band_seconds": 3,
         "temple_band_label": "Shop by temple",
         "map_band_label": "Shop by Church history site"
       }
     },
+    "pp_gradient_JaFXek": {
+      "type": "pp-gradient",
+      "name": "PP gradient divider",
+      "settings": {
+        "color_from": "#000000",
+        "color_to": "#ffffff",
+        "use_middle": false,
+        "color_middle": "#1f3a5f",
+        "middle_position": 50,
+        "smoothness": "smooth",
+        "grain": true,
+        "direction": "down",
+        "angle": 180,
+        "height_desktop": 160,
+        "height_phone": 80,
+        "text": "",
+        "text_color": "#ffffff"
+      }
+    },
     "process": {
-      "type": "comparison-slider",
+      "type": "pp-temple-process",
+      "blocks": {
+        "garment_hoodie": {
+          "type": "garment",
+          "settings": {
+            "product": "ultra-soft-oversized-temple-hoodie-rome",
+            "image": "shopify://shop_images/pp-process-rome-hoodie.png",
+            "stop_label": "Hoodie",
+            "name": ""
+          }
+        },
+        "garment_sweatshirt": {
+          "type": "garment",
+          "settings": {
+            "product": "ultra-soft-temple-sweatshirt-rome",
+            "image": "shopify://shop_images/pp-process-rome-sweatshirt.png",
+            "stop_label": "Sweatshirt",
+            "name": ""
+          }
+        },
+        "garment_tee": {
+          "type": "garment",
+          "settings": {
+            "product": "essential-heavyweight-temple-tee-rome",
+            "image": "shopify://shop_images/pp-process-rome-tee.png",
+            "stop_label": "Tee",
+            "name": ""
+          }
+        }
+      },
+      "block_order": [
+        "garment_hoodie",
+        "garment_sweatshirt",
+        "garment_tee"
+      ],
       "name": "The temple, the drawing",
       "settings": {
-        "display_id": false,
-        "visibility": "always-display",
-        "title": "Carefully made designs",
-        "title_highlight_1": "solid-color",
-        "title_highlight_1_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_1_bg-color": "#f9efff",
-        "title_highlight_1_color": "#001a58",
-        "highlighted-1_border_radius": 8,
-        "highlighted-1_border_width": 0,
-        "highlighted-1_border": "solid",
-        "highlighted-1_border_color": "#6d388b",
-        "highlighted-1_padding-block": 0.3,
-        "highlighted-1_padding-inline": 0.3,
-        "title_highlight_1_underline-thickness": 2,
-        "title_highlight_1_underline-color": "#6d388b",
-        "title_highlight_1_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_1_underline-color-position": 25,
-        "title_highlight_1_handwritten-color": "#6d388b",
-        "title_highlight_1_handwritten-stroke-width": 3,
-        "title_highlight_1_handwritten-position": 60,
-        "title_highlight_2": "none",
-        "title_highlight_2_gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_2_bg-color": "#f9efff",
-        "title_highlight_2_color": "#6d388b",
-        "highlighted-2_border_radius": 8,
-        "highlighted-2_border_width": 0,
-        "highlighted-2_border": "solid",
-        "highlighted-2_border_color": "#6d388b",
-        "highlighted-2_padding-block": 0.3,
-        "highlighted-2_padding-inline": 0.3,
-        "title_highlight_2_underline-thickness": 2,
-        "title_highlight_2_underline-color": "#6d388b",
-        "title_highlight_2_underline-color--gradient": "linear-gradient(57deg, rgba(249, 119, 255, 1) 8%, rgba(54, 212, 255, 1) 47%, rgba(43, 252, 135, 1) 83%)",
-        "title_highlight_2_underline-color-position": 25,
-        "title_highlight_2_handwritten-color": "#6d388b",
-        "title_highlight_2_handwritten-stroke-width": 3,
-        "title_highlight_2_handwritten-position": 60,
-        "heading_size": "h2",
-        "custom_desktop_size": 39,
-        "custom_mobile_size": 28,
-        "text": "<p>Made to capture all the details that are important to you.</p>",
-        "button_label": "",
-        "link": "",
-        "button_style_secondary": false,
-        "atc_button_label": "",
-        "atc_product": "",
-        "atc_skip_cart": false,
-        "color_scheme": "background-1",
-        "custom_colors_background": "#ffffff",
-        "custom_gradient_background": "",
-        "custom_colors_text": "#2e2a39",
-        "custom_colors_solid_button_background": "#f58000",
-        "custom_colors_solid_button_text": "#ffffff",
-        "custom_colors_outline_button": "#001a58",
-        "pattern_bg": "none",
-        "pattern_color": "#001a58",
-        "pattern_size": 20,
-        "pattern_thickness": 2,
-        "pattern_angle": 45,
-        "pattern_opacity_mode": "low",
-        "pattern_opacity_low": 7,
-        "pattern_opacity_normal": 80,
-        "layout": "slider_second",
-        "before_label": "The temple",
-        "after_label": "The drawing",
-        "labels_color_scheme": "accent-1",
-        "line_color": "background-1",
-        "arrows_style": "circle",
-        "before_image": "shopify://shop_images/1_a4ea5b67-62a6-4abb-bbef-0d555fc340f0.png",
-        "after_image": "shopify://shop_images/2.png",
+        "heading": "Carefully made designs",
+        "text": "Made to capture all the details that are important to you.",
+        "photo": "shopify://shop_images/1_a4ea5b67-62a6-4abb-bbef-0d555fc340f0.png",
+        "drawing": "shopify://shop_images/2.png",
+        "photo_stop": "Temple",
+        "drawing_stop": "Drawing",
+        "button_label": "Pick Yours",
+        "stage_label": "The temple, its drawing, and the drawing on each garment",
+        "background": "#ffffff",
+        "text_color": "#121212",
+        "button_color": "#F58000",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "print_zoom": 4375,
+        "origin_x": 4889,
+        "origin_y": 5343
       }
     },
     "what_you_get": {
@@ -1275,7 +1317,9 @@
     "browse",
     "pp_look_closer",
     "anatomy",
+    "pp_gradient_7HRnJd",
     "pp_spec_overlay",
+    "pp_gradient_JaFXek",
     "process",
     "what_you_get",
     "faq",
