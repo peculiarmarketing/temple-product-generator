@@ -292,3 +292,29 @@ with the weave over the ink. 24x by default.
   it against banding. Upload a template that uses new section settings in a separate
   call after the section: in one batch Shopify validated it against the old schema and
   silently dropped the new settings.
+
+# Temple to garment (10 October 2026)
+
+Replaces the stock comparison slider "The temple, the drawing" (`process` on the
+homepage) on the unpublished "Claude Code V4" theme (194532671860).
+
+- `sections/pp-temple-process.liquid`, `assets/pp-temple-process.{css,js}`: one slider
+  runs temple photo → drawing (a pen line wipes across) → the drawing in white ink
+  zooming out to the first garment → a ring of garments (second waits back-right and
+  comes forward next, third waits back-left; past the last it keeps turning). "Pick
+  Yours" opens the product in front. Desktop: heading and text on the left, the rest on
+  the right. Below 990px: stacked, centred, heading and text held to one line each.
+- Garment blocks: product (name shown is its title without the "(Temple)" suffix) and a
+  back-print photo on a transparent background. Rome photos in Content > Files:
+  `pp-process-rome-{hoodie,sweatshirt,tee}.png` (navy hoodie, black sweatshirt, maroon
+  tee; cut out from `artifacts/photo-mockup-spike/flat-originals/rome/`).
+- Print alignment: the first garment's print must sit exactly on the drawing at the
+  zoom. For Rome the drawing (`2.png`, 1080²) is the print at 320/1400 of the hoodie
+  photo, offset (528, 577), found by cross-correlating the drawing's lines with the
+  print's. Settings hold it as integers (Shopify number settings allow one decimal):
+  print zoom 4375 (×1000), origin 4889, 5343 (hundredths of %). Re-measure with new art.
+- The drawing's line cut-outs are made in the browser from the drawing (canvas), which
+  needs the CDN's CORS header (it sends `*`).
+- `templates/index.json` here is not updated: the V4 copy is being changed by other
+  work. On V4 only the `process` entry changed (type and settings); order and every
+  other section were left byte-for-byte.

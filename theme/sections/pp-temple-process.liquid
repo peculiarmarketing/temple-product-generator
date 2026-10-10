@@ -1,0 +1,153 @@
+{%- comment -%}
+  Peculiar People homepage: the temple, the drawing, the garments. One slider runs
+  photo → drawing (a pen line wipes across) → the drawing in white ink zooming out to
+  the whole first garment, then turns a ring of garments: the second garment waits
+  back-right and comes forward next, the third waits back-left. Past the last garment
+  the ring keeps turning back to the first. "Pick Yours" opens the product in front.
+
+  Each garment is a block: a product (its title, minus the temple in brackets, is the
+  name shown) and a back-print photo on a transparent background, all photos the same
+  framing. The first garment's print must line up with the drawing at the hoodie zoom:
+  "Print zoom" and "Print origin" were measured for the Rome art (the drawing is
+  320/1400 of the hoodie photo at (528, 577)); change them only with new art.
+
+  Desktop (990px and up): the heading and text on the left, everything else on the
+  right. Below that, stacked and centred, the heading and text each held to one line.
+  pp-temple-process.js runs it; without the script the photo shows on its own.
+{%- endcomment -%}
+{{ 'pp-temple-process.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pp-temple-process.js' | asset_url }}" defer></script>
+{%- liquid
+  assign s = section.settings
+  assign photo_alt = s.photo.alt | default: 'The temple'
+  assign drawing_alt = s.drawing.alt | default: 'Line drawing of the temple'
+-%}
+<section
+  class="pp-tp"
+  data-pp-tp
+  data-print-zoom="{{ s.print_zoom | divided_by: 1000.0 }}"
+  style="--pp-tp-bg: {{ s.background }}; --pp-tp-fg: {{ s.text_color }}; --pp-tp-accent: {{ s.button_color }}; --pp-tp-origin: {{ s.origin_x | divided_by: 100.0 }}% {{ s.origin_y | divided_by: 100.0 }}%; --pp-tp-pt: {{ s.padding_top }}px; --pp-tp-pb: {{ s.padding_bottom }}px;"
+>
+  <div class="pp-tp__inner page-width">
+    <div class="pp-tp__copy">
+      {%- if s.heading != blank -%}<h2 class="pp-tp__heading">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<p class="pp-tp__text">{{ s.text | escape }}</p>{%- endif -%}
+    </div>
+
+    <div class="pp-tp__main">
+      <div class="pp-tp__stage" aria-label="{{ s.stage_label | escape }}">
+        <div class="pp-tp__ring">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign p = block.settings.product
+              assign name = block.settings.name
+              if name == blank and p != blank
+                assign name = p.title | split: ' (' | first
+              endif
+              assign stop = block.settings.stop_label | default: name
+              assign width = 1100
+              if forloop.first
+                assign width = 1800
+              endif
+            -%}
+            <button
+              class="pp-tp__box pp-tp__garment"
+              type="button"
+              data-name="{{ name | escape }}"
+              data-stop="{{ stop | escape }}"
+              data-url="{% if p != blank %}{{ p.url }}{% endif %}"
+              aria-label="Show the {{ name | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: width | image_tag: alt: '', loading: 'lazy', class: 'pp-tp__img', sizes: '(min-width: 990px) 560px, 100vw', widths: '600, 900, 1200, 1800' }}
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+        <div class="pp-tp__box pp-tp__frame">
+          {%- if s.photo != blank -%}
+            {{ s.photo | image_url: width: 1200 | image_tag: alt: photo_alt, loading: 'lazy', class: 'pp-tp__img pp-tp__photo', sizes: '(min-width: 990px) 560px, 100vw', widths: '600, 900, 1200' }}
+          {%- endif -%}
+          {%- if s.drawing != blank -%}
+            <img class="pp-tp__img pp-tp__draw" src="{{ s.drawing | image_url: width: 1200 }}" alt="{{ drawing_alt | escape }}" width="1200" height="1200" loading="lazy" crossorigin="anonymous">
+            <img class="pp-tp__img pp-tp__ink" alt="" width="1200" height="1200" hidden>
+          {%- endif -%}
+          <div class="pp-tp__pen" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="pp-tp__scrub">
+        <div class="pp-tp__stops">
+          <button type="button">{{ s.photo_stop | escape }}</button>
+          <button type="button">{{ s.drawing_stop | escape }}</button>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign p = block.settings.product
+              assign name = block.settings.name
+              if name == blank and p != blank
+                assign name = p.title | split: ' (' | first
+              endif
+            -%}
+            <button type="button">{{ block.settings.stop_label | default: name | escape }}</button>
+          {%- endfor -%}
+        </div>
+        <input class="pp-tp__range" type="range" min="0" max="1000" value="0" aria-label="{{ s.stage_label | escape }}">
+      </div>
+
+      <div class="pp-tp__foot">
+        <div class="pp-tp__name" aria-live="polite"></div>
+        <a class="pp-tp__pick is-off" href="#" tabindex="-1" aria-hidden="true">{{ s.button_label | escape }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP temple to garment",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Carefully made designs" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Made to capture all the details that are important to you." },
+    { "type": "image_picker", "id": "photo", "label": "Temple photo", "info": "Square, framed the same as the drawing." },
+    { "type": "image_picker", "id": "drawing", "label": "Drawing", "info": "Square, black lines on white, framed the same as the photo." },
+    { "type": "text", "id": "photo_stop", "label": "First stop name", "default": "Temple" },
+    { "type": "text", "id": "drawing_stop", "label": "Second stop name", "default": "Drawing" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Pick Yours" },
+    { "type": "text", "id": "stage_label", "label": "Description for screen readers", "default": "The temple, its drawing, and the drawing on each garment" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#121212" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#F58000" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 36 },
+    { "type": "header", "content": "Print alignment" },
+    { "type": "paragraph", "content": "Where the first garment's back print sits on its photo. Measured for the Rome art; change only with a new drawing or garment photo." },
+    { "type": "number", "id": "print_zoom", "label": "Print zoom × 1000", "default": 4375, "info": "4375 means the garment photo is shown 4.375 times larger when its print matches the drawing." },
+    { "type": "number", "id": "origin_x", "label": "Print origin across (hundredths of %)", "default": 4889 },
+    { "type": "number", "id": "origin_y", "label": "Print origin down (hundredths of %)", "default": 5343 }
+  ],
+  "blocks": [
+    {
+      "type": "garment",
+      "name": "Garment",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "image", "label": "Back-print photo", "info": "Transparent background, same framing for every garment." },
+        { "type": "text", "id": "stop_label", "label": "Stop name", "info": "Short word under the slider, such as Hoodie." },
+        { "type": "text", "id": "name", "label": "Name shown", "info": "Empty uses the product title without the temple in brackets." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "PP temple to garment",
+      "blocks": [
+        { "type": "garment", "settings": { "stop_label": "Hoodie" } },
+        { "type": "garment", "settings": { "stop_label": "Sweatshirt" } },
+        { "type": "garment", "settings": { "stop_label": "Tee" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
