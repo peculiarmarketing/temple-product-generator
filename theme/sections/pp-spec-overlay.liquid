@@ -5,15 +5,27 @@
   side, phone place, small caps label, short line). Desktop puts the labels in
   columns either side of the photo; phones put them in two rows above and below a
   full-width photo. pp-quality.js draws the lines on both. The photo keeps its own
-  shape. With the script off or reduced motion on, the labels and dots are simply
-  shown.
+  shape. An optional note sits under the photo (the guarantee and delivery line).
+  With the script off or reduced motion on, the labels and dots are simply shown.
+
+  Phone bands (below 990px only; desktop is unchanged): every temple's art loops to
+  the right above the photo and every city map's art loops to the left below it.
+  "scrim": the labels sit on the bands on dark cards and every tile is a link.
+  "dim": the bands are faded into texture under plain labels and are decoration.
+  "stack": the bands sit outside the labels, above and below, and every tile is a
+  link. A tile links to every product from its place: /search?view=place with the
+  place line ("Provo, Utah") as the search terms, which templates/search.place.json
+  turns into the temples and maps whose `peculiar.temple_city` and `temple_state`
+  match (sections/pp-place-results.liquid). A temple shows
+  once its city line is in snippets/pp-temple-city.liquid, the same rule as the
+  homepage marquee; a map shows once it is in the map collection.
 {%- endcomment -%}
 {{ 'pp-quality.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'pp-quality.js' | asset_url }}" defer></script>
 {%- render 'pp-quality-font' -%}
 {%- liquid
   assign s = section.settings
-  assign image_alt = s.image.alt | default: 'Three friends in the tee, the hoodie and the crewneck'
+  assign image_alt = s.image.alt | default: 'Four friends in the bomber jacket, the hoodie, the sweatshirt and the tee'
   assign left_count = 0
   assign right_count = 0
   for block in section.blocks
@@ -30,11 +42,143 @@
   if rows < 1
     assign rows = 1
   endif
+
+  assign bands = s.phone_bands | default: 'none'
+  if s.temple_collection == blank and s.map_collection == blank
+    assign bands = 'none'
+  endif
+  assign linked = true
+  if bands == 'dim'
+    assign linked = false
+  endif
 -%}
+
+{%- if bands != 'none' -%}
+  {%- comment -%}
+    One entry per temple and per map: `temples` and `maps` hold
+    "slug^name^place" for the tiles, place being "City, State".
+  {%- endcomment -%}
+  {%- liquid
+    assign temples = ''
+    assign maps = ''
+    assign seen = ','
+  -%}
+  {%- if s.temple_collection != blank -%}
+    {%- paginate s.temple_collection.products by 250 -%}
+      {%- liquid
+        for product in s.temple_collection.products
+          assign slug = ''
+          for tag in product.tags
+            assign head = tag | slice: 0, 7
+            if head == 'temple:'
+              assign slug = tag | remove_first: 'temple:'
+              break
+            endif
+          endfor
+          assign needle = ',t:' | append: slug | append: ','
+          assign city = ''
+          if slug != blank
+            unless seen contains needle
+              capture city
+                render 'pp-temple-city', slug: slug
+              endcapture
+            endunless
+          endif
+          if city != blank
+            assign seen = seen | append: 't:' | append: slug | append: ','
+            assign place = product.metafields.peculiar.temple_city.value
+            if product.metafields.peculiar.temple_state.value != blank
+              assign place = place | append: ', ' | append: product.metafields.peculiar.temple_state.value
+            endif
+            assign name = product.metafields.peculiar.temple_name.value | default: product.title
+            assign temples = temples | append: slug | append: '^' | append: name | append: '^' | append: place | append: '~'
+          endif
+        endfor
+      -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+  {%- if s.map_collection != blank -%}
+    {%- paginate s.map_collection.products by 250 -%}
+      {%- liquid
+        for product in s.map_collection.products
+          assign slug = ''
+          for tag in product.tags
+            assign head = tag | slice: 0, 4
+            if head == 'map:'
+              assign slug = tag | remove_first: 'map:'
+              break
+            endif
+          endfor
+          assign needle = ',m:' | append: slug | append: ','
+          if slug != blank
+            unless seen contains needle
+              assign seen = seen | append: 'm:' | append: slug | append: ','
+              assign name = product.metafields.peculiar.temple_city.value | default: slug
+              assign place = product.metafields.peculiar.temple_city.value
+              if product.metafields.peculiar.temple_state.value != blank
+                assign place = place | append: ', ' | append: product.metafields.peculiar.temple_state.value
+              endif
+              assign maps = maps | append: slug | append: '^' | append: name | append: '^' | append: place | append: '~'
+            endunless
+          endif
+        endfor
+      -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+
+  {%- comment -%} Second pass: the tiles, each with its place link. {%- endcomment -%}
+  {%- assign temple_count = 0 -%}
+  {%- capture temple_items -%}
+    {%- assign rows_t = temples | split: '~' -%}
+    {%- for row in rows_t -%}
+      {%- liquid
+        assign f = row | split: '^'
+        assign slug = f[0]
+        assign name = f[1]
+        assign place = f[2]
+        assign temple_count = temple_count | plus: 1
+        assign art = 'pp-temple-' | append: slug | append: '.webp' | asset_url
+      -%}
+      <li class="pp-spec__tile pp-spec__tile--temple">
+        {%- if linked -%}
+          <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }}. Shop everything from {{ place | escape }}">
+            <img src="{{ art }}" alt="" width="420" height="352" loading="lazy" decoding="async">
+          </a>
+        {%- else -%}
+          <img src="{{ art }}" alt="" width="420" height="352" loading="lazy" decoding="async">
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign map_count = 0 -%}
+  {%- capture map_items -%}
+    {%- assign rows_m = maps | split: '~' -%}
+    {%- for row in rows_m -%}
+      {%- liquid
+        assign f = row | split: '^'
+        assign slug = f[0]
+        assign name = f[1]
+        assign place = f[2]
+        assign map_count = map_count | plus: 1
+        assign art = 'pp-map-' | append: slug | append: '.webp' | asset_url
+      -%}
+      <li class="pp-spec__tile pp-spec__tile--map">
+        {%- if linked -%}
+          <a class="pp-spec__tile-link" href="{{ routes.search_url }}?view=place&q={{ place | url_encode }}" aria-label="{{ name | escape }} map. Shop everything from {{ place | escape }}">
+            <img src="{{ art }}" alt="" width="315" height="420" loading="lazy" decoding="async">
+          </a>
+        {%- else -%}
+          <img src="{{ art }}" alt="" width="315" height="420" loading="lazy" decoding="async">
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+{%- endif -%}
+
 <section
-  class="pp-spec"
+  class="pp-spec{% if bands != 'none' %} pp-spec--bands pp-spec--bands-{{ bands }}{% endif %}"
   data-pp-spec
-  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};"
+  style="--pp-spec-bg: {{ s.background }}; --pp-spec-fg: {{ s.text_color }}; --pp-spec-accent: {{ s.accent }}; --pp-spec-rows: {{ rows }};{% if bands != 'none' %} --pp-band-h: {{ s.band_height }}px; --pp-band-t: {{ temple_count | times: s.band_seconds }}s; --pp-band-m: {{ map_count | times: s.band_seconds }}s;{% endif %}"
 >
   <div class="pp-spec__inner">
     {%- if s.heading != blank or s.text != blank -%}
@@ -49,6 +193,15 @@
     {%- endif -%}
 
     <div class="pp-spec__stage" data-pp-spec-stage>
+      {%- if bands != 'none' and temple_count > 0 -%}
+        <div class="pp-spec__band pp-spec__band--top"{% unless linked %} aria-hidden="true"{% else %} role="region" aria-label="{{ s.temple_band_label | escape }}"{% endunless %}>
+          <div class="pp-spec__band-track pp-spec__band-track--right">
+            <ul class="pp-spec__band-list" role="list">{{ temple_items }}</ul>
+            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" inert>{{ temple_items }}</ul>
+          </div>
+        </div>
+      {%- endif -%}
+
       <div class="pp-spec__media">
         {%- if s.image != blank -%}
           {{
@@ -92,8 +245,21 @@
         </div>
       {%- endfor -%}
 
+      {%- if bands != 'none' and map_count > 0 -%}
+        <div class="pp-spec__band pp-spec__band--bottom"{% unless linked %} aria-hidden="true"{% else %} role="region" aria-label="{{ s.map_band_label | escape }}"{% endunless %}>
+          <div class="pp-spec__band-track pp-spec__band-track--left">
+            <ul class="pp-spec__band-list" role="list">{{ map_items }}</ul>
+            <ul class="pp-spec__band-list pp-spec__band-list--copy" role="list" aria-hidden="true" inert>{{ map_items }}</ul>
+          </div>
+        </div>
+      {%- endif -%}
+
       <svg class="pp-spec__lines" aria-hidden="true" focusable="false" data-pp-spec-lines></svg>
     </div>
+
+    {%- if s.note != blank -%}
+      <div class="pp-spec__note">{{ s.note }}</div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -109,9 +275,30 @@
       "label": "Photo",
       "info": "Any shape; it is shown whole. After changing it, move each callout's point to match."
     },
+    { "type": "richtext", "id": "note", "label": "Note under the photo" },
     { "type": "color", "id": "background", "label": "Background", "default": "#0d0e11" },
     { "type": "color", "id": "text_color", "label": "Text and lines", "default": "#ffffff" },
-    { "type": "color", "id": "accent", "label": "Dot colour", "default": "#F58000" }
+    { "type": "color", "id": "accent", "label": "Dot colour", "default": "#F58000" },
+    { "type": "header", "content": "Phone bands" },
+    {
+      "type": "select",
+      "id": "phone_bands",
+      "label": "Temple and map bands on phones",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "scrim", "label": "A: labels on dark cards over the bands" },
+        { "value": "dim", "label": "B: faded bands behind the labels" },
+        { "value": "stack", "label": "C: bands outside the labels" }
+      ],
+      "default": "none",
+      "info": "Below 990px wide only. Temples move right above the photo, maps move left below it. In A and C every drawing links to all products from its place; in B they are decoration."
+    },
+    { "type": "collection", "id": "temple_collection", "label": "Temples from", "info": "The tee collection the homepage marquee reads (temple-tees). Each temple shows once." },
+    { "type": "collection", "id": "map_collection", "label": "Maps from", "info": "Church History Maps." },
+    { "type": "range", "id": "band_height", "label": "Band height", "min": 100, "max": 220, "step": 10, "unit": "px", "default": 150 },
+    { "type": "range", "id": "band_seconds", "label": "Seconds each drawing takes to pass", "min": 2, "max": 8, "step": 1, "default": 3 },
+    { "type": "text", "id": "temple_band_label", "label": "Temple band name for screen readers", "default": "Shop by temple" },
+    { "type": "text", "id": "map_band_label", "label": "Map band name for screen readers", "default": "Shop by Church history site" }
   ],
   "blocks": [
     {

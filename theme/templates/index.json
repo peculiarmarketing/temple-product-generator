@@ -336,64 +336,65 @@
     "pp_spec_overlay": {
       "type": "pp-spec-overlay",
       "blocks": {
-        "callout_1": {
+        "callout_bomber": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Bomber · 400 GSM",
+            "label": "Heavy knit with a little stretch and striped rib trim. Sizes XS to 2XL.",
+            "side": "left",
+            "phone": "above",
+            "x": 33,
+            "y": 32
+          }
+        },
+        "callout_hoodie": {
           "type": "callout",
           "settings": {
             "eyebrow": "Hoodie · 350 GSM",
-            "label": "Heavy fleece, 10.3 oz.",
-            "side": "left",
+            "label": "Heavy fleece, 10.3 oz. Sizes S to 2XL.",
+            "side": "right",
             "phone": "above",
-            "x": 21,
+            "x": 62,
+            "y": 26
+          }
+        },
+        "callout_sweatshirt": {
+          "type": "callout",
+          "settings": {
+            "eyebrow": "Sweatshirt · 350 GSM",
+            "label": "Same fleece as the hoodie. Sizes S to 2XL.",
+            "side": "left",
+            "phone": "below",
+            "x": 30,
             "y": 65
           }
         },
-        "callout_2": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Designed and printed in the USA",
-            "label": "We print yours after you order. It arrives in 4 to 7 business days.",
-            "side": "right",
-            "phone": "above",
-            "x": 87,
-            "y": 53
-          }
-        },
-        "callout_3": {
+        "callout_tee": {
           "type": "callout",
           "settings": {
             "eyebrow": "Tee · 260 GSM",
-            "label": "Heavyweight cotton that's soft from the first wear.",
-            "side": "left",
-            "phone": "below",
-            "x": 50,
-            "y": 69
-          }
-        },
-        "callout_4": {
-          "type": "callout",
-          "settings": {
-            "eyebrow": "Crewneck · 350 GSM",
-            "label": "Same fleece as the hoodie.",
+            "label": "Heavyweight cotton that's soft from the first wear. Sizes S to 3XL.",
             "side": "right",
             "phone": "below",
-            "x": 86,
-            "y": 69
+            "x": 75,
+            "y": 55
           }
         }
       },
       "block_order": [
-        "callout_1",
-        "callout_2",
-        "callout_3",
-        "callout_4"
+        "callout_bomber",
+        "callout_hoodie",
+        "callout_sweatshirt",
+        "callout_tee"
       ],
       "settings": {
         "heading": "",
         "text": "",
-        "image": "shopify://shop_images/pp-spec-group-k.jpg",
+        "image": "shopify://shop_images/pp-spec-group-v3.jpg",
         "background": "#0d0e11",
         "text_color": "#ffffff",
-        "accent": "#f58000"
+        "accent": "#f58000",
+        "note": "<p><strong>Made right, or we replace it</strong></p><p>Damaged, misprinted or the wrong item? Email us a photo within 30 days and we'll send a new one at no cost. You don't ship anything back.</p><p>Tees, sweatshirts and hoodies are printed in the USA after you order and arrive in 4 to 7 business days. The bomber ships from overseas and takes longer.</p>"
       }
     },
     "process": {

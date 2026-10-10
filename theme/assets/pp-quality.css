@@ -319,7 +319,7 @@
 .pp-spec__label--left { grid-column: 1; text-align: left; }
 .pp-spec__label--right { grid-column: 2; text-align: right; }
 .pp-spec__words { display: grid; gap: 4px; }
-.pp-spec__eyebrow { font-family: var(--pp-head); font-weight: 600; font-size: 11px; letter-spacing: .14em; line-height: 1.35; text-transform: uppercase; }
+.pp-spec__eyebrow { font-family: var(--pp-head); font-weight: 600; font-size: 11px; letter-spacing: .1em; line-height: 1.35; text-transform: uppercase; }
 .pp-spec__sub { font-size: 14px; line-height: 1.45; opacity: .85; }
 .pp-spec__lines {
   position: absolute;
@@ -350,12 +350,89 @@
   .pp-spec__sub { font-size: 15px; }
 }
 
+/* The note under the photo: the guarantee and delivery line. */
+.pp-spec__note { max-width: 680px; margin: 32px auto 0; text-align: center; display: grid; gap: 8px; }
+.pp-spec__note p { margin: 0; font-size: 14px; line-height: 1.55; opacity: .85; }
+.pp-spec__note strong, .pp-spec__note b { font-family: var(--pp-head); font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; opacity: 1; }
+.pp-spec__note p:first-child { opacity: 1; }
+@media screen and (min-width: 990px) { .pp-spec__note p { font-size: 15px; } }
+
 .pp-spec.is-armed .pp-spec__label { opacity: 0; transform: translateY(6px); transition: opacity .5s ease calc(var(--i) * .3s + .5s), transform .5s ease calc(var(--i) * .3s + .5s); }
 .pp-spec.is-armed .pp-spec__dot { opacity: 0; transition: opacity .4s ease; }
 .pp-spec.is-armed .pp-spec__lines line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); transition: stroke-dashoffset .9s ease calc(var(--i) * .3s); }
 .pp-spec.is-armed.is-in .pp-spec__label { opacity: 1; transform: none; }
 .pp-spec.is-armed.is-in .pp-spec__dot { opacity: 1; }
 .pp-spec.is-armed.is-in .pp-spec__lines line { stroke-dashoffset: 0; }
+
+/* Phone bands (sections/pp-spec-overlay.liquid, "Temple and map bands on phones").
+   Below 990px every temple's art loops right above the photo and every map loops
+   left below it. scrim and dim lay the label rows over the bands; stack puts the
+   bands outside the labels. Desktop never shows them. */
+.pp-spec__band { display: none; }
+@media screen and (max-width: 989px) {
+  .pp-spec--bands .pp-spec__band {
+    display: block;
+    position: relative;
+    grid-column: 1 / -1;
+    margin: 0 -20px;
+    height: var(--pp-band-h);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .pp-spec__band-track { display: flex; width: max-content; height: 100%; }
+  .pp-spec__band-track--right { animation: pp-band-right var(--pp-band-t, 120s) linear infinite; }
+  .pp-spec__band-track--left { animation: pp-band-left var(--pp-band-m, 80s) linear infinite; }
+  .pp-spec__band:hover .pp-spec__band-track,
+  .pp-spec__band:focus-within .pp-spec__band-track { animation-play-state: paused; }
+  .pp-spec__band-list { display: flex; align-items: center; height: 100%; margin: 0; padding: 0; list-style: none; }
+  .pp-spec__tile { flex: none; height: 100%; padding: 12px 14px; }
+  .pp-spec__tile img { display: block; height: 100%; width: auto; }
+  .pp-spec__tile-link { display: block; height: 100%; border-radius: 2px; }
+  .pp-spec__tile-link:focus-visible { outline: 2px solid var(--pp-spec-accent); outline-offset: -2px; }
+
+  /* A and B: the label rows sit on the bands. */
+  .pp-spec--bands-scrim .pp-spec__stage,
+  .pp-spec--bands-dim .pp-spec__stage {
+    grid-template-rows: minmax(var(--pp-band-h), auto) auto minmax(var(--pp-band-h), auto);
+    row-gap: 14px;
+  }
+  .pp-spec--bands-scrim .pp-spec__band--top, .pp-spec--bands-dim .pp-spec__band--top { grid-row: 1; align-self: stretch; height: auto; min-height: var(--pp-band-h); }
+  .pp-spec--bands-scrim .pp-spec__band--bottom, .pp-spec--bands-dim .pp-spec__band--bottom { grid-row: 3; align-self: stretch; height: auto; min-height: var(--pp-band-h); }
+  .pp-spec--bands-scrim .pp-spec__band-track, .pp-spec--bands-dim .pp-spec__band-track { position: absolute; inset: 0 auto 0 0; }
+  .pp-spec--bands-scrim .pp-spec__label, .pp-spec--bands-dim .pp-spec__label { position: relative; z-index: 1; align-self: center; }
+  .pp-spec--bands-scrim .pp-spec__lines, .pp-spec--bands-dim .pp-spec__lines { z-index: 2; }
+
+  .pp-spec--bands-scrim .pp-spec__label { pointer-events: none; }
+  .pp-spec--bands-scrim .pp-spec__words {
+    display: inline-grid;
+    padding: 10px 12px;
+    border-radius: var(--pp-radius);
+    background: rgba(13, 14, 17, .82);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, .08);
+  }
+
+  .pp-spec--bands-dim .pp-spec__band-track { opacity: .22; }
+  .pp-spec--bands-dim .pp-spec__words { text-shadow: 0 1px 10px rgba(0, 0, 0, .9), 0 0 2px rgba(0, 0, 0, .8); }
+  .pp-spec--bands-dim .pp-spec__sub { opacity: 1; }
+
+  /* C: band, labels, photo, labels, band. */
+  .pp-spec--bands-stack .pp-spec__stage { row-gap: 24px; }
+  .pp-spec--bands-stack .pp-spec__band--top { grid-row: 1; }
+  .pp-spec--bands-stack .pp-spec__label--above { grid-row: 2; }
+  .pp-spec--bands-stack .pp-spec__media { grid-row: 3; }
+  .pp-spec--bands-stack .pp-spec__label--below { grid-row: 4; }
+  .pp-spec--bands-stack .pp-spec__band--bottom { grid-row: 5; }
+}
+@keyframes pp-band-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes pp-band-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .pp-spec__band-track { animation: none !important; }
+  .pp-spec__band-list--copy { display: none; }
+  .pp-spec--bands .pp-spec__band { overflow-x: auto; }
+}
 
 /* ---------- Why chain ---------- */
 
@@ -383,3 +460,30 @@
 @media (prefers-reduced-motion: reduce) {
   .pp-zoom__stop, .pp-dive__step, .pp-spec__label, .pp-spec__lines line, .pp-chain__line, .pp-chain__img { transition: none !important; }
 }
+
+/* ---------- Place results (sections/pp-place-results.liquid) ---------- */
+
+.pp-place { --pp-head: var(--font-heading-family, Montserrat, "Helvetica Neue", Arial, sans-serif); }
+.pp-place * { box-sizing: border-box; }
+.pp-place__inner { max-width: 1200px; margin: 0 auto; padding: 40px 16px 64px; }
+.pp-place__head { margin: 0 0 32px; }
+.pp-place__eyebrow { margin: 0 0 6px; font-family: var(--pp-head); font-weight: 600; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--pp-place-accent); }
+.pp-place__heading { margin: 0; font-family: var(--pp-head); font-weight: 300; font-size: clamp(30px, 5vw, 48px); line-height: 1.1; }
+.pp-place__group + .pp-place__group { margin-top: 40px; }
+.pp-place__design { margin: 0 0 14px; font-family: var(--pp-head); font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+.pp-place__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; margin: 0; padding: 0; list-style: none; }
+.pp-place__link { display: grid; gap: 6px; color: inherit; text-decoration: none; }
+.pp-place__media { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 4px; background: rgba(127, 127, 127, .08); }
+.pp-place__img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.pp-place__link:hover .pp-place__img { transform: scale(1.03); }
+.pp-place__link:hover .pp-place__title { text-decoration: underline; text-underline-offset: 3px; }
+.pp-place__title { font-size: 14px; line-height: 1.35; }
+.pp-place__price { font-size: 14px; opacity: .75; }
+.pp-place__empty { font-size: 16px; }
+.pp-place__more { margin-top: 32px; text-align: center; }
+@media screen and (min-width: 750px) {
+  .pp-place__inner { padding: 56px 32px 80px; }
+  .pp-place__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 20px; }
+  .pp-place__title, .pp-place__price { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .pp-place__img { transition: none; } }

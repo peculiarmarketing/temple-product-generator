@@ -1,3 +1,36 @@
+# Spec section phone bands: three options on V4 for Evan to pick (10 Oct 2026)
+
+**Previews (phone width; desktop is unchanged):**
+- A, labels on dark cards over the bands: https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-a
+- B, faded bands behind plain labels (decoration, no links): https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-b
+- C, bands outside the labels: https://peculiarpeopleco.com/?preview_theme_id=194532671860&view=spec-c
+
+Each preview template (`theme/templates/index.spec-{a,b,c}.json`) holds only the spec
+section, a copy of V4's with `phone_bands` set. The real homepage (`index.json`) is
+unchanged; the setting defaults to "None". **When Evan picks**, set "Temple and map
+bands on phones" on the homepage's PP spec overlay (plus Temples from = temple-tees,
+Maps from = Church History Maps, band height 190 for A/B, 150 for C) and delete the
+three preview templates.
+
+- Temples loop right above the photo (all 45, from temple-tees), maps loop left below
+  it (all 27, from church-history-maps). New ones join on their own, same rule as the
+  homepage marquee.
+- In A and C each drawing links to `/search?view=place&q=<City, State>`:
+  `sections/pp-place-results.liquid` via `templates/search.place.json` lists every
+  temple and map product whose `peculiar.temple_city`/`temple_state` match (Provo: three
+  temples, nine products; Nauvoo: temple and map). The store's own search was tried
+  first and dropped: tag search missed published products (Afton tee and hoodie).
+- **Limit to fix before launch:** the place page reads the "all" collection in one pass
+  of 250 products (storefront cap); there are 224 today. The fix is publishing Temple
+  Tees/Hoodies/Crewnecks to the Online Store channel (only temple-tees is now) and
+  listing those plus the map collection in the section's Collection 1 to 4. Store
+  change, so Evan's call.
+- Callout text is placeholder (Evan, 10 Oct); no editing passes run on it.
+- Theme writes from a cloud session: `themeFilesUpsert` with a TEXT body. URL bodies
+  failed silently several times. `themeFilesDelete` is blocked by the connector, so
+  `sections/pp-debug-tmp.liquid`, `templates/index.dbg-tmp.json` and
+  `templates/search.dbg-tmp.json` (blanked) are still on V4; delete them in the code editor.
+
 # Homepage on "Claude Code V4": four-person spec photo BUILT; next, callouts, guarantee line, theme (9 Oct 2026, night)
 
 **Branch:** `claude/homepage-conversation` (pushed). Check it out; `main` does not have this work.

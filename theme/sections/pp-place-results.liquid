@@ -1,0 +1,179 @@
+{%- comment -%}
+  Peculiar People: every product from one place, the page the spec section's phone
+  bands link to (templates/search.place.json). The link is /search?view=place&q=
+  with the place line, "Provo, Utah" (or just "Rome" where there is no state), as the search terms; the search itself is not
+  used. The page reads the collections set below and keeps each product whose
+  `peculiar.temple_city` and `temple_state` make that same line and that carries a
+  `temple:` or `map:` tag, so a new temple or map in the same place joins without
+  any change here. Products are grouped by design (temples first, then maps), each
+  design's garments in the order tee, hoodie, sweatshirt. A temple's heading is its
+  `temple_name`; a map's is its city and "map".
+
+  Each collection is read in one pass of at most 250 products (the storefront's
+  page limit). "All products" covers everything today; once the per-garment temple
+  collections are published to the Online Store, list those and the map collection
+  instead and the limit applies to each one.
+
+  Apostrophes are dropped on both sides of the match because Shopify escapes them
+  in search.terms ("Haun's Mill", "Martin's Cove").
+{%- endcomment -%}
+{{ 'pp-quality.css' | asset_url | stylesheet_tag }}
+{%- render 'pp-quality-font' -%}
+{%- liquid
+  assign s = section.settings
+  assign wanted = search.terms | replace: '&#39;', '' | replace: '&#x27;', '' | remove: "'" | remove: '’' | strip | downcase
+  assign entries = ''
+  assign designs = ''
+  assign seen = ','
+-%}
+{%- if wanted != blank -%}
+  {%- for i in (1..4) -%}
+    {%- liquid
+      assign cid = 'collection_' | append: i
+      assign c = s[cid]
+    -%}
+    {%- if c != blank -%}
+    {%- paginate c.products by 250 -%}
+      {%- for p in c.products -%}
+        {%- liquid
+          assign place = p.metafields.peculiar.temple_city.value
+          if p.metafields.peculiar.temple_state.value != blank
+            assign place = place | append: ', ' | append: p.metafields.peculiar.temple_state.value
+          endif
+          assign place = place | remove: "'" | remove: '’' | downcase
+          assign needle = ',' | append: p.handle | append: ','
+          assign design = ''
+          if place == wanted
+            unless seen contains needle
+              for tag in p.tags
+                assign h7 = tag | slice: 0, 7
+                assign h4 = tag | slice: 0, 4
+                if h7 == 'temple:' or h4 == 'map:'
+                  assign design = tag
+                  break
+                endif
+              endfor
+            endunless
+          endif
+        -%}
+        {%- if design != blank -%}
+          {%- liquid
+            assign seen = seen | append: p.handle | append: ','
+            assign garment = 'other'
+            if p.tags contains 'garment:tee' or p.tags contains 'apparel:tee'
+              assign garment = 'tee'
+            elsif p.tags contains 'garment:hoodie' or p.tags contains 'apparel:hoodie'
+              assign garment = 'hoodie'
+            elsif p.tags contains 'garment:crew' or p.tags contains 'apparel:crew'
+              assign garment = 'crew'
+            endif
+            assign dneedle = '~' | append: design | append: '~'
+            assign dhave = '~' | append: designs
+            unless dhave contains dneedle
+              assign designs = designs | append: design | append: '~'
+            endunless
+            if design contains 'map:'
+              assign label = p.metafields.peculiar.temple_city.value | append: ' ' | append: s.map_suffix
+            else
+              assign label = p.metafields.peculiar.temple_name.value | default: p.title
+            endif
+          -%}
+          {%- capture card -%}
+            <li class="pp-place__card">
+              <a class="pp-place__link" href="{{ p.url }}">
+                <span class="pp-place__media">
+                  {%- if p.featured_image -%}
+                    {{ p.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 500, 700', sizes: '(min-width: 750px) 300px, 50vw', alt: p.title, class: 'pp-place__img' }}
+                  {%- endif -%}
+                </span>
+                <span class="pp-place__title">{{ p.title | split: ' (' | first | escape }}</span>
+                <span class="pp-place__price">{% if p.price_varies %}From {% endif %}{{ p.price | money }}</span>
+              </a>
+            </li>
+          {%- endcapture -%}
+          {%- assign entries = entries | append: design | append: '␟' | append: garment | append: '␟' | append: label | append: '␟' | append: card | append: '␞' -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endpaginate -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- liquid
+  assign entry_list = entries | split: '␞'
+  assign design_list = designs | split: '~'
+  assign garments = 'tee,hoodie,crew,other' | split: ','
+  assign heading = search.terms | replace: '&#39;', "'" | replace: '&#x27;', "'" | strip
+-%}
+<section class="pp-place" style="--pp-place-accent: {{ s.accent }};">
+  <div class="pp-place__inner">
+    <header class="pp-place__head">
+      {%- if s.eyebrow != blank -%}
+        <p class="pp-place__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="pp-place__heading">{{ heading | default: s.fallback_heading | escape }}</h1>
+    </header>
+
+    {%- if entry_list.size == 0 -%}
+      <p class="pp-place__empty">{{ s.empty_text | escape }} <a href="{{ routes.all_products_collection_url }}">{{ s.empty_link | escape }}</a></p>
+    {%- endif -%}
+
+    {%- for pass in (1..2) -%}
+      {%- for d in design_list -%}
+        {%- liquid
+          assign is_map = false
+          if d contains 'map:'
+            assign is_map = true
+          endif
+          assign show = false
+          if pass == 1 and is_map == false
+            assign show = true
+          elsif pass == 2 and is_map
+            assign show = true
+          endif
+        -%}
+        {%- if show -%}
+          {%- liquid
+            assign label = ''
+            for e in entry_list
+              assign f = e | split: '␟'
+              if f[0] == d
+                assign label = f[2]
+                break
+              endif
+            endfor
+          -%}
+          <div class="pp-place__group">
+            <h2 class="pp-place__design">{{ label | escape }}</h2>
+            <ul class="pp-place__grid" role="list">
+              {%- for g in garments -%}
+                {%- for e in entry_list -%}
+                  {%- assign f = e | split: '␟' -%}
+                  {%- if f[0] == d and f[1] == g -%}{{ f[3] }}{%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PP place results",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small caps line over the place", "default": "Everything from" },
+    { "type": "text", "id": "fallback_heading", "label": "Heading when no place is given", "default": "Shop by place" },
+    { "type": "text", "id": "map_suffix", "label": "After a map's place", "default": "map" },
+    { "type": "text", "id": "empty_text", "label": "No results text", "default": "Nothing here yet." },
+    { "type": "text", "id": "empty_link", "label": "No results link", "default": "See everything" },
+    { "type": "color", "id": "accent", "label": "Accent", "default": "#F58000" },
+    { "type": "header", "content": "Where products come from" },
+    { "type": "collection", "id": "collection_1", "label": "Collection 1", "info": "Each is read up to 250 products. Use All products, or the temple tee, hoodie and sweatshirt collections plus Church History Maps once those are on the Online Store." },
+    { "type": "collection", "id": "collection_2", "label": "Collection 2" },
+    { "type": "collection", "id": "collection_3", "label": "Collection 3" },
+    { "type": "collection", "id": "collection_4", "label": "Collection 4" }
+  ]
+}
+{% endschema %}
