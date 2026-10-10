@@ -1,0 +1,125 @@
+/* Peculiar People: temple → drawing → garments (sections/pp-temple-process.liquid).
+   Type follows the theme: headings in the heading font, text in the body font. */
+.pp-tp {
+  --pp-tp-heading: var(--font-heading-family, "Montserrat", "Helvetica Neue", Arial, sans-serif);
+  --pp-tp-body: var(--font-body-family, Arial, "Helvetica Neue", Helvetica, sans-serif);
+  --pp-tp-rule: rgba(18, 18, 18, .16);
+  --pp-tp-muted: rgba(18, 18, 18, .6);
+  background: var(--pp-tp-bg, #fff);
+  color: var(--pp-tp-fg, #121212);
+  padding-block: var(--pp-tp-pt, 36px) var(--pp-tp-pb, 36px);
+}
+.pp-tp img { display: block; -webkit-user-drag: none; }
+.pp-tp [hidden] { display: none !important; }
+
+/* Phones and tablets: stacked and centred; heading and text each held to one line. */
+.pp-tp__inner { display: grid; gap: 24px; justify-items: center; }
+/* The theme's page-width leaves phones without a right gutter; 16px both sides here. */
+@media (max-width: 989px) { .pp-tp__inner.page-width { padding-left: 16px; padding-right: 16px; } }
+.pp-tp__copy { display: grid; gap: 10px; text-align: center; max-width: 100%; }
+/* One line each on phones: sizes are the measured text width (heading ≈ 14.3em, text ≈ 29em)
+   fitted into the screen less the gutters, capped at the theme sizes. */
+.pp-tp__heading {
+  margin: 0; white-space: nowrap;
+  font-family: var(--pp-tp-heading); font-weight: var(--font-heading-weight, 400);
+  letter-spacing: .6px; line-height: 1.2;
+  font-size: min(28px, calc((100vw - 32px) / 14.6));
+}
+.pp-tp__text {
+  margin: 0; white-space: nowrap;
+  font-family: var(--pp-tp-body); font-weight: var(--font-body-weight, 400); line-height: 1.6;
+  font-size: min(16px, calc((100vw - 32px) / 29.4));
+}
+.pp-tp__main { width: 100%; display: grid; gap: 24px; justify-items: center; min-width: 0; }
+
+@media (min-width: 990px) {
+  .pp-tp__inner { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(32px, 4vw, 64px); justify-items: stretch; }
+  .pp-tp__copy { text-align: left; align-self: center; }
+  /* one line, scaled so the stage keeps most of the width on smaller desktops; 39px from ~1390px */
+  .pp-tp__heading { font-size: clamp(28px, 2.8vw, 39px); }
+  .pp-tp__text { font-size: 16px; }
+}
+
+/* Stage: 3:2 (room for the garments either side), square on phones where they peek in. */
+.pp-tp__stage {
+  position: relative; width: min(840px, 100%); aspect-ratio: 3 / 2; overflow: hidden;
+  user-select: none; -webkit-user-select: none; touch-action: pan-y; cursor: grab;
+}
+.pp-tp__stage.is-drag { cursor: grabbing; }
+@media (max-width: 749px) { .pp-tp__stage { aspect-ratio: 1; } }
+.pp-tp__box { position: absolute; top: 0; left: 50%; height: 100%; aspect-ratio: 1; transform: translateX(-50%); }
+.pp-tp__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+/* No background on the frame: once the photo goes, the first garment behind it shows through. */
+.pp-tp__frame { overflow: hidden; z-index: 20; pointer-events: none; }
+.pp-tp__draw, .pp-tp__ink, .pp-tp__garment:first-child .pp-tp__img { transform-origin: var(--pp-tp-origin, 50% 50%); will-change: transform, opacity; }
+.pp-tp__draw { clip-path: inset(0 calc(100% - var(--pp-tp-q, 0) * 100%) 0 0); }
+.pp-tp__ink { opacity: 0; }
+.pp-tp__pen {
+  position: absolute; top: 0; bottom: 0; left: calc(var(--pp-tp-q, 0) * 100%); width: 2px;
+  background: var(--pp-tp-fg, #121212); opacity: var(--pp-tp-penop, 0);
+}
+.pp-tp__pen::after {
+  content: ""; position: absolute; top: 50%; left: 50%; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--pp-tp-fg, #121212); border: 3px solid var(--pp-tp-bg, #fff); transform: translate(-50%, -50%);
+}
+.pp-tp__garment {
+  overflow: hidden; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer;
+  transform: translateX(-50%) translate(var(--x, 0%), var(--y, 0%)) scale(var(--s, 1));
+  z-index: var(--z, 1); opacity: var(--o, 0);
+}
+.pp-tp__garment[aria-current="true"] { cursor: inherit; }
+.pp-tp__garment:focus-visible, .pp-tp__stops button:focus-visible, .pp-tp__range:focus-visible, .pp-tp__pick:focus-visible {
+  outline: 3px solid var(--pp-tp-accent, #F58000); outline-offset: 2px;
+}
+
+/* Slider */
+.pp-tp__scrub { width: min(640px, 100%); display: grid; gap: 8px; }
+.pp-tp__stops {
+  position: relative; height: 16px; font: 400 11px/1 var(--pp-tp-body);
+  letter-spacing: .08em; text-transform: uppercase; color: var(--pp-tp-muted);
+}
+.pp-tp__stops button {
+  position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap;
+  background: none; border: 0; padding: 0; margin: 0; font: inherit; letter-spacing: inherit; color: inherit; cursor: pointer;
+}
+.pp-tp__stops button:first-child { transform: none; }
+.pp-tp__stops button:last-child { transform: translateX(-100%); }
+.pp-tp__stops button.is-on { color: var(--pp-tp-fg, #121212); font-weight: 700; }
+@media (max-width: 749px) { .pp-tp__stops { font-size: 9.5px; letter-spacing: .04em; } }
+.pp-tp__range { width: 100%; margin: 0; appearance: none; -webkit-appearance: none; height: 28px; background: transparent; cursor: grab; }
+.pp-tp__range::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(90deg, var(--pp-tp-fg, #121212) var(--fill, 0%), var(--pp-tp-rule) var(--fill, 0%)); }
+.pp-tp__range::-moz-range-track { height: 2px; background: var(--pp-tp-rule); }
+.pp-tp__range::-moz-range-progress { height: 2px; background: var(--pp-tp-fg, #121212); }
+.pp-tp__range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 26px; height: 26px; margin-top: -12px; border-radius: 50%;
+  background: var(--pp-tp-fg, #121212); border: 4px solid var(--pp-tp-bg, #fff); box-shadow: 0 0 0 1px var(--pp-tp-fg, #121212);
+}
+.pp-tp__range::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--pp-tp-fg, #121212); border: 4px solid var(--pp-tp-bg, #fff); box-shadow: 0 0 0 1px var(--pp-tp-fg, #121212);
+}
+
+/* Name and button. Golden-ratio button from the 14px label: 42px tall (14 × 3), side padding
+   14 × φ² ≈ 36.7px, gap above 14 × φ ≈ 22.7px. Caps ride high in a normal line box, so the text
+   box is trimmed to the cap height; browsers without that get a 1px nudge down. */
+.pp-tp__foot { display: grid; gap: calc(14px * 1.618); justify-items: center; min-height: 100px; }
+.pp-tp__name {
+  font: var(--font-heading-weight, 400) 18px/1.3 var(--pp-tp-heading); letter-spacing: .6px;
+  text-align: center; min-height: 1.3em;
+}
+.pp-tp__pick {
+  display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; height: 42px;
+  padding: 1px calc(14px * 1.618 * 1.618) 0; border-radius: 6px;
+  background: var(--pp-tp-accent, #F58000); color: #fff; text-decoration: none;
+  font: 700 14px/1 var(--pp-tp-body); letter-spacing: .1em; text-transform: uppercase;
+  transition: opacity .3s, transform .3s;
+}
+@supports (text-box: trim-both cap alphabetic) {
+  .pp-tp__pick { padding-top: 0; text-box: trim-both cap alphabetic; }
+}
+.pp-tp__pick.is-off { opacity: 0; transform: translateY(6px); pointer-events: none; }
+
+/* Without the script: the photo alone, no slider. */
+.pp-tp:not(.is-ready) .pp-tp__scrub, .pp-tp:not(.is-ready) .pp-tp__foot, .pp-tp:not(.is-ready) .pp-tp__draw { visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) { .pp-tp__pick { transition: none; } }
