@@ -253,7 +253,9 @@ def print_files(name, p, garment_id, cfg):
 # ------------------------------------------------------------- copy
 
 def title_for(name, p, garment_cfg):
-    city, _ = city_state(p)
+    # "title_name" in places.json names the map when one city has a map per
+    # temple (Provo City Center and Provo Rock Canyon, Evan 11 Oct 2026)
+    city = p.get("title_name") or city_state(p)[0]
     line = garment_cfg["naming"]["title_parent"].replace("Temple", "Map")
     if line == garment_cfg["naming"]["title_parent"]:
         raise SystemExit(f"{garment_cfg['garment_id']}: no 'Temple' in the line name to swap")
